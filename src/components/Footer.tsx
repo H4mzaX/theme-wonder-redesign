@@ -1,14 +1,13 @@
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/hooks/useScrollAnimations";
-import { motion } from "framer-motion";
 
 const Footer = () => {
   return (
     <footer className="bg-foreground text-background">
-      <div className="section-padding py-16 lg:py-20">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-14 lg:py-18">
         <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12" staggerDelay={0.1}>
           <StaggerItem>
             <div className="space-y-4">
-              <span className="font-display font-bold text-xl">VCASE</span>
+              <span className="font-bold text-xl">VCASE</span>
               <p className="text-sm text-background/60 leading-relaxed">
                 Premium phone cases and screen protectors for iPhone, Samsung, OnePlus & more. Style meets protection.
               </p>
@@ -17,13 +16,13 @@ const Footer = () => {
 
           <StaggerItem>
             <div>
-              <h4 className="font-display font-semibold mb-4">Shop</h4>
+              <h4 className="font-semibold mb-4">Shop</h4>
               <ul className="space-y-2.5 text-sm text-background/60">
                 {["All Products", "iPhone Cases", "Samsung Cases", "Screen Protectors", "Accessories"].map((item) => (
                   <li key={item}>
-                    <motion.a href="#" className="hover:text-background transition-colors inline-block" whileHover={{ x: 3 }} transition={{ duration: 0.2 }}>
+                    <a href="#" className="hover:text-background transition-colors">
                       {item}
-                    </motion.a>
+                    </a>
                   </li>
                 ))}
               </ul>
@@ -32,13 +31,13 @@ const Footer = () => {
 
           <StaggerItem>
             <div>
-              <h4 className="font-display font-semibold mb-4">Company</h4>
+              <h4 className="font-semibold mb-4">Company</h4>
               <ul className="space-y-2.5 text-sm text-background/60">
                 {["About Us", "Contact", "FAQ's", "Shipping & Returns", "Warranty"].map((item) => (
                   <li key={item}>
-                    <motion.a href="#" className="hover:text-background transition-colors inline-block" whileHover={{ x: 3 }} transition={{ duration: 0.2 }}>
+                    <a href="#" className="hover:text-background transition-colors">
                       {item}
-                    </motion.a>
+                    </a>
                   </li>
                 ))}
               </ul>
@@ -47,30 +46,30 @@ const Footer = () => {
 
           <StaggerItem>
             <div>
-              <h4 className="font-display font-semibold mb-4">Stay Updated</h4>
+              <h4 className="font-semibold mb-4">Stay Updated</h4>
               <p className="text-sm text-background/60 mb-4">
                 Subscribe to get special offers and first access to new cases.
               </p>
               <div className="flex">
                 <input type="email" placeholder="Enter your email" className="bg-background/10 border border-background/20 text-background placeholder:text-background/40 px-4 py-2.5 text-sm flex-1 rounded-l-lg focus:outline-none focus:border-background/40 transition-colors" />
-                <motion.button className="bg-background text-foreground px-5 py-2.5 text-sm font-medium rounded-r-lg" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <button className="bg-background text-foreground px-5 py-2.5 text-sm font-medium rounded-r-lg hover:bg-background/90 transition-colors">
                   Subscribe
-                </motion.button>
+                </button>
               </div>
             </div>
           </StaggerItem>
         </StaggerContainer>
 
-        <motion.div className="border-t border-background/10 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.4 }}>
+        <div className="border-t border-background/10 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-background/40">© 2026 VCASE. All rights reserved.</p>
           <div className="flex items-center gap-6">
             {["Facebook", "X", "Instagram", "YouTube"].map((s) => (
-              <motion.a key={s} href="#" className="text-xs text-background/40 hover:text-background transition-colors" whileHover={{ y: -2 }}>
+              <a key={s} href="#" className="text-xs text-background/40 hover:text-background transition-colors">
                 {s}
-              </motion.a>
+              </a>
             ))}
           </div>
-        </motion.div>
+        </div>
       </div>
     </footer>
   );
