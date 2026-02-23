@@ -1,12 +1,37 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import AnnouncementBar from "@/components/AnnouncementBar";
+import Navbar from "@/components/Navbar";
+import HeroSlider from "@/components/HeroSlider";
+import AboutSection from "@/components/AboutSection";
+import CollectionsGrid from "@/components/CollectionsGrid";
+import FeaturedProduct from "@/components/FeaturedProduct";
+import MarqueeSection from "@/components/MarqueeSection";
+import CountdownSection from "@/components/CountdownSection";
+import LookbookSection from "@/components/LookbookSection";
+import TestimonialsSection from "@/components/TestimonialsSection";
+import BestSellers from "@/components/BestSellers";
+import BrandMarquee from "@/components/BrandMarquee";
+import BlogSection from "@/components/BlogSection";
+import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <AnnouncementBar />
+      <Navbar />
+      <main>
+        <HeroSlider />
+        <AboutSection />
+        <CollectionsGrid />
+        <FeaturedProduct />
+        <MarqueeSection />
+        <CountdownSection />
+        <LookbookSection />
+        <TestimonialsSection />
+        <BestSellers />
+        <BrandMarquee />
+        <BlogSection />
+      </main>
+      <Footer />
     </div>
   );
 };
