@@ -1,16 +1,16 @@
 import { ArrowRight } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/hooks/useScrollAnimations";
 import { motion } from "framer-motion";
-import casesImg from "@/assets/collection-headphones.jpg";
-import protectorsImg from "@/assets/collection-earphones.jpg";
-import ruggedImg from "@/assets/collection-speakers.jpg";
-import accessoriesImg from "@/assets/collection-accessories.jpg";
+import magsafeClearImg from "@/assets/case-magsafe-clear.jpg";
+import siliconeBluImg from "@/assets/case-silicone-blue.jpg";
+import leatherBrownImg from "@/assets/case-leather-brown.jpg";
+import magsafeBlackImg from "@/assets/case-magsafe-black.jpg";
 
 const categories = [
-  { name: "Cases & Covers", image: casesImg, href: "#" },
-  { name: "Screen Protectors", image: protectorsImg, href: "#" },
-  { name: "Charging Solutions", image: ruggedImg, href: "#" },
-  { name: "Accessories", image: accessoriesImg, href: "#" },
+  { name: "MagSafe Cases", image: magsafeClearImg, href: "#" },
+  { name: "Silicone Cases", image: siliconeBluImg, href: "#" },
+  { name: "Leather Cases", image: leatherBrownImg, href: "#" },
+  { name: "All Cases", image: magsafeBlackImg, href: "#" },
 ];
 
 const ExploreProducts = () => {

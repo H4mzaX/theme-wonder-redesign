@@ -1,49 +1,14 @@
 import { useState } from "react";
 import { Star } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import featuredImg from "@/assets/featured-headphones.jpg";
-import airbeatsImg from "@/assets/product-airbeats.jpg";
-import zenithImg from "@/assets/product-zenith.jpg";
-import rhythmiqImg from "@/assets/product-rhythmiq.jpg";
-import soundrollImg from "@/assets/product-soundroll.jpg";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/hooks/useScrollAnimations";
+import { exploreLineupTabs } from "@/data/products";
 
-const tabs = ["Phone Cases", "Screen Protectors", "Charging Essentials"];
-
-const allProducts: Record<string, Array<{
-  name: string;
-  subtitle: string;
-  price: string;
-  originalPrice: string;
-  discount: string;
-  rating: number;
-  reviews: number;
-  image: string;
-  colors: string[];
-}>> = {
-  "Phone Cases": [
-    { name: "Modern Leatherite Case", subtitle: "For iPhone 16 Pro Max", price: "₹1,699", originalPrice: "₹1,999", discount: "Save 15%", rating: 5, reviews: 126, image: featuredImg, colors: ["Windsor Tan", "Raven Black"] },
-    { name: "Super Crystal Case Cover", subtitle: "For iPhone 16", price: "₹1,499", originalPrice: "₹2,999", discount: "Save 50%", rating: 5, reviews: 578, image: airbeatsImg, colors: ["Clear"] },
-    { name: "Silicone Snap Fit Case", subtitle: "For iPhone 16 Pro Max", price: "₹1,299", originalPrice: "₹1,999", discount: "Save 35%", rating: 5, reviews: 320, image: rhythmiqImg, colors: ["Black", "Blue", "Grey"] },
-    { name: "Grip Armour Case Cover", subtitle: "For iPhone 16", price: "₹1,199", originalPrice: "₹1,999", discount: "Save 40%", rating: 5, reviews: 196, image: soundrollImg, colors: ["Black"] },
-  ],
-  "Screen Protectors": [
-    { name: "Impact Pro Screen Protector", subtitle: "For iPhone 16", price: "₹899", originalPrice: "₹1,499", discount: "On sale", rating: 5, reviews: 166, image: zenithImg, colors: ["Clear"] },
-    { name: "Impact Pro (Privacy)", subtitle: "For iPhone 16", price: "₹999", originalPrice: "₹1,499", discount: "On sale", rating: 4, reviews: 48, image: zenithImg, colors: ["Privacy"] },
-    { name: "5D Ultra Impact Protector", subtitle: "For iPhone 16 Pro Max", price: "₹1,099", originalPrice: "₹1,999", discount: "Save 45%", rating: 5, reviews: 80, image: zenithImg, colors: ["Clear"] },
-    { name: "Matte Anti-Glare Guard", subtitle: "For iPhone 16 Pro", price: "₹999", originalPrice: "₹1,499", discount: "Save 33%", rating: 5, reviews: 95, image: zenithImg, colors: ["Matte"] },
-  ],
-  "Charging Essentials": [
-    { name: "CORD 60W Type C Cable", subtitle: "For Fast Charging", price: "₹699", originalPrice: "₹1,499", discount: "Save 53%", rating: 5, reviews: 3, image: airbeatsImg, colors: ["Black"] },
-    { name: "RAPID PRO 20W PD Charger", subtitle: "For Fast Charging", price: "₹699", originalPrice: "₹1,499", discount: "Save 53%", rating: 5, reviews: 13, image: soundrollImg, colors: ["White"] },
-    { name: "MagSafe Wireless Charger", subtitle: "15W Fast Charging", price: "₹1,299", originalPrice: "₹1,999", discount: "Save 35%", rating: 5, reviews: 42, image: rhythmiqImg, colors: ["Black", "White"] },
-    { name: "Car Mount Charger", subtitle: "Auto-Grip MagSafe", price: "₹1,499", originalPrice: "₹2,499", discount: "Save 40%", rating: 5, reviews: 28, image: featuredImg, colors: ["Black"] },
-  ],
-};
+const tabs = Object.keys(exploreLineupTabs);
 
 const ExploreLineup = () => {
   const [activeTab, setActiveTab] = useState(0);
-  const products = allProducts[tabs[activeTab]];
+  const products = exploreLineupTabs[tabs[activeTab]];
 
   return (
     <section className="section-padding py-16 lg:py-20">
@@ -79,7 +44,7 @@ const ExploreLineup = () => {
         >
           <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6" staggerDelay={0.08}>
             {products.map((product) => (
-              <StaggerItem key={product.name}>
+              <StaggerItem key={product.id}>
                 <a href="#" className="group block">
                   <motion.div className="relative rounded-2xl overflow-hidden bg-card mb-3 aspect-square" whileHover="hovered">
                     <motion.img

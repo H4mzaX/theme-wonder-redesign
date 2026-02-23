@@ -1,45 +1,14 @@
 import { useState } from "react";
 import { Star } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import featuredImg from "@/assets/featured-headphones.jpg";
-import airbeatsImg from "@/assets/product-airbeats.jpg";
-import zenithImg from "@/assets/product-zenith.jpg";
-import rhythmiqImg from "@/assets/product-rhythmiq.jpg";
-import soundrollImg from "@/assets/product-soundroll.jpg";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/hooks/useScrollAnimations";
+import { bestSellerTabs } from "@/data/products";
 
-const categories = ["iPhone Cases", "Screen Protectors", "Samsung Cases", "Accessories"];
-
-const allProducts: Record<string, Array<{ name: string; price: string; vendor: string; rating: number; image: string; tag?: string }>> = {
-  "iPhone Cases": [
-    { name: "Leather Case — Saddle Brown", price: "$59.00", vendor: "CaseVault", rating: 5, image: featuredImg, tag: "New" },
-    { name: "Slim Matte Black", price: "$29.00", vendor: "CaseVault", rating: 5, image: airbeatsImg },
-    { name: "Pastel Silicone Set", price: "$24.00", vendor: "CaseVault", rating: 5, image: rhythmiqImg },
-    { name: "Carbon Fiber Pro", price: "$45.00", vendor: "ArmorTech", rating: 5, image: soundrollImg },
-  ],
-  "Screen Protectors": [
-    { name: "Tempered Glass 2-Pack", price: "$19.00", vendor: "CaseVault", rating: 5, image: zenithImg },
-    { name: "Privacy Screen Guard", price: "$24.00", vendor: "ShieldPro", rating: 4.5, image: zenithImg },
-    { name: "Anti-Glare Matte", price: "$22.00", vendor: "CaseVault", rating: 5, image: zenithImg },
-    { name: "Full Coverage Curved", price: "$29.00", vendor: "ArmorTech", rating: 4.5, image: zenithImg },
-  ],
-  "Samsung Cases": [
-    { name: "Galaxy S25 Ultra Clear", price: "$34.00", vendor: "CaseVault", rating: 4.5, image: airbeatsImg },
-    { name: "Galaxy Flip Case", price: "$49.00", vendor: "ArmorTech", rating: 5, image: rhythmiqImg },
-    { name: "Rugged Galaxy Shield", price: "$39.00", vendor: "ShieldPro", rating: 4.5, image: soundrollImg },
-    { name: "Galaxy Slim Leather", price: "$54.00", vendor: "CaseVault", rating: 5, image: featuredImg },
-  ],
-  Accessories: [
-    { name: "MagSafe Car Mount", price: "$35.00", vendor: "CaseVault", rating: 4.5, image: airbeatsImg },
-    { name: "Phone Grip Ring", price: "$12.00", vendor: "GripTech", rating: 5, image: rhythmiqImg },
-    { name: "Lens Protector Kit", price: "$15.00", vendor: "ShieldPro", rating: 5, image: zenithImg },
-    { name: "Wireless Charger Pad", price: "$29.00", vendor: "CaseVault", rating: 5, image: soundrollImg },
-  ],
-};
+const categories = Object.keys(bestSellerTabs);
 
 const BestSellers = () => {
   const [activeTab, setActiveTab] = useState(0);
-  const products = allProducts[categories[activeTab]];
+  const products = bestSellerTabs[categories[activeTab]];
 
   return (
     <section className="section-padding py-20 lg:py-28">
@@ -64,7 +33,7 @@ const BestSellers = () => {
         <motion.div key={activeTab} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -15 }} transition={{ duration: 0.35 }}>
           <StaggerContainer className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6" staggerDelay={0.08}>
             {products.map((product) => (
-              <StaggerItem key={product.name}>
+              <StaggerItem key={product.id}>
                 <a href="#" className="group block">
                   <motion.div className="relative aspect-square rounded-lg overflow-hidden bg-card mb-3" whileHover="hovered">
                     <motion.img src={product.image} alt={product.name} className="w-full h-full object-cover" variants={{ hovered: { scale: 1.08 } }} transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }} />
@@ -80,9 +49,13 @@ const BestSellers = () => {
                       <Star key={i} className={`w-3 h-3 ${i < Math.floor(product.rating) ? "fill-accent text-accent" : "fill-muted text-muted"}`} />
                     ))}
                   </div>
-                  <p className="text-[10px] text-muted-foreground tracking-widest uppercase">{product.vendor}</p>
+                  <p className="text-[10px] text-muted-foreground tracking-widest uppercase">{product.brand}</p>
                   <h3 className="text-sm font-medium mt-0.5 group-hover:text-accent transition-colors">{product.name}</h3>
-                  <p className="text-sm text-muted-foreground mt-0.5">{product.price}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{product.subtitle}</p>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="font-display font-bold text-sm">{product.price}</span>
+                    <span className="text-xs text-muted-foreground line-through">{product.originalPrice}</span>
+                  </div>
                 </a>
               </StaggerItem>
             ))}
