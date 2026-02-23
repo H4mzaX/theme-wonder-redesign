@@ -1,63 +1,8 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import { Star, ChevronLeft, ChevronRight } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { ScrollReveal } from "@/hooks/useScrollAnimations";
-import featuredImg from "@/assets/featured-headphones.jpg";
-import airbeatsImg from "@/assets/product-airbeats.jpg";
-import zenithImg from "@/assets/product-zenith.jpg";
-import rhythmiqImg from "@/assets/product-rhythmiq.jpg";
-import soundrollImg from "@/assets/product-soundroll.jpg";
-
-const products = [
-  {
-    name: "Super Crystal Case Cover",
-    subtitle: "For iPhone 16 Pro Max",
-    price: "₹1,499",
-    originalPrice: "₹2,999",
-    discount: "Save 50%",
-    reviews: 578,
-    rating: 5,
-    colors: ["Clear"],
-    image: featuredImg,
-    secondImage: airbeatsImg,
-  },
-  {
-    name: "Clear Pro Lens Protector",
-    subtitle: "For iPhone 16 Pro Max",
-    price: "₹799",
-    originalPrice: "₹999",
-    discount: "Save 20%",
-    reviews: 150,
-    rating: 5,
-    colors: ["Silver", "Blue", "Orange", "Black"],
-    image: zenithImg,
-    secondImage: zenithImg,
-  },
-  {
-    name: "Silicone Snap Fit Case",
-    subtitle: "For iPhone 16 Pro",
-    price: "₹1,299",
-    originalPrice: "₹1,999",
-    discount: "Save 35%",
-    reviews: 320,
-    rating: 5,
-    colors: ["Black", "Blue", "Orange"],
-    image: rhythmiqImg,
-    secondImage: soundrollImg,
-  },
-  {
-    name: "Impact Pro Screen Protector",
-    subtitle: "For iPhone 16 Pro",
-    price: "₹899",
-    originalPrice: "₹1,499",
-    discount: "On sale",
-    reviews: 166,
-    rating: 5,
-    colors: ["Clear"],
-    image: airbeatsImg,
-    secondImage: featuredImg,
-  },
-];
+import { newArrivalProducts } from "@/data/products";
 
 const NewArrivals = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -77,7 +22,7 @@ const NewArrivals = () => {
       <ScrollReveal>
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-3xl sm:text-4xl font-display font-semibold">
-            iPhone 16 Essentials
+            iPhone 17 Essentials
           </h2>
           <div className="hidden sm:flex items-center gap-2">
             <motion.button
@@ -105,9 +50,9 @@ const NewArrivals = () => {
         className="flex gap-4 sm:gap-6 overflow-x-auto scrollbar-hide pb-4 -mx-4 px-4 sm:-mx-0 sm:px-0 snap-x snap-mandatory"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
-        {products.map((product, idx) => (
+        {newArrivalProducts.map((product, idx) => (
           <motion.a
-            key={product.name}
+            key={product.id}
             href="#"
             className="group flex-none w-[280px] sm:w-[300px] snap-start"
             initial={{ opacity: 0, y: 20 }}
