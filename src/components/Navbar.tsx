@@ -8,43 +8,30 @@ import collectionRugged from "@/assets/collection-speakers.jpg";
 import collectionAccessories from "@/assets/collection-accessories.jpg";
 
 const megaMenuData = {
-  Devices: {
+  Shop: {
     collections: [
-      { name: "iPhone Cases", subtitle: "iPhone 15 – 17 Pro Max", count: 24, image: collectionCases },
-      { name: "Samsung Cases", subtitle: "Galaxy S25 – S26 Ultra", count: 20, image: collectionProtectors },
-      { name: "OnePlus Cases", subtitle: "OnePlus 13 – 15R", count: 10, image: collectionRugged },
-      { name: "iQOO Cases", subtitle: "iQOO 15R", count: 4, image: collectionAccessories },
+      { name: "iPhone Cases", subtitle: "Premium protection for iPhone", count: 24, image: collectionCases },
+      { name: "Screen Protectors", subtitle: "Crystal clear defense", count: 18, image: collectionProtectors },
+      { name: "Rugged Cases", subtitle: "Military-grade protection", count: 12, image: collectionRugged },
+      { name: "Accessories", subtitle: "Grips, mounts & more", count: 30, image: collectionAccessories },
     ],
     featured: {
       title: "New Arrivals",
-      description: "Check out our latest cases for iPhone 17 and Samsung Galaxy S26 series.",
+      description: "Check out our latest cases for iPhone 16 and Samsung Galaxy S25 series.",
       cta: "Shop New",
     },
   },
-  Products: {
+  Collections: {
     collections: [
-      { name: "MagSafe Cases", subtitle: "Magnetic perfection", count: 18, image: collectionCases },
-      { name: "Screen Protectors", subtitle: "Crystal clear defense", count: 18, image: collectionProtectors },
-      { name: "Silicone Cases", subtitle: "Soft-touch comfort", count: 20, image: collectionRugged },
-      { name: "Leather Cases", subtitle: "Premium craftsmanship", count: 12, image: collectionAccessories },
+      { name: "All Products", subtitle: "Browse everything", count: 84, image: collectionCases },
+      { name: "Samsung Cases", subtitle: "Galaxy protection", count: 20, image: collectionProtectors },
+      { name: "OnePlus Cases", subtitle: "Never settle on protection", count: 10, image: collectionRugged },
+      { name: "Pixel Cases", subtitle: "Pure Google, pure protection", count: 8, image: collectionAccessories },
     ],
     featured: {
       title: "Best Sellers",
       description: "Our most popular cases chosen by thousands of customers worldwide.",
       cta: "View All",
-    },
-  },
-  Support: {
-    collections: [
-      { name: "FAQ's", subtitle: "Common questions answered", count: 0, image: collectionCases },
-      { name: "Shipping & Returns", subtitle: "Delivery and return policies", count: 0, image: collectionProtectors },
-      { name: "Warranty", subtitle: "Product warranty details", count: 0, image: collectionRugged },
-      { name: "Contact Us", subtitle: "Get in touch", count: 0, image: collectionAccessories },
-    ],
-    featured: {
-      title: "Need Help?",
-      description: "Our support team is available 24/7 to help with any questions.",
-      cta: "Contact Us",
     },
   },
 };
@@ -63,7 +50,7 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
   const [mobileSubmenu, setMobileSubmenu] = useState<string | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const navItems = ["Devices", "Products", "Support", "Rewards"];
+  const navItems = ["Shop", "Collections", "Explore", "Compare", "Contact"];
 
   const handleMouseEnter = (item: string) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -85,29 +72,33 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
   return (
     <>
       <motion.nav
-        className={`bg-background sticky top-0 z-50 transition-shadow duration-300 ${
-          scrolled ? "shadow-sm border-b border-border" : "border-b border-border"
+        className={`bg-background/95 backdrop-blur-md section-padding py-4 sticky top-0 z-50 transition-shadow duration-300 ${
+          scrolled ? "shadow-md border-b border-border/30" : "border-b border-border/50"
         }`}
         initial={{ y: 0 }}
         animate={{ y: hidden ? -100 : 0 }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-4 flex items-center justify-between">
+        <div className="flex items-center justify-between">
           <button
-            className="lg:hidden"
+            className="lg:hidden hover:text-accent transition-colors"
             onClick={() => setMobileOpen(true)}
           >
             <Menu className="w-5 h-5" />
           </button>
 
-          <a href="/" className="flex-shrink-0">
-            <span className="font-bold text-xl tracking-tight">
+          <a href="/" className="flex-shrink-0 flex items-center gap-2">
+            <motion.span
+              className="font-display font-bold text-xl tracking-tight"
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
               VCASE
-            </span>
+            </motion.span>
           </a>
 
-          <div className="hidden lg:flex items-center gap-1">
-            {navItems.map((item) => {
+          <div className="hidden lg:flex items-center gap-1 relative">
+            {navItems.map((item, i) => {
               const hasMega = item in megaMenuData;
               const isActive = activeMega === item;
               return (
@@ -117,65 +108,77 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
                   onMouseEnter={() => handleMouseEnter(item)}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <a
+                  <motion.a
                     href="#"
-                    className={`text-sm font-medium flex items-center gap-1 px-4 py-2 transition-colors ${
-                      isActive ? "text-foreground" : "text-foreground/70 hover:text-foreground"
+                    className={`relative z-10 text-sm font-medium tracking-wide flex items-center gap-1 px-4 py-2 rounded-full transition-colors duration-200 ${
+                      isActive ? "text-background" : "text-foreground hover:text-foreground"
                     }`}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 * i, duration: 0.4 }}
                   >
                     {item}
                     {hasMega && (
                       <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isActive ? "rotate-180" : ""}`} />
                     )}
-                  </a>
+                  </motion.a>
+                  {isActive && (
+                    <motion.div
+                      className="absolute inset-0 bg-foreground rounded-full"
+                      layoutId="navPill"
+                      transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                    />
+                  )}
                 </div>
               );
             })}
           </div>
 
           <div className="flex items-center gap-5">
-            <button className="hover:text-muted-foreground transition-colors" onClick={onSearchOpen}>
+            <motion.button className="hover:text-accent transition-colors" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} onClick={onSearchOpen}>
               <Search className="w-5 h-5" />
-            </button>
-            <button className="hidden sm:block hover:text-muted-foreground transition-colors">
+            </motion.button>
+            <motion.button className="hidden sm:block hover:text-accent transition-colors" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
               <User className="w-5 h-5" />
-            </button>
-            <button className="hover:text-muted-foreground transition-colors relative" onClick={onCartOpen}>
+            </motion.button>
+            <motion.button className="hover:text-accent transition-colors relative" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} onClick={onCartOpen}>
               <ShoppingBag className="w-5 h-5" />
               <span className="absolute -top-1.5 -right-1.5 bg-foreground text-background text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-medium">0</span>
-            </button>
+            </motion.button>
           </div>
         </div>
 
         <AnimatePresence>
           {activeMega && (
             <motion.div
-              className="absolute left-0 top-full w-full bg-background border-t border-border shadow-lg z-50"
-              initial={{ opacity: 0, y: -4 }}
+              className="absolute left-0 top-full w-full bg-background border-t border-border/30 shadow-xl z-50"
+              initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -4 }}
-              transition={{ duration: 0.2 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
               onMouseEnter={handleMegaEnter}
               onMouseLeave={handleMouseLeave}
             >
-              <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-8">
+              <div className="section-padding py-8">
                 <div className="grid grid-cols-12 gap-8">
                   <div className="col-span-9">
                     <p className="text-xs uppercase tracking-widest text-muted-foreground mb-5 font-medium">Collections</p>
                     <div className="grid grid-cols-4 gap-5">
                       {megaMenuData[activeMega].collections.map((col, idx) => (
-                        <motion.a key={col.name} href="#" className="group block" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.04, duration: 0.25 }}>
-                          <div className="aspect-square rounded-lg overflow-hidden mb-3 relative bg-muted">
-                            <img src={col.image} alt={col.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                        <motion.a key={col.name} href="#" className="group block" initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05, duration: 0.3 }}>
+                          <div className="aspect-square rounded-lg overflow-hidden mb-3 relative">
+                            <img src={col.image} alt={col.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                            <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors duration-300" />
                           </div>
                           <div className="flex items-center justify-between">
                             <div>
-                              <span className="text-sm font-semibold group-hover:text-accent transition-colors">
+                              <span className="font-display text-lg font-semibold tracking-tight group-hover:text-accent transition-colors relative">
                                 {col.name}
+                                <sup className="text-[10px] font-body ml-1 text-muted-foreground">{col.count}</sup>
                               </span>
                               <p className="text-xs text-muted-foreground mt-0.5">{col.subtitle}</p>
                             </div>
-                            <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-1 transition-all duration-200" />
+                            <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-accent group-hover:translate-x-1 transition-all duration-200" />
                           </div>
                         </motion.a>
                       ))}
@@ -183,14 +186,14 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
                   </div>
                   <div className="col-span-3">
                     <p className="text-xs uppercase tracking-widest text-muted-foreground mb-5 font-medium">Featured</p>
-                    <div className="bg-muted rounded-lg p-6">
-                      <h3 className="text-lg font-semibold mb-2">{megaMenuData[activeMega].featured.title}</h3>
+                    <motion.div className="bg-card rounded-lg p-6 h-[calc(100%-2rem)]" initial={{ opacity: 0, x: 15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15, duration: 0.3 }}>
+                      <h3 className="font-display text-xl font-semibold mb-2">{megaMenuData[activeMega].featured.title}</h3>
                       <p className="text-sm text-muted-foreground mb-6 leading-relaxed">{megaMenuData[activeMega].featured.description}</p>
                       <a href="#" className="inline-flex items-center gap-2 text-sm font-medium bg-foreground text-background px-5 py-2.5 rounded-full hover:bg-foreground/90 transition-colors">
                         {megaMenuData[activeMega].featured.cta}
                         <ArrowRight className="w-3.5 h-3.5" />
                       </a>
-                    </div>
+                    </motion.div>
                   </div>
                 </div>
               </div>
@@ -203,23 +206,26 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
         {mobileOpen && (
           <>
             <motion.div className="fixed inset-0 bg-foreground/40 z-50 lg:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setMobileOpen(false)} />
-            <motion.div className="fixed inset-y-0 left-0 w-80 bg-background z-50 lg:hidden px-6 py-6 overflow-y-auto" initial={{ x: "-100%" }} animate={{ x: 0 }} exit={{ x: "-100%" }} transition={{ type: "spring", damping: 25, stiffness: 200 }}>
+            <motion.div className="fixed inset-y-0 left-0 w-80 bg-background z-50 lg:hidden section-padding py-6 overflow-y-auto" initial={{ x: "-100%" }} animate={{ x: 0 }} exit={{ x: "-100%" }} transition={{ type: "spring", damping: 25, stiffness: 200 }}>
               <div className="flex justify-between items-center mb-10">
-                <span className="font-bold text-lg">VCASE</span>
+                <span className="font-display font-bold text-lg">VCASE</span>
                 <button onClick={() => setMobileOpen(false)}><X className="w-5 h-5" /></button>
               </div>
               <div className="flex flex-col gap-4">
-                {navItems.map((item) => {
+                {navItems.map((item, i) => {
                   const hasMega = item in megaMenuData;
                   return (
                     <div key={item}>
-                      <button
-                        className="flex items-center justify-between w-full text-lg font-semibold hover:text-muted-foreground transition-colors"
+                      <motion.button
+                        className="flex items-center justify-between w-full text-lg font-display font-semibold text-foreground hover:text-accent transition-colors"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.05 * i }}
                         onClick={() => { if (hasMega) setMobileSubmenu(mobileSubmenu === item ? null : item); }}
                       >
                         {item}
                         {hasMega && <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileSubmenu === item ? "rotate-180" : ""}`} />}
-                      </button>
+                      </motion.button>
                       <AnimatePresence>
                         {hasMega && mobileSubmenu === item && (
                           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
