@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Star } from "lucide-react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrollReveal } from "@/hooks/useScrollAnimations";
 import { exploreLineupTabs } from "@/data/products";
@@ -79,7 +80,7 @@ const ExploreLineup = () => {
           >
             {products.map((product) => (
               <div key={product.id} className="flex-none w-[44vw] sm:w-[280px] lg:w-[300px] snap-start">
-                <a href="#" className="group block border border-border rounded-xl overflow-hidden bg-card">
+                <Link to={`/product/${product.id}`} className="group block border border-border rounded-xl overflow-hidden bg-card">
                   <div className="relative aspect-square bg-muted overflow-hidden">
                     {product.discount && (
                       <span className="absolute top-2 left-2 bg-foreground text-background text-[10px] px-2 py-0.5 rounded-full font-medium">
@@ -122,7 +123,7 @@ const ExploreLineup = () => {
                       ADD TO CART
                     </button>
                   </div>
-                </a>
+                </Link>
               </div>
             ))}
           </div>
