@@ -13,7 +13,9 @@ interface Slide {
   image?: string;
   video?: string;
   poster?: string;
+  badge?: string;
   title: string;
+  subtitle: string;
   cta: string;
 }
 
@@ -21,20 +23,26 @@ const slides: Slide[] = [
   {
     type: "image",
     image: hero1,
-    title: "PREMIUM\nPROTECTION\nFOR YOUR DEVICE",
-    cta: "Shop Cases",
+    badge: "New Arrival",
+    title: "BOLD PRO CASE",
+    subtitle: "Meet the New Standard of Protection.",
+    cta: "SHOP NOW",
   },
   {
     type: "image",
     image: hero2,
-    title: "CASES &\nSCREEN GUARDS\nFOR EVERY PHONE",
+    badge: "Best Seller",
+    title: "CRYSTAL CLEAR\nPROTECTION",
+    subtitle: "Screen guards that feel invisible.",
     cta: "Shop All",
   },
   {
     type: "video",
     video: heroVideo,
     poster: heroPoster,
-    title: "STYLE MEETS\nDURABILITY\nIN EVERY CASE",
+    badge: "Premium",
+    title: "SILICONE\nSNAP FIT",
+    subtitle: "Style meets durability in every case.",
     cta: "Shop Now",
   },
 ];
@@ -88,7 +96,7 @@ const HeroSlider = () => {
   const slide = slides[current];
 
   return (
-    <section className="relative mx-4 sm:mx-8 lg:mx-12 xl:mx-16 rounded-lg overflow-hidden">
+    <section className="relative">
       <div className="relative h-[500px] sm:h-[600px] lg:h-[750px]">
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
@@ -105,7 +113,7 @@ const HeroSlider = () => {
                 src={slide.image}
                 alt={slide.title}
                 className="w-full h-full object-cover"
-                initial={{ scale: 1.3 }}
+                initial={{ scale: 1.15 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 8, ease: "linear" }}
               />
@@ -120,65 +128,82 @@ const HeroSlider = () => {
                 className="w-full h-full object-cover"
               />
             )}
-            <div className="absolute inset-0 bg-foreground/20" />
+            <div className="absolute inset-0 bg-foreground/15" />
           </motion.div>
         </AnimatePresence>
 
-        <div className="absolute inset-0 flex items-end p-8 sm:p-12 lg:p-16 pb-24 pointer-events-none z-10">
-          <div className="flex items-end justify-between w-full pointer-events-auto">
-            <div>
-              <AnimatePresence mode="wait">
-                <motion.div key={current}>
-                  {slides[current].title.split("\n").map((line, li) => (
-                    <motion.div
-                      key={li}
-                      initial={{ opacity: 0, y: 30, clipPath: "inset(100% 0 0 0)" }}
-                      animate={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
-                      exit={{ opacity: 0, y: -15 }}
-                      transition={{ duration: 0.7, delay: 0.3 + li * 0.15, ease: [0.25, 0.1, 0.25, 1] }}
-                    >
-                      <span className="block text-3xl sm:text-4xl lg:text-6xl font-display font-bold text-background leading-tight tracking-tight">
-                        {line}
-                      </span>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </AnimatePresence>
-            </div>
+        {/* Content overlay */}
+        <div className="absolute inset-0 flex items-end sm:items-center p-8 sm:p-12 lg:p-20 pb-28 sm:pb-12 pointer-events-none z-10">
+          <div className="pointer-events-auto max-w-xl">
             <AnimatePresence mode="wait">
-              <motion.a
-                key={current}
-                href="#"
-                className="hidden sm:inline-flex self-end bg-background text-foreground px-8 py-3.5 rounded-full font-medium text-sm hover:bg-background/90 transition-colors tracking-wide"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ delay: 0.8, duration: 0.5 }}
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                {slides[current].cta}
-              </motion.a>
+              <motion.div key={current}>
+                {slide.badge && (
+                  <motion.span
+                    className="inline-block bg-background text-foreground text-xs font-medium px-4 py-1.5 rounded-sm mb-4"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                  >
+                    {slide.badge}
+                  </motion.span>
+                )}
+                {slide.title.split("\n").map((line, li) => (
+                  <motion.div
+                    key={li}
+                    initial={{ opacity: 0, y: 30, clipPath: "inset(100% 0 0 0)" }}
+                    animate={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
+                    exit={{ opacity: 0, y: -15 }}
+                    transition={{ duration: 0.7, delay: 0.3 + li * 0.12, ease: [0.25, 0.1, 0.25, 1] }}
+                  >
+                    <span className="block text-3xl sm:text-5xl lg:text-7xl font-display font-bold text-foreground leading-[1.1] tracking-tight">
+                      {line}
+                    </span>
+                  </motion.div>
+                ))}
+                <motion.p
+                  className="text-foreground/70 text-base sm:text-lg mt-4 mb-6"
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ delay: 0.6, duration: 0.5 }}
+                >
+                  {slide.subtitle}
+                </motion.p>
+                <motion.a
+                  href="#"
+                  className="inline-block bg-foreground text-background px-8 py-3 text-sm font-medium tracking-wider border border-foreground hover:bg-transparent hover:text-foreground transition-colors duration-300"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ delay: 0.75, duration: 0.5 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {slide.cta}
+                </motion.a>
+              </motion.div>
             </AnimatePresence>
           </div>
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full z-20 pb-6 px-8 sm:px-12 lg:px-16">
-        <div className="flex items-center justify-between">
-          <motion.button onClick={prev} className="hidden md:flex items-center justify-center text-background hover:opacity-70 transition-opacity" whileHover={{ x: -3 }} whileTap={{ scale: 0.9 }}>
-            <ArrowLeft className="w-7 h-7" strokeWidth={1.5} />
+      {/* Navigation */}
+      <div className="absolute bottom-0 right-0 z-20 pb-6 px-8 sm:px-12 lg:px-20 flex items-center gap-4">
+        <div className="flex items-center gap-2.5">
+          {slides.map((_, i) => (
+            <button key={i} onClick={() => goTo(i)} className="relative h-2 rounded-full overflow-hidden transition-all duration-300" style={{ width: i === current ? 32 : 10 }}>
+              <span className="absolute inset-0 bg-foreground/30 rounded-full" />
+              {i === current && <motion.span className="absolute inset-0 bg-foreground rounded-full origin-left" style={{ scaleX: progress }} />}
+            </button>
+          ))}
+        </div>
+        <div className="hidden md:flex items-center gap-2">
+          <motion.button onClick={prev} className="w-10 h-10 rounded-full border border-foreground/30 flex items-center justify-center text-foreground hover:bg-foreground hover:text-background transition-colors" whileTap={{ scale: 0.9 }}>
+            <ArrowLeft className="w-4 h-4" strokeWidth={1.5} />
           </motion.button>
-          <div className="flex items-center gap-2.5 mx-auto md:mx-0">
-            {slides.map((_, i) => (
-              <button key={i} onClick={() => goTo(i)} className="relative h-2 rounded-full overflow-hidden transition-all duration-300" style={{ width: i === current ? 32 : 10 }}>
-                <span className="absolute inset-0 bg-background/40 rounded-full" />
-                {i === current && <motion.span className="absolute inset-0 bg-background rounded-full origin-left" style={{ scaleX: progress }} />}
-              </button>
-            ))}
-          </div>
-          <motion.button onClick={next} className="hidden md:flex items-center justify-center text-background hover:opacity-70 transition-opacity" whileHover={{ x: 3 }} whileTap={{ scale: 0.9 }}>
-            <ArrowRight className="w-7 h-7" strokeWidth={1.5} />
+          <motion.button onClick={next} className="w-10 h-10 rounded-full border border-foreground/30 flex items-center justify-center text-foreground hover:bg-foreground hover:text-background transition-colors" whileTap={{ scale: 0.9 }}>
+            <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
           </motion.button>
         </div>
       </div>

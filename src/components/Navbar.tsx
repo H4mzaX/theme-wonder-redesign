@@ -80,7 +80,6 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
         <div className="flex items-center justify-between">
-          {/* Mobile Menu Button */}
           <button
             className="lg:hidden hover:text-accent transition-colors"
             onClick={() => setMobileOpen(true)}
@@ -88,25 +87,16 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
             <Menu className="w-5 h-5" />
           </button>
 
-          {/* Logo */}
           <a href="/" className="flex-shrink-0 flex items-center gap-2">
-            <motion.svg
-              width="36"
-              height="36"
-              viewBox="0 0 36 36"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+            <motion.span
+              className="font-display font-bold text-xl tracking-tight"
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
-              <rect width="36" height="36" rx="8" fill="currentColor" />
-              <path d="M10 18C10 13.582 13.582 10 18 10V10C22.418 10 26 13.582 26 18V26H10V18Z" fill="hsl(var(--background))" />
-              <rect x="15" y="7" width="6" height="6" rx="3" fill="hsl(var(--background))" />
-            </motion.svg>
-            <span className="hidden sm:block font-display font-bold text-lg tracking-tight">CaseVault</span>
+              VCASE
+            </motion.span>
           </a>
 
-          {/* Navigation Links with black pill hover */}
           <div className="hidden lg:flex items-center gap-1 relative">
             {navItems.map((item, i) => {
               const hasMega = item in megaMenuData;
@@ -121,9 +111,7 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
                   <motion.a
                     href="#"
                     className={`relative z-10 text-sm font-medium tracking-wide flex items-center gap-1 px-4 py-2 rounded-full transition-colors duration-200 ${
-                      isActive
-                        ? "text-background"
-                        : "text-foreground hover:text-foreground"
+                      isActive ? "text-background" : "text-foreground hover:text-foreground"
                     }`}
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -134,7 +122,6 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
                       <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isActive ? "rotate-180" : ""}`} />
                     )}
                   </motion.a>
-                  {/* Black pill background */}
                   {isActive && (
                     <motion.div
                       className="absolute inset-0 bg-foreground rounded-full"
@@ -147,38 +134,20 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
             })}
           </div>
 
-          {/* Actions */}
           <div className="flex items-center gap-5">
-            <motion.button
-              className="hover:text-accent transition-colors"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={onSearchOpen}
-            >
+            <motion.button className="hover:text-accent transition-colors" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} onClick={onSearchOpen}>
               <Search className="w-5 h-5" />
             </motion.button>
-            <motion.button
-              className="hidden sm:block hover:text-accent transition-colors"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-            >
+            <motion.button className="hidden sm:block hover:text-accent transition-colors" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
               <User className="w-5 h-5" />
             </motion.button>
-            <motion.button
-              className="hover:text-accent transition-colors relative"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={onCartOpen}
-            >
+            <motion.button className="hover:text-accent transition-colors relative" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} onClick={onCartOpen}>
               <ShoppingBag className="w-5 h-5" />
-              <span className="absolute -top-1.5 -right-1.5 bg-foreground text-background text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-medium">
-                0
-              </span>
+              <span className="absolute -top-1.5 -right-1.5 bg-foreground text-background text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-medium">0</span>
             </motion.button>
           </div>
         </div>
 
-        {/* Mega Menu Dropdown */}
         <AnimatePresence>
           {activeMega && (
             <motion.div
@@ -196,14 +165,7 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
                     <p className="text-xs uppercase tracking-widest text-muted-foreground mb-5 font-medium">Collections</p>
                     <div className="grid grid-cols-4 gap-5">
                       {megaMenuData[activeMega].collections.map((col, idx) => (
-                        <motion.a
-                          key={col.name}
-                          href="#"
-                          className="group block"
-                          initial={{ opacity: 0, y: 15 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: idx * 0.05, duration: 0.3 }}
-                        >
+                        <motion.a key={col.name} href="#" className="group block" initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05, duration: 0.3 }}>
                           <div className="aspect-square rounded-lg overflow-hidden mb-3 relative">
                             <img src={col.image} alt={col.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                             <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors duration-300" />
@@ -224,12 +186,7 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
                   </div>
                   <div className="col-span-3">
                     <p className="text-xs uppercase tracking-widest text-muted-foreground mb-5 font-medium">Featured</p>
-                    <motion.div
-                      className="bg-card rounded-lg p-6 h-[calc(100%-2rem)]"
-                      initial={{ opacity: 0, x: 15 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.15, duration: 0.3 }}
-                    >
+                    <motion.div className="bg-card rounded-lg p-6 h-[calc(100%-2rem)]" initial={{ opacity: 0, x: 15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15, duration: 0.3 }}>
                       <h3 className="font-display text-xl font-semibold mb-2">{megaMenuData[activeMega].featured.title}</h3>
                       <p className="text-sm text-muted-foreground mb-6 leading-relaxed">{megaMenuData[activeMega].featured.description}</p>
                       <a href="#" className="inline-flex items-center gap-2 text-sm font-medium bg-foreground text-background px-5 py-2.5 rounded-full hover:bg-foreground/90 transition-colors">
@@ -245,29 +202,14 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
         </AnimatePresence>
       </motion.nav>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileOpen && (
           <>
-            <motion.div
-              className="fixed inset-0 bg-foreground/40 z-50 lg:hidden"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setMobileOpen(false)}
-            />
-            <motion.div
-              className="fixed inset-y-0 left-0 w-80 bg-background z-50 lg:hidden section-padding py-6 overflow-y-auto"
-              initial={{ x: "-100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            >
+            <motion.div className="fixed inset-0 bg-foreground/40 z-50 lg:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setMobileOpen(false)} />
+            <motion.div className="fixed inset-y-0 left-0 w-80 bg-background z-50 lg:hidden section-padding py-6 overflow-y-auto" initial={{ x: "-100%" }} animate={{ x: 0 }} exit={{ x: "-100%" }} transition={{ type: "spring", damping: 25, stiffness: 200 }}>
               <div className="flex justify-between items-center mb-10">
-                <span className="font-display font-bold text-lg">CaseVault</span>
-                <button onClick={() => setMobileOpen(false)}>
-                  <X className="w-5 h-5" />
-                </button>
+                <span className="font-display font-bold text-lg">VCASE</span>
+                <button onClick={() => setMobileOpen(false)}><X className="w-5 h-5" /></button>
               </div>
               <div className="flex flex-col gap-4">
                 {navItems.map((item, i) => {
@@ -279,24 +221,14 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.05 * i }}
-                        onClick={() => {
-                          if (hasMega) setMobileSubmenu(mobileSubmenu === item ? null : item);
-                        }}
+                        onClick={() => { if (hasMega) setMobileSubmenu(mobileSubmenu === item ? null : item); }}
                       >
                         {item}
-                        {hasMega && (
-                          <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileSubmenu === item ? "rotate-180" : ""}`} />
-                        )}
+                        {hasMega && <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileSubmenu === item ? "rotate-180" : ""}`} />}
                       </motion.button>
                       <AnimatePresence>
                         {hasMega && mobileSubmenu === item && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.3 }}
-                            className="overflow-hidden"
-                          >
+                          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
                             <div className="pl-4 pt-3 pb-2 flex flex-col gap-3">
                               {megaMenuData[item as MegaMenuKey].collections.map((col) => (
                                 <a key={col.name} href="#" className="flex items-center gap-3 group">
