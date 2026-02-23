@@ -1,5 +1,5 @@
-import { useRef } from "react";
-import { Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { useRef, useState, useEffect } from "react";
+import { Star } from "lucide-react";
 import { ScrollReveal } from "@/hooks/useScrollAnimations";
 import { newArrivalProducts } from "@/data/products";
 
@@ -64,60 +64,47 @@ const ProductCard = ({ product }: { product: typeof newArrivalProducts[0] }) => 
 );
 
 const NewArrivals = () => {
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
-  const scroll = (direction: "left" | "right") => {
-    if (scrollContainerRef.current) {
-      const scrollAmount = 340;
-      scrollContainerRef.current.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      });
-    }
-  };
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const handleScroll = () => {
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      if (maxScroll > 0) setScrollProgress(el.scrollLeft / maxScroll);
+    };
+    el.addEventListener("scroll", handleScroll, { passive: true });
+    return () => el.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-8 lg:py-14">
-      <ScrollReveal>
-        <div className="flex items-center justify-between mb-5 sm:mb-6">
-          <h2 className="text-2xl sm:text-3xl lg:text-5xl font-bold tracking-tight italic">
-            iPhone 17 Essentials
-          </h2>
-          <div className="hidden sm:flex items-center gap-2">
-            <button
-              onClick={() => scroll("left")}
-              className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => scroll("right")}
-              className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
+    <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-6 lg:py-12">
+      <ScrollReveal className="mb-4 lg:mb-6">
+        <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold tracking-tight italic text-foreground">
+          iPhone 17 Essentials
+        </h2>
       </ScrollReveal>
 
-      {/* Mobile: 2-col grid like casegear */}
-      <div className="grid grid-cols-2 gap-3 sm:hidden">
-        {newArrivalProducts.slice(0, 4).map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
-
-      {/* Desktop: horizontal scroll */}
+      {/* Horizontal scroll carousel for all sizes */}
       <div
-        ref={scrollContainerRef}
-        className="hidden sm:flex gap-4 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory"
+        ref={scrollRef}
+        className="flex gap-3 sm:gap-4 overflow-x-auto pb-4 snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {newArrivalProducts.map((product) => (
-          <div key={product.id} className="flex-none w-[300px] lg:w-[320px] snap-start">
+          <div key={product.id} className="flex-none w-[44vw] sm:w-[280px] lg:w-[300px] snap-start">
             <ProductCard product={product} />
           </div>
         ))}
+      </div>
+
+      {/* Scroll progress bar */}
+      <div className="mx-auto mt-2 h-[3px] bg-border rounded-full max-w-[200px] overflow-hidden">
+        <div
+          className="h-full bg-foreground rounded-full transition-transform duration-100 ease-out origin-left"
+          style={{ transform: `scaleX(${0.2 + scrollProgress * 0.8})` }}
+        />
       </div>
     </section>
   );
