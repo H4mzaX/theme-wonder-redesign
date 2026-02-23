@@ -1,34 +1,32 @@
 import { Quote } from "lucide-react";
-import { ScrollReveal, StaggerContainer, StaggerItem } from "@/hooks/useScrollAnimations";
+import { StaggerContainer, StaggerItem } from "@/hooks/useScrollAnimations";
 import lookbookImg from "@/assets/lookbook.jpg";
 
 const testimonials = [
   {
-    quote: "Their meticulous curation of premium audio tech truly stands out. Their offerings consistently raise the bar for what we expect from audio equipment.",
+    quote: "Best case I've ever owned. The leather develops a gorgeous patina and the MagSafe alignment is perfect. Worth every penny.",
     author: "Nathan Wright",
-    source: "Rolling Stone",
+    source: "Verified Buyer",
   },
   {
-    quote: "If there's one name synonymous with unparalleled audio experiences, it's Harmony Sound. They've managed to bridge the gap between luxury and functionality effortlessly.",
+    quote: "I've dropped my phone countless times and not a scratch. CaseVault's rugged case is the only one I trust for real protection.",
     author: "Clara Jefferson",
-    source: "Billboard",
+    source: "Tech Reviewer",
   },
   {
-    quote: "They're curating an experience, not just selling equipment. Their handpicked selections promise — and deliver — unparalleled sound quality.",
+    quote: "The screen protector installation was flawless — zero bubbles, perfect clarity. It feels like the phone has no protector at all.",
     author: "Rebecca Landon",
-    source: "Pitchfork",
+    source: "Verified Buyer",
   },
 ];
 
 const TestimonialsSection = () => {
   return (
     <section className="relative overflow-hidden">
-      {/* Background image with overlay */}
       <div className="absolute inset-0">
         <img src={lookbookImg} alt="" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-foreground/80" />
       </div>
-
       <div className="relative section-padding py-20 lg:py-28">
         <StaggerContainer className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12" staggerDelay={0.15}>
           {testimonials.map((t, i) => (

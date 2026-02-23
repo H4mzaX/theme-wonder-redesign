@@ -6,25 +6,25 @@ import { motion } from "framer-motion";
 
 const posts = [
   {
-    tag: "Speakers",
-    title: "Eco-Audio — Sustainable Sound",
-    excerpt: "The realm of audio has witnessed incredible advancements over the past decade. As we venture further into this era of technological marvels...",
+    tag: "Protection",
+    title: "Drop Test Results — Which Cases Survived?",
+    excerpt: "We put the top-selling cases through extreme drop tests from 10 feet. The results might surprise you...",
     image: blog1,
-    date: "October 9, 2023",
+    date: "February 15, 2026",
   },
   {
-    tag: "Headphones",
-    title: "Inside In-Ear Excellence",
-    excerpt: "In the audio tech world, there's always room for innovation. But, there are few moments when a product redefines expectations...",
+    tag: "Guides",
+    title: "How to Apply a Screen Protector Perfectly",
+    excerpt: "Zero bubbles, perfect alignment. Follow our step-by-step guide to flawless screen protector installation...",
     image: blog2,
-    date: "October 9, 2023",
+    date: "February 10, 2026",
   },
   {
-    tag: "News & Events",
-    title: "The International Sound Artistry Conference",
-    excerpt: "This year's AudioTech Expo in Los Angeles was nothing short of sensational. The air buzzed with anticipation and excitement...",
+    tag: "New Arrivals",
+    title: "2026 Case Collection — What's New",
+    excerpt: "From iPhone 17 to Galaxy S26, we've got the freshest cases and accessories arriving this spring...",
     image: blog3,
-    date: "October 9, 2023",
+    date: "February 5, 2026",
   },
 ];
 
@@ -36,10 +36,7 @@ const BlogSection = () => {
           <h2 className="text-3xl sm:text-4xl font-display">
             Latest<em className="italic">Stories</em>
           </h2>
-          <a
-            href="#"
-            className="text-sm font-medium text-foreground relative group"
-          >
+          <a href="#" className="text-sm font-medium text-foreground relative group">
             View all
             <span className="absolute bottom-0 left-0 w-full h-px bg-foreground" />
             <span className="absolute bottom-0 left-0 w-full h-px bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
@@ -51,17 +48,8 @@ const BlogSection = () => {
         {posts.map((post) => (
           <StaggerItem key={post.title}>
             <a href="#" className="group block">
-              <motion.div
-                className="rounded-lg overflow-hidden mb-4 aspect-[4/3]"
-                whileHover="hovered"
-              >
-                <motion.img
-                  src={post.image}
-                  alt={post.title}
-                  className="w-full h-full object-cover"
-                  variants={{ hovered: { scale: 1.06 } }}
-                  transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-                />
+              <motion.div className="rounded-lg overflow-hidden mb-4 aspect-[4/3]" whileHover="hovered">
+                <motion.img src={post.image} alt={post.title} className="w-full h-full object-cover" variants={{ hovered: { scale: 1.06 } }} transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }} />
               </motion.div>
               <span className="text-[10px] tracking-widest uppercase text-muted-foreground">{post.tag}</span>
               <div className="flex items-center gap-3 text-xs text-muted-foreground mt-1 mb-2">
@@ -69,9 +57,7 @@ const BlogSection = () => {
                 <span>·</span>
                 <span>0 comments</span>
               </div>
-              <h3 className="font-display text-lg font-semibold group-hover:text-accent transition-colors duration-300">
-                {post.title}
-              </h3>
+              <h3 className="font-display text-lg font-semibold group-hover:text-accent transition-colors duration-300">{post.title}</h3>
               <p className="text-sm text-muted-foreground mt-2 line-clamp-2">{post.excerpt}</p>
               <span className="inline-block mt-3 text-xs font-medium text-foreground relative group/link">
                 Read more
