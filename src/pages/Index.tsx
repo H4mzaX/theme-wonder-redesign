@@ -12,12 +12,14 @@ import BestSellers from "@/components/BestSellers";
 import BrandMarquee from "@/components/BrandMarquee";
 import BlogSection from "@/components/BlogSection";
 import Footer from "@/components/Footer";
+import FloatingSidebar from "@/components/FloatingSidebar";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       <AnnouncementBar />
       <Navbar />
+      <FloatingSidebar />
       <main>
         <HeroSlider />
         <AboutSection />

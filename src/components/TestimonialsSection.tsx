@@ -1,4 +1,6 @@
 import { Quote } from "lucide-react";
+import { ScrollReveal, StaggerContainer, StaggerItem } from "@/hooks/useScrollAnimations";
+import lookbookImg from "@/assets/lookbook.jpg";
 
 const testimonials = [
   {
@@ -20,21 +22,29 @@ const testimonials = [
 
 const TestimonialsSection = () => {
   return (
-    <section className="bg-section-alt">
-      <div className="section-padding py-20 lg:py-28">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+    <section className="relative overflow-hidden">
+      {/* Background image with overlay */}
+      <div className="absolute inset-0">
+        <img src={lookbookImg} alt="" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-foreground/80" />
+      </div>
+
+      <div className="relative section-padding py-20 lg:py-28">
+        <StaggerContainer className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12" staggerDelay={0.15}>
           {testimonials.map((t, i) => (
-            <div key={i} className="space-y-4">
-              <Quote className="w-8 h-8 text-accent" />
-              <blockquote className="text-foreground leading-relaxed font-display text-lg italic">
-                "{t.quote}"
-              </blockquote>
-              <p className="text-sm text-muted-foreground">
-                — {t.author}, <span className="font-medium">{t.source}</span>
-              </p>
-            </div>
+            <StaggerItem key={i}>
+              <div className="space-y-4">
+                <Quote className="w-8 h-8 text-accent" />
+                <blockquote className="text-background/90 leading-relaxed font-display text-lg italic">
+                  "{t.quote}"
+                </blockquote>
+                <p className="text-sm text-background/60">
+                  — {t.author}, <span className="font-medium text-background/80">{t.source}</span>
+                </p>
+              </div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       </div>
     </section>
   );
