@@ -1,28 +1,30 @@
-import { Mail, ChevronLeft, ChevronRight } from "lucide-react";
+import { useRef } from "react";
+import { motion } from "framer-motion";
+
+const messages = [
+  "BUY ON EMI 🔥 | COD AVAILABLE ✅",
+  "GET EXTRA DISCOUNT ON PREPAID ORDERS!",
+  "BUY ON EMI 🔥 | COD AVAILABLE ✅",
+  "GET EXTRA DISCOUNT ON PREPAID ORDERS!",
+];
+
+const doubled = [...messages, ...messages, ...messages];
 
 const AnnouncementBar = () => {
   return (
-    <div className="bg-announcement text-announcement-foreground py-2.5 section-padding">
-      <div className="flex items-center justify-between text-sm">
-        <div className="hidden md:flex items-center gap-4">
-          <a href="#" className="hover:opacity-70 transition-opacity">Facebook</a>
-          <a href="#" className="hover:opacity-70 transition-opacity">X</a>
-          <a href="#" className="hover:opacity-70 transition-opacity">Instagram</a>
-          <a href="#" className="hover:opacity-70 transition-opacity">YouTube</a>
-        </div>
-        <div className="flex items-center gap-2 mx-auto md:mx-0">
-          <button className="hover:opacity-70 transition-opacity"><ChevronLeft className="w-4 h-4" /></button>
-          <div className="flex items-center gap-2">
-            <Mail className="w-4 h-4" />
-            <span>Free shipping on orders over $50</span>
-          </div>
-          <button className="hover:opacity-70 transition-opacity"><ChevronRight className="w-4 h-4" /></button>
-        </div>
-        <div className="hidden md:flex items-center gap-4">
-          <span>English</span>
-          <span>United States (USD $)</span>
-        </div>
-      </div>
+    <div className="bg-announcement text-announcement-foreground py-2.5 overflow-hidden">
+      <motion.div
+        className="flex whitespace-nowrap"
+        animate={{ x: ["0%", "-50%"] }}
+        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+      >
+        {doubled.map((msg, i) => (
+          <span key={i} className="text-xs sm:text-sm font-medium tracking-wide px-8 flex items-center gap-3">
+            {msg}
+            <span className="text-background/40">•</span>
+          </span>
+        ))}
+      </motion.div>
     </div>
   );
 };

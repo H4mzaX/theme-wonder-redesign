@@ -2,16 +2,14 @@ import { useState } from "react";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Navbar from "@/components/Navbar";
 import HeroSlider from "@/components/HeroSlider";
-import AboutSection from "@/components/AboutSection";
-import CollectionsGrid from "@/components/CollectionsGrid";
-import FeaturedProduct from "@/components/FeaturedProduct";
-import MarqueeSection from "@/components/MarqueeSection";
-import CountdownSection from "@/components/CountdownSection";
-import LookbookSection from "@/components/LookbookSection";
-import TestimonialsSection from "@/components/TestimonialsSection";
-import BestSellers from "@/components/BestSellers";
-import BrandMarquee from "@/components/BrandMarquee";
-import BlogSection from "@/components/BlogSection";
+import ExploreProducts from "@/components/ExploreProducts";
+import NewArrivals from "@/components/NewArrivals";
+import PromoBanner from "@/components/PromoBanner";
+import ExploreLineup from "@/components/ExploreLineup";
+import WatchAndShop from "@/components/WatchAndShop";
+import AboutRewardsCards from "@/components/AboutRewardsCards";
+import FeaturedIn from "@/components/FeaturedIn";
+import TrustBadges from "@/components/TrustBadges";
 import Footer from "@/components/Footer";
 import FloatingSidebar from "@/components/FloatingSidebar";
 import LoadingBar from "@/components/LoadingBar";
@@ -32,16 +30,14 @@ const Index = () => {
       <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
       <main>
         <HeroSlider />
-        <AboutSection />
-        <CollectionsGrid />
-        <FeaturedProduct />
-        <MarqueeSection />
-        <CountdownSection />
-        <LookbookSection />
-        <TestimonialsSection />
-        <BestSellers />
-        <BrandMarquee />
-        <BlogSection />
+        <ExploreProducts />
+        <NewArrivals />
+        <PromoBanner />
+        <ExploreLineup />
+        <WatchAndShop />
+        <AboutRewardsCards />
+        <FeaturedIn />
+        <TrustBadges />
       </main>
       <Footer />
     </div>

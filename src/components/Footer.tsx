@@ -8,7 +8,7 @@ const Footer = () => {
         <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12" staggerDelay={0.1}>
           <StaggerItem>
             <div className="space-y-4">
-              <span className="font-display font-bold text-xl">CaseVault</span>
+              <span className="font-display font-bold text-xl">VCASE</span>
               <p className="text-sm text-background/60 leading-relaxed">
                 Premium phone cases and screen protectors for iPhone, Samsung, OnePlus & more. Style meets protection.
               </p>
@@ -62,7 +62,7 @@ const Footer = () => {
         </StaggerContainer>
 
         <motion.div className="border-t border-background/10 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.4 }}>
-          <p className="text-xs text-background/40">© 2026 CaseVault. All rights reserved.</p>
+          <p className="text-xs text-background/40">© 2026 VCASE. All rights reserved.</p>
           <div className="flex items-center gap-6">
             {["Facebook", "X", "Instagram", "YouTube"].map((s) => (
               <motion.a key={s} href="#" className="text-xs text-background/40 hover:text-background transition-colors" whileHover={{ y: -2 }}>
