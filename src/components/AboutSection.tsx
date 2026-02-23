@@ -7,16 +7,16 @@ const AboutSection = () => {
         <ScrollReveal direction="left" duration={0.8}>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display leading-tight">
             We believe in the{" "}
-            <em className="italic">power of sound</em>
+            <em className="italic">power of protection</em>
           </h2>
         </ScrollReveal>
         <ScrollReveal direction="right" delay={0.2} duration={0.8}>
           <div className="space-y-6">
             <p className="text-muted-foreground leading-relaxed">
-              <strong className="text-foreground font-semibold">Harmony Sound</strong> is more than just an audio equipment retailer. We represent the grandeur of sound in its finest manifestations. Our mission is to cater to audiophiles and those who simply appreciate quality sound. We offer audio devices that combine unparalleled sound with elegant design.
+              <strong className="text-foreground font-semibold">CaseVault</strong> is more than just a phone accessories retailer. We represent the perfect blend of style and protection for your most essential device. Our mission is to provide premium cases and screen protectors that don't compromise on aesthetics or durability.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              We offer everything from the warm sound of vinyl records to the clarity and crispness of modern wireless headphones, ensuring every note sounds impeccable.
+              From ultra-slim minimalist cases to military-grade rugged protection, we offer solutions for iPhone, Samsung, OnePlus, and Pixel — ensuring your device stays pristine no matter what life throws at it.
             </p>
             <a
               href="#"

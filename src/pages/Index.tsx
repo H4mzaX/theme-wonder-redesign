@@ -1,3 +1,4 @@
+import { useState } from "react";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Navbar from "@/components/Navbar";
 import HeroSlider from "@/components/HeroSlider";
@@ -13,13 +14,22 @@ import BrandMarquee from "@/components/BrandMarquee";
 import BlogSection from "@/components/BlogSection";
 import Footer from "@/components/Footer";
 import FloatingSidebar from "@/components/FloatingSidebar";
+import LoadingBar from "@/components/LoadingBar";
+import SearchDrawer from "@/components/SearchDrawer";
+import CartDrawer from "@/components/CartDrawer";
 
 const Index = () => {
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
+      <LoadingBar />
       <AnnouncementBar />
-      <Navbar />
+      <Navbar onSearchOpen={() => setSearchOpen(true)} onCartOpen={() => setCartOpen(true)} />
       <FloatingSidebar />
+      <SearchDrawer open={searchOpen} onClose={() => setSearchOpen(false)} />
+      <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
       <main>
         <HeroSlider />
         <AboutSection />

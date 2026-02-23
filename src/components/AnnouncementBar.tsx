@@ -14,7 +14,7 @@ const AnnouncementBar = () => {
           <button className="hover:opacity-70 transition-opacity"><ChevronLeft className="w-4 h-4" /></button>
           <div className="flex items-center gap-2">
             <Mail className="w-4 h-4" />
-            <span>A question? Visit our contact page</span>
+            <span>Free shipping on orders over $50</span>
           </div>
           <button className="hover:opacity-70 transition-opacity"><ChevronRight className="w-4 h-4" /></button>
         </div>

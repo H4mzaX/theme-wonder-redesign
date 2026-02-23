@@ -2,35 +2,35 @@ import { Search, User, ShoppingBag, Menu, X, ChevronDown, ArrowRight } from "luc
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useScrollDirection } from "@/hooks/useScrollAnimations";
-import collectionHeadphones from "@/assets/collection-headphones.jpg";
-import collectionEarphones from "@/assets/collection-earphones.jpg";
-import collectionSpeakers from "@/assets/collection-speakers.jpg";
+import collectionCases from "@/assets/collection-headphones.jpg";
+import collectionProtectors from "@/assets/collection-earphones.jpg";
+import collectionRugged from "@/assets/collection-speakers.jpg";
 import collectionAccessories from "@/assets/collection-accessories.jpg";
 
 const megaMenuData = {
   Shop: {
     collections: [
-      { name: "Headphones", subtitle: "Surround yourself in sound", count: 15, image: collectionHeadphones },
-      { name: "Earphones", subtitle: "Small design, great sound", count: 8, image: collectionEarphones },
-      { name: "Speakers", subtitle: "The world's most immersive sound", count: 11, image: collectionSpeakers },
-      { name: "Accessories", subtitle: "Optimal condition for years", count: 24, image: collectionAccessories },
+      { name: "iPhone Cases", subtitle: "Premium protection for iPhone", count: 24, image: collectionCases },
+      { name: "Screen Protectors", subtitle: "Crystal clear defense", count: 18, image: collectionProtectors },
+      { name: "Rugged Cases", subtitle: "Military-grade protection", count: 12, image: collectionRugged },
+      { name: "Accessories", subtitle: "Grips, mounts & more", count: 30, image: collectionAccessories },
     ],
     featured: {
       title: "New Arrivals",
-      description: "Check out our latest collection of premium audio equipment.",
+      description: "Check out our latest cases for iPhone 16 and Samsung Galaxy S25 series.",
       cta: "Shop New",
     },
   },
   Collections: {
     collections: [
-      { name: "All Products", subtitle: "Browse everything", count: 59, image: collectionHeadphones },
-      { name: "Wireless", subtitle: "Freedom of movement", count: 15, image: collectionEarphones },
-      { name: "Gaming", subtitle: "Dive into the game", count: 3, image: collectionSpeakers },
-      { name: "Studio", subtitle: "Professional grade", count: 8, image: collectionAccessories },
+      { name: "All Products", subtitle: "Browse everything", count: 84, image: collectionCases },
+      { name: "Samsung Cases", subtitle: "Galaxy protection", count: 20, image: collectionProtectors },
+      { name: "OnePlus Cases", subtitle: "Never settle on protection", count: 10, image: collectionRugged },
+      { name: "Pixel Cases", subtitle: "Pure Google, pure protection", count: 8, image: collectionAccessories },
     ],
     featured: {
       title: "Best Sellers",
-      description: "Our most popular products chosen by customers worldwide.",
+      description: "Our most popular cases chosen by thousands of customers worldwide.",
       cta: "View All",
     },
   },
@@ -38,7 +38,12 @@ const megaMenuData = {
 
 type MegaMenuKey = keyof typeof megaMenuData;
 
-const Navbar = () => {
+interface NavbarProps {
+  onSearchOpen: () => void;
+  onCartOpen: () => void;
+}
+
+const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
   const { scrolled, hidden } = useScrollDirection();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeMega, setActiveMega] = useState<MegaMenuKey | null>(null);
@@ -84,29 +89,28 @@ const Navbar = () => {
           </button>
 
           {/* Logo */}
-          <a href="/" className="flex-shrink-0">
+          <a href="/" className="flex-shrink-0 flex items-center gap-2">
             <motion.svg
-              width="48"
-              height="40"
-              viewBox="0 0 48 40"
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
-              <rect x="4" y="8" width="6" height="24" rx="3" fill="currentColor" />
-              <rect x="14" y="2" width="6" height="36" rx="3" fill="currentColor" />
-              <rect x="24" y="6" width="6" height="28" rx="3" fill="currentColor" />
-              <rect x="34" y="12" width="6" height="16" rx="3" fill="currentColor" />
-              <rect x="44" y="10" width="4" height="20" rx="2" fill="currentColor" />
-              <rect x="0" y="14" width="4" height="12" rx="2" fill="currentColor" />
+              <rect width="36" height="36" rx="8" fill="currentColor" />
+              <path d="M10 18C10 13.582 13.582 10 18 10V10C22.418 10 26 13.582 26 18V26H10V18Z" fill="hsl(var(--background))" />
+              <rect x="15" y="7" width="6" height="6" rx="3" fill="hsl(var(--background))" />
             </motion.svg>
+            <span className="hidden sm:block font-display font-bold text-lg tracking-tight">CaseVault</span>
           </a>
 
-          {/* Navigation Links */}
-          <div className="hidden lg:flex items-center gap-8">
+          {/* Navigation Links with black pill hover */}
+          <div className="hidden lg:flex items-center gap-1 relative">
             {navItems.map((item, i) => {
               const hasMega = item in megaMenuData;
+              const isActive = activeMega === item;
               return (
                 <div
                   key={item}
@@ -116,8 +120,10 @@ const Navbar = () => {
                 >
                   <motion.a
                     href="#"
-                    className={`text-sm font-medium text-foreground hover:text-accent transition-colors tracking-wide relative group flex items-center gap-1 ${
-                      activeMega === item ? "text-accent" : ""
+                    className={`relative z-10 text-sm font-medium tracking-wide flex items-center gap-1 px-4 py-2 rounded-full transition-colors duration-200 ${
+                      isActive
+                        ? "text-background"
+                        : "text-foreground hover:text-foreground"
                     }`}
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -125,10 +131,17 @@ const Navbar = () => {
                   >
                     {item}
                     {hasMega && (
-                      <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeMega === item ? "rotate-180" : ""}`} />
+                      <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isActive ? "rotate-180" : ""}`} />
                     )}
-                    <span className="absolute -bottom-1 left-0 w-full h-px bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
                   </motion.a>
+                  {/* Black pill background */}
+                  {isActive && (
+                    <motion.div
+                      className="absolute inset-0 bg-foreground rounded-full"
+                      layoutId="navPill"
+                      transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                    />
+                  )}
                 </div>
               );
             })}
@@ -140,6 +153,7 @@ const Navbar = () => {
               className="hover:text-accent transition-colors"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
+              onClick={onSearchOpen}
             >
               <Search className="w-5 h-5" />
             </motion.button>
@@ -154,6 +168,7 @@ const Navbar = () => {
               className="hover:text-accent transition-colors relative"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
+              onClick={onCartOpen}
             >
               <ShoppingBag className="w-5 h-5" />
               <span className="absolute -top-1.5 -right-1.5 bg-foreground text-background text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-medium">
@@ -177,7 +192,6 @@ const Navbar = () => {
             >
               <div className="section-padding py-8">
                 <div className="grid grid-cols-12 gap-8">
-                  {/* Collections Grid */}
                   <div className="col-span-9">
                     <p className="text-xs uppercase tracking-widest text-muted-foreground mb-5 font-medium">Collections</p>
                     <div className="grid grid-cols-4 gap-5">
@@ -191,11 +205,7 @@ const Navbar = () => {
                           transition={{ delay: idx * 0.05, duration: 0.3 }}
                         >
                           <div className="aspect-square rounded-lg overflow-hidden mb-3 relative">
-                            <img
-                              src={col.image}
-                              alt={col.name}
-                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                            />
+                            <img src={col.image} alt={col.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                             <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors duration-300" />
                           </div>
                           <div className="flex items-center justify-between">
@@ -212,8 +222,6 @@ const Navbar = () => {
                       ))}
                     </div>
                   </div>
-
-                  {/* Featured Panel */}
                   <div className="col-span-3">
                     <p className="text-xs uppercase tracking-widest text-muted-foreground mb-5 font-medium">Featured</p>
                     <motion.div
@@ -224,10 +232,7 @@ const Navbar = () => {
                     >
                       <h3 className="font-display text-xl font-semibold mb-2">{megaMenuData[activeMega].featured.title}</h3>
                       <p className="text-sm text-muted-foreground mb-6 leading-relaxed">{megaMenuData[activeMega].featured.description}</p>
-                      <a
-                        href="#"
-                        className="inline-flex items-center gap-2 text-sm font-medium bg-foreground text-background px-5 py-2.5 rounded-full hover:bg-foreground/90 transition-colors"
-                      >
+                      <a href="#" className="inline-flex items-center gap-2 text-sm font-medium bg-foreground text-background px-5 py-2.5 rounded-full hover:bg-foreground/90 transition-colors">
                         {megaMenuData[activeMega].featured.cta}
                         <ArrowRight className="w-3.5 h-3.5" />
                       </a>
@@ -259,12 +264,7 @@ const Navbar = () => {
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
             >
               <div className="flex justify-between items-center mb-10">
-                <svg width="40" height="34" viewBox="0 0 48 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="4" y="8" width="6" height="24" rx="3" fill="currentColor" />
-                  <rect x="14" y="2" width="6" height="36" rx="3" fill="currentColor" />
-                  <rect x="24" y="6" width="6" height="28" rx="3" fill="currentColor" />
-                  <rect x="34" y="12" width="6" height="16" rx="3" fill="currentColor" />
-                </svg>
+                <span className="font-display font-bold text-lg">CaseVault</span>
                 <button onClick={() => setMobileOpen(false)}>
                   <X className="w-5 h-5" />
                 </button>
@@ -280,9 +280,7 @@ const Navbar = () => {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.05 * i }}
                         onClick={() => {
-                          if (hasMega) {
-                            setMobileSubmenu(mobileSubmenu === item ? null : item);
-                          }
+                          if (hasMega) setMobileSubmenu(mobileSubmenu === item ? null : item);
                         }}
                       >
                         {item}
@@ -290,8 +288,6 @@ const Navbar = () => {
                           <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileSubmenu === item ? "rotate-180" : ""}`} />
                         )}
                       </motion.button>
-
-                      {/* Mobile Submenu */}
                       <AnimatePresence>
                         {hasMega && mobileSubmenu === item && (
                           <motion.div

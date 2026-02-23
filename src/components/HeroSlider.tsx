@@ -21,21 +21,21 @@ const slides: Slide[] = [
   {
     type: "image",
     image: hero1,
-    title: "EXPERIENCE\nUNPARALLELED\nAUDIO ELEGANCE",
-    cta: "Shop Headphones",
+    title: "PREMIUM\nPROTECTION\nFOR YOUR DEVICE",
+    cta: "Shop Cases",
   },
   {
     type: "image",
     image: hero2,
-    title: "DISCOVER\nTHE SOUND\nOF TOMORROW",
-    cta: "Shop Speakers",
+    title: "CASES &\nSCREEN GUARDS\nFOR EVERY PHONE",
+    cta: "Shop All",
   },
   {
     type: "video",
     video: heroVideo,
     poster: heroPoster,
-    title: "IMMERSE IN\nPURE SONIC\nBRILLIANCE",
-    cta: "Shop Speakers",
+    title: "STYLE MEETS\nDURABILITY\nIN EVERY CASE",
+    cta: "Shop Now",
   },
 ];
 
@@ -56,9 +56,7 @@ const HeroSlider = () => {
       const elapsed = Date.now() - startTime;
       const pct = Math.min(elapsed / AUTOPLAY_DURATION, 1);
       setProgress(pct);
-      if (pct >= 1) {
-        if (progressRef.current) clearInterval(progressRef.current);
-      }
+      if (pct >= 1 && progressRef.current) clearInterval(progressRef.current);
     }, 30);
   }, []);
 
@@ -77,7 +75,6 @@ const HeroSlider = () => {
     setCurrent(i);
   }, [current]);
 
-  // Autoplay
   useEffect(() => {
     startProgress();
     if (autoplayRef.current) clearTimeout(autoplayRef.current);
@@ -103,7 +100,6 @@ const HeroSlider = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.8, ease: "easeInOut" }}
           >
-            {/* Media: image or video */}
             {slide.type === "image" ? (
               <motion.img
                 src={slide.image}
@@ -114,26 +110,22 @@ const HeroSlider = () => {
                 transition={{ duration: 8, ease: "linear" }}
               />
             ) : (
-              <div className="w-full h-full relative">
-                <video
-                  src={slide.video}
-                  poster={slide.poster}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="w-full h-full object-cover"
-                />
-              </div>
+              <video
+                src={slide.video}
+                poster={slide.poster}
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="w-full h-full object-cover"
+              />
             )}
             <div className="absolute inset-0 bg-foreground/20" />
           </motion.div>
         </AnimatePresence>
 
-        {/* Content overlay - outside AnimatePresence for stability */}
         <div className="absolute inset-0 flex items-end p-8 sm:p-12 lg:p-16 pb-24 pointer-events-none z-10">
           <div className="flex items-end justify-between w-full pointer-events-auto">
-            {/* Staggered title words */}
             <div>
               <AnimatePresence mode="wait">
                 <motion.div key={current}>
@@ -143,11 +135,7 @@ const HeroSlider = () => {
                       initial={{ opacity: 0, y: 30, clipPath: "inset(100% 0 0 0)" }}
                       animate={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
                       exit={{ opacity: 0, y: -15 }}
-                      transition={{
-                        duration: 0.7,
-                        delay: 0.3 + li * 0.15,
-                        ease: [0.25, 0.1, 0.25, 1],
-                      }}
+                      transition={{ duration: 0.7, delay: 0.3 + li * 0.15, ease: [0.25, 0.1, 0.25, 1] }}
                     >
                       <span className="block text-3xl sm:text-4xl lg:text-6xl font-display font-bold text-background leading-tight tracking-tight">
                         {line}
@@ -176,49 +164,20 @@ const HeroSlider = () => {
         </div>
       </div>
 
-      {/* Bottom Navigation Bar: prev arrow - dots - next arrow */}
       <div className="absolute bottom-0 left-0 w-full z-20 pb-6 px-8 sm:px-12 lg:px-16">
         <div className="flex items-center justify-between">
-          {/* Previous Arrow */}
-          <motion.button
-            onClick={prev}
-            className="hidden md:flex items-center justify-center text-background hover:opacity-70 transition-opacity"
-            whileHover={{ x: -3 }}
-            whileTap={{ scale: 0.9 }}
-            aria-label="Previous slide"
-          >
+          <motion.button onClick={prev} className="hidden md:flex items-center justify-center text-background hover:opacity-70 transition-opacity" whileHover={{ x: -3 }} whileTap={{ scale: 0.9 }}>
             <ArrowLeft className="w-7 h-7" strokeWidth={1.5} />
           </motion.button>
-
-          {/* Dots with active progress bar */}
           <div className="flex items-center gap-2.5 mx-auto md:mx-0">
             {slides.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => goTo(i)}
-                className="relative h-2 rounded-full overflow-hidden transition-all duration-300 group"
-                style={{ width: i === current ? 32 : 10 }}
-                aria-label={`Go to slide ${i + 1}`}
-              >
+              <button key={i} onClick={() => goTo(i)} className="relative h-2 rounded-full overflow-hidden transition-all duration-300" style={{ width: i === current ? 32 : 10 }}>
                 <span className="absolute inset-0 bg-background/40 rounded-full" />
-                {i === current && (
-                  <motion.span
-                    className="absolute inset-0 bg-background rounded-full origin-left"
-                    style={{ scaleX: progress }}
-                  />
-                )}
+                {i === current && <motion.span className="absolute inset-0 bg-background rounded-full origin-left" style={{ scaleX: progress }} />}
               </button>
             ))}
           </div>
-
-          {/* Next Arrow */}
-          <motion.button
-            onClick={next}
-            className="hidden md:flex items-center justify-center text-background hover:opacity-70 transition-opacity"
-            whileHover={{ x: 3 }}
-            whileTap={{ scale: 0.9 }}
-            aria-label="Next slide"
-          >
+          <motion.button onClick={next} className="hidden md:flex items-center justify-center text-background hover:opacity-70 transition-opacity" whileHover={{ x: 3 }} whileTap={{ scale: 0.9 }}>
             <ArrowRight className="w-7 h-7" strokeWidth={1.5} />
           </motion.button>
         </div>
