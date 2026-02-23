@@ -128,13 +128,13 @@ const HeroSlider = () => {
                 className="w-full h-full object-cover"
               />
             )}
-            <div className="absolute inset-0 bg-foreground/15" />
+            <div className="absolute inset-0 bg-gradient-to-r from-background/60 via-background/20 to-transparent sm:bg-foreground/15" />
           </motion.div>
         </AnimatePresence>
 
         {/* Content overlay */}
-        <div className="absolute inset-0 flex items-end sm:items-center p-8 sm:p-12 lg:p-20 pb-28 sm:pb-12 pointer-events-none z-10">
-          <div className="pointer-events-auto max-w-xl">
+        <div className="absolute inset-0 flex items-end sm:items-center p-4 sm:p-12 lg:p-20 pb-24 sm:pb-12 pointer-events-none z-10">
+          <div className="pointer-events-auto max-w-[90%] sm:max-w-xl">
             <AnimatePresence mode="wait">
               <motion.div key={current}>
                 {slide.badge && (
