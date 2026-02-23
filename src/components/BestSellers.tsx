@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Star } from "lucide-react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/hooks/useScrollAnimations";
 import { bestSellerTabs } from "@/data/products";
@@ -45,7 +46,7 @@ const BestSellers = () => {
           <StaggerContainer className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4" staggerDelay={0.06}>
             {products.map((product) => (
               <StaggerItem key={product.id}>
-                <a href="#" className="group block border border-border rounded-xl overflow-hidden bg-card">
+                <Link to={`/product/${product.id}`} className="group block border border-border rounded-xl overflow-hidden bg-card">
                   <div className="relative aspect-square bg-[#f5f5f5] overflow-hidden">
                     {product.tag && (
                       <span className="absolute top-3 left-3 bg-foreground text-background text-[10px] px-2.5 py-1 rounded-full font-medium tracking-wide">{product.tag}</span>
@@ -85,7 +86,7 @@ const BestSellers = () => {
                       ADD TO CART
                     </button>
                   </div>
-                </a>
+                </Link>
               </StaggerItem>
             ))}
           </StaggerContainer>

@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { Star } from "lucide-react";
+import { Link } from "react-router-dom";
 import { ScrollReveal } from "@/hooks/useScrollAnimations";
 import { newArrivalProducts } from "@/data/products";
 
@@ -15,7 +16,7 @@ const colorMap: Record<string, string> = {
 };
 
 const ProductCard = ({ product }: { product: typeof newArrivalProducts[0] }) => (
-  <a href="#" className="group block border border-border rounded-xl overflow-hidden bg-card">
+  <Link to={`/product/${product.id}`} className="group block border border-border rounded-xl overflow-hidden bg-card">
     <div className="relative aspect-square bg-muted overflow-hidden">
       {product.discount && (
         <span className="absolute top-2 left-2 z-10 bg-foreground text-background text-[10px] sm:text-[11px] px-2 sm:px-3 py-0.5 sm:py-1 rounded-full font-medium">
@@ -60,7 +61,7 @@ const ProductCard = ({ product }: { product: typeof newArrivalProducts[0] }) => 
         ADD TO CART
       </button>
     </div>
-  </a>
+  </Link>
 );
 
 const NewArrivals = () => {
