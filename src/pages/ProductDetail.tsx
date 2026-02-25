@@ -240,6 +240,7 @@ const ProductDetail = () => {
         price: product.price,
         image: galleryImages[selectedColor] || product.image,
         color: product.colors[selectedColor] || "Default",
+        device: product.device,
       });
     }
     toast({ title: "Added to cart!", description: `${product.name} × ${quantity}` });

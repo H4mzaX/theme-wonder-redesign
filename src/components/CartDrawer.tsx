@@ -1,6 +1,6 @@
-import { X, Minus, Plus, ArrowRight, ChevronLeft, ChevronRight, FileText, Package, Tag } from "lucide-react";
+import { X, Minus, Plus, ArrowRight, ChevronLeft, ChevronRight, FileText, Package, Tag, Shield, Camera, Smartphone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useCart } from "@/context/CartContext";
 import { Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -8,8 +8,6 @@ import collectionCases from "@/assets/collection-headphones.jpg";
 import collectionProtectors from "@/assets/collection-earphones.jpg";
 import collectionRugged from "@/assets/collection-speakers.jpg";
 import collectionAccessories from "@/assets/collection-accessories.jpg";
-import productAirbeats from "@/assets/product-airbeats.jpg";
-import productRhythmiq from "@/assets/product-rhythmiq.jpg";
 
 interface CartDrawerProps {
   open: boolean;
@@ -25,15 +23,54 @@ const emptySuggestions = [
   { name: "Accessories", image: collectionAccessories, href: "#" },
 ];
 
-const youMayAlso = [
-  { name: "Air Beats", price: "₹499", image: productAirbeats },
-  { name: "RhythmiQ", price: "₹799", image: productRhythmiq },
+interface BundleItem {
+  id: string;
+  name: string;
+  subtitle: string;
+  price: string;
+  numericPrice: number;
+  originalPrice: string;
+  icon: typeof Shield;
+  image: string;
+}
+
+const getBundleAccessories = (device: string): BundleItem[] => [
+  {
+    id: `${device.replace(/\s+/g, "-").toLowerCase()}-screen-guard`,
+    name: "Tempered Glass Screen Guard",
+    subtitle: `For ${device}`,
+    price: "₹399",
+    numericPrice: 399,
+    originalPrice: "₹799",
+    icon: Shield,
+    image: collectionProtectors,
+  },
+  {
+    id: `${device.replace(/\s+/g, "-").toLowerCase()}-camera-lens`,
+    name: "Camera Lens Protector",
+    subtitle: `For ${device}`,
+    price: "₹299",
+    numericPrice: 299,
+    originalPrice: "₹599",
+    icon: Camera,
+    image: collectionAccessories,
+  },
+  {
+    id: `${device.replace(/\s+/g, "-").toLowerCase()}-charging-cable`,
+    name: "Fast Charging Cable",
+    subtitle: "Type-C · 1.5m",
+    price: "₹499",
+    numericPrice: 499,
+    originalPrice: "₹999",
+    icon: Smartphone,
+    image: collectionRugged,
+  },
 ];
 
 const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
   const [activeTab, setActiveTab] = useState<"cart" | "recent">("cart");
-  const [suggestIndex, setSuggestIndex] = useState(0);
-  const { items, totalItems, subtotal, updateQuantity, removeFromCart } = useCart();
+  const [bundleIndex, setBundleIndex] = useState(0);
+  const { items, totalItems, subtotal, updateQuantity, removeFromCart, addToCart } = useCart();
   const isMobile = useIsMobile();
 
   const shippingProgress = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
@@ -41,6 +78,35 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
 
   const discount = subtotal > 0 ? Math.round(subtotal * 0.1) : 0;
   const finalTotal = subtotal - discount;
+
+  // Smart bundle: detect device from cart items and suggest matching accessories
+  const bundleItems = useMemo(() => {
+    const devices = items
+      .map((item) => item.device || item.subtitle?.replace("For ", ""))
+      .filter(Boolean);
+    const uniqueDevice = devices[0];
+    if (!uniqueDevice) return [];
+    const accessories = getBundleAccessories(uniqueDevice);
+    // Filter out items already in cart
+    const cartIds = new Set(items.map((i) => i.id));
+    return accessories.filter((a) => !cartIds.has(a.id));
+  }, [items]);
+
+  const handleAddBundle = (bundle: BundleItem) => {
+    addToCart({
+      id: bundle.id,
+      name: bundle.name,
+      subtitle: bundle.subtitle,
+      price: bundle.price,
+      image: bundle.image,
+      color: "Default",
+    });
+  };
+
+  const bundleSavings = bundleItems.reduce((sum, b) => {
+    const orig = parseInt(b.originalPrice.replace(/[₹,]/g, "")) || 0;
+    return sum + (orig - b.numericPrice);
+  }, 0);
 
   const cartContent = (
     <>
@@ -133,40 +199,83 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
                 ))}
               </div>
 
-              {/* You may also like */}
-              <div className="py-6 border-t border-border mt-4">
-                <div className="flex items-center justify-between mb-4">
-                  <h4 className="text-lg font-display font-bold">You may also like</h4>
-                  <div className="flex items-center gap-2">
+              {/* Bundle & Save */}
+              {bundleItems.length > 0 && (
+                <div className="py-6 border-t border-border mt-4">
+                  <div className="flex items-center justify-between mb-1">
+                    <h4 className="text-lg font-display font-bold">Bundle & Save</h4>
+                    {bundleSavings > 0 && (
+                      <span className="text-xs font-bold text-destructive bg-destructive/10 px-2.5 py-1 rounded-full">
+                        Save ₹{bundleSavings.toLocaleString("en-IN")}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-muted-foreground mb-4">Complete your protection — accessories matched to your device</p>
+
+                  <div className="flex items-center gap-2 mb-4">
                     <button
-                      onClick={() => setSuggestIndex(Math.max(0, suggestIndex - 1))}
-                      className={`w-9 h-9 rounded-full border border-border flex items-center justify-center transition-colors ${suggestIndex === 0 ? "text-muted-foreground/30" : "hover:bg-muted"}`}
-                      disabled={suggestIndex === 0}
+                      onClick={() => setBundleIndex(Math.max(0, bundleIndex - 1))}
+                      className={`w-8 h-8 rounded-full border border-border flex items-center justify-center transition-colors ${bundleIndex === 0 ? "text-muted-foreground/30" : "hover:bg-muted"}`}
+                      disabled={bundleIndex === 0}
                     >
-                      <ChevronLeft className="w-4 h-4" />
+                      <ChevronLeft className="w-3.5 h-3.5" />
                     </button>
+                    <div className="flex-1 flex gap-1 justify-center">
+                      {bundleItems.map((_, idx) => (
+                        <div key={idx} className={`w-1.5 h-1.5 rounded-full transition-colors ${idx === bundleIndex ? "bg-foreground" : "bg-muted-foreground/30"}`} />
+                      ))}
+                    </div>
                     <button
-                      onClick={() => setSuggestIndex(Math.min(youMayAlso.length - 1, suggestIndex + 1))}
-                      className={`w-9 h-9 rounded-full border border-border flex items-center justify-center transition-colors ${suggestIndex >= youMayAlso.length - 1 ? "text-muted-foreground/30" : "hover:bg-muted"}`}
-                      disabled={suggestIndex >= youMayAlso.length - 1}
+                      onClick={() => setBundleIndex(Math.min(bundleItems.length - 1, bundleIndex + 1))}
+                      className={`w-8 h-8 rounded-full border border-border flex items-center justify-center transition-colors ${bundleIndex >= bundleItems.length - 1 ? "text-muted-foreground/30" : "hover:bg-muted"}`}
+                      disabled={bundleIndex >= bundleItems.length - 1}
                     >
-                      <ChevronRight className="w-4 h-4" />
+                      <ChevronRight className="w-3.5 h-3.5" />
                     </button>
                   </div>
+
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={bundleIndex}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.2 }}
+                      className="flex gap-4 items-center bg-card rounded-xl p-3"
+                    >
+                      <div className="w-20 h-20 rounded-lg bg-muted flex-shrink-0 overflow-hidden flex items-center justify-center">
+                        {(() => {
+                          const Icon = bundleItems[bundleIndex].icon;
+                          return <Icon className="w-8 h-8 text-muted-foreground" />;
+                        })()}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h5 className="text-sm font-bold leading-tight">{bundleItems[bundleIndex].name}</h5>
+                        <p className="text-xs text-muted-foreground mt-0.5">{bundleItems[bundleIndex].subtitle}</p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="text-sm font-bold">{bundleItems[bundleIndex].price}</span>
+                          <span className="text-xs text-muted-foreground line-through">{bundleItems[bundleIndex].originalPrice}</span>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => handleAddBundle(bundleItems[bundleIndex])}
+                        className="w-10 h-10 rounded-full bg-foreground text-background flex items-center justify-center hover:bg-foreground/90 transition-colors flex-shrink-0"
+                      >
+                        <Plus className="w-4 h-4" />
+                      </button>
+                    </motion.div>
+                  </AnimatePresence>
+
+                  {bundleItems.length > 1 && (
+                    <button
+                      onClick={() => bundleItems.forEach((b) => handleAddBundle(b))}
+                      className="w-full mt-3 py-2.5 border-2 border-dashed border-border rounded-xl text-sm font-semibold hover:bg-card transition-colors"
+                    >
+                      Add all {bundleItems.length} accessories — Save ₹{bundleSavings.toLocaleString("en-IN")}
+                    </button>
+                  )}
                 </div>
-                <div className="flex gap-4 items-center">
-                  <div className="w-24 h-24 rounded-lg bg-muted flex-shrink-0 overflow-hidden">
-                    <img src={youMayAlso[suggestIndex].image} alt={youMayAlso[suggestIndex].name} className="w-full h-full object-contain p-2" />
-                  </div>
-                  <div className="flex-1">
-                    <h5 className="text-base font-bold">{youMayAlso[suggestIndex].name}</h5>
-                    <p className="text-base font-bold mt-0.5">{youMayAlso[suggestIndex].price}</p>
-                  </div>
-                  <button className="w-10 h-10 rounded-full bg-foreground text-background flex items-center justify-center hover:bg-foreground/90 transition-colors flex-shrink-0">
-                    <Plus className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
+              )}
             </div>
           )
         ) : (
