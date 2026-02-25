@@ -9,21 +9,25 @@ const tabs = Object.keys(exploreLineupTabs);
 const ExploreLineup = () => {
   const [activeTab, setActiveTab] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
   const products = exploreLineupTabs[tabs[activeTab]];
+  const segments = Math.ceil(products.length / 2);
 
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
+    setActiveIndex(0);
+    el.scrollLeft = 0;
     const handleScroll = () => {
       const maxScroll = el.scrollWidth - el.clientWidth;
-      if (maxScroll > 0) setScrollProgress(el.scrollLeft / maxScroll);
-      else setScrollProgress(0);
+      if (maxScroll > 0) {
+        const progress = el.scrollLeft / maxScroll;
+        setActiveIndex(Math.min(Math.round(progress * (segments - 1)), segments - 1));
+      }
     };
     el.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
     return () => el.removeEventListener("scroll", handleScroll);
-  }, [activeTab]);
+  }, [activeTab, segments]);
 
   return (
     <section className="py-5 sm:py-6 lg:py-8">
@@ -53,23 +57,22 @@ const ExploreLineup = () => {
         <motion.div key={activeTab} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
           <div
             ref={scrollRef}
-            className="flex gap-3 sm:gap-4 overflow-x-auto pb-4 snap-x snap-mandatory px-4 sm:px-6 lg:px-10"
+            className="flex gap-3 sm:gap-4 overflow-x-auto snap-x snap-mandatory pl-4 pr-4 sm:pl-6 sm:pr-6 lg:pl-10 lg:pr-10"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
             {products.map((product) => (
-              <div key={product.id} className="flex-none w-[calc(50%-6px)] sm:w-[calc(50%-8px)] md:w-[260px] lg:w-[280px] snap-start">
+              <div key={product.id} className="flex-none w-[calc(50vw-22px)] sm:w-[calc(50vw-28px)] md:w-[260px] lg:w-[280px] snap-start">
                 <ProductCard product={product} />
               </div>
             ))}
           </div>
 
-          {/* Segmented progress bar */}
-          <div className="flex gap-1 mx-auto mt-3 sm:mt-4 max-w-[280px] sm:max-w-[320px] px-4">
-            {Array.from({ length: Math.ceil(products.length / 2) }).map((_, i) => (
+          <div className="flex gap-1.5 mx-auto mt-3 sm:mt-4 max-w-[260px] sm:max-w-[320px] px-4">
+            {Array.from({ length: segments }).map((_, i) => (
               <div
                 key={i}
                 className={`h-[3px] flex-1 rounded-full transition-colors duration-300 ${
-                  i <= Math.round(scrollProgress * (Math.ceil(products.length / 2) - 1)) ? "bg-foreground" : "bg-border"
+                  i <= activeIndex ? "bg-foreground" : "bg-border"
                 }`}
               />
             ))}
