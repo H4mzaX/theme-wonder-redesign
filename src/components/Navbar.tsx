@@ -2,6 +2,7 @@ import { Search, User, ShoppingBag, Menu, X, ChevronDown, ArrowRight } from "luc
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useScrollDirection } from "@/hooks/useScrollAnimations";
+import { useCart } from "@/context/CartContext";
 import collectionCases from "@/assets/collection-headphones.jpg";
 import collectionProtectors from "@/assets/collection-earphones.jpg";
 import collectionRugged from "@/assets/collection-speakers.jpg";
@@ -49,6 +50,7 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
   const [activeMega, setActiveMega] = useState<MegaMenuKey | null>(null);
   const [mobileSubmenu, setMobileSubmenu] = useState<string | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { totalItems } = useCart();
 
   const navItems = ["Shop", "Collections", "Explore", "Compare", "Contact"];
 
@@ -143,7 +145,7 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
             </motion.button>
             <motion.button className="hover:text-accent transition-colors relative" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} onClick={onCartOpen}>
               <ShoppingBag className="w-5 h-5" />
-              <span className="absolute -top-1.5 -right-1.5 bg-foreground text-background text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-medium">0</span>
+              {totalItems > 0 && <span className="absolute -top-1.5 -right-1.5 bg-accent text-accent-foreground text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">{totalItems}</span>}
             </motion.button>
           </div>
         </div>
