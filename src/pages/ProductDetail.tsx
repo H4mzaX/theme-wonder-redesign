@@ -369,11 +369,14 @@ const ProductDetail = () => {
 
             {/* Rating + Social proof */}
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-3">
-              <div className="inline-flex items-center gap-1.5 border border-border rounded-lg px-2.5 py-1.5">
+              <button
+                onClick={() => document.getElementById("reviews-section")?.scrollIntoView({ behavior: "smooth" })}
+                className="inline-flex items-center gap-1.5 border border-border rounded-lg px-2.5 py-1.5 hover:border-foreground/40 transition-colors cursor-pointer"
+              >
                 <span className="text-[13px] sm:text-sm font-bold text-foreground">{product.rating.toFixed(1)}</span>
                 <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                <span className="text-muted-foreground text-[11px] sm:text-xs">| {product.reviews} Reviews</span>
-              </div>
+                <span className="text-muted-foreground text-[11px] sm:text-xs underline">| {product.reviews} Reviews</span>
+              </button>
               <div className="inline-flex items-center gap-1.5 border border-border rounded-lg px-2.5 py-1.5">
                 <span className="text-[11px] sm:text-xs font-bold text-foreground">800+</span>
                 <span className="text-[11px] sm:text-xs text-muted-foreground">Bought in 10 Days.</span>
@@ -445,12 +448,12 @@ const ProductDetail = () => {
                   <span className="text-[13px] sm:text-sm font-semibold text-foreground">Select Colour:</span>
                   <span className="text-[13px] sm:text-sm text-muted-foreground">{product.colors[selectedColor]}</span>
                 </div>
-                <div className="flex gap-3 sm:gap-3">
+                <div className="flex gap-2.5">
                   {product.colors.map((color, i) => (
                     <button
                       key={color}
                       onClick={() => setSelectedColor(i)}
-                      className={`w-11 h-11 sm:w-10 sm:h-10 rounded-full border-2 transition-all ${
+                      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full border-2 transition-all ${
                         i === selectedColor ? "border-foreground ring-2 ring-foreground/20 scale-110" : "border-border hover:border-foreground/50"
                       }`}
                       style={{ backgroundColor: colorHex[color] || "#ccc" }}
@@ -517,36 +520,33 @@ const ProductDetail = () => {
             {/* Trust badges */}
             <div className="flex items-center justify-between mt-5 sm:mt-6 py-3.5 sm:py-4 border-t border-b border-border">
               {[
-                { icon: RotateCcw, label: "7-Days", sub: "Easy Returns" },
+                { icon: RotateCcw, label: "7-Day", sub: "Easy Returns" },
                 { icon: Award, label: "6-Month", sub: "Warranty" },
-                { icon: Package, label: "COD", sub: "Available" },
-                { icon: Lock, label: "Secure", sub: "Payments" },
+                { icon: Truck, label: "Free", sub: "Shipping" },
+                { icon: Shield, label: "Genuine", sub: "Product" },
               ].map(({ icon: Icon, label, sub }) => (
-                <div key={label} className="flex items-center gap-1.5 sm:gap-2">
-                  <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-foreground" />
-                  <div>
-                    <p className="text-[11px] sm:text-xs font-bold text-foreground leading-tight">{label}</p>
-                    <p className="text-[9px] sm:text-[10px] text-muted-foreground">{sub}</p>
-                  </div>
+                <div key={label} className="flex flex-col items-center gap-1">
+                  <Icon className="w-5 h-5 text-foreground" />
+                  <p className="text-[10px] sm:text-xs font-bold text-foreground leading-tight">{label}</p>
+                  <p className="text-[8px] sm:text-[10px] text-muted-foreground">{sub}</p>
                 </div>
               ))}
             </div>
 
-            {/* Trust badges */}
-            <div className="flex items-center justify-between mt-5 sm:mt-6 py-3.5 sm:py-4 border-t border-border">
-              {[
-                { icon: RotateCcw, label: "7-Days", sub: "Returnable" },
-                { icon: Package, label: "COD", sub: "Available" },
-                { icon: Lock, label: "Secure", sub: "Payments" },
-              ].map(({ icon: Icon, label, sub }) => (
-                <div key={label} className="flex items-center gap-1.5 sm:gap-2">
-                  <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-foreground" />
-                  <div>
-                    <p className="text-[11px] sm:text-xs font-bold text-foreground leading-tight">{label}</p>
-                    <p className="text-[9px] sm:text-[10px] text-muted-foreground">{sub}</p>
+            {/* Payment methods */}
+            <div className="mt-4 sm:mt-5">
+              <p className="text-[11px] sm:text-xs font-semibold text-muted-foreground mb-2">We Accept</p>
+              <div className="flex items-center gap-3 flex-wrap">
+                {["UPI", "Visa", "Mastercard", "RuPay", "COD"].map((method) => (
+                  <div key={method} className="flex items-center gap-1.5 border border-border rounded-lg px-2.5 py-1.5">
+                    <CreditCard className="w-3.5 h-3.5 text-muted-foreground" />
+                    <span className="text-[10px] sm:text-[11px] font-medium text-foreground">{method}</span>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+              <p className="text-[10px] text-muted-foreground mt-2 flex items-center gap-1">
+                <Lock className="w-3 h-3" /> 100% secure & encrypted payments
+              </p>
             </div>
           </div>
         </div>
@@ -666,7 +666,7 @@ const ProductDetail = () => {
       </section>
 
       {/* ═══════ REVIEWS & RATINGS ═══════ */}
-      <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-6 sm:py-10">
+      <section id="reviews-section" className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-6 sm:py-10 scroll-mt-20">
         <div className="bg-secondary/30 rounded-2xl p-4 sm:p-10">
           <h2 className="text-lg sm:text-2xl font-bold text-foreground text-center mb-5 sm:mb-8">Reviews & Ratings</h2>
 
