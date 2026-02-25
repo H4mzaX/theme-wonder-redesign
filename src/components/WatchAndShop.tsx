@@ -97,13 +97,11 @@ const WatchAndShop = () => {
               <div className="relative rounded-2xl overflow-hidden aspect-[3/4] sm:aspect-[9/16] mb-2">
                 <video
                   src={item.video}
+                  autoPlay
                   muted
                   loop
                   playsInline
                   className="w-full h-full object-cover"
-                  onMouseEnter={(e) => e.currentTarget.play()}
-                  onMouseLeave={(e) => { e.currentTarget.pause(); e.currentTarget.currentTime = 0; }}
-                  onTouchStart={(e) => e.currentTarget.play()}
                 />
                 <div className="absolute inset-0 bg-foreground/5 group-hover:bg-foreground/15 transition-colors" />
 
