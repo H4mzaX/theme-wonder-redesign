@@ -7,6 +7,24 @@ import siliconeBlackImg from "@/assets/case-silicone-black.jpg";
 import leatherBrownImg from "@/assets/case-leather-brown.jpg";
 import leatherBlackImg from "@/assets/case-leather-black.jpg";
 
+// Samsung device-specific images
+import samsungSiliconeBlueImg from "@/assets/samsung-silicone-blue.jpg";
+import samsungClearCaseImg from "@/assets/samsung-clear-case.jpg";
+import samsungMatteBlackImg from "@/assets/samsung-matte-black.jpg";
+import samsungLeatherBrownImg from "@/assets/samsung-leather-brown.jpg";
+
+// OnePlus device-specific images
+import oneplusSiliconeBlueImg from "@/assets/oneplus-silicone-blue.jpg";
+import oneplusClearCaseImg from "@/assets/oneplus-clear-case.jpg";
+import oneplusMatteBlackImg from "@/assets/oneplus-matte-black.jpg";
+import oneplusLeatherBrownImg from "@/assets/oneplus-leather-brown.jpg";
+
+// iQOO device-specific images
+import iqooSiliconeBlueImg from "@/assets/iqoo-silicone-blue.jpg";
+import iqooClearCaseImg from "@/assets/iqoo-clear-case.jpg";
+import iqooMatteBlackImg from "@/assets/iqoo-matte-black.jpg";
+import iqooLeatherBrownImg from "@/assets/iqoo-leather-brown.jpg";
+
 export interface Product {
   id: string;
   name: string;
@@ -90,18 +108,34 @@ const caseTypes = [
   { type: "Premium Leather Case", category: "Leather Cases", image: leatherBrownImg, colors: ["Saddle Brown", "Black"], basePrice: 1999, originalPrice: 3499, discount: "Save 43%", rating: 5, reviewBase: 80 },
 ];
 
-// Samsung/OnePlus/iQOO don't get MagSafe
-const nonAppleCaseTypes = [
-  { type: "Silicone Snap Case", category: "Silicone Cases", image: siliconeBluImg, colors: ["Black", "Blue", "Pink", "Green"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 150 },
-  { type: "Premium Leather Case", category: "Leather Cases", image: leatherBrownImg, colors: ["Saddle Brown", "Black"], basePrice: 1999, originalPrice: 3499, discount: "Save 43%", rating: 5, reviewBase: 60 },
-  { type: "Clear Armor Case", category: "Clear Cases", image: magsafeClearImg, colors: ["Clear"], basePrice: 1199, originalPrice: 1999, discount: "Save 40%", rating: 5, reviewBase: 100 },
-  { type: "Matte Black Case", category: "Black Cases", image: magsafeBlackImg, colors: ["Matte Black"], basePrice: 1399, originalPrice: 2499, discount: "Save 44%", rating: 5, reviewBase: 110 },
+// Samsung-specific case types
+const samsungCaseTypes = [
+  { type: "Silicone Snap Case", category: "Silicone Cases", image: samsungSiliconeBlueImg, colors: ["Black", "Blue", "Pink", "Green"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 150 },
+  { type: "Premium Leather Case", category: "Leather Cases", image: samsungLeatherBrownImg, colors: ["Saddle Brown", "Black"], basePrice: 1999, originalPrice: 3499, discount: "Save 43%", rating: 5, reviewBase: 60 },
+  { type: "Clear Armor Case", category: "Clear Cases", image: samsungClearCaseImg, colors: ["Clear"], basePrice: 1199, originalPrice: 1999, discount: "Save 40%", rating: 5, reviewBase: 100 },
+  { type: "Matte Black Case", category: "Black Cases", image: samsungMatteBlackImg, colors: ["Matte Black"], basePrice: 1399, originalPrice: 2499, discount: "Save 44%", rating: 5, reviewBase: 110 },
+];
+
+// OnePlus-specific case types
+const oneplusCaseTypes = [
+  { type: "Silicone Snap Case", category: "Silicone Cases", image: oneplusSiliconeBlueImg, colors: ["Black", "Blue", "Pink", "Green"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 150 },
+  { type: "Premium Leather Case", category: "Leather Cases", image: oneplusLeatherBrownImg, colors: ["Saddle Brown", "Black"], basePrice: 1999, originalPrice: 3499, discount: "Save 43%", rating: 5, reviewBase: 60 },
+  { type: "Clear Armor Case", category: "Clear Cases", image: oneplusClearCaseImg, colors: ["Clear"], basePrice: 1199, originalPrice: 1999, discount: "Save 40%", rating: 5, reviewBase: 100 },
+  { type: "Matte Black Case", category: "Black Cases", image: oneplusMatteBlackImg, colors: ["Matte Black"], basePrice: 1399, originalPrice: 2499, discount: "Save 44%", rating: 5, reviewBase: 110 },
+];
+
+// iQOO-specific case types
+const iqooCaseTypes = [
+  { type: "Silicone Snap Case", category: "Silicone Cases", image: iqooSiliconeBlueImg, colors: ["Black", "Blue", "Pink", "Green"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 150 },
+  { type: "Premium Leather Case", category: "Leather Cases", image: iqooLeatherBrownImg, colors: ["Saddle Brown", "Black"], basePrice: 1999, originalPrice: 3499, discount: "Save 43%", rating: 5, reviewBase: 60 },
+  { type: "Clear Armor Case", category: "Clear Cases", image: iqooClearCaseImg, colors: ["Clear"], basePrice: 1199, originalPrice: 1999, discount: "Save 40%", rating: 5, reviewBase: 100 },
+  { type: "Matte Black Case", category: "Black Cases", image: iqooMatteBlackImg, colors: ["Matte Black"], basePrice: 1399, originalPrice: 2499, discount: "Save 44%", rating: 5, reviewBase: 110 },
 ];
 
 export const iphoneProducts = generateProducts(iphoneDevices, caseTypes);
-export const samsungProducts = generateProducts(samsungDevices, nonAppleCaseTypes);
-export const oneplusProducts = generateProducts(oneplusDevices, nonAppleCaseTypes);
-export const iqooProducts = generateProducts(iqooDevices, nonAppleCaseTypes);
+export const samsungProducts = generateProducts(samsungDevices, samsungCaseTypes);
+export const oneplusProducts = generateProducts(oneplusDevices, oneplusCaseTypes);
+export const iqooProducts = generateProducts(iqooDevices, iqooCaseTypes);
 
 export const allProducts = [...iphoneProducts, ...samsungProducts, ...oneplusProducts, ...iqooProducts];
 
