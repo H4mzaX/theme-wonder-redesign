@@ -21,31 +21,26 @@ const categoryFeatures: Record<string, { icon: React.ElementType; label: string 
     { icon: Magnet, label: "MagSafe" },
     { icon: Shield, label: "6ft Drop" },
     { icon: Zap, label: "Wireless" },
-    { icon: Droplets, label: "Anti-Slip" },
   ],
   "Silicone Cases": [
     { icon: Shield, label: "Shock Proof" },
-    { icon: Droplets, label: "Anti-Slip" },
     { icon: Zap, label: "Wireless" },
-    { icon: Star, label: "Soft Touch" },
+    { icon: Droplets, label: "Anti-Slip" },
   ],
   "Leather Cases": [
     { icon: Star, label: "Genuine" },
     { icon: Shield, label: "6ft Drop" },
     { icon: Magnet, label: "MagSafe" },
-    { icon: Zap, label: "Wireless" },
   ],
   "Clear Cases": [
     { icon: Shield, label: "Anti-Yellow" },
-    { icon: Droplets, label: "Anti-Slip" },
     { icon: Zap, label: "Wireless" },
-    { icon: Star, label: "Crystal" },
+    { icon: Droplets, label: "Anti-Slip" },
   ],
   "Black Cases": [
     { icon: Shield, label: "Shock Proof" },
-    { icon: Star, label: "Matte" },
     { icon: Zap, label: "Wireless" },
-    { icon: Droplets, label: "Anti-Slip" },
+    { icon: Star, label: "Matte" },
   ],
 };
 
@@ -53,7 +48,6 @@ const defaultFeatures = [
   { icon: Shield, label: "Protected" },
   { icon: Zap, label: "Wireless" },
   { icon: Droplets, label: "Anti-Slip" },
-  { icon: Star, label: "Premium" },
 ];
 
 type SlideDir = "left" | "right" | "top" | "bottom";
@@ -199,18 +193,40 @@ const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
       </div>
 
       {/* Info area */}
-      <div className="flex flex-col flex-1 px-4 pt-3 pb-4 gap-1">
+      <div className="flex flex-col flex-1 px-4 pt-4 pb-4 gap-1">
         <h3 className="font-semibold text-[14px] sm:text-[15px] leading-tight line-clamp-1 text-foreground">{product.name}</h3>
         <p className="text-[12px] sm:text-[13px] text-muted-foreground">{product.subtitle}</p>
 
-        <div className="flex items-baseline gap-2 mt-auto pt-2">
+        {/* Rating */}
+        <div className="inline-flex items-center gap-1 border border-border rounded w-fit px-2 py-0.5 mt-2">
+          <span className="text-[12px] font-bold text-foreground">{product.rating.toFixed(1)}</span>
+          <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+          <span className="text-muted-foreground text-[11px]">| {product.reviews} Reviews</span>
+        </div>
+
+        {/* Color swatches */}
+        {product.colors.length > 1 && (
+          <div className="flex gap-1.5 mt-2">
+            {product.colors.map((c) => (
+              <span
+                key={c}
+                className="w-[18px] h-[18px] rounded-full border border-border/80"
+                style={{ backgroundColor: colorMap[c] || "#ccc" }}
+                title={c}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Price */}
+        <div className="flex items-baseline gap-2 mt-auto pt-3">
           <span className="font-bold text-[16px] sm:text-[18px] leading-none text-foreground">{product.price}</span>
           <span className="text-[11px] sm:text-[12px] text-muted-foreground">MRP <span className="line-through">{product.originalPrice}</span></span>
         </div>
 
         <button
           onClick={handleAddToCart}
-          className="w-full bg-foreground text-background text-[12px] sm:text-[13px] font-semibold py-3 rounded-lg tracking-wider hover:opacity-90 transition-opacity mt-2"
+          className="w-full bg-foreground text-background text-[12px] sm:text-[13px] font-semibold py-3 rounded-lg tracking-wider hover:opacity-90 transition-opacity mt-3"
         >
           ADD TO CART
         </button>
