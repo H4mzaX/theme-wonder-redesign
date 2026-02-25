@@ -26,8 +26,8 @@ const NewArrivals = () => {
   return (
     <section className="py-5 sm:py-6 lg:py-8">
       <ScrollReveal className="mb-3 sm:mb-4 lg:mb-6 px-4 sm:px-6 lg:px-10">
-        <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold tracking-tight italic text-foreground">
-          iPhone 17 Essentials
+        <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold tracking-tight italic text-foreground text-center">
+          New Arrivals
         </h2>
       </ScrollReveal>
 

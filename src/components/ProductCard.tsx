@@ -138,7 +138,7 @@ const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
       {/* Image area with directional slide */}
       <div
         ref={imageRef}
-        className="relative aspect-square bg-secondary/50 overflow-hidden"
+        className="relative aspect-[3/4] bg-secondary/50 overflow-hidden rounded-xl"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
@@ -158,7 +158,7 @@ const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-full object-contain p-3 sm:p-5 transition-transform duration-700 ease-out"
+          className="w-full h-full object-contain p-2 sm:p-4 transition-transform duration-700 ease-out"
           style={{ transform: isHovered && !product.hoverImage ? "scale(1.08)" : "scale(1)" }}
           loading="lazy"
         />
@@ -175,7 +175,7 @@ const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
             <img
               src={product.hoverImage}
               alt={`${product.name} alternate`}
-              className="w-full h-full object-contain p-3 sm:p-5"
+              className="w-full h-full object-contain p-2 sm:p-4"
               loading="lazy"
             />
           </div>
