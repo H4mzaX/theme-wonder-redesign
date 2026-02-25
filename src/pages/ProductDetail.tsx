@@ -261,22 +261,22 @@ const ProductDetail = () => {
       <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
 
       {/* ═══════ MAIN PRODUCT SECTION ═══════ */}
-      <section className="max-w-[1440px] mx-auto w-full px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-10 pt-2 sm:pt-4 lg:pt-8">
+      <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-8 xl:gap-12 pt-2 sm:pt-4 lg:pt-6">
 
           {/* ── LEFT: Gallery ── */}
-          <div className="lg:col-span-7 lg:sticky lg:top-[80px] lg:self-start">
+          <div className="lg:sticky lg:top-[80px] lg:self-start">
             <div className="flex gap-3">
               {/* Vertical thumbnails - desktop only */}
               <div
-                className="hidden lg:flex flex-col gap-2 w-[80px] max-h-[600px] overflow-y-auto flex-shrink-0"
+                className="hidden lg:flex flex-col gap-2 w-[72px] max-h-[620px] overflow-y-auto flex-shrink-0"
                 style={{ scrollbarWidth: "none" }}
               >
                 {galleryImages.map((img, i) => (
                   <button
                     key={i}
                     onClick={() => setCurrentImg(i)}
-                    className={`w-[76px] h-[76px] rounded-lg overflow-hidden border-2 transition-all flex-shrink-0 ${
+                    className={`w-[68px] h-[68px] rounded-lg overflow-hidden border-2 transition-all flex-shrink-0 ${
                       i === currentImg ? "border-foreground" : "border-border hover:border-foreground/40"
                     }`}
                   >
@@ -286,13 +286,13 @@ const ProductDetail = () => {
               </div>
 
               {/* Main image */}
-              <div className="relative flex-1 aspect-square bg-secondary/30 rounded-xl overflow-hidden">
+              <div className="relative flex-1 aspect-[4/5] lg:aspect-square bg-secondary/30 rounded-xl overflow-hidden">
                 <AnimatePresence mode="wait">
                   <motion.img
                     key={currentImg}
                     src={galleryImages[currentImg] || product.image}
                     alt={product.name}
-                    className="w-full h-full object-contain p-6 sm:p-8 lg:p-12"
+                    className="w-full h-full object-contain p-4 sm:p-6 lg:p-8"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -345,9 +345,9 @@ const ProductDetail = () => {
           </div>
 
           {/* ── RIGHT: Product Info ── */}
-          <div className="lg:col-span-5 py-1 lg:py-0">
+          <div className="py-1 lg:py-0">
             {/* Product Title */}
-            <h1 className="text-[22px] sm:text-[26px] lg:text-[32px] font-bold text-foreground leading-[1.2]">
+            <h1 className="text-[22px] sm:text-[26px] lg:text-[30px] font-bold text-foreground leading-[1.2]">
               {product.name}
             </h1>
 
@@ -529,7 +529,7 @@ const ProductDetail = () => {
       {/* ═══════ BELOW-FOLD SECTIONS ═══════ */}
 
       {/* Product Description + Specs Card */}
-      <section className="max-w-[1440px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+      <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-6 sm:py-10">
         <div className="bg-secondary/30 rounded-2xl p-5 sm:p-10 lg:p-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-10">
             <div>
@@ -549,7 +549,7 @@ const ProductDetail = () => {
       </section>
 
       {/* Accordions: Product Features, Warranty, FAQs */}
-      <section className="max-w-[1440px] mx-auto w-full px-4 sm:px-6 lg:px-8 pb-6 sm:pb-10">
+      <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 pb-6 sm:pb-10">
         <div className="bg-secondary/30 rounded-2xl overflow-hidden divide-y divide-border">
           {/* Product Features */}
           <div>
@@ -640,7 +640,7 @@ const ProductDetail = () => {
       </section>
 
       {/* ═══════ REVIEWS & RATINGS ═══════ */}
-      <section className="max-w-[1440px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+      <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-6 sm:py-10">
         <div className="bg-secondary/30 rounded-2xl p-4 sm:p-10">
           <h2 className="text-lg sm:text-2xl font-bold text-foreground text-center mb-5 sm:mb-8">Reviews & Ratings</h2>
 
@@ -736,7 +736,7 @@ const ProductDetail = () => {
 
       {/* ═══════ YOU MAY ALSO LIKE ═══════ */}
       {relatedProducts.length > 0 && (
-        <section className="max-w-[1440px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-10 border-t border-border">
+        <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-6 sm:py-10 border-t border-border">
           <div className="flex items-center justify-between mb-4 sm:mb-6">
             <h2 className="text-lg sm:text-2xl font-bold text-foreground">You may also like</h2>
             <div className="flex gap-2">
