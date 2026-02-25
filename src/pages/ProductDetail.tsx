@@ -2,9 +2,9 @@ import { useState, useRef, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import {
   Star, ChevronLeft, ChevronRight, Shield, Zap, Magnet, CheckCircle,
-  Phone, Video, Package, Truck, CreditCard, Percent, Minus, Plus,
+  Package, Truck, CreditCard, Percent, Minus, Plus,
   Share2, ChevronDown, Fingerprint, Smartphone, Droplets, Search as SearchIcon,
-  RotateCcw, Timer, Lock, PlusCircle
+  RotateCcw, Timer, Lock, PlusCircle, MessageCircle, Flame, Clock, Award
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { allProducts, colorImages, type Product } from "@/data/products";
@@ -240,7 +240,7 @@ const ProductDetail = () => {
     .map((p) => p.device)
     .filter((v, i, a) => a.indexOf(v) === i);
 
-  const emiPrice = Math.ceil(parseInt(product.price.replace(/[₹,]/g, "")) / 3);
+  
 
   const handleAddToCart = () => {
     for (let i = 0; i < quantity; i++) {
@@ -387,12 +387,21 @@ const ProductDetail = () => {
                 <span className="text-[12px] sm:text-sm text-muted-foreground">MRP <span className="line-through">{product.originalPrice}</span></span>
                 <span className="text-[10px] sm:text-xs font-semibold text-green-600 border border-green-600 rounded px-1.5 sm:px-2 py-0.5">{product.discount}</span>
               </div>
-              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mt-2 border-t border-border/50 pt-2">
-                <span className="text-[11px] sm:text-xs text-muted-foreground">or pay</span>
-                <span className="text-[13px] sm:text-sm font-bold text-foreground">₹{emiPrice}/month</span>
-                <span className="text-[11px] sm:text-xs text-muted-foreground">at 0% EMI via <span className="font-bold text-foreground">VCASE</span></span>
-                <button className="text-[10px] sm:text-[11px] font-semibold border border-foreground rounded px-2 py-0.5 ml-auto hover:bg-foreground hover:text-background transition-colors">Buy On EMI</button>
+              <div className="flex items-center gap-2 mt-2 pt-2 border-t border-border/50">
+                <Truck className="w-3.5 h-3.5 text-green-600" />
+                <span className="text-[11px] sm:text-xs text-muted-foreground">Free shipping on prepaid orders</span>
+                <span className="ml-auto text-[10px] sm:text-[11px] text-muted-foreground flex items-center gap-1">
+                  <Clock className="w-3 h-3" /> Delivery in 3-5 days
+                </span>
               </div>
+            </div>
+
+            {/* Urgency strip */}
+            <div className="flex items-center gap-2 mt-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/40 rounded-lg px-3 py-2">
+              <Flame className="w-4 h-4 text-amber-600 flex-shrink-0" />
+              <span className="text-[11px] sm:text-xs font-semibold text-amber-700 dark:text-amber-400">
+                {countdownMinutes}:{countdownSeconds.toString().padStart(2, "0")} — Offer expires soon! {product.reviews}+ people viewing this
+              </span>
             </div>
 
             {/* Feature Highlights - 2x2 grid */}
@@ -471,6 +480,17 @@ const ProductDetail = () => {
               </button>
             </div>
 
+            {/* WhatsApp help */}
+            <a
+              href="https://wa.me/919876543210?text=Hi%20VCASE!%20I%20need%20help%20with%20a%20product."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 mt-3 py-3 rounded-full border border-green-500 text-green-600 hover:bg-green-50 dark:hover:bg-green-950/20 transition-colors text-[13px] sm:text-sm font-semibold"
+            >
+              <MessageCircle className="w-4 h-4" />
+              Need help? Chat on WhatsApp
+            </a>
+
             {/* Available Offers */}
             <div className="mt-6 sm:mt-7">
               <div className="flex items-center justify-between mb-2.5 sm:mb-3">
@@ -494,29 +514,22 @@ const ProductDetail = () => {
               </div>
             </div>
 
-            {/* OR divider */}
-            <div className="flex items-center gap-4 my-5 sm:my-6">
-              <div className="flex-1 h-px bg-border" />
-              <span className="text-[12px] sm:text-sm font-medium text-muted-foreground">OR</span>
-              <div className="flex-1 h-px bg-border" />
-            </div>
-
-            {/* Support cards */}
-            <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
-              <div className="flex items-center gap-2.5 sm:gap-3 border border-border rounded-xl p-3 sm:p-4 hover:border-foreground/30 transition-colors cursor-pointer">
-                <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-foreground flex-shrink-0" />
-                <div>
-                  <p className="text-[12px] sm:text-sm font-bold text-foreground leading-tight">Get Support on Call</p>
-                  <p className="text-[10px] sm:text-xs text-muted-foreground">Talk to an agent</p>
+            {/* Trust badges */}
+            <div className="flex items-center justify-between mt-5 sm:mt-6 py-3.5 sm:py-4 border-t border-b border-border">
+              {[
+                { icon: RotateCcw, label: "7-Days", sub: "Easy Returns" },
+                { icon: Award, label: "6-Month", sub: "Warranty" },
+                { icon: Package, label: "COD", sub: "Available" },
+                { icon: Lock, label: "Secure", sub: "Payments" },
+              ].map(({ icon: Icon, label, sub }) => (
+                <div key={label} className="flex items-center gap-1.5 sm:gap-2">
+                  <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-foreground" />
+                  <div>
+                    <p className="text-[11px] sm:text-xs font-bold text-foreground leading-tight">{label}</p>
+                    <p className="text-[9px] sm:text-[10px] text-muted-foreground">{sub}</p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-2.5 sm:gap-3 border border-border rounded-xl p-3 sm:p-4 hover:border-foreground/30 transition-colors cursor-pointer">
-                <Video className="w-4 h-4 sm:w-5 sm:h-5 text-foreground flex-shrink-0" />
-                <div>
-                  <p className="text-[12px] sm:text-sm font-bold text-foreground leading-tight">Live Product Demo</p>
-                  <p className="text-[10px] sm:text-xs text-muted-foreground">Shop on video call</p>
-                </div>
-              </div>
+              ))}
             </div>
 
             {/* Trust badges */}
