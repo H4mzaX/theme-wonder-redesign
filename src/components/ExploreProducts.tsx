@@ -19,7 +19,7 @@ const categories = [
 
 const ExploreProducts = () => {
   return (
-    <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-5 lg:py-8">
+    <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-4 lg:py-8">
       <ScrollReveal className="flex items-center justify-between mb-4">
         <h2 className="text-sm sm:text-base font-semibold tracking-tight text-foreground uppercase">
           Shop by Category
