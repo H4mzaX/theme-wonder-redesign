@@ -15,6 +15,7 @@ import FloatingSidebar from "@/components/FloatingSidebar";
 import LoadingBar from "@/components/LoadingBar";
 import SearchDrawer from "@/components/SearchDrawer";
 import CartDrawer from "@/components/CartDrawer";
+import MarqueeSection from "@/components/MarqueeSection";
 
 const Index = () => {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -30,6 +31,7 @@ const Index = () => {
       <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
       <main>
         <HeroSlider />
+        <MarqueeSection />
         <ExploreProducts />
         <NewArrivals />
         <PromoBanner />

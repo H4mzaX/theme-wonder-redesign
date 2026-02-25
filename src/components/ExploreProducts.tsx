@@ -32,9 +32,9 @@ const ExploreProducts = () => {
   }, []);
 
   return (
-    <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-6 lg:py-12">
-      <ScrollReveal className="text-center mb-5 lg:mb-8">
-        <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold tracking-tight text-foreground">
+    <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-4 lg:py-8">
+      <ScrollReveal className="text-center mb-3 lg:mb-5">
+        <h2 className="text-lg sm:text-xl lg:text-2xl font-bold tracking-tight text-foreground">
           Explore Products
         </h2>
       </ScrollReveal>
@@ -42,14 +42,14 @@ const ExploreProducts = () => {
       {/* Mobile: horizontal scroll carousel */}
       <div
         ref={scrollRef}
-        className="flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory lg:hidden -mx-4 px-4"
+        className="flex gap-2.5 overflow-x-auto pb-3 snap-x snap-mandatory lg:hidden -mx-4 px-4"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {categories.map((cat) => (
           <a
             key={cat.name}
             href={cat.href}
-            className="group flex-none w-[75vw] sm:w-[48vw] snap-start relative rounded-2xl overflow-hidden aspect-[3/4]"
+            className="group flex-none w-[42vw] sm:w-[35vw] snap-start relative rounded-xl overflow-hidden aspect-square"
           >
             <img
               src={cat.image}
@@ -58,15 +58,15 @@ const ExploreProducts = () => {
               loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-transparent to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-4">
-              <h3 className="text-background font-semibold text-sm">{cat.name}</h3>
+            <div className="absolute bottom-0 left-0 right-0 p-2.5">
+              <h3 className="text-background font-semibold text-xs">{cat.name}</h3>
             </div>
           </a>
         ))}
       </div>
 
       {/* Scroll progress bar - mobile only */}
-      <div className="lg:hidden mx-auto mt-1 h-[3px] bg-border rounded-full max-w-[200px] overflow-hidden">
+      <div className="lg:hidden mx-auto mt-1 h-[3px] bg-border rounded-full max-w-[160px] overflow-hidden">
         <div
           className="h-full bg-foreground rounded-full transition-transform duration-100 ease-out origin-left"
           style={{ transform: `scaleX(${0.25 + scrollProgress * 0.75})` }}
@@ -74,12 +74,12 @@ const ExploreProducts = () => {
       </div>
 
       {/* Desktop: 4-column grid */}
-      <div className="hidden lg:grid grid-cols-4 gap-4">
+      <div className="hidden lg:grid grid-cols-4 gap-3">
         {categories.map((cat) => (
           <a
             key={cat.name}
             href={cat.href}
-            className="group block relative rounded-2xl overflow-hidden aspect-[3/4]"
+            className="group block relative rounded-xl overflow-hidden aspect-square"
           >
             <img
               src={cat.image}
@@ -88,8 +88,8 @@ const ExploreProducts = () => {
               loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-foreground/10 to-transparent transition-opacity duration-300 group-hover:from-foreground/70" />
-            <div className="absolute bottom-0 left-0 right-0 p-5">
-              <h3 className="text-background font-semibold text-base">{cat.name}</h3>
+            <div className="absolute bottom-0 left-0 right-0 p-4">
+              <h3 className="text-background font-semibold text-sm">{cat.name}</h3>
             </div>
           </a>
         ))}

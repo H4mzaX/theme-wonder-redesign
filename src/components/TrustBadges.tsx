@@ -11,7 +11,7 @@ const badges = [
 const TrustBadges = () => {
   return (
     <section className="border-y border-border">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-10 lg:py-14">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-6 lg:py-10">
         <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8" staggerDelay={0.1}>
           {badges.map((badge) => (
             <StaggerItem key={badge.title}>

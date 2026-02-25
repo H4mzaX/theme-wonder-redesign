@@ -61,7 +61,7 @@ const WatchAndShop = () => {
   };
 
   return (
-    <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-6 lg:py-12">
+    <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-4 lg:py-8">
       <ScrollReveal>
         <div className="flex items-center justify-between mb-4 lg:mb-6">
           <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold tracking-tight text-foreground">

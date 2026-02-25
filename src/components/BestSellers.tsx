@@ -23,7 +23,7 @@ const BestSellers = () => {
   const products = bestSellerTabs[categories[activeTab]];
 
   return (
-    <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-10 lg:py-14">
+    <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-6 lg:py-10">
       <ScrollReveal>
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-2 tracking-tight">
           Best Sellers

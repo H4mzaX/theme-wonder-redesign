@@ -18,7 +18,7 @@ const FeaturedIn = () => {
   const x = useTransform(scrollYProgress, [0, 1], [0, -300]);
 
   return (
-    <section ref={ref} className="py-10 lg:py-14 overflow-hidden">
+    <section ref={ref} className="py-6 lg:py-10 overflow-hidden">
       <ScrollReveal className="text-center mb-8">
         <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">Featured In</h2>
       </ScrollReveal>
