@@ -161,13 +161,24 @@ const ProductDetail = () => {
   const [countdownMinutes, setCountdownMinutes] = useState(4);
   const [countdownSeconds, setCountdownSeconds] = useState(59);
   const ctaRef = useRef<HTMLDivElement>(null);
-  const { addToCart } = useCart();
+  const { addToCart, addRecentlyViewed } = useCart();
 
   const galleryImages = product
     ? product.colors.map((c) => colorImages[c] || product.image)
     : [];
 
+  // Track recently viewed
   useEffect(() => {
+    if (product) {
+      addRecentlyViewed({
+        id: product.id,
+        name: product.name,
+        subtitle: product.subtitle,
+        price: product.price,
+        originalPrice: product.originalPrice,
+        image: product.image,
+      });
+    }
     window.scrollTo(0, 0);
   }, [id]);
 

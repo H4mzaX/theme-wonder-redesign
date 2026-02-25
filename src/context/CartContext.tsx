@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
 
 export interface CartItem {
   id: string;
@@ -12,6 +12,16 @@ export interface CartItem {
   device?: string;
 }
 
+export interface RecentlyViewedItem {
+  id: string;
+  name: string;
+  subtitle: string;
+  price: string;
+  originalPrice?: string;
+  image: string;
+  viewedAt: number;
+}
+
 interface CartContextType {
   items: CartItem[];
   addToCart: (item: Omit<CartItem, "quantity">) => void;
@@ -20,12 +30,37 @@ interface CartContextType {
   clearCart: () => void;
   totalItems: number;
   subtotal: number;
+  recentlyViewed: RecentlyViewedItem[];
+  addRecentlyViewed: (item: Omit<RecentlyViewedItem, "viewedAt">) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
+const CART_STORAGE_KEY = "vcase-cart";
+const RECENT_STORAGE_KEY = "vcase-recently-viewed";
+
+function loadFromStorage<T>(key: string, fallback: T): T {
+  try {
+    const stored = localStorage.getItem(key);
+    return stored ? JSON.parse(stored) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [items, setItems] = useState<CartItem[]>([]);
+  const [items, setItems] = useState<CartItem[]>(() => loadFromStorage(CART_STORAGE_KEY, []));
+  const [recentlyViewed, setRecentlyViewed] = useState<RecentlyViewedItem[]>(() => loadFromStorage(RECENT_STORAGE_KEY, []));
+
+  // Persist cart
+  useEffect(() => {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+  }, [items]);
+
+  // Persist recently viewed
+  useEffect(() => {
+    localStorage.setItem(RECENT_STORAGE_KEY, JSON.stringify(recentlyViewed));
+  }, [recentlyViewed]);
 
   const addToCart = (item: Omit<CartItem, "quantity">) => {
     setItems((prev) => {
@@ -56,6 +91,13 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const clearCart = () => setItems([]);
 
+  const addRecentlyViewed = useCallback((item: Omit<RecentlyViewedItem, "viewedAt">) => {
+    setRecentlyViewed((prev) => {
+      const filtered = prev.filter((r) => r.id !== item.id);
+      return [{ ...item, viewedAt: Date.now() }, ...filtered].slice(0, 10);
+    });
+  }, []);
+
   const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
   const subtotal = items.reduce((sum, i) => {
     const price = parseInt(i.price.replace(/[₹,]/g, "")) || 0;
@@ -63,7 +105,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   }, 0);
 
   return (
-    <CartContext.Provider value={{ items, addToCart, removeFromCart, updateQuantity, clearCart, totalItems, subtotal }}>
+    <CartContext.Provider value={{ items, addToCart, removeFromCart, updateQuantity, clearCart, totalItems, subtotal, recentlyViewed, addRecentlyViewed }}>
       {children}
     </CartContext.Provider>
   );
