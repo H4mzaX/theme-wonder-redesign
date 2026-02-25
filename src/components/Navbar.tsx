@@ -1,4 +1,4 @@
-import { Search, User, ShoppingBag, Menu, X, ChevronDown, ArrowRight } from "lucide-react";
+import { Search, User, ShoppingBag, Menu, X, ChevronRight, ArrowRight } from "lucide-react";
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -38,6 +38,20 @@ const megaMenuData = {
       href: "/collections/all",
     },
   },
+  Explore: {
+    collections: [
+      { name: "About Us", subtitle: "Our story & mission", count: 0, image: collectionCases, href: "#" },
+      { name: "Shipping Policy", subtitle: "Fast & free delivery", count: 0, image: collectionProtectors, href: "#" },
+      { name: "Return & Refund", subtitle: "Hassle-free returns", count: 0, image: collectionRugged, href: "#" },
+      { name: "Privacy Policy", subtitle: "Your data is safe", count: 0, image: collectionAccessories, href: "#" },
+    ],
+    featured: {
+      title: "Need Help?",
+      description: "Contact our support team for any questions about orders, shipping or products.",
+      cta: "Contact Us",
+      href: "#",
+    },
+  },
 };
 
 type MegaMenuKey = keyof typeof megaMenuData;
@@ -58,7 +72,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
 
   const isTransparent = transparent && !scrolled && !activeMega;
 
-  const navItems = ["Shop", "Collections", "Explore", "Compare", "Contact"];
+  const navItems = ["Shop", "Collections", "Explore"];
 
   const handleMouseEnter = (item: string) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -111,7 +125,6 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
 
           <div className="hidden lg:flex items-center gap-1 relative">
             {navItems.map((item, i) => {
-              const hasMega = item in megaMenuData;
               const isActive = activeMega === item;
               return (
                 <div
@@ -130,9 +143,6 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                     transition={{ delay: 0.1 * i, duration: 0.4 }}
                   >
                     {item}
-                    {hasMega && (
-                      <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isActive ? "rotate-180" : ""}`} />
-                    )}
                   </motion.a>
                   {isActive && (
                     <motion.div
@@ -164,35 +174,39 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
           {activeMega && (
             <motion.div
               className="absolute left-0 top-full w-full bg-background border-t border-border/30 shadow-xl z-50"
-              initial={{ opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
               onMouseEnter={handleMegaEnter}
               onMouseLeave={handleMouseLeave}
             >
               <div className="section-padding py-8">
                 <div className="grid grid-cols-12 gap-8">
                   <div className="col-span-9">
-                    <p className="text-xs uppercase tracking-widest text-muted-foreground mb-5 font-medium">Collections</p>
+                    <p className="text-xs uppercase tracking-widest text-muted-foreground mb-5 font-medium">
+                      {activeMega === "Explore" ? "Pages" : "Collections"}
+                    </p>
                     <div className="grid grid-cols-4 gap-5">
                       {megaMenuData[activeMega].collections.map((col, idx) => (
                         <Link key={col.name} to={col.href} onClick={() => setActiveMega(null)} className="group block">
                           <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05, duration: 0.3 }}>
-                          <div className="aspect-square rounded-lg overflow-hidden mb-3 relative">
-                            <img src={col.image} alt={col.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                            <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors duration-300" />
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <span className="font-display text-lg font-semibold tracking-tight group-hover:text-accent transition-colors relative">
-                                {col.name}
-                                <sup className="text-[10px] font-body ml-1 text-muted-foreground">{col.count}</sup>
-                              </span>
-                              <p className="text-xs text-muted-foreground mt-0.5">{col.subtitle}</p>
+                            {activeMega !== "Explore" && (
+                              <div className="aspect-square rounded-lg overflow-hidden mb-3 relative">
+                                <img src={col.image} alt={col.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                                <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors duration-300" />
+                              </div>
+                            )}
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <span className="font-display text-lg font-semibold tracking-tight group-hover:text-accent transition-colors relative">
+                                  {col.name}
+                                  {col.count > 0 && <sup className="text-[10px] font-body ml-1 text-muted-foreground">{col.count}</sup>}
+                                </span>
+                                <p className="text-xs text-muted-foreground mt-0.5">{col.subtitle}</p>
+                              </div>
+                              <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-accent group-hover:translate-x-1 transition-all duration-200" />
                             </div>
-                            <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-accent group-hover:translate-x-1 transition-all duration-200" />
-                          </div>
                           </motion.div>
                         </Link>
                       ))}
@@ -216,50 +230,64 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
         </AnimatePresence>
       </motion.nav>
 
+      {/* Mobile menu - bottom sheet style */}
       <AnimatePresence>
         {mobileOpen && (
           <>
             <motion.div className="fixed inset-0 bg-foreground/40 z-50 lg:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setMobileOpen(false)} />
-            <motion.div className="fixed inset-y-0 left-0 w-80 bg-background z-50 lg:hidden section-padding py-6 overflow-y-auto" initial={{ x: "-100%" }} animate={{ x: 0 }} exit={{ x: "-100%" }} transition={{ type: "spring", damping: 25, stiffness: 200 }}>
-              <div className="flex justify-between items-center mb-10">
-                <span className="font-display font-bold text-lg">VCASE</span>
+            <motion.div
+              className="fixed inset-x-0 bottom-0 bg-background z-50 lg:hidden rounded-t-2xl max-h-[85vh] flex flex-col"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            >
+              {/* Drag handle */}
+              <div className="flex justify-center pt-3 pb-1">
+                <div className="w-10 h-1 rounded-full bg-muted-foreground/30" />
+              </div>
+
+              {/* Close button */}
+              <div className="flex justify-center py-3">
                 <button onClick={() => setMobileOpen(false)}><X className="w-5 h-5" /></button>
               </div>
-              <div className="flex flex-col gap-4">
-                {navItems.map((item, i) => {
-                  const hasMega = item in megaMenuData;
-                  return (
-                    <div key={item}>
-                      <motion.button
-                        className="flex items-center justify-between w-full text-lg font-display font-semibold text-foreground hover:text-accent transition-colors"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.05 * i }}
-                        onClick={() => { if (hasMega) setMobileSubmenu(mobileSubmenu === item ? null : item); }}
-                      >
-                        {item}
-                        {hasMega && <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileSubmenu === item ? "rotate-180" : ""}`} />}
-                      </motion.button>
-                      <AnimatePresence>
-                        {hasMega && mobileSubmenu === item && (
-                          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
-                            <div className="pl-4 pt-3 pb-2 flex flex-col gap-3">
-                              {megaMenuData[item as MegaMenuKey].collections.map((col) => (
-                                <Link key={col.name} to={col.href} onClick={() => setMobileOpen(false)} className="flex items-center gap-3 group">
-                                  <img src={col.image} alt={col.name} className="w-12 h-12 rounded-md object-cover" />
-                                  <div>
-                                    <span className="text-sm font-medium group-hover:text-accent transition-colors">{col.name}</span>
-                                    <p className="text-xs text-muted-foreground">{col.subtitle}</p>
-                                  </div>
-                                </Link>
-                              ))}
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  );
-                })}
+
+              <div className="flex-1 overflow-y-auto px-6 pb-8">
+                <div className="flex flex-col gap-1">
+                  {navItems.map((item, i) => {
+                    const hasMega = item in megaMenuData;
+                    return (
+                      <div key={item}>
+                        <motion.button
+                          className="flex items-center justify-between w-full text-2xl font-display font-bold text-foreground hover:text-accent transition-colors py-3"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.05 * i }}
+                          onClick={() => { if (hasMega) setMobileSubmenu(mobileSubmenu === item ? null : item); }}
+                        >
+                          {item}
+                          {hasMega && <ChevronRight className={`w-5 h-5 text-muted-foreground transition-transform duration-200 ${mobileSubmenu === item ? "rotate-90" : ""}`} />}
+                        </motion.button>
+                        <AnimatePresence>
+                          {hasMega && mobileSubmenu === item && (
+                            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
+                              <div className="pl-2 pt-1 pb-3 flex flex-col gap-3">
+                                {megaMenuData[item as MegaMenuKey].collections.map((col) => (
+                                  <Link key={col.name} to={col.href} onClick={() => setMobileOpen(false)} className="flex items-center gap-3 group py-1">
+                                    <div>
+                                      <span className="text-base font-medium group-hover:text-accent transition-colors">{col.name}</span>
+                                      <p className="text-xs text-muted-foreground">{col.subtitle}</p>
+                                    </div>
+                                  </Link>
+                                ))}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </motion.div>
           </>
