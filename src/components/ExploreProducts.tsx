@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { ScrollReveal } from "@/hooks/useScrollAnimations";
 import { motion } from "framer-motion";
 import magsafeClearImg from "@/assets/case-magsafe-clear.jpg";
@@ -8,10 +9,10 @@ import leatherBrownImg from "@/assets/case-leather-brown.jpg";
 import magsafeBlackImg from "@/assets/case-magsafe-black.jpg";
 
 const categories = [
-  { name: "Cases & Protectors", count: "120+ Products", image: magsafeClearImg, href: "#", accent: "from-blue-500/20 to-transparent" },
-  { name: "Charging Solutions", count: "45+ Products", image: siliconeBluImg, href: "#", accent: "from-emerald-500/20 to-transparent" },
-  { name: "Silicone Cases", count: "80+ Products", image: leatherBrownImg, href: "#", accent: "from-amber-500/20 to-transparent" },
-  { name: "Leather Cases", count: "35+ Products", image: magsafeBlackImg, href: "#", accent: "from-rose-500/20 to-transparent" },
+  { name: "iPhone Cases", count: "120+ Products", image: magsafeClearImg, href: "/collections/iphone-cases", accent: "from-blue-500/20 to-transparent" },
+  { name: "Samsung Cases", count: "45+ Products", image: siliconeBluImg, href: "/collections/samsung-cases", accent: "from-emerald-500/20 to-transparent" },
+  { name: "MagSafe Cases", count: "80+ Products", image: leatherBrownImg, href: "/collections/magsafe-cases", accent: "from-amber-500/20 to-transparent" },
+  { name: "Leather Cases", count: "35+ Products", image: magsafeBlackImg, href: "/collections/leather-cases", accent: "from-rose-500/20 to-transparent" },
 ];
 
 const ExploreProducts = () => {
@@ -38,9 +39,9 @@ const ExploreProducts = () => {
             Explore Products
           </h2>
         </div>
-        <a href="#" className="hidden sm:flex items-center gap-1 text-sm font-medium text-foreground hover:text-accent transition-colors">
+        <Link to="/collections/all" className="hidden sm:flex items-center gap-1 text-sm font-medium text-foreground hover:text-accent transition-colors">
           View All <ArrowRight className="w-4 h-4" />
-        </a>
+        </Link>
       </ScrollReveal>
 
       {/* Mobile: horizontal scroll */}
@@ -50,15 +51,17 @@ const ExploreProducts = () => {
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {categories.map((cat, i) => (
-          <motion.a
+          <Link
             key={cat.name}
-            href={cat.href}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
+            to={cat.href}
             className="group flex-none w-[38vw] sm:w-[32vw] snap-start"
           >
-            <div className="relative rounded-2xl overflow-hidden aspect-[3/4] bg-muted">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+              className="relative rounded-2xl overflow-hidden aspect-[3/4] bg-muted"
+            >
               <img src={cat.image} alt={cat.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
               <div className={`absolute inset-0 bg-gradient-to-t ${cat.accent}`} />
               <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/10 to-transparent" />
@@ -66,8 +69,8 @@ const ExploreProducts = () => {
                 <h3 className="text-background font-bold text-xs leading-tight">{cat.name}</h3>
                 <p className="text-background/70 text-[10px] mt-0.5">{cat.count}</p>
               </div>
-            </div>
-          </motion.a>
+            </motion.div>
+          </Link>
         ))}
       </div>
 
@@ -82,15 +85,18 @@ const ExploreProducts = () => {
       {/* Desktop: 4-column grid with modern cards */}
       <div className="hidden lg:grid grid-cols-4 gap-4">
         {categories.map((cat, i) => (
-          <motion.a
+          <Link
             key={cat.name}
-            href={cat.href}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.1, duration: 0.5 }}
+            to={cat.href}
             className="group block relative rounded-2xl overflow-hidden aspect-[3/4] bg-muted"
           >
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1, duration: 0.5 }}
+              className="w-full h-full"
+            >
             <img
               src={cat.image}
               alt={cat.name}
@@ -106,7 +112,8 @@ const ExploreProducts = () => {
                 <ArrowRight className="w-3.5 h-3.5 text-background/70 group-hover:translate-x-1 group-hover:text-background transition-all duration-300" />
               </div>
             </div>
-          </motion.a>
+            </motion.div>
+          </Link>
         ))}
       </div>
     </section>

@@ -1,5 +1,6 @@
 import { Search, User, ShoppingBag, Menu, X, ChevronDown, ArrowRight } from "lucide-react";
 import { useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useScrollDirection } from "@/hooks/useScrollAnimations";
 import { useCart } from "@/context/CartContext";
@@ -11,28 +12,30 @@ import collectionAccessories from "@/assets/collection-accessories.jpg";
 const megaMenuData = {
   Shop: {
     collections: [
-      { name: "iPhone Cases", subtitle: "Premium protection for iPhone", count: 24, image: collectionCases },
-      { name: "Screen Protectors", subtitle: "Crystal clear defense", count: 18, image: collectionProtectors },
-      { name: "Rugged Cases", subtitle: "Military-grade protection", count: 12, image: collectionRugged },
-      { name: "Accessories", subtitle: "Grips, mounts & more", count: 30, image: collectionAccessories },
+      { name: "iPhone Cases", subtitle: "Premium protection for iPhone", count: 24, image: collectionCases, href: "/collections/iphone-cases" },
+      { name: "Samsung Cases", subtitle: "Galaxy protection", count: 18, image: collectionProtectors, href: "/collections/samsung-cases" },
+      { name: "OnePlus Cases", subtitle: "Never settle on protection", count: 12, image: collectionRugged, href: "/collections/oneplus-cases" },
+      { name: "All Products", subtitle: "Browse everything", count: 84, image: collectionAccessories, href: "/collections/all" },
     ],
     featured: {
       title: "New Arrivals",
       description: "Check out our latest cases for iPhone 16 and Samsung Galaxy S25 series.",
       cta: "Shop New",
+      href: "/collections/all",
     },
   },
   Collections: {
     collections: [
-      { name: "All Products", subtitle: "Browse everything", count: 84, image: collectionCases },
-      { name: "Samsung Cases", subtitle: "Galaxy protection", count: 20, image: collectionProtectors },
-      { name: "OnePlus Cases", subtitle: "Never settle on protection", count: 10, image: collectionRugged },
-      { name: "Pixel Cases", subtitle: "Pure Google, pure protection", count: 8, image: collectionAccessories },
+      { name: "MagSafe Cases", subtitle: "Snap-on perfection", count: 20, image: collectionCases, href: "/collections/magsafe-cases" },
+      { name: "Leather Cases", subtitle: "Handcrafted premium", count: 20, image: collectionProtectors, href: "/collections/leather-cases" },
+      { name: "All Products", subtitle: "Browse everything", count: 84, image: collectionRugged, href: "/collections/all" },
+      { name: "iPhone Cases", subtitle: "Premium protection", count: 24, image: collectionAccessories, href: "/collections/iphone-cases" },
     ],
     featured: {
       title: "Best Sellers",
       description: "Our most popular cases chosen by thousands of customers worldwide.",
       cta: "View All",
+      href: "/collections/all",
     },
   },
 };
@@ -89,7 +92,7 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
             <Menu className="w-5 h-5" />
           </button>
 
-          <a href="/" className="flex-shrink-0 flex items-center gap-2">
+          <Link to="/" className="flex-shrink-0 flex items-center gap-2">
             <motion.span
               className="font-display font-bold text-xl tracking-tight"
               whileHover={{ scale: 1.05 }}
@@ -97,7 +100,7 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
             >
               VCASE
             </motion.span>
-          </a>
+          </Link>
 
           <div className="hidden lg:flex items-center gap-1 relative">
             {navItems.map((item, i) => {
@@ -167,7 +170,8 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
                     <p className="text-xs uppercase tracking-widest text-muted-foreground mb-5 font-medium">Collections</p>
                     <div className="grid grid-cols-4 gap-5">
                       {megaMenuData[activeMega].collections.map((col, idx) => (
-                        <motion.a key={col.name} href="#" className="group block" initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05, duration: 0.3 }}>
+                        <Link key={col.name} to={col.href} onClick={() => setActiveMega(null)} className="group block">
+                          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05, duration: 0.3 }}>
                           <div className="aspect-square rounded-lg overflow-hidden mb-3 relative">
                             <img src={col.image} alt={col.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                             <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors duration-300" />
@@ -182,7 +186,8 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
                             </div>
                             <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-accent group-hover:translate-x-1 transition-all duration-200" />
                           </div>
-                        </motion.a>
+                          </motion.div>
+                        </Link>
                       ))}
                     </div>
                   </div>
@@ -191,10 +196,10 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
                     <motion.div className="bg-card rounded-lg p-6 h-[calc(100%-2rem)]" initial={{ opacity: 0, x: 15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15, duration: 0.3 }}>
                       <h3 className="font-display text-xl font-semibold mb-2">{megaMenuData[activeMega].featured.title}</h3>
                       <p className="text-sm text-muted-foreground mb-6 leading-relaxed">{megaMenuData[activeMega].featured.description}</p>
-                      <a href="#" className="inline-flex items-center gap-2 text-sm font-medium bg-foreground text-background px-5 py-2.5 rounded-full hover:bg-foreground/90 transition-colors">
+                      <Link to={megaMenuData[activeMega].featured.href} onClick={() => setActiveMega(null)} className="inline-flex items-center gap-2 text-sm font-medium bg-foreground text-background px-5 py-2.5 rounded-full hover:bg-foreground/90 transition-colors">
                         {megaMenuData[activeMega].featured.cta}
                         <ArrowRight className="w-3.5 h-3.5" />
-                      </a>
+                      </Link>
                     </motion.div>
                   </div>
                 </div>
@@ -233,13 +238,13 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
                           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
                             <div className="pl-4 pt-3 pb-2 flex flex-col gap-3">
                               {megaMenuData[item as MegaMenuKey].collections.map((col) => (
-                                <a key={col.name} href="#" className="flex items-center gap-3 group">
+                                <Link key={col.name} to={col.href} onClick={() => setMobileOpen(false)} className="flex items-center gap-3 group">
                                   <img src={col.image} alt={col.name} className="w-12 h-12 rounded-md object-cover" />
                                   <div>
                                     <span className="text-sm font-medium group-hover:text-accent transition-colors">{col.name}</span>
                                     <p className="text-xs text-muted-foreground">{col.subtitle}</p>
                                   </div>
-                                </a>
+                                </Link>
                               ))}
                             </div>
                           </motion.div>
