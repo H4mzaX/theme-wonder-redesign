@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import { Star, Shield, Magnet, Zap, Droplets } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
@@ -56,9 +56,50 @@ const defaultFeatures = [
   { icon: Star, label: "Premium" },
 ];
 
+type SlideDir = "left" | "right" | "top" | "bottom";
+
+function getDirection(el: HTMLElement, e: React.MouseEvent): SlideDir {
+  const rect = el.getBoundingClientRect();
+  const x = e.clientX - rect.left - rect.width / 2;
+  const y = e.clientY - rect.top - rect.height / 2;
+  // Determine direction based on angle
+  const angle = Math.atan2(y, x) * (180 / Math.PI);
+  if (angle >= -45 && angle < 45) return "right";
+  if (angle >= 45 && angle < 135) return "bottom";
+  if (angle >= -135 && angle < -45) return "top";
+  return "left";
+}
+
+const slideTransforms: Record<SlideDir, string> = {
+  left: "translateX(-100%)",
+  right: "translateX(100%)",
+  top: "translateY(-100%)",
+  bottom: "translateY(100%)",
+};
+
 const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
   const { addToCart } = useCart();
   const [isHovered, setIsHovered] = useState(false);
+  const [enterDir, setEnterDir] = useState<SlideDir>("left");
+  const [exitDir, setExitDir] = useState<SlideDir>("left");
+  const [isExiting, setIsExiting] = useState(false);
+  const imageRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseEnter = useCallback((e: React.MouseEvent) => {
+    if (!imageRef.current) return;
+    const dir = getDirection(imageRef.current, e);
+    setEnterDir(dir);
+    setIsExiting(false);
+    setIsHovered(true);
+  }, []);
+
+  const handleMouseLeave = useCallback((e: React.MouseEvent) => {
+    if (!imageRef.current) return;
+    const dir = getDirection(imageRef.current, e);
+    setExitDir(dir);
+    setIsExiting(true);
+    setIsHovered(false);
+  }, []);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -76,15 +117,25 @@ const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
 
   const features = categoryFeatures[product.category] || defaultFeatures;
 
+  // Hover image transform
+  const hoverTransform = isHovered
+    ? "translate(0, 0)"
+    : isExiting
+      ? slideTransforms[exitDir]
+      : slideTransforms[enterDir];
+
   return (
     <Link
       to={`/product/${product.id}`}
       className="group flex flex-col h-full bg-background rounded-2xl overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.08),0_8px_24px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.10),0_12px_32px_rgba(0,0,0,0.12)] transition-shadow duration-300"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Image area with crossfade */}
-      <div className="relative aspect-square bg-secondary/50 overflow-hidden">
+      {/* Image area with directional slide */}
+      <div
+        ref={imageRef}
+        className="relative aspect-square bg-secondary/50 overflow-hidden"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         {(tag || product.discount) && (
           <span className="absolute top-3 left-3 z-10 bg-foreground text-background text-[11px] px-3 py-1 rounded-full font-medium">
             {tag || product.discount}
@@ -95,40 +146,51 @@ const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
         <img
           src={product.image}
           alt={product.name}
-          className="absolute inset-0 w-full h-full object-contain p-6 sm:p-8 transition-opacity duration-500 ease-in-out"
-          style={{ opacity: isHovered && product.hoverImage ? 0 : 1 }}
+          className="w-full h-full object-contain p-6 sm:p-8"
           loading="lazy"
         />
 
-        {/* Hover image (crossfade) */}
+        {/* Hover image — directional slide */}
         {product.hoverImage && (
-          <img
-            src={product.hoverImage}
-            alt={`${product.name} alternate`}
-            className="absolute inset-0 w-full h-full object-contain p-6 sm:p-8 transition-all duration-500 ease-in-out"
+          <div
+            className="absolute inset-0 bg-secondary/50"
             style={{
-              opacity: isHovered ? 1 : 0,
-              transform: isHovered ? "scale(1.05)" : "scale(1)",
+              transform: hoverTransform,
+              transition: "transform 0.45s cubic-bezier(0.4, 0, 0.2, 1)",
             }}
-            loading="lazy"
-          />
+          >
+            <img
+              src={product.hoverImage}
+              alt={`${product.name} alternate`}
+              className="w-full h-full object-contain p-6 sm:p-8"
+              loading="lazy"
+            />
+          </div>
         )}
 
-        {/* Feature icons overlay — slides up on hover */}
+        {/* Feature icons — pill-style, slide up on hover */}
         <div
-          className="absolute bottom-0 left-0 right-0 flex justify-center gap-1 px-2 pb-2 pt-6 bg-gradient-to-t from-background/90 via-background/50 to-transparent transition-all duration-400 ease-out"
+          className="absolute bottom-0 left-0 right-0 flex justify-center gap-2 px-3 pb-3 pt-8 bg-gradient-to-t from-background/95 via-background/40 to-transparent"
           style={{
             opacity: isHovered ? 1 : 0,
-            transform: isHovered ? "translateY(0)" : "translateY(100%)",
+            transform: isHovered ? "translateY(0)" : "translateY(12px)",
+            transition: "opacity 0.35s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+            transitionDelay: isHovered ? "0.15s" : "0s",
           }}
         >
-          {features.map((feat) => (
+          {features.map((feat, i) => (
             <div
               key={feat.label}
-              className="flex flex-col items-center gap-0.5 px-1.5 py-1"
+              className="flex items-center gap-1 bg-foreground/90 text-background rounded-full px-2 py-1 backdrop-blur-sm"
+              style={{
+                opacity: isHovered ? 1 : 0,
+                transform: isHovered ? "translateY(0) scale(1)" : "translateY(8px) scale(0.9)",
+                transition: "opacity 0.3s ease, transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
+                transitionDelay: isHovered ? `${0.18 + i * 0.05}s` : "0s",
+              }}
             >
-              <feat.icon className="w-3.5 h-3.5 text-foreground" strokeWidth={2} />
-              <span className="text-[9px] sm:text-[10px] font-medium text-foreground leading-none whitespace-nowrap">
+              <feat.icon className="w-3 h-3" strokeWidth={2.5} />
+              <span className="text-[8px] sm:text-[9px] font-semibold leading-none whitespace-nowrap">
                 {feat.label}
               </span>
             </div>
@@ -141,14 +203,12 @@ const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
         <h3 className="font-semibold text-[14px] sm:text-[15px] leading-tight line-clamp-1 text-foreground">{product.name}</h3>
         <p className="text-[12px] sm:text-[13px] text-muted-foreground">{product.subtitle}</p>
 
-        {/* Rating */}
         <div className="inline-flex items-center gap-1 border border-border rounded w-fit px-2 py-0.5 mt-2">
           <span className="text-[12px] font-bold text-foreground">{product.rating.toFixed(1)}</span>
           <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
           <span className="text-muted-foreground text-[11px]">| {product.reviews} Reviews</span>
         </div>
 
-        {/* Color swatches */}
         {product.colors.length > 1 && (
           <div className="flex gap-1.5 mt-2">
             {product.colors.map((c) => (
@@ -162,13 +222,11 @@ const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
           </div>
         )}
 
-        {/* Price */}
         <div className="flex items-baseline gap-2 mt-auto pt-3">
           <span className="font-bold text-[16px] sm:text-[18px] leading-none text-foreground">{product.price}</span>
           <span className="text-[11px] sm:text-[12px] text-muted-foreground">MRP <span className="line-through">{product.originalPrice}</span></span>
         </div>
 
-        {/* Add to cart button */}
         <button
           onClick={handleAddToCart}
           className="w-full bg-foreground text-background text-[12px] sm:text-[13px] font-semibold py-3 rounded-lg tracking-wider hover:opacity-90 transition-opacity mt-3"
