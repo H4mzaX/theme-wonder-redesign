@@ -238,6 +238,7 @@ const ProductDetail = () => {
         name: product.name,
         subtitle: product.subtitle,
         price: product.price,
+        originalPrice: product.originalPrice,
         image: galleryImages[selectedColor] || product.image,
         color: product.colors[selectedColor] || "Default",
         device: product.device,

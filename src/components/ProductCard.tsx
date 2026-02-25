@@ -103,6 +103,7 @@ const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
       name: product.name,
       subtitle: product.subtitle,
       price: product.price,
+      originalPrice: product.originalPrice,
       image: product.image,
       color: product.colors[0] || "Default",
       device: product.device,
