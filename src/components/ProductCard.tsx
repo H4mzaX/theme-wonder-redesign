@@ -39,7 +39,7 @@ const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
   return (
     <Link
       to={`/product/${product.id}`}
-      className="group flex flex-col h-full bg-background rounded-2xl overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.06)] hover:shadow-[0_2px_8px_rgba(0,0,0,0.06),0_8px_24px_rgba(0,0,0,0.10)] transition-shadow duration-300"
+      className="group flex flex-col h-full bg-background rounded-2xl overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.08),0_8px_24px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.10),0_12px_32px_rgba(0,0,0,0.12)] transition-shadow duration-300"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
