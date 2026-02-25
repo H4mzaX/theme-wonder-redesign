@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Home, SlidersHorizontal, ChevronDown, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -9,7 +9,13 @@ import Footer from "@/components/Footer";
 import SearchDrawer from "@/components/SearchDrawer";
 import CartDrawer from "@/components/CartDrawer";
 import ProductCard from "@/components/ProductCard";
+
+// Per-collection hero images — zoomed product shots
 import collectionHero from "@/assets/collection-hero-cases.jpg";
+import magsafeClearImg from "@/assets/case-magsafe-clear.jpg";
+import leatherBrownImg from "@/assets/case-leather-brown.jpg";
+import samsungSiliconeBlueImg from "@/assets/samsung-silicone-blue.jpg";
+import oneplusMatteBlackImg from "@/assets/oneplus-matte-black.jpg";
 
 // Collection definitions
 const collectionDefs: Record<string, {
@@ -34,7 +40,7 @@ const collectionDefs: Record<string, {
   "samsung-cases": {
     title: "Samsung Cases",
     description: "Galaxy-grade protection for Samsung devices",
-    heroImage: collectionHero,
+    heroImage: samsungSiliconeBlueImg,
     filter: (p) => p.device.includes("Samsung"),
     subcategories: [
       { name: "All Samsung Cases", filter: () => true },
@@ -46,7 +52,7 @@ const collectionDefs: Record<string, {
   "oneplus-cases": {
     title: "OnePlus Cases",
     description: "Never settle on protection",
-    heroImage: collectionHero,
+    heroImage: oneplusMatteBlackImg,
     filter: (p) => p.device.includes("OnePlus"),
     subcategories: [
       { name: "All OnePlus Cases", filter: () => true },
@@ -57,7 +63,7 @@ const collectionDefs: Record<string, {
   "magsafe-cases": {
     title: "MagSafe Cases",
     description: "Snap-on perfection with MagSafe technology",
-    heroImage: collectionHero,
+    heroImage: magsafeClearImg,
     filter: (p) => p.category === "MagSafe Cases",
     subcategories: [
       { name: "All MagSafe", filter: () => true },
@@ -68,7 +74,7 @@ const collectionDefs: Record<string, {
   "leather-cases": {
     title: "Leather Cases",
     description: "Handcrafted premium leather protection",
-    heroImage: collectionHero,
+    heroImage: leatherBrownImg,
     filter: (p) => p.category === "Leather Cases",
     subcategories: [
       { name: "All Leather", filter: () => true },
@@ -111,6 +117,12 @@ const Collection = () => {
 
   const collection = collectionDefs[slug || "all"] || collectionDefs["all"];
 
+  // Reset subcategory and scroll to top when collection changes
+  useEffect(() => {
+    setActiveSubcat(0);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [slug]);
+
   const products = useMemo(() => {
     let filtered = allProducts.filter(collection.filter);
     const subFilter = collection.subcategories[activeSubcat]?.filter;
@@ -129,7 +141,13 @@ const Collection = () => {
   }, [collection, activeSubcat, sortBy]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <motion.div
+      key={slug}
+      className="min-h-screen bg-background"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4 }}
+    >
       <AnnouncementBar />
       <Navbar onSearchOpen={() => setSearchOpen(true)} onCartOpen={() => setCartOpen(true)} transparent />
       <SearchDrawer open={searchOpen} onClose={() => setSearchOpen(false)} />
@@ -142,10 +160,13 @@ const Collection = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
       >
-        <img
+        <motion.img
           src={collection.heroImage}
           alt={collection.title}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover scale-110"
+          initial={{ scale: 1.15 }}
+          animate={{ scale: 1.05 }}
+          transition={{ duration: 8, ease: "easeOut" }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-foreground/10" />
         <div className="absolute bottom-0 left-0 right-0 section-padding pb-8 sm:pb-10 lg:pb-14">
@@ -385,7 +406,7 @@ const Collection = () => {
       </section>
 
       <Footer />
-    </div>
+    </motion.div>
   );
 };
 
