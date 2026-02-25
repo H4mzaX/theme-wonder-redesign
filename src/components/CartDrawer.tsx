@@ -1,4 +1,4 @@
-import { X, Minus, Plus, ArrowRight, ChevronLeft, ChevronRight, FileText, Package, Tag, Shield, Camera, Smartphone } from "lucide-react";
+import { X, Minus, Plus, ArrowRight, ChevronLeft, ChevronRight, FileText, Package, Tag, Shield, Camera, Smartphone, Zap, Clock, Users, Flame } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useMemo } from "react";
 import { useCart } from "@/context/CartContext";
@@ -199,41 +199,72 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
                 ))}
               </div>
 
-              {/* Bundle & Save */}
+              {/* Bundle Deal — Flash Section */}
               {bundleItems.length > 0 && (
-                <div className="py-6 border-t border-border mt-4">
-                  <div className="flex items-center justify-between mb-1">
-                    <h4 className="text-lg font-display font-bold">Bundle & Save</h4>
-                    {bundleSavings > 0 && (
-                      <span className="text-xs font-bold text-destructive bg-destructive/10 px-2.5 py-1 rounded-full">
-                        Save ₹{bundleSavings.toLocaleString("en-IN")}
-                      </span>
-                    )}
+                <div className="py-5 border-t border-border mt-4">
+                  {/* Flash header with animated shimmer */}
+                  <div className="relative bg-foreground text-background rounded-xl p-4 mb-4 overflow-hidden">
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-background/10 to-transparent"
+                      animate={{ x: ["-100%", "200%"] }}
+                      transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
+                    />
+                    <div className="relative flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <motion.div
+                          animate={{ scale: [1, 1.2, 1] }}
+                          transition={{ duration: 1.5, repeat: Infinity }}
+                        >
+                          <Zap className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                        </motion.div>
+                        <div>
+                          <h4 className="text-base font-display font-bold">Bundle Deal</h4>
+                          <p className="text-[11px] text-background/60">Only with your case purchase</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-lg font-display font-bold text-yellow-400">
+                          Save ₹{bundleSavings.toLocaleString("en-IN")}
+                        </span>
+                      </div>
+                    </div>
+                    {/* Social proof + urgency */}
+                    <div className="relative flex items-center gap-4 mt-3 pt-3 border-t border-background/10">
+                      <div className="flex items-center gap-1.5 text-[11px] text-background/70">
+                        <Users className="w-3 h-3" />
+                        <span><strong className="text-background">23 people</strong> added this today</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-[11px] text-background/70">
+                        <Clock className="w-3 h-3" />
+                        <span>Limited time</span>
+                      </div>
+                    </div>
                   </div>
-                  <p className="text-xs text-muted-foreground mb-4">Complete your protection — accessories matched to your device</p>
 
-                  <div className="flex items-center gap-2 mb-4">
+                  {/* Navigation dots */}
+                  <div className="flex items-center gap-2 mb-3">
                     <button
                       onClick={() => setBundleIndex(Math.max(0, bundleIndex - 1))}
-                      className={`w-8 h-8 rounded-full border border-border flex items-center justify-center transition-colors ${bundleIndex === 0 ? "text-muted-foreground/30" : "hover:bg-muted"}`}
+                      className={`w-7 h-7 rounded-full border border-border flex items-center justify-center transition-colors ${bundleIndex === 0 ? "text-muted-foreground/30" : "hover:bg-muted"}`}
                       disabled={bundleIndex === 0}
                     >
-                      <ChevronLeft className="w-3.5 h-3.5" />
+                      <ChevronLeft className="w-3 h-3" />
                     </button>
                     <div className="flex-1 flex gap-1 justify-center">
                       {bundleItems.map((_, idx) => (
-                        <div key={idx} className={`w-1.5 h-1.5 rounded-full transition-colors ${idx === bundleIndex ? "bg-foreground" : "bg-muted-foreground/30"}`} />
+                        <button key={idx} onClick={() => setBundleIndex(idx)} className={`w-2 h-2 rounded-full transition-all ${idx === bundleIndex ? "bg-foreground w-4" : "bg-muted-foreground/30"}`} />
                       ))}
                     </div>
                     <button
                       onClick={() => setBundleIndex(Math.min(bundleItems.length - 1, bundleIndex + 1))}
-                      className={`w-8 h-8 rounded-full border border-border flex items-center justify-center transition-colors ${bundleIndex >= bundleItems.length - 1 ? "text-muted-foreground/30" : "hover:bg-muted"}`}
+                      className={`w-7 h-7 rounded-full border border-border flex items-center justify-center transition-colors ${bundleIndex >= bundleItems.length - 1 ? "text-muted-foreground/30" : "hover:bg-muted"}`}
                       disabled={bundleIndex >= bundleItems.length - 1}
                     >
-                      <ChevronRight className="w-3.5 h-3.5" />
+                      <ChevronRight className="w-3 h-3" />
                     </button>
                   </div>
 
+                  {/* Bundle card */}
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={bundleIndex}
@@ -241,49 +272,72 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -20 }}
                       transition={{ duration: 0.2 }}
-                      className="flex gap-4 items-center bg-card rounded-xl p-3 border border-border/50"
+                      className="relative rounded-xl border border-border overflow-hidden"
                     >
-                      <div className="w-20 h-20 rounded-lg bg-muted flex-shrink-0 overflow-hidden flex items-center justify-center relative">
-                        {(() => {
-                          const Icon = bundleItems[bundleIndex].icon;
-                          return <Icon className="w-8 h-8 text-muted-foreground" />;
-                        })()}
-                        {(() => {
-                          const orig = parseInt(bundleItems[bundleIndex].originalPrice.replace(/[₹,]/g, "")) || 0;
-                          const curr = bundleItems[bundleIndex].numericPrice;
-                          const pct = Math.round(((orig - curr) / orig) * 100);
-                          return (
-                            <span className="absolute top-1 left-1 text-[9px] font-bold bg-destructive text-destructive-foreground px-1.5 py-0.5 rounded">
-                              -{pct}%
-                            </span>
-                          );
-                        })()}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h5 className="text-sm font-bold leading-tight">{bundleItems[bundleIndex].name}</h5>
-                        <p className="text-xs text-muted-foreground mt-0.5">{bundleItems[bundleIndex].subtitle}</p>
-                        <div className="flex items-center gap-2 mt-1">
-                          <span className="text-sm font-bold text-accent">{bundleItems[bundleIndex].price}</span>
-                          <span className="text-xs text-muted-foreground line-through">{bundleItems[bundleIndex].originalPrice}</span>
-                          <span className="text-[10px] font-semibold text-accent">BUNDLE PRICE</span>
+                      <div className="flex gap-3 items-center p-3">
+                        <div className="w-20 h-20 rounded-lg bg-muted flex-shrink-0 overflow-hidden flex items-center justify-center relative">
+                          {(() => {
+                            const Icon = bundleItems[bundleIndex].icon;
+                            return <Icon className="w-8 h-8 text-muted-foreground" />;
+                          })()}
+                          {(() => {
+                            const orig = parseInt(bundleItems[bundleIndex].originalPrice.replace(/[₹,]/g, "")) || 0;
+                            const curr = bundleItems[bundleIndex].numericPrice;
+                            const pct = Math.round(((orig - curr) / orig) * 100);
+                            return (
+                              <motion.span
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                className="absolute top-0.5 left-0.5 text-[9px] font-bold bg-destructive text-destructive-foreground px-1.5 py-0.5 rounded"
+                              >
+                                -{pct}%
+                              </motion.span>
+                            );
+                          })()}
                         </div>
+                        <div className="flex-1 min-w-0">
+                          <h5 className="text-sm font-bold leading-tight">{bundleItems[bundleIndex].name}</h5>
+                          <p className="text-xs text-muted-foreground mt-0.5">{bundleItems[bundleIndex].subtitle}</p>
+                          <div className="flex items-center gap-2 mt-1.5">
+                            <span className="text-base font-bold">{bundleItems[bundleIndex].price}</span>
+                            <span className="text-xs text-muted-foreground line-through">{bundleItems[bundleIndex].originalPrice}</span>
+                          </div>
+                        </div>
+                        <motion.button
+                          whileTap={{ scale: 0.9 }}
+                          onClick={() => handleAddBundle(bundleItems[bundleIndex])}
+                          className="w-10 h-10 rounded-full bg-foreground text-background flex items-center justify-center hover:bg-foreground/90 transition-colors flex-shrink-0"
+                        >
+                          <Plus className="w-4 h-4" />
+                        </motion.button>
                       </div>
-                      <button
-                        onClick={() => handleAddBundle(bundleItems[bundleIndex])}
-                        className="w-10 h-10 rounded-full bg-foreground text-background flex items-center justify-center hover:bg-foreground/90 transition-colors flex-shrink-0"
-                      >
-                        <Plus className="w-4 h-4" />
-                      </button>
+                      <div className="bg-accent/10 px-3 py-1.5 flex items-center gap-1.5">
+                        <Flame className="w-3 h-3 text-accent" />
+                        <span className="text-[10px] font-semibold text-accent uppercase tracking-wide">Bundle exclusive — not sold separately at this price</span>
+                      </div>
                     </motion.div>
                   </AnimatePresence>
 
+                  {/* Add all CTA */}
                   {bundleItems.length > 1 && (
-                    <button
+                    <motion.button
+                      whileTap={{ scale: 0.98 }}
                       onClick={() => bundleItems.forEach((b) => handleAddBundle(b))}
-                      className="w-full mt-3 py-2.5 border-2 border-dashed border-border rounded-xl text-sm font-semibold hover:bg-card transition-colors"
+                      className="relative w-full mt-3 py-3 bg-foreground text-background rounded-xl text-sm font-bold overflow-hidden"
                     >
-                      Add all {bundleItems.length} accessories — Save ₹{bundleSavings.toLocaleString("en-IN")}
-                    </button>
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-background/10 to-transparent"
+                        animate={{ x: ["-100%", "200%"] }}
+                        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                      />
+                      <span className="relative flex items-center justify-center gap-2">
+                        <Zap className="w-4 h-4" />
+                        Add all {bundleItems.length} for ₹{bundleItems.reduce((s, b) => s + b.numericPrice, 0).toLocaleString("en-IN")}
+                        <span className="text-xs font-normal opacity-70 ml-1 line-through">
+                          ₹{bundleItems.reduce((s, b) => s + (parseInt(b.originalPrice.replace(/[₹,]/g, "")) || 0), 0).toLocaleString("en-IN")}
+                        </span>
+                      </span>
+                    </motion.button>
                   )}
                 </div>
               )}
