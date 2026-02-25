@@ -140,6 +140,30 @@ export const samsungProducts = generateProducts(samsungDevices, samsungCaseTypes
 export const oneplusProducts = generateProducts(oneplusDevices, oneplusCaseTypes);
 export const iqooProducts = generateProducts(iqooDevices, iqooCaseTypes);
 
+// Assign meaningful tags
+// iPhone 17 series = New Arrival
+iphoneProducts.forEach((p) => {
+  if (p.device.includes("17")) p.tag = "New Arrival";
+});
+// Best sellers — top products per brand
+iphoneProducts.filter(p => p.device.includes("16 Pro Max")).forEach((p, i) => {
+  if (i < 2) p.tag = "Best Seller";
+});
+samsungProducts.filter(p => p.device.includes("S26 Ultra")).forEach((p, i) => {
+  if (i < 2) p.tag = "Best Seller";
+});
+// Hot — popular mid-range
+oneplusProducts.filter(p => p.device.includes("15")).forEach((p, i) => {
+  if (i < 2) p.tag = "Hot";
+});
+iqooProducts.forEach((p, i) => {
+  if (i < 2) p.tag = "Hot";
+});
+// Sale — leather cases with big discounts
+[...iphoneProducts, ...samsungProducts].filter(p => p.category === "Leather Cases" && !p.tag).forEach((p, i) => {
+  if (i < 4) p.tag = "Sale";
+});
+
 export const allProducts = [...iphoneProducts, ...samsungProducts, ...oneplusProducts, ...iqooProducts];
 
 // ── Grouped for tabs ──
@@ -151,7 +175,7 @@ export const exploreLineupTabs: Record<string, Product[]> = {
 };
 
 export const bestSellerTabs: Record<string, Product[]> = {
-  "iPhone Cases": iphoneProducts.slice(0, 4).map((p, i) => ({ ...p, tag: i === 0 ? "Best Seller" : undefined })),
+  "iPhone Cases": iphoneProducts.slice(0, 4),
   "Samsung Cases": samsungProducts.slice(0, 4),
   "OnePlus Cases": oneplusProducts.slice(0, 4),
   "iQOO Cases": iqooProducts.slice(0, 4),

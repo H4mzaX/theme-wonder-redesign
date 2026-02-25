@@ -1,9 +1,17 @@
 import { useState, useRef, useCallback } from "react";
-import { Star, Shield, Magnet, Zap, Droplets } from "lucide-react";
+import { Star, Shield, Magnet, Zap, Droplets, Flame, Sparkles, TrendingUp, BadgePercent } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
 import { toast } from "@/hooks/use-toast";
 import type { Product } from "@/data/products";
+
+// Badge config — each tag gets unique colors & icon
+const badgeConfig: Record<string, { bg: string; text: string; icon: React.ElementType; glow?: string }> = {
+  "New Arrival":  { bg: "bg-emerald-500", text: "text-white", icon: Sparkles, glow: "shadow-emerald-500/40" },
+  "Best Seller":  { bg: "bg-amber-500",   text: "text-white", icon: TrendingUp, glow: "shadow-amber-500/40" },
+  "Hot":          { bg: "bg-rose-500",     text: "text-white", icon: Flame, glow: "shadow-rose-500/40" },
+  "Sale":         { bg: "bg-violet-600",   text: "text-white", icon: BadgePercent, glow: "shadow-violet-600/40" },
+};
 
 const colorMap: Record<string, string> = {
   Clear: "#e5e5e5",
@@ -132,11 +140,39 @@ const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {(tag || product.discount) && (
-          <span className="absolute top-3 left-3 z-10 bg-foreground text-background text-[11px] px-3 py-1 rounded-full font-medium">
-            {tag || product.discount}
-          </span>
-        )}
+        {/* Badges */}
+        {(() => {
+          const badgeTag = tag || product.tag;
+          const config = badgeTag ? badgeConfig[badgeTag] : null;
+          const discountNum = product.originalPrice && product.price
+            ? (() => {
+                const orig = parseInt(product.originalPrice.replace(/[₹,]/g, "")) || 0;
+                const curr = parseInt(product.price.replace(/[₹,]/g, "")) || 0;
+                return orig > curr ? Math.round(((orig - curr) / orig) * 100) : 0;
+              })()
+            : 0;
+          
+          return (
+            <div className="absolute top-2.5 left-2.5 z-10 flex flex-col gap-1.5">
+              {config && (
+                <span
+                  className={`inline-flex items-center gap-1 ${config.bg} ${config.text} text-[10px] sm:text-[11px] px-2.5 py-1 rounded-full font-bold shadow-lg ${config.glow || ""} transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-2`}
+                >
+                  <config.icon className="w-3 h-3" strokeWidth={2.5} />
+                  {badgeTag}
+                </span>
+              )}
+              {discountNum >= 20 && !config && (
+                <span
+                  className="inline-flex items-center gap-1 bg-violet-600 text-white text-[10px] sm:text-[11px] px-2.5 py-1 rounded-full font-bold shadow-lg shadow-violet-600/40 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-2"
+                >
+                  <BadgePercent className="w-3 h-3" strokeWidth={2.5} />
+                  {discountNum}% OFF
+                </span>
+              )}
+            </div>
+          );
+        })()}
 
         {/* Primary image — subtle zoom on hover for premium feel */}
         <img
