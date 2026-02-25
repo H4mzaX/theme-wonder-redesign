@@ -2,9 +2,10 @@ import { useState, useRef, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import {
   Star, ChevronLeft, ChevronRight, Shield, Zap, Magnet, CheckCircle,
-  Package, Truck, CreditCard, Percent, Minus, Plus,
-  Share2, ChevronDown, Fingerprint, Smartphone, Droplets, Search as SearchIcon,
-  RotateCcw, Timer, Lock, PlusCircle, MessageCircle, Flame, Clock, Award
+  Package, Truck, Percent, Minus, Plus,
+  Share2, ChevronDown, Smartphone, Search as SearchIcon,
+  RotateCcw, Timer, Lock, PlusCircle, MessageCircle, Flame, Clock, Award,
+  ShieldCheck, Waves, CircleDot, ScanLine, BadgeCheck, Wallet, IndianRupee, Banknote
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { allProducts, colorImages, type Product } from "@/data/products";
@@ -28,32 +29,32 @@ const colorHex: Record<string, string> = {
   "Matte Black": "#333333",
 };
 
-const categoryHighlights: Record<string, { icon: typeof Shield; label: string; value: string }[]> = {
+const categoryHighlights: Record<string, { icon: typeof Shield; label: string }[]> = {
   "MagSafe Cases": [
-    { icon: Fingerprint, label: "Anti-skid Grip", value: "Anti-skid Grip" },
-    { icon: Shield, label: "14.8 Feet Drop Protection", value: "14.8 Feet Drop Protection" },
-    { icon: Magnet, label: "MagSafe Compatible", value: "MagSafe Compatible" },
-    { icon: Smartphone, label: "Easy Click Buttons", value: "Easy Click Buttons" },
+    { icon: Waves, label: "ClearFlow™\nTechnology" },
+    { icon: ShieldCheck, label: "14.8 Feet Drop\nProtection" },
+    { icon: Magnet, label: "MagSafe\nCompatible" },
+    { icon: BadgeCheck, label: "Lifetime\nWarranty" },
   ],
   "Silicone Cases": [
-    { icon: Fingerprint, label: "Anti-skid Grip", value: "Anti-skid Grip" },
-    { icon: Shield, label: "10.4 Feet Drop Protection", value: "10.4 Feet Drop Protection" },
-    { icon: Droplets, label: "Washable Surface", value: "Washable Surface" },
-    { icon: Smartphone, label: "Easy Click Buttons", value: "Easy Click Buttons" },
+    { icon: CircleDot, label: "Anti-skid\nGrip" },
+    { icon: ShieldCheck, label: "10.4 Feet Drop\nProtection" },
+    { icon: Waves, label: "Washable\nSurface" },
+    { icon: BadgeCheck, label: "Lifetime\nWarranty" },
   ],
   "Leather Cases": [
-    { icon: Fingerprint, label: "Premium Hand Feel", value: "Premium Hand Feel" },
-    { icon: Shield, label: "6 Feet Drop Protection", value: "6 Feet Drop Protection" },
-    { icon: Magnet, label: "MagSafe Compatible", value: "MagSafe Compatible" },
-    { icon: Smartphone, label: "Easy Click Buttons", value: "Easy Click Buttons" },
+    { icon: ScanLine, label: "Premium\nHand Feel" },
+    { icon: ShieldCheck, label: "6 Feet Drop\nProtection" },
+    { icon: Magnet, label: "MagSafe\nCompatible" },
+    { icon: BadgeCheck, label: "Lifetime\nWarranty" },
   ],
 };
 
 const defaultHighlights = [
-  { icon: Fingerprint, label: "Anti-skid Grip", value: "Anti-skid Grip" },
-  { icon: Shield, label: "6 Feet Drop Protection", value: "6 Feet Drop Protection" },
-  { icon: Zap, label: "Wireless Charging", value: "Wireless Charging" },
-  { icon: Smartphone, label: "Easy Click Buttons", value: "Easy Click Buttons" },
+  { icon: CircleDot, label: "Anti-skid\nGrip" },
+  { icon: ShieldCheck, label: "6 Feet Drop\nProtection" },
+  { icon: Zap, label: "Wireless\nCharging" },
+  { icon: BadgeCheck, label: "Lifetime\nWarranty" },
 ];
 
 const fakeReviews = [
@@ -408,13 +409,13 @@ const ProductDetail = () => {
             </div>
 
             {/* Feature Highlights - 2x2 grid */}
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 mt-5 sm:mt-6">
+            <div className="grid grid-cols-2 gap-4 sm:gap-5 mt-5 sm:mt-6">
               {highlights.map(({ icon: Icon, label }) => (
-                <div key={label} className="flex items-center gap-2.5 sm:gap-3">
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-secondary/70 border border-border/50 flex items-center justify-center flex-shrink-0">
-                    <Icon className="w-[18px] h-[18px] sm:w-5 sm:h-5 text-foreground" />
+                <div key={label} className="flex items-center gap-3 sm:gap-4">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-foreground/20 flex items-center justify-center flex-shrink-0">
+                    <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-foreground" strokeWidth={1.5} />
                   </div>
-                  <span className="text-[12px] sm:text-sm font-medium text-foreground leading-tight">{label}</span>
+                  <span className="text-[12px] sm:text-sm font-semibold text-foreground leading-tight whitespace-pre-line">{label}</span>
                 </div>
               ))}
             </div>
@@ -518,35 +519,42 @@ const ProductDetail = () => {
             </div>
 
             {/* Trust badges */}
-            <div className="flex items-center justify-between mt-5 sm:mt-6 py-3.5 sm:py-4 border-t border-b border-border">
+            <div className="grid grid-cols-4 gap-2 mt-5 sm:mt-6 py-4 sm:py-5 border-t border-b border-border">
               {[
-                { icon: RotateCcw, label: "7-Day", sub: "Easy Returns" },
-                { icon: Award, label: "6-Month", sub: "Warranty" },
-                { icon: Truck, label: "Free", sub: "Shipping" },
-                { icon: Shield, label: "Genuine", sub: "Product" },
-              ].map(({ icon: Icon, label, sub }) => (
-                <div key={label} className="flex flex-col items-center gap-1">
-                  <Icon className="w-5 h-5 text-foreground" />
-                  <p className="text-[10px] sm:text-xs font-bold text-foreground leading-tight">{label}</p>
-                  <p className="text-[8px] sm:text-[10px] text-muted-foreground">{sub}</p>
+                { icon: RotateCcw, label: "7-Day Returns" },
+                { icon: Award, label: "6-Month Warranty" },
+                { icon: Truck, label: "Free Shipping" },
+                { icon: ShieldCheck, label: "100% Genuine" },
+              ].map(({ icon: Icon, label }) => (
+                <div key={label} className="flex flex-col items-center gap-1.5 text-center">
+                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border-2 border-foreground/15 flex items-center justify-center">
+                    <Icon className="w-5 h-5 sm:w-5.5 sm:h-5.5 text-foreground" strokeWidth={1.5} />
+                  </div>
+                  <p className="text-[9px] sm:text-[11px] font-semibold text-foreground leading-tight">{label}</p>
                 </div>
               ))}
             </div>
 
             {/* Payment methods */}
             <div className="mt-4 sm:mt-5">
-              <p className="text-[11px] sm:text-xs font-semibold text-muted-foreground mb-2">We Accept</p>
-              <div className="flex items-center gap-3 flex-wrap">
-                {["UPI", "Visa", "Mastercard", "RuPay", "COD"].map((method) => (
-                  <div key={method} className="flex items-center gap-1.5 border border-border rounded-lg px-2.5 py-1.5">
-                    <CreditCard className="w-3.5 h-3.5 text-muted-foreground" />
-                    <span className="text-[10px] sm:text-[11px] font-medium text-foreground">{method}</span>
+              <p className="text-[11px] sm:text-xs font-bold text-foreground mb-3 uppercase tracking-wider">Payment Methods</p>
+              <div className="flex items-center gap-2 flex-wrap">
+                {[
+                  { icon: IndianRupee, name: "UPI" },
+                  { icon: Wallet, name: "Cards" },
+                  { icon: Banknote, name: "Net Banking" },
+                  { icon: Package, name: "COD" },
+                ].map(({ icon: Icon, name }) => (
+                  <div key={name} className="flex items-center gap-1.5 bg-secondary/50 rounded-lg px-3 py-2">
+                    <Icon className="w-4 h-4 text-foreground" strokeWidth={1.5} />
+                    <span className="text-[11px] sm:text-xs font-semibold text-foreground">{name}</span>
                   </div>
                 ))}
               </div>
-              <p className="text-[10px] text-muted-foreground mt-2 flex items-center gap-1">
-                <Lock className="w-3 h-3" /> 100% secure & encrypted payments
-              </p>
+              <div className="flex items-center gap-1.5 mt-3 text-[10px] sm:text-[11px] text-muted-foreground">
+                <Lock className="w-3.5 h-3.5" />
+                <span>256-bit SSL encrypted · 100% secure checkout</span>
+              </div>
             </div>
           </div>
         </div>
