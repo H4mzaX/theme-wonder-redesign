@@ -140,29 +140,16 @@ export const samsungProducts = generateProducts(samsungDevices, samsungCaseTypes
 export const oneplusProducts = generateProducts(oneplusDevices, oneplusCaseTypes);
 export const iqooProducts = generateProducts(iqooDevices, iqooCaseTypes);
 
-// Assign meaningful tags
-// iPhone 17 series = New Arrival
-iphoneProducts.forEach((p) => {
-  if (p.device.includes("17")) p.tag = "New Arrival";
-});
-// Best sellers — top products per brand
-iphoneProducts.filter(p => p.device.includes("16 Pro Max")).forEach((p, i) => {
-  if (i < 2) p.tag = "Best Seller";
-});
-samsungProducts.filter(p => p.device.includes("S26 Ultra")).forEach((p, i) => {
-  if (i < 2) p.tag = "Best Seller";
-});
-// Hot — popular mid-range
-oneplusProducts.filter(p => p.device.includes("15")).forEach((p, i) => {
-  if (i < 2) p.tag = "Hot";
-});
-iqooProducts.forEach((p, i) => {
-  if (i < 2) p.tag = "Hot";
-});
-// Sale — leather cases with big discounts
-[...iphoneProducts, ...samsungProducts].filter(p => p.category === "Leather Cases" && !p.tag).forEach((p, i) => {
-  if (i < 4) p.tag = "Sale";
-});
+// Selective tags — only a few standout products, not all
+// New — only iPhone 17 Pro Max MagSafe
+iphoneProducts.filter(p => p.device === "iPhone 17 Pro Max" && p.category === "MagSafe Cases").forEach(p => { p.tag = "New"; });
+// Bestseller — one top iPhone, one Samsung
+iphoneProducts.filter(p => p.device === "iPhone 16 Pro Max" && p.category === "Silicone Cases").forEach(p => { p.tag = "Bestseller"; });
+samsungProducts.filter(p => p.device === "Samsung S26 Ultra" && p.category === "Silicone Cases").forEach(p => { p.tag = "Bestseller"; });
+// Hot — one OnePlus
+oneplusProducts.filter(p => p.device === "OnePlus 15" && p.category === "Clear Cases").forEach(p => { p.tag = "Hot"; });
+// Sale — one leather
+iphoneProducts.filter(p => p.device === "iPhone 16 Pro" && p.category === "Leather Cases").forEach(p => { p.tag = "Sale"; });
 
 export const allProducts = [...iphoneProducts, ...samsungProducts, ...oneplusProducts, ...iqooProducts];
 
