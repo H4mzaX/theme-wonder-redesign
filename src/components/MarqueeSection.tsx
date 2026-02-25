@@ -1,20 +1,28 @@
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 
 const MarqueeSection = () => {
-  const items = ["Drop-proof design", "Crystal clear", "Drop-proof design", "Crystal clear"];
-  const doubled = [...items, ...items, ...items, ...items];
-
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const x = useTransform(scrollYProgress, [0, 1], [0, -150]);
+  const items = [
+    "DROP-PROOF DESIGN",
+    "CRYSTAL CLEAR",
+    "MAGSAFE READY",
+    "PREMIUM LEATHER",
+    "6FT DROP TESTED",
+    "WIRELESS CHARGING",
+    "SLIM FIT",
+    "ECO FRIENDLY",
+  ];
+  const doubled = [...items, ...items, ...items];
 
   return (
-    <section ref={ref} className="py-10 overflow-hidden border-y border-border">
-      <motion.div className="marquee-track" style={{ x }}>
+    <section className="py-3 sm:py-4 overflow-hidden bg-muted/50 border-y border-border">
+      <motion.div
+        className="flex whitespace-nowrap"
+        animate={{ x: ["0%", "-33.33%"] }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+      >
         {doubled.map((item, i) => (
-          <span key={i} className="text-lg sm:text-xl font-display italic font-semibold whitespace-nowrap px-8 text-foreground/80">
-            {item} <span className="text-accent mx-4">•</span>
+          <span key={i} className="text-xs sm:text-sm font-semibold tracking-widest whitespace-nowrap px-4 sm:px-6 text-foreground/60 flex items-center gap-4 sm:gap-6">
+            {item} <span className="text-foreground/20">✦</span>
           </span>
         ))}
       </motion.div>
