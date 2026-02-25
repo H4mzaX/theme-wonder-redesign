@@ -45,15 +45,18 @@ type MegaMenuKey = keyof typeof megaMenuData;
 interface NavbarProps {
   onSearchOpen: () => void;
   onCartOpen: () => void;
+  transparent?: boolean;
 }
 
-const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
+const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) => {
   const { scrolled, hidden } = useScrollDirection();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeMega, setActiveMega] = useState<MegaMenuKey | null>(null);
   const [mobileSubmenu, setMobileSubmenu] = useState<string | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { totalItems } = useCart();
+
+  const isTransparent = transparent && !scrolled && !activeMega;
 
   const navItems = ["Shop", "Collections", "Explore", "Compare", "Contact"];
 
@@ -77,8 +80,12 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
   return (
     <>
       <motion.nav
-        className={`bg-background/95 backdrop-blur-md section-padding py-4 sticky top-0 z-50 transition-shadow duration-300 ${
-          scrolled ? "shadow-md border-b border-border/30" : "border-b border-border/50"
+        className={`section-padding py-4 sticky top-0 z-50 transition-all duration-300 ${
+          isTransparent
+            ? "bg-transparent text-background"
+            : scrolled
+              ? "bg-background/95 backdrop-blur-md shadow-md border-b border-border/30"
+              : "bg-background/95 backdrop-blur-md border-b border-border/50"
         }`}
         initial={{ y: 0 }}
         animate={{ y: 0 }}
@@ -116,7 +123,7 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
                   <motion.a
                     href="#"
                     className={`relative z-10 text-sm font-medium tracking-wide flex items-center gap-1 px-4 py-2 rounded-full transition-colors duration-200 ${
-                      isActive ? "text-background" : "text-foreground hover:text-foreground"
+                      isActive ? "text-background" : isTransparent ? "text-background/90 hover:text-background" : "text-foreground hover:text-foreground"
                     }`}
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -129,7 +136,7 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
                   </motion.a>
                   {isActive && (
                     <motion.div
-                      className="absolute inset-0 bg-foreground rounded-full"
+                      className={`absolute inset-0 rounded-full ${isTransparent ? "bg-background/20" : "bg-foreground"}`}
                       layoutId="navPill"
                       transition={{ type: "spring", stiffness: 350, damping: 30 }}
                     />

@@ -131,13 +131,13 @@ const Collection = () => {
   return (
     <div className="min-h-screen bg-background">
       <AnnouncementBar />
-      <Navbar onSearchOpen={() => setSearchOpen(true)} onCartOpen={() => setCartOpen(true)} />
+      <Navbar onSearchOpen={() => setSearchOpen(true)} onCartOpen={() => setCartOpen(true)} transparent />
       <SearchDrawer open={searchOpen} onClose={() => setSearchOpen(false)} />
       <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
 
-      {/* Hero Banner */}
+      {/* Hero Banner — pulled up behind transparent navbar */}
       <motion.section
-        className="relative h-[280px] sm:h-[360px] lg:h-[440px] overflow-hidden rounded-b-2xl sm:rounded-b-3xl"
+        className="relative -mt-[60px] h-[380px] sm:h-[480px] lg:h-[560px] overflow-hidden rounded-b-2xl sm:rounded-b-3xl"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
@@ -147,7 +147,7 @@ const Collection = () => {
           alt={collection.title}
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/40 to-foreground/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-foreground/10" />
         <div className="absolute bottom-0 left-0 right-0 section-padding pb-8 sm:pb-10 lg:pb-14">
           {/* Breadcrumb */}
           <motion.nav

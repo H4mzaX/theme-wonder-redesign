@@ -136,11 +136,12 @@ const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
           </span>
         )}
 
-        {/* Primary image */}
+        {/* Primary image — subtle zoom on hover for premium feel */}
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-full object-contain p-6 sm:p-8"
+          className="w-full h-full object-contain p-6 sm:p-8 transition-transform duration-700 ease-out"
+          style={{ transform: isHovered && !product.hoverImage ? "scale(1.08)" : "scale(1)" }}
           loading="lazy"
         />
 
