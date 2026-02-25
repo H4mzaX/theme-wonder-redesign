@@ -129,6 +129,11 @@ function useCountdown() {
 const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
   const [activeTab, setActiveTab] = useState<"cart" | "recent">("cart");
   const [bundleIndex, setBundleIndex] = useState(0);
+  const [expandedAction, setExpandedAction] = useState<"note" | "shipping" | "coupon" | null>(null);
+  const [orderNote, setOrderNote] = useState("");
+  const [shippingNote, setShippingNote] = useState("");
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState("");
   const { items, totalItems, subtotal, updateQuantity, removeFromCart, addToCart } = useCart();
   const isMobile = useIsMobile();
   const countdown = useCountdown();
@@ -551,21 +556,120 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
       <div className="border-t border-border">
         {/* Action tabs */}
         <div className="flex items-center justify-around py-3 border-b border-border">
-          <button className="flex items-center gap-2 text-sm font-medium text-foreground">
-            <FileText className="w-4 h-4" />
-            Order note
+          <button
+            onClick={() => setExpandedAction(expandedAction === "note" ? null : "note")}
+            className={`flex items-center gap-1.5 text-xs font-medium transition-colors ${expandedAction === "note" ? "text-accent" : "text-foreground"}`}
+          >
+            <FileText className="w-3.5 h-3.5" />
+            Note
           </button>
-          <div className="w-px h-5 bg-border" />
-          <button className="flex items-center gap-2 text-sm font-medium text-foreground">
-            <Package className="w-4 h-4" />
+          <div className="w-px h-4 bg-border" />
+          <button
+            onClick={() => setExpandedAction(expandedAction === "shipping" ? null : "shipping")}
+            className={`flex items-center gap-1.5 text-xs font-medium transition-colors ${expandedAction === "shipping" ? "text-accent" : "text-foreground"}`}
+          >
+            <Package className="w-3.5 h-3.5" />
             Shipping
           </button>
-          <div className="w-px h-5 bg-border" />
-          <button className="flex items-center gap-2 text-sm font-medium text-foreground">
-            <Tag className="w-4 h-4" />
-            Discount
+          <div className="w-px h-4 bg-border" />
+          <button
+            onClick={() => setExpandedAction(expandedAction === "coupon" ? null : "coupon")}
+            className={`flex items-center gap-1.5 text-xs font-medium transition-colors ${appliedCoupon ? "text-green-600" : expandedAction === "coupon" ? "text-accent" : "text-foreground"}`}
+          >
+            <Tag className="w-3.5 h-3.5" />
+            {appliedCoupon ? `"${appliedCoupon}"` : "Apply Coupon"}
           </button>
         </div>
+
+        {/* Expandable action area */}
+        <AnimatePresence>
+          {expandedAction && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="overflow-hidden border-b border-border"
+            >
+              <div className="px-6 py-3">
+                {expandedAction === "note" && (
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={orderNote}
+                      onChange={(e) => setOrderNote(e.target.value)}
+                      placeholder="Add a note to your order..."
+                      className="flex-1 text-sm bg-muted rounded-lg px-3 py-2 outline-none placeholder:text-muted-foreground border border-border focus:border-foreground transition-colors"
+                    />
+                    <button
+                      onClick={() => setExpandedAction(null)}
+                      className="text-xs font-semibold bg-foreground text-background px-3 py-2 rounded-lg hover:bg-foreground/90 transition-colors"
+                    >
+                      Save
+                    </button>
+                  </div>
+                )}
+                {expandedAction === "shipping" && (
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={shippingNote}
+                      onChange={(e) => setShippingNote(e.target.value)}
+                      placeholder="Shipping instructions (e.g. leave at door)..."
+                      className="flex-1 text-sm bg-muted rounded-lg px-3 py-2 outline-none placeholder:text-muted-foreground border border-border focus:border-foreground transition-colors"
+                    />
+                    <button
+                      onClick={() => setExpandedAction(null)}
+                      className="text-xs font-semibold bg-foreground text-background px-3 py-2 rounded-lg hover:bg-foreground/90 transition-colors"
+                    >
+                      Save
+                    </button>
+                  </div>
+                )}
+                {expandedAction === "coupon" && (
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={couponCode}
+                      onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                      placeholder="Enter coupon code"
+                      className="flex-1 text-sm bg-muted rounded-lg px-3 py-2 outline-none placeholder:text-muted-foreground border border-border focus:border-foreground transition-colors font-mono tracking-wider uppercase"
+                    />
+                    <button
+                      onClick={() => {
+                        if (couponCode.trim()) {
+                          setAppliedCoupon(couponCode.trim());
+                          setCouponCode("");
+                          setExpandedAction(null);
+                        }
+                      }}
+                      disabled={!couponCode.trim()}
+                      className="text-xs font-semibold bg-foreground text-background px-3 py-2 rounded-lg hover:bg-foreground/90 transition-colors disabled:opacity-40"
+                    >
+                      Apply
+                    </button>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Applied coupon badge */}
+        {appliedCoupon && expandedAction !== "coupon" && (
+          <div className="flex items-center justify-between px-6 py-2 border-b border-border bg-green-500/5">
+            <div className="flex items-center gap-2">
+              <Tag className="w-3.5 h-3.5 text-green-600" />
+              <span className="text-xs font-semibold text-green-600">Coupon "{appliedCoupon}" applied</span>
+            </div>
+            <button
+              onClick={() => setAppliedCoupon("")}
+              className="text-[10px] font-medium text-destructive underline underline-offset-2"
+            >
+              Remove
+            </button>
+          </div>
+        )}
 
         {/* Discount row */}
         {discount > 0 && (
