@@ -557,38 +557,31 @@ const ProductDetail = () => {
             {/* Payment methods */}
             <div className="mt-5 sm:mt-6">
               <p className="text-[11px] sm:text-sm font-bold text-foreground mb-3 uppercase tracking-wider">We Accept</p>
-              <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
-                {/* UPI apps with logos */}
-                <div className="flex items-center gap-1.5 border border-border rounded-lg px-3 sm:px-3.5 py-1.5 sm:py-2">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/120px-UPI-Logo-vector.svg.png" alt="UPI" className="h-4 sm:h-5 object-contain" />
+              {/* UPI row */}
+              <div className="flex items-center gap-1.5 border border-border rounded-lg px-3 py-2 w-fit mb-2">
+                <IndianRupee className="w-4 h-4 text-foreground" strokeWidth={2} />
+                <span className="text-[11px] sm:text-xs font-bold text-foreground">UPI</span>
+                <span className="text-muted-foreground text-[10px]">·</span>
+                <span className="text-[10px] sm:text-[11px] text-muted-foreground">GPay · PhonePe · Paytm</span>
+              </div>
+              {/* Cards row */}
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <div className="flex items-center gap-1.5 border border-border rounded-lg px-3 py-2">
+                  <Wallet className="w-4 h-4 text-foreground" strokeWidth={1.5} />
+                  <span className="text-[11px] sm:text-xs font-semibold text-foreground">Credit / Debit</span>
                 </div>
-                <div className="flex items-center gap-1.5 border border-border rounded-lg px-3 sm:px-3.5 py-1.5 sm:py-2">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/120px-Google_Pay_Logo.svg.png" alt="GPay" className="h-4 sm:h-5 object-contain" />
+                <div className="flex items-center gap-1.5 border border-border rounded-lg px-3 py-2">
+                  <Banknote className="w-4 h-4 text-foreground" strokeWidth={1.5} />
+                  <span className="text-[11px] sm:text-xs font-semibold text-foreground">Net Banking</span>
                 </div>
-                <div className="flex items-center gap-1.5 border border-border rounded-lg px-3 sm:px-3.5 py-1.5 sm:py-2">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Paytm_Logo_%28standalone%29.svg/120px-Paytm_Logo_%28standalone%29.svg.png" alt="Paytm" className="h-4 sm:h-5 object-contain" />
-                </div>
-                <div className="flex items-center gap-1.5 border border-border rounded-lg px-3 sm:px-3.5 py-1.5 sm:py-2">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/PhonePe_Logo.svg/120px-PhonePe_Logo.svg.png" alt="PhonePe" className="h-4 sm:h-5 object-contain" />
-                </div>
-                {/* Card types */}
-                <div className="flex items-center gap-1.5 border border-border rounded-lg px-3 sm:px-3.5 py-1.5 sm:py-2">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/120px-Visa_Inc._logo.svg.png" alt="Visa" className="h-3.5 sm:h-4 object-contain" />
-                </div>
-                <div className="flex items-center gap-1.5 border border-border rounded-lg px-3 sm:px-3.5 py-1.5 sm:py-2">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/120px-Mastercard-logo.svg.png" alt="Mastercard" className="h-4 sm:h-5 object-contain" />
-                </div>
-                <div className="flex items-center gap-1.5 border border-border rounded-lg px-3 sm:px-3.5 py-1.5 sm:py-2">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/RuPay.svg/120px-RuPay.svg.png" alt="RuPay" className="h-3.5 sm:h-4 object-contain" />
-                </div>
-                <div className="flex items-center gap-2 border border-border rounded-lg px-3 sm:px-3.5 py-1.5 sm:py-2">
-                  <Banknote className="w-4 h-4 sm:w-5 sm:h-5 text-foreground" strokeWidth={1.5} />
+                <div className="flex items-center gap-1.5 border border-border rounded-lg px-3 py-2">
+                  <Package className="w-4 h-4 text-foreground" strokeWidth={1.5} />
                   <span className="text-[11px] sm:text-xs font-semibold text-foreground">COD</span>
                 </div>
               </div>
               <div className="flex items-center gap-1.5 mt-3 text-[10px] sm:text-xs text-muted-foreground">
                 <Lock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                <span>CC/DC accepted · 256-bit SSL encrypted · 100% secure checkout</span>
+                <span>Visa · Mastercard · RuPay · 256-bit SSL · 100% secure</span>
               </div>
             </div>
           </div>
