@@ -137,7 +137,7 @@ const Collection = () => {
 
       {/* Hero Banner */}
       <motion.section
-        className="relative h-[280px] sm:h-[360px] lg:h-[440px] overflow-hidden"
+        className="relative h-[280px] sm:h-[360px] lg:h-[440px] overflow-hidden rounded-b-2xl sm:rounded-b-3xl"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
@@ -160,7 +160,7 @@ const Collection = () => {
               <Home className="w-3.5 h-3.5" />
             </Link>
             <span>/</span>
-            <span>Collections</span>
+            <Link to="/collections/all" className="hover:text-background transition-colors">Collections</Link>
             <span>/</span>
             <span className="text-background font-medium">{collection.title}</span>
           </motion.nav>
@@ -178,7 +178,7 @@ const Collection = () => {
 
       {/* Filter Bar */}
       <motion.section
-        className="sticky top-[60px] z-40 bg-background border-b border-border"
+        className="sticky top-[60px] z-40 bg-background border-b border-border/50"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.4 }}
@@ -195,29 +195,31 @@ const Collection = () => {
 
           {/* Category tabs - scrollable */}
           <div className="flex-1 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
-            <div className="flex items-center gap-1 sm:gap-2">
+            <div className="flex items-center gap-0">
               {collection.subcategories.map((sub, i) => {
                 const count = allProducts.filter(collection.filter).filter(sub.filter).length;
                 return (
-                  <button
-                    key={sub.name}
-                    onClick={() => setActiveSubcat(i)}
-                    className={`relative whitespace-nowrap text-sm sm:text-base font-medium px-1 py-1 transition-colors ${
-                      i === activeSubcat
-                        ? "text-foreground"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {sub.name}
-                    <sup className="text-[10px] ml-0.5 text-muted-foreground">{count}</sup>
-                    {i === activeSubcat && (
-                      <motion.div
-                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"
-                        layoutId="collectionTab"
-                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                      />
-                    )}
-                  </button>
+                  <div key={sub.name} className="flex items-center">
+                    {i > 0 && <span className="text-muted-foreground/40 mx-2 sm:mx-3 text-sm select-none">/</span>}
+                    <button
+                      onClick={() => setActiveSubcat(i)}
+                      className={`relative whitespace-nowrap text-sm sm:text-base lg:text-lg font-medium py-1 transition-colors ${
+                        i === activeSubcat
+                          ? "text-foreground"
+                          : "text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      {sub.name}
+                      <sup className="text-[10px] ml-0.5 text-muted-foreground">{count}</sup>
+                      {i === activeSubcat && (
+                        <motion.div
+                          className="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"
+                          layoutId="collectionTab"
+                          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                        />
+                      )}
+                    </button>
+                  </div>
                 );
               })}
             </div>
