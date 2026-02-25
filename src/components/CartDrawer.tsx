@@ -40,10 +40,10 @@ const topPicks = [
 ].slice(0, 6);
 
 const collectionLinks = [
-  { name: "iPhone Cases", image: collectionCases, href: "/collection/iphone" },
-  { name: "Samsung Cases", image: collectionProtectors, href: "/collection/samsung" },
-  { name: "OnePlus Cases", image: collectionRugged, href: "/collection/oneplus" },
-  { name: "All Accessories", image: collectionAccessories, href: "/collection/accessories" },
+  { name: "iPhone Cases", image: collectionCases, href: "/collections/iphone-cases" },
+  { name: "Samsung Cases", image: collectionProtectors, href: "/collections/samsung-cases" },
+  { name: "OnePlus Cases", image: collectionRugged, href: "/collections/oneplus-cases" },
+  { name: "All Accessories", image: collectionAccessories, href: "/collections/magsafe-cases" },
 ];
 
 interface BundleItem {
