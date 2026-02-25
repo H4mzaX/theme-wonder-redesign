@@ -179,9 +179,25 @@ const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
           </div>
         )}
 
-        {/* Feature icons — pill-style, slide up on hover */}
+        {/* Feature icons — mobile: 2 icons always visible, desktop: 3 icons on hover */}
+        {/* Mobile — always visible, 2 icons only */}
+        <div className="sm:hidden absolute bottom-0 left-0 right-0 flex justify-center gap-2 px-3 pb-3 pt-8 bg-gradient-to-t from-background/95 via-background/40 to-transparent">
+          {features.slice(0, 2).map((feat) => (
+            <div
+              key={feat.label}
+              className="flex items-center gap-1.5 bg-foreground/90 text-background rounded-full px-3 py-1.5 backdrop-blur-sm"
+            >
+              <feat.icon className="w-3.5 h-3.5" strokeWidth={2.5} />
+              <span className="text-[9px] font-semibold leading-none whitespace-nowrap">
+                {feat.label}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop — all 3, slide up on hover */}
         <div
-          className="absolute bottom-0 left-0 right-0 flex justify-center gap-2 px-3 pb-3 pt-8 bg-gradient-to-t from-background/95 via-background/40 to-transparent"
+          className="hidden sm:flex absolute bottom-0 left-0 right-0 justify-center gap-2 px-3 pb-3 pt-8 bg-gradient-to-t from-background/95 via-background/40 to-transparent"
           style={{
             opacity: isHovered ? 1 : 0,
             transform: isHovered ? "translateY(0)" : "translateY(12px)",
@@ -201,7 +217,7 @@ const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
               }}
             >
               <feat.icon className="w-3 h-3" strokeWidth={2.5} />
-              <span className="text-[8px] sm:text-[9px] font-semibold leading-none whitespace-nowrap">
+              <span className="text-[9px] font-semibold leading-none whitespace-nowrap">
                 {feat.label}
               </span>
             </div>
