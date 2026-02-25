@@ -3,11 +3,14 @@ import { useParams, Link } from "react-router-dom";
 import { Star, ChevronLeft, ChevronRight, Shield, Zap, Magnet, CheckCircle, Phone, Video, Package, Truck, CreditCard, Percent } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { allProducts, colorImages, type Product } from "@/data/products";
+import { useCart } from "@/context/CartContext";
+import { toast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Footer from "@/components/Footer";
 import SearchDrawer from "@/components/SearchDrawer";
 import CartDrawer from "@/components/CartDrawer";
+import ProductCard from "@/components/ProductCard";
 
 const colorHex: Record<string, string> = {
   Clear: "#e5e5e5",
@@ -79,6 +82,7 @@ const ProductDetail = () => {
   const [currentImg, setCurrentImg] = useState(0);
   const thumbRef = useRef<HTMLDivElement>(null);
   const offerRef = useRef<HTMLDivElement>(null);
+  const { addToCart } = useCart();
 
   const galleryImages = product
     ? product.colors.map((c) => colorImages[c] || product.image)
@@ -254,10 +258,38 @@ const ProductDetail = () => {
 
             {/* CTA buttons — full width, rounded pill like casegear */}
             <div className="space-y-3">
-              <button className="w-full bg-gradient-to-r from-foreground/80 to-foreground text-background font-bold py-4 rounded-full text-sm sm:text-base tracking-wider hover:from-foreground hover:to-foreground/90 transition-all shadow-lg">
+              <button
+                onClick={() => {
+                  addToCart({
+                    id: product.id,
+                    name: product.name,
+                    subtitle: product.subtitle,
+                    price: product.price,
+                    image: galleryImages[selectedColor] || product.image,
+                    color: product.colors[selectedColor] || "Default",
+                  });
+                  toast({ title: "Added to cart!", description: `${product.name} (${product.colors[selectedColor] || "Default"})` });
+                  setCartOpen(true);
+                }}
+                className="w-full bg-gradient-to-r from-foreground/80 to-foreground text-background font-bold py-4 rounded-full text-sm sm:text-base tracking-wider hover:from-foreground hover:to-foreground/90 transition-all shadow-lg"
+              >
                 ADD TO CART
               </button>
-              <button className="w-full bg-foreground text-background font-bold py-4 rounded-full text-sm sm:text-base tracking-wider hover:bg-foreground/90 transition-colors">
+              <button
+                onClick={() => {
+                  addToCart({
+                    id: product.id,
+                    name: product.name,
+                    subtitle: product.subtitle,
+                    price: product.price,
+                    image: galleryImages[selectedColor] || product.image,
+                    color: product.colors[selectedColor] || "Default",
+                  });
+                  toast({ title: "Proceeding to checkout", description: "Redirecting..." });
+                  setCartOpen(true);
+                }}
+                className="w-full bg-foreground text-background font-bold py-4 rounded-full text-sm sm:text-base tracking-wider hover:bg-foreground/90 transition-colors"
+              >
                 BUY NOW
               </button>
             </div>
@@ -400,31 +432,9 @@ const ProductDetail = () => {
               style={{ scrollbarWidth: "none" }}
             >
               {relatedProducts.map((p) => (
-                <Link
-                  key={p.id}
-                  to={`/product/${p.id}`}
-                  className="flex-none w-[44vw] sm:w-[260px] lg:w-[280px] snap-start group block border border-border rounded-xl overflow-hidden bg-card"
-                >
-                  <div className="relative aspect-square bg-muted overflow-hidden">
-                    {p.discount && (
-                      <span className="absolute top-2 left-2 bg-foreground text-background text-[10px] px-2 py-0.5 rounded-full font-medium">
-                        {p.discount}
-                      </span>
-                    )}
-                    <img src={p.image} alt={p.name} className="w-full h-full object-contain p-3 group-hover:scale-105 transition-transform duration-500" loading="lazy" />
-                  </div>
-                  <div className="p-3 space-y-1.5">
-                    <h3 className="font-semibold text-xs sm:text-sm truncate">{p.name}</h3>
-                    <p className="text-[11px] text-muted-foreground">{p.subtitle}</p>
-                    <div className="flex items-center gap-1.5">
-                      <span className="font-bold text-sm">{p.price}</span>
-                      <span className="text-[10px] text-muted-foreground line-through">{p.originalPrice}</span>
-                    </div>
-                    <button className="w-full bg-foreground text-background text-[11px] font-semibold py-2 rounded-lg tracking-wider">
-                      ADD TO CART
-                    </button>
-                  </div>
-                </Link>
+                <div key={p.id} className="flex-none w-[44vw] sm:w-[260px] lg:w-[280px] snap-start">
+                  <ProductCard product={p} />
+                </div>
               ))}
             </div>
           </div>
@@ -437,7 +447,21 @@ const ProductDetail = () => {
           <p className="text-base font-bold text-foreground">{product.price}</p>
           <p className="text-[10px] text-muted-foreground line-through">{product.originalPrice}</p>
         </div>
-        <button className="flex-1 bg-foreground text-background font-bold py-3 rounded-full text-sm tracking-wider">
+        <button
+          onClick={() => {
+            addToCart({
+              id: product.id,
+              name: product.name,
+              subtitle: product.subtitle,
+              price: product.price,
+              image: product.image,
+              color: product.colors[selectedColor] || "Default",
+            });
+            toast({ title: "Added to cart!" });
+            setCartOpen(true);
+          }}
+          className="flex-1 bg-foreground text-background font-bold py-3 rounded-full text-sm tracking-wider"
+        >
           ADD TO CART
         </button>
       </div>
