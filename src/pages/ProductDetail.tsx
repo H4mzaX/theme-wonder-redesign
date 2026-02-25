@@ -175,7 +175,6 @@ const ProductDetail = () => {
     setCurrentImg(selectedColor);
   }, [selectedColor]);
 
-  // Countdown timer
   useEffect(() => {
     const interval = setInterval(() => {
       setCountdownSeconds((prev) => {
@@ -189,7 +188,6 @@ const ProductDetail = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Show sticky bar when CTA is out of view
   useEffect(() => {
     if (!ctaRef.current) return;
     const observer = new IntersectionObserver(
@@ -226,7 +224,6 @@ const ProductDetail = () => {
     .filter((p) => p.category !== product.category && p.device === product.device)
     .slice(0, 4);
 
-  // Get all devices for the same case type for model selector
   const availableModels = allProducts
     .filter((p) => p.name === product.name)
     .map((p) => p.device)
@@ -265,9 +262,9 @@ const ProductDetail = () => {
 
       {/* ═══════ MAIN PRODUCT SECTION ═══════ */}
       <section className="max-w-[1440px] mx-auto w-full px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-10 pt-4 lg:pt-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-10 pt-2 sm:pt-4 lg:pt-8">
 
-          {/* ── LEFT: Vertical Thumbnails + Main Image (sticky) ── */}
+          {/* ── LEFT: Gallery ── */}
           <div className="lg:col-span-7 lg:sticky lg:top-[80px] lg:self-start">
             <div className="flex gap-3">
               {/* Vertical thumbnails - desktop only */}
@@ -295,7 +292,7 @@ const ProductDetail = () => {
                     key={currentImg}
                     src={galleryImages[currentImg] || product.image}
                     alt={product.name}
-                    className="w-full h-full object-contain p-8 sm:p-12"
+                    className="w-full h-full object-contain p-6 sm:p-8 lg:p-12"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -304,7 +301,7 @@ const ProductDetail = () => {
                 </AnimatePresence>
 
                 {/* Zoom icon */}
-                <button className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-background shadow-md flex items-center justify-center hover:bg-muted transition-colors">
+                <button className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-background shadow-md flex items-center justify-center hover:bg-muted transition-colors">
                   <SearchIcon className="w-4 h-4 text-foreground" />
                 </button>
 
@@ -313,13 +310,13 @@ const ProductDetail = () => {
                   <div className="lg:hidden">
                     <button
                       onClick={() => setCurrentImg((p) => (p - 1 + galleryImages.length) % galleryImages.length)}
-                      className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center shadow-sm"
+                      className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center shadow-sm"
                     >
                       <ChevronLeft className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => setCurrentImg((p) => (p + 1) % galleryImages.length)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center shadow-sm"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center shadow-sm"
                     >
                       <ChevronRight className="w-4 h-4" />
                     </button>
@@ -328,16 +325,16 @@ const ProductDetail = () => {
               </div>
             </div>
 
-            {/* Mobile thumbnails */}
+            {/* Mobile thumbnails - smaller, tighter */}
             <div
-              className="flex lg:hidden gap-2 px-1 py-3 overflow-x-auto"
+              className="flex lg:hidden gap-2 py-3 overflow-x-auto"
               style={{ scrollbarWidth: "none" }}
             >
               {galleryImages.map((img, i) => (
                 <button
                   key={i}
                   onClick={() => setCurrentImg(i)}
-                  className={`flex-none w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${
+                  className={`flex-none w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden border-2 transition-all ${
                     i === currentImg ? "border-foreground" : "border-transparent hover:border-border"
                   }`}
                 >
@@ -348,67 +345,67 @@ const ProductDetail = () => {
           </div>
 
           {/* ── RIGHT: Product Info ── */}
-          <div className="lg:col-span-5 py-2 lg:py-0">
+          <div className="lg:col-span-5 py-1 lg:py-0">
             {/* Product Title */}
-            <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-bold text-foreground leading-tight">
+            <h1 className="text-[22px] sm:text-[26px] lg:text-[32px] font-bold text-foreground leading-[1.2]">
               {product.name}
             </h1>
 
             {/* Subtitle */}
-            <p className="text-sm text-muted-foreground mt-1">{product.subtitle}</p>
+            <p className="text-[13px] sm:text-sm text-muted-foreground mt-0.5">{product.subtitle}</p>
 
             {/* Rating + Social proof */}
-            <div className="flex flex-wrap items-center gap-3 mt-3">
-              <div className="inline-flex items-center gap-1.5 border border-border rounded px-2.5 py-1">
-                <span className="text-sm font-bold text-foreground">{product.rating.toFixed(1)}</span>
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-3">
+              <div className="inline-flex items-center gap-1.5 border border-border rounded-lg px-2.5 py-1.5">
+                <span className="text-[13px] sm:text-sm font-bold text-foreground">{product.rating.toFixed(1)}</span>
                 <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                <span className="text-muted-foreground text-xs">| {product.reviews} Reviews</span>
+                <span className="text-muted-foreground text-[11px] sm:text-xs">| {product.reviews} Reviews</span>
               </div>
-              <div className="inline-flex items-center gap-1.5 border border-border rounded px-2.5 py-1">
-                <span className="text-xs font-bold text-foreground">800+</span>
-                <span className="text-xs text-muted-foreground">Bought in 10 Days.</span>
+              <div className="inline-flex items-center gap-1.5 border border-border rounded-lg px-2.5 py-1.5">
+                <span className="text-[11px] sm:text-xs font-bold text-foreground">800+</span>
+                <span className="text-[11px] sm:text-xs text-muted-foreground">Bought in 10 Days.</span>
               </div>
             </div>
 
             {/* Price Box */}
-            <div className="mt-5 border border-border rounded-xl p-4">
-              <div className="flex items-baseline gap-3">
-                <span className="text-2xl font-bold text-foreground">{product.price}</span>
-                <span className="text-sm text-muted-foreground">MRP <span className="line-through">{product.originalPrice}</span></span>
-                <span className="text-xs font-semibold text-green-600 border border-green-600 rounded px-2 py-0.5">{product.discount}</span>
+            <div className="mt-4 sm:mt-5 border border-border rounded-xl p-3.5 sm:p-4">
+              <div className="flex items-baseline gap-2.5 sm:gap-3">
+                <span className="text-[22px] sm:text-2xl font-bold text-foreground">{product.price}</span>
+                <span className="text-[12px] sm:text-sm text-muted-foreground">MRP <span className="line-through">{product.originalPrice}</span></span>
+                <span className="text-[10px] sm:text-xs font-semibold text-green-600 border border-green-600 rounded px-1.5 sm:px-2 py-0.5">{product.discount}</span>
               </div>
-              <div className="flex items-center gap-2 mt-2">
-                <span className="text-xs text-muted-foreground">or pay</span>
-                <span className="text-sm font-bold text-foreground">₹{emiPrice}/month</span>
-                <span className="text-xs text-muted-foreground">at 0% EMI via <span className="font-bold text-foreground">VCASE</span></span>
-                <button className="text-[10px] font-semibold border border-foreground rounded px-2 py-0.5 hover:bg-foreground hover:text-background transition-colors">Buy On EMI</button>
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mt-2 border-t border-border/50 pt-2">
+                <span className="text-[11px] sm:text-xs text-muted-foreground">or pay</span>
+                <span className="text-[13px] sm:text-sm font-bold text-foreground">₹{emiPrice}/month</span>
+                <span className="text-[11px] sm:text-xs text-muted-foreground">at 0% EMI via <span className="font-bold text-foreground">VCASE</span></span>
+                <button className="text-[10px] sm:text-[11px] font-semibold border border-foreground rounded px-2 py-0.5 ml-auto hover:bg-foreground hover:text-background transition-colors">Buy On EMI</button>
               </div>
             </div>
 
-            {/* Feature Highlights - 2x2 grid with icons */}
-            <div className="grid grid-cols-2 gap-4 mt-6">
+            {/* Feature Highlights - 2x2 grid */}
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 mt-5 sm:mt-6">
               {highlights.map(({ icon: Icon, label }) => (
-                <div key={label} className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-secondary/60 flex items-center justify-center flex-shrink-0">
-                    <Icon className="w-5 h-5 text-foreground" />
+                <div key={label} className="flex items-center gap-2.5 sm:gap-3">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-secondary/70 border border-border/50 flex items-center justify-center flex-shrink-0">
+                    <Icon className="w-[18px] h-[18px] sm:w-5 sm:h-5 text-foreground" />
                   </div>
-                  <span className="text-sm font-medium text-foreground">{label}</span>
+                  <span className="text-[12px] sm:text-sm font-medium text-foreground leading-tight">{label}</span>
                 </div>
               ))}
             </div>
 
             {/* Step 1: Select Model */}
-            <div className="mt-7">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="w-6 h-6 rounded-full bg-foreground text-background text-xs font-bold flex items-center justify-center">1</span>
-                <span className="text-sm font-semibold text-foreground">Select Model:</span>
-                <span className="text-sm text-muted-foreground">{product.device}</span>
+            <div className="mt-6 sm:mt-7">
+              <div className="flex items-center gap-2 mb-2.5 sm:mb-3">
+                <span className="w-6 h-6 rounded-full bg-foreground text-background text-[11px] sm:text-xs font-bold flex items-center justify-center">1</span>
+                <span className="text-[13px] sm:text-sm font-semibold text-foreground">Select Model:</span>
+                <span className="text-[13px] sm:text-sm text-muted-foreground">{product.device}</span>
               </div>
               <div className="relative">
                 <select
                   value={product.device}
                   onChange={(e) => handleModelChange(e.target.value)}
-                  className="w-full border border-border rounded-xl px-4 py-3.5 text-sm font-medium text-foreground bg-background appearance-none cursor-pointer hover:border-foreground/50 transition-colors"
+                  className="w-full border border-border rounded-xl px-4 py-3 sm:py-3.5 text-[13px] sm:text-sm font-medium text-foreground bg-background appearance-none cursor-pointer hover:border-foreground/50 transition-colors"
                 >
                   {availableModels.map((model) => (
                     <option key={model} value={model}>{model}</option>
@@ -420,18 +417,18 @@ const ProductDetail = () => {
 
             {/* Step 2: Select Colour */}
             {product.colors.length > 0 && (
-              <div className="mt-6">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="w-6 h-6 rounded-full bg-foreground text-background text-xs font-bold flex items-center justify-center">2</span>
-                  <span className="text-sm font-semibold text-foreground">Select Colour:</span>
-                  <span className="text-sm text-muted-foreground">{product.colors[selectedColor]}</span>
+              <div className="mt-5 sm:mt-6">
+                <div className="flex items-center gap-2 mb-2.5 sm:mb-3">
+                  <span className="w-6 h-6 rounded-full bg-foreground text-background text-[11px] sm:text-xs font-bold flex items-center justify-center">2</span>
+                  <span className="text-[13px] sm:text-sm font-semibold text-foreground">Select Colour:</span>
+                  <span className="text-[13px] sm:text-sm text-muted-foreground">{product.colors[selectedColor]}</span>
                 </div>
-                <div className="flex gap-3">
+                <div className="flex gap-3 sm:gap-3">
                   {product.colors.map((color, i) => (
                     <button
                       key={color}
                       onClick={() => setSelectedColor(i)}
-                      className={`w-10 h-10 rounded-full border-2 transition-all ${
+                      className={`w-11 h-11 sm:w-10 sm:h-10 rounded-full border-2 transition-all ${
                         i === selectedColor ? "border-foreground ring-2 ring-foreground/20 scale-110" : "border-border hover:border-foreground/50"
                       }`}
                       style={{ backgroundColor: colorHex[color] || "#ccc" }}
@@ -443,10 +440,10 @@ const ProductDetail = () => {
             )}
 
             {/* ADD TO CART + BUY NOW */}
-            <div ref={ctaRef} className="flex gap-3 mt-7">
+            <div ref={ctaRef} className="flex gap-2.5 sm:gap-3 mt-6 sm:mt-7">
               <button
                 onClick={handleAddToCart}
-                className="flex-1 bg-foreground text-background font-bold py-4 rounded-full text-sm tracking-widest hover:bg-foreground/90 transition-colors uppercase"
+                className="flex-1 bg-foreground text-background font-bold py-3.5 sm:py-4 rounded-full text-[13px] sm:text-sm tracking-widest hover:bg-foreground/90 transition-colors uppercase"
               >
                 ADD TO CART
               </button>
@@ -455,29 +452,29 @@ const ProductDetail = () => {
                   handleAddToCart();
                   toast({ title: "Proceeding to checkout", description: "Redirecting..." });
                 }}
-                className="flex-1 bg-foreground text-background font-bold py-4 rounded-full text-sm tracking-wider hover:bg-foreground/90 transition-colors"
+                className="flex-1 bg-foreground text-background font-bold py-3.5 sm:py-4 rounded-full text-[13px] sm:text-sm tracking-wider hover:bg-foreground/90 transition-colors"
               >
                 BUY NOW →
               </button>
             </div>
 
             {/* Available Offers */}
-            <div className="mt-7">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-base font-bold text-foreground">Available Offers</h3>
-                <span className="text-xs text-muted-foreground cursor-pointer hover:text-foreground">View All</span>
+            <div className="mt-6 sm:mt-7">
+              <div className="flex items-center justify-between mb-2.5 sm:mb-3">
+                <h3 className="text-[15px] sm:text-base font-bold text-foreground">Available Offers</h3>
+                <span className="text-[11px] sm:text-xs text-muted-foreground cursor-pointer hover:text-foreground">View All</span>
               </div>
-              <div className="flex gap-3 overflow-x-auto pb-1" style={{ scrollbarWidth: "none" }}>
+              <div className="flex gap-2.5 sm:gap-3 overflow-x-auto pb-1" style={{ scrollbarWidth: "none" }}>
                 {offers.map((offer) => (
-                  <div key={offer.title} className="flex-none flex items-center gap-3 border border-border rounded-xl p-4 min-w-[220px] hover:border-foreground/30 transition-colors">
-                    <div className="w-10 h-10 rounded-full bg-foreground flex items-center justify-center flex-shrink-0">
-                      <Percent className="w-5 h-5 text-background" />
+                  <div key={offer.title} className="flex-none flex items-center gap-2.5 sm:gap-3 border border-border rounded-xl p-3 sm:p-4 min-w-[190px] sm:min-w-[220px] hover:border-foreground/30 transition-colors">
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-foreground flex items-center justify-center flex-shrink-0">
+                      <Percent className="w-4 h-4 sm:w-5 sm:h-5 text-background" />
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-foreground">
+                      <p className="text-[12px] sm:text-sm font-bold text-foreground">
                         FLAT <span className="text-green-600">{offer.highlight} OFF</span>
                       </p>
-                      <p className="text-xs text-muted-foreground">{offer.sub}</p>
+                      <p className="text-[10px] sm:text-xs text-muted-foreground">{offer.sub}</p>
                     </div>
                   </div>
                 ))}
@@ -485,42 +482,42 @@ const ProductDetail = () => {
             </div>
 
             {/* OR divider */}
-            <div className="flex items-center gap-4 my-6">
+            <div className="flex items-center gap-4 my-5 sm:my-6">
               <div className="flex-1 h-px bg-border" />
-              <span className="text-sm font-medium text-muted-foreground">OR</span>
+              <span className="text-[12px] sm:text-sm font-medium text-muted-foreground">OR</span>
               <div className="flex-1 h-px bg-border" />
             </div>
 
             {/* Support cards */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="flex items-center gap-3 border border-border rounded-xl p-4 hover:border-foreground/30 transition-colors cursor-pointer">
-                <Phone className="w-5 h-5 text-foreground" />
+            <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
+              <div className="flex items-center gap-2.5 sm:gap-3 border border-border rounded-xl p-3 sm:p-4 hover:border-foreground/30 transition-colors cursor-pointer">
+                <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-foreground flex-shrink-0" />
                 <div>
-                  <p className="text-sm font-bold text-foreground">Get Support on Call</p>
-                  <p className="text-xs text-muted-foreground">Talk to an agent</p>
+                  <p className="text-[12px] sm:text-sm font-bold text-foreground leading-tight">Get Support on Call</p>
+                  <p className="text-[10px] sm:text-xs text-muted-foreground">Talk to an agent</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 border border-border rounded-xl p-4 hover:border-foreground/30 transition-colors cursor-pointer">
-                <Video className="w-5 h-5 text-foreground" />
+              <div className="flex items-center gap-2.5 sm:gap-3 border border-border rounded-xl p-3 sm:p-4 hover:border-foreground/30 transition-colors cursor-pointer">
+                <Video className="w-4 h-4 sm:w-5 sm:h-5 text-foreground flex-shrink-0" />
                 <div>
-                  <p className="text-sm font-bold text-foreground">Live Product Demo</p>
-                  <p className="text-xs text-muted-foreground">Shop on video call</p>
+                  <p className="text-[12px] sm:text-sm font-bold text-foreground leading-tight">Live Product Demo</p>
+                  <p className="text-[10px] sm:text-xs text-muted-foreground">Shop on video call</p>
                 </div>
               </div>
             </div>
 
             {/* Trust badges */}
-            <div className="flex items-center justify-between mt-6 py-4 border-t border-border">
+            <div className="flex items-center justify-between mt-5 sm:mt-6 py-3.5 sm:py-4 border-t border-border">
               {[
                 { icon: RotateCcw, label: "7-Days", sub: "Returnable" },
                 { icon: Package, label: "COD", sub: "Available" },
                 { icon: Lock, label: "Secure", sub: "Payments" },
               ].map(({ icon: Icon, label, sub }) => (
-                <div key={label} className="flex items-center gap-2">
-                  <Icon className="w-5 h-5 text-foreground" />
+                <div key={label} className="flex items-center gap-1.5 sm:gap-2">
+                  <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-foreground" />
                   <div>
-                    <p className="text-xs font-bold text-foreground leading-tight">{label}</p>
-                    <p className="text-[10px] text-muted-foreground">{sub}</p>
+                    <p className="text-[11px] sm:text-xs font-bold text-foreground leading-tight">{label}</p>
+                    <p className="text-[9px] sm:text-[10px] text-muted-foreground">{sub}</p>
                   </div>
                 </div>
               ))}
@@ -532,18 +529,18 @@ const ProductDetail = () => {
       {/* ═══════ BELOW-FOLD SECTIONS ═══════ */}
 
       {/* Product Description + Specs Card */}
-      <section className="max-w-[1440px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-10">
-        <div className="bg-secondary/30 rounded-2xl p-6 sm:p-10 lg:p-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+      <section className="max-w-[1440px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+        <div className="bg-secondary/30 rounded-2xl p-5 sm:p-10 lg:p-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-10">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-5">{descData.title}</h2>
-              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{descData.description}</p>
+              <h2 className="text-xl sm:text-3xl font-bold text-foreground mb-3 sm:mb-5">{descData.title}</h2>
+              <p className="text-[13px] sm:text-base text-muted-foreground leading-relaxed">{descData.description}</p>
             </div>
             <div className="space-y-0">
               {descData.specs.map(({ label, value }) => (
-                <div key={label} className="flex py-4 border-b border-border last:border-b-0">
-                  <span className="text-sm font-bold text-foreground w-36 flex-shrink-0">{label}</span>
-                  <span className="text-sm text-muted-foreground">{value || `For ${product.device}`}</span>
+                <div key={label} className="flex py-3 sm:py-4 border-b border-border last:border-b-0">
+                  <span className="text-[12px] sm:text-sm font-bold text-foreground w-28 sm:w-36 flex-shrink-0">{label}</span>
+                  <span className="text-[12px] sm:text-sm text-muted-foreground">{value || `For ${product.device}`}</span>
                 </div>
               ))}
             </div>
@@ -552,16 +549,16 @@ const ProductDetail = () => {
       </section>
 
       {/* Accordions: Product Features, Warranty, FAQs */}
-      <section className="max-w-[1440px] mx-auto w-full px-4 sm:px-6 lg:px-8 pb-10">
+      <section className="max-w-[1440px] mx-auto w-full px-4 sm:px-6 lg:px-8 pb-6 sm:pb-10">
         <div className="bg-secondary/30 rounded-2xl overflow-hidden divide-y divide-border">
           {/* Product Features */}
           <div>
             <button
               onClick={() => setOpenAccordion(openAccordion === "features" ? null : "features")}
-              className="flex items-center justify-between w-full px-6 sm:px-10 py-6 text-left hover:bg-secondary/50 transition-colors"
+              className="flex items-center justify-between w-full px-4 sm:px-10 py-4 sm:py-6 text-left hover:bg-secondary/50 transition-colors"
             >
-              <h3 className="text-lg font-bold text-foreground">Product Features</h3>
-              <PlusCircle className={`w-6 h-6 text-foreground transition-transform ${openAccordion === "features" ? "rotate-45" : ""}`} />
+              <h3 className="text-[15px] sm:text-lg font-bold text-foreground">Product Features</h3>
+              <PlusCircle className={`w-5 h-5 sm:w-6 sm:h-6 text-foreground transition-transform ${openAccordion === "features" ? "rotate-45" : ""}`} />
             </button>
             <AnimatePresence>
               {openAccordion === "features" && (
@@ -572,9 +569,9 @@ const ProductDetail = () => {
                   transition={{ duration: 0.25 }}
                   className="overflow-hidden"
                 >
-                  <ul className="px-6 sm:px-10 pb-6 space-y-3">
+                  <ul className="px-4 sm:px-10 pb-4 sm:pb-6 space-y-2.5 sm:space-y-3">
                     {features.map((f, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                      <li key={i} className="flex items-start gap-2 text-[12px] sm:text-sm text-muted-foreground">
                         <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-foreground flex-shrink-0" />
                         {f}
                       </li>
@@ -589,10 +586,10 @@ const ProductDetail = () => {
           <div>
             <button
               onClick={() => setOpenAccordion(openAccordion === "warranty" ? null : "warranty")}
-              className="flex items-center justify-between w-full px-6 sm:px-10 py-6 text-left hover:bg-secondary/50 transition-colors"
+              className="flex items-center justify-between w-full px-4 sm:px-10 py-4 sm:py-6 text-left hover:bg-secondary/50 transition-colors"
             >
-              <h3 className="text-lg font-bold text-foreground">Warranty</h3>
-              <PlusCircle className={`w-6 h-6 text-foreground transition-transform ${openAccordion === "warranty" ? "rotate-45" : ""}`} />
+              <h3 className="text-[15px] sm:text-lg font-bold text-foreground">Warranty</h3>
+              <PlusCircle className={`w-5 h-5 sm:w-6 sm:h-6 text-foreground transition-transform ${openAccordion === "warranty" ? "rotate-45" : ""}`} />
             </button>
             <AnimatePresence>
               {openAccordion === "warranty" && (
@@ -603,7 +600,7 @@ const ProductDetail = () => {
                   transition={{ duration: 0.25 }}
                   className="overflow-hidden"
                 >
-                  <p className="px-6 sm:px-10 pb-6 text-sm text-muted-foreground leading-relaxed">{warrantyContent}</p>
+                  <p className="px-4 sm:px-10 pb-4 sm:pb-6 text-[12px] sm:text-sm text-muted-foreground leading-relaxed">{warrantyContent}</p>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -613,10 +610,10 @@ const ProductDetail = () => {
           <div>
             <button
               onClick={() => setOpenAccordion(openAccordion === "faqs" ? null : "faqs")}
-              className="flex items-center justify-between w-full px-6 sm:px-10 py-6 text-left hover:bg-secondary/50 transition-colors"
+              className="flex items-center justify-between w-full px-4 sm:px-10 py-4 sm:py-6 text-left hover:bg-secondary/50 transition-colors"
             >
-              <h3 className="text-lg font-bold text-foreground">Frequently Asked Questions</h3>
-              <PlusCircle className={`w-6 h-6 text-foreground transition-transform ${openAccordion === "faqs" ? "rotate-45" : ""}`} />
+              <h3 className="text-[15px] sm:text-lg font-bold text-foreground">Frequently Asked Questions</h3>
+              <PlusCircle className={`w-5 h-5 sm:w-6 sm:h-6 text-foreground transition-transform ${openAccordion === "faqs" ? "rotate-45" : ""}`} />
             </button>
             <AnimatePresence>
               {openAccordion === "faqs" && (
@@ -627,11 +624,11 @@ const ProductDetail = () => {
                   transition={{ duration: 0.25 }}
                   className="overflow-hidden"
                 >
-                  <div className="px-6 sm:px-10 pb-6 space-y-4">
+                  <div className="px-4 sm:px-10 pb-4 sm:pb-6 space-y-3 sm:space-y-4">
                     {faqItems.map((item, i) => (
-                      <div key={i} className="border-b border-border pb-4 last:border-b-0">
-                        <p className="text-sm font-semibold text-foreground mb-1">{item.q}</p>
-                        <p className="text-sm text-muted-foreground leading-relaxed">{item.a}</p>
+                      <div key={i} className="border-b border-border pb-3 sm:pb-4 last:border-b-0">
+                        <p className="text-[12px] sm:text-sm font-semibold text-foreground mb-1">{item.q}</p>
+                        <p className="text-[12px] sm:text-sm text-muted-foreground leading-relaxed">{item.a}</p>
                       </div>
                     ))}
                   </div>
@@ -643,24 +640,24 @@ const ProductDetail = () => {
       </section>
 
       {/* ═══════ REVIEWS & RATINGS ═══════ */}
-      <section className="max-w-[1440px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-10">
-        <div className="bg-secondary/30 rounded-2xl p-6 sm:p-10">
-          <h2 className="text-xl sm:text-2xl font-bold text-foreground text-center mb-8">Reviews & Ratings</h2>
+      <section className="max-w-[1440px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+        <div className="bg-secondary/30 rounded-2xl p-4 sm:p-10">
+          <h2 className="text-lg sm:text-2xl font-bold text-foreground text-center mb-5 sm:mb-8">Reviews & Ratings</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-8 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-5 sm:gap-8 items-center">
             {/* Rating summary */}
             <div className="text-center md:text-left">
               <div className="flex gap-1 justify-center md:justify-start mb-2">
                 {Array.from({ length: 5 }).map((_, s) => (
-                  <Star key={s} className={`w-5 h-5 ${s < Math.round(product.rating) ? "fill-amber-400 text-amber-400" : "text-border"}`} />
+                  <Star key={s} className={`w-4 h-4 sm:w-5 sm:h-5 ${s < Math.round(product.rating) ? "fill-amber-400 text-amber-400" : "text-border"}`} />
                 ))}
               </div>
-              <p className="text-lg font-semibold text-foreground">{product.rating.toFixed(2)} out of 5</p>
-              <p className="text-sm text-muted-foreground">Based on {product.reviews} reviews</p>
+              <p className="text-base sm:text-lg font-semibold text-foreground">{product.rating.toFixed(2)} out of 5</p>
+              <p className="text-[12px] sm:text-sm text-muted-foreground">Based on {product.reviews} reviews</p>
             </div>
 
             {/* Rating bars */}
-            <div className="space-y-2">
+            <div className="space-y-1.5 sm:space-y-2">
               {[
                 { stars: 5, count: 234 },
                 { stars: 4, count: 49 },
@@ -672,29 +669,29 @@ const ProductDetail = () => {
                 const pct = Math.round((count / total) * 100);
                 return (
                   <div key={stars} className="flex items-center gap-2">
-                    <div className="flex gap-0.5 w-20 flex-shrink-0">
+                    <div className="flex gap-0.5 w-16 sm:w-20 flex-shrink-0">
                       {Array.from({ length: 5 }).map((_, i) => (
-                        <Star key={i} className={`w-3 h-3 ${i < stars ? "fill-amber-400 text-amber-400" : "text-border"}`} />
+                        <Star key={i} className={`w-2.5 h-2.5 sm:w-3 sm:h-3 ${i < stars ? "fill-amber-400 text-amber-400" : "text-border"}`} />
                       ))}
                     </div>
-                    <div className="flex-1 h-2.5 bg-border/50 rounded-full overflow-hidden">
+                    <div className="flex-1 h-2 sm:h-2.5 bg-border/50 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-foreground rounded-full"
                         style={{ width: `${pct}%` }}
                       />
                     </div>
-                    <span className="text-xs text-muted-foreground w-8 text-right">{count}</span>
+                    <span className="text-[10px] sm:text-xs text-muted-foreground w-7 sm:w-8 text-right">{count}</span>
                   </div>
                 );
               })}
             </div>
 
             {/* Write a review / Ask a question */}
-            <div className="flex flex-col gap-3">
-              <button className="px-6 py-3 bg-foreground text-background rounded-full text-sm font-semibold hover:bg-foreground/90 transition-colors">
+            <div className="flex sm:flex-col gap-2.5 sm:gap-3">
+              <button className="flex-1 sm:flex-none px-5 sm:px-6 py-2.5 sm:py-3 bg-foreground text-background rounded-full text-[12px] sm:text-sm font-semibold hover:bg-foreground/90 transition-colors">
                 Write a review
               </button>
-              <button className="px-6 py-3 border-2 border-foreground text-foreground rounded-full text-sm font-semibold hover:bg-foreground hover:text-background transition-colors">
+              <button className="flex-1 sm:flex-none px-5 sm:px-6 py-2.5 sm:py-3 border-2 border-foreground text-foreground rounded-full text-[12px] sm:text-sm font-semibold hover:bg-foreground hover:text-background transition-colors">
                 Ask a question
               </button>
             </div>
@@ -702,61 +699,61 @@ const ProductDetail = () => {
         </div>
 
         {/* Sort filter */}
-        <div className="mt-6 border-b border-border pb-3">
-          <select className="text-sm text-muted-foreground bg-transparent cursor-pointer">
+        <div className="mt-4 sm:mt-6 border-b border-border pb-2 sm:pb-3">
+          <select className="text-[12px] sm:text-sm text-muted-foreground bg-transparent cursor-pointer">
             <option>Pictures First</option>
             <option>Most Recent</option>
             <option>Highest Rated</option>
           </select>
         </div>
 
-        {/* Review cards - masonry style */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+        {/* Review cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mt-4 sm:mt-6">
           {fakeReviews.map((review, i) => (
-            <div key={i} className="bg-secondary/30 rounded-2xl p-5">
-              <div className="flex gap-0.5 mb-3">
+            <div key={i} className="bg-secondary/30 rounded-2xl p-4 sm:p-5">
+              <div className="flex gap-0.5 mb-2 sm:mb-3">
                 {Array.from({ length: 5 }).map((_, s) => (
-                  <Star key={s} className={`w-4 h-4 ${s < review.rating ? "fill-amber-400 text-amber-400" : "text-border"}`} />
+                  <Star key={s} className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${s < review.rating ? "fill-amber-400 text-amber-400" : "text-border"}`} />
                 ))}
               </div>
-              <div className="flex items-center gap-2.5 mb-3">
-                <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-xs font-bold text-foreground">
+              <div className="flex items-center gap-2 sm:gap-2.5 mb-2 sm:mb-3">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-muted flex items-center justify-center text-[10px] sm:text-xs font-bold text-foreground">
                   {review.name.charAt(0)}
                 </div>
                 <div>
-                  <span className="text-sm font-semibold text-foreground">{review.name}</span>
+                  <span className="text-[12px] sm:text-sm font-semibold text-foreground">{review.name}</span>
                   {review.verified && (
-                    <span className="ml-2 text-[10px] font-medium bg-green-100 text-green-700 px-2 py-0.5 rounded">Verified</span>
+                    <span className="ml-1.5 sm:ml-2 text-[9px] sm:text-[10px] font-medium bg-green-100 text-green-700 px-1.5 sm:px-2 py-0.5 rounded">Verified</span>
                   )}
                 </div>
               </div>
-              <p className="text-sm font-semibold text-foreground mb-1">{review.title}</p>
-              <p className="text-xs text-muted-foreground leading-relaxed">{review.body}</p>
+              <p className="text-[12px] sm:text-sm font-semibold text-foreground mb-1">{review.title}</p>
+              <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed">{review.body}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ═══════ YOU MAY ALSO LIKE (horizontal scroll) ═══════ */}
+      {/* ═══════ YOU MAY ALSO LIKE ═══════ */}
       {relatedProducts.length > 0 && (
-        <section className="max-w-[1440px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 border-t border-border">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl sm:text-2xl font-bold text-foreground">You may also like</h2>
+        <section className="max-w-[1440px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-10 border-t border-border">
+          <div className="flex items-center justify-between mb-4 sm:mb-6">
+            <h2 className="text-lg sm:text-2xl font-bold text-foreground">You may also like</h2>
             <div className="flex gap-2">
-              <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors">
-                <ChevronLeft className="w-4 h-4" />
+              <button className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors">
+                <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </button>
-              <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors">
-                <ChevronRight className="w-4 h-4" />
+              <button className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors">
+                <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </button>
             </div>
           </div>
           <div
-            className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory"
+            className="flex gap-3 sm:gap-4 overflow-x-auto pb-4 snap-x snap-mandatory"
             style={{ scrollbarWidth: "none" }}
           >
             {relatedProducts.map((p) => (
-              <div key={p.id} className="flex-none w-[44vw] sm:w-[260px] lg:w-[280px] snap-start">
+              <div key={p.id} className="flex-none w-[42vw] sm:w-[260px] lg:w-[280px] snap-start">
                 <ProductCard product={p} />
               </div>
             ))}
@@ -775,13 +772,13 @@ const ProductDetail = () => {
             className="fixed bottom-0 left-0 right-0 z-50"
           >
             {/* Countdown banner */}
-            <div className="bg-foreground text-background text-center py-2 text-xs sm:text-sm font-medium">
+            <div className="bg-foreground text-background text-center py-1.5 sm:py-2 text-[11px] sm:text-sm font-medium">
               For Extra Discount, order within <span className="text-amber-400 font-bold">{countdownMinutes}:{countdownSeconds.toString().padStart(2, "0")}</span>
             </div>
 
             {/* Product bar */}
             <div className="bg-background border-t border-border">
-              <div className="max-w-[1440px] mx-auto px-4 sm:px-6 py-3 flex items-center gap-3">
+              <div className="max-w-[1440px] mx-auto px-3 sm:px-6 py-2.5 sm:py-3 flex items-center gap-3">
                 <div className="hidden sm:flex items-center gap-3 flex-1 min-w-0">
                   <div className="w-12 h-12 rounded-lg bg-secondary/30 overflow-hidden flex-shrink-0">
                     <img src={galleryImages[selectedColor] || product.image} alt="" className="w-full h-full object-contain p-0.5" />
@@ -796,13 +793,13 @@ const ProductDetail = () => {
                 </div>
 
                 <div className="flex-1 sm:hidden">
-                  <p className="text-base font-bold text-foreground">{product.price}</p>
+                  <p className="text-[15px] font-bold text-foreground">{product.price}</p>
                   <p className="text-[10px] text-muted-foreground line-through">{product.originalPrice}</p>
                 </div>
 
                 <button
                   onClick={handleAddToCart}
-                  className="flex-1 sm:flex-none sm:px-10 bg-foreground text-background font-bold py-3.5 rounded-full text-sm tracking-wider hover:bg-foreground/90 transition-colors"
+                  className="flex-1 sm:flex-none sm:px-10 bg-foreground text-background font-bold py-3 sm:py-3.5 rounded-full text-[12px] sm:text-sm tracking-wider hover:bg-foreground/90 transition-colors"
                 >
                   ADD TO CART
                 </button>
@@ -812,7 +809,7 @@ const ProductDetail = () => {
         )}
       </AnimatePresence>
 
-      <div className={showStickyBar ? "h-24" : ""} />
+      <div className={showStickyBar ? "h-20 sm:h-24" : ""} />
       <Footer />
     </div>
   );
