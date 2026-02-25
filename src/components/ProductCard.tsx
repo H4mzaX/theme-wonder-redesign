@@ -2,6 +2,7 @@ import { useState, useRef, useCallback } from "react";
 import { Star, Shield, Magnet, Zap, Droplets } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "@/hooks/use-toast";
 import type { Product } from "@/data/products";
 
@@ -81,6 +82,7 @@ const slideTransforms: Record<SlideDir, string> = {
 
 const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
   const { addToCart } = useCart();
+  const isMobile = useIsMobile();
   const [isHovered, setIsHovered] = useState(false);
   const [enterDir, setEnterDir] = useState<SlideDir>("left");
   const [exitDir, setExitDir] = useState<SlideDir>("left");
@@ -152,11 +154,11 @@ const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
           );
         })()}
 
-        {/* Primary image — subtle zoom on hover for premium feel */}
+        {/* Primary image — bigger, less padding */}
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-full object-contain p-6 sm:p-8 transition-transform duration-700 ease-out"
+          className="w-full h-full object-contain p-3 sm:p-5 transition-transform duration-700 ease-out"
           style={{ transform: isHovered && !product.hoverImage ? "scale(1.08)" : "scale(1)" }}
           loading="lazy"
         />
@@ -173,21 +175,34 @@ const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
             <img
               src={product.hoverImage}
               alt={`${product.name} alternate`}
-              className="w-full h-full object-contain p-6 sm:p-8"
+              className="w-full h-full object-contain p-3 sm:p-5"
               loading="lazy"
             />
           </div>
         )}
 
-        {/* Feature icons — mobile: 2 icons always visible, desktop: 3 icons on hover */}
-        {/* Mobile — always visible, 2 icons only */}
-        <div className="sm:hidden absolute bottom-0 left-0 right-0 flex justify-center gap-2 px-3 pb-3 pt-8 bg-gradient-to-t from-background/95 via-background/40 to-transparent">
-          {features.slice(0, 2).map((feat) => (
+        {/* Feature icons — 2 on mobile, 3 on desktop, both on hover */}
+        <div
+          className="absolute bottom-0 left-0 right-0 flex justify-center gap-1.5 sm:gap-2 px-2 sm:px-3 pb-2.5 sm:pb-3 pt-8 bg-gradient-to-t from-background/95 via-background/40 to-transparent"
+          style={{
+            opacity: isHovered ? 1 : 0,
+            transform: isHovered ? "translateY(0)" : "translateY(12px)",
+            transition: "opacity 0.35s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+            transitionDelay: isHovered ? "0.15s" : "0s",
+          }}
+        >
+          {features.slice(0, isMobile ? 2 : 3).map((feat, i) => (
             <div
               key={feat.label}
-              className="flex items-center gap-1.5 bg-foreground/90 text-background rounded-full px-3 py-1.5 backdrop-blur-sm"
+              className="flex items-center gap-1 sm:gap-1 bg-foreground/90 text-background rounded-full px-2.5 sm:px-2 py-1.5 sm:py-1 backdrop-blur-sm"
+              style={{
+                opacity: isHovered ? 1 : 0,
+                transform: isHovered ? "translateY(0) scale(1)" : "translateY(8px) scale(0.9)",
+                transition: "opacity 0.3s ease, transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
+                transitionDelay: isHovered ? `${0.18 + i * 0.05}s` : "0s",
+              }}
             >
-              <feat.icon className="w-3.5 h-3.5" strokeWidth={2.5} />
+              <feat.icon className="w-3.5 sm:w-3 h-3.5 sm:h-3" strokeWidth={2.5} />
               <span className="text-[9px] font-semibold leading-none whitespace-nowrap">
                 {feat.label}
               </span>
