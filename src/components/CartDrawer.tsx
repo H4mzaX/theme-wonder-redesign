@@ -39,8 +39,8 @@ const getBundleAccessories = (device: string): BundleItem[] => [
     id: `${device.replace(/\s+/g, "-").toLowerCase()}-screen-guard`,
     name: "Tempered Glass Screen Guard",
     subtitle: `For ${device}`,
-    price: "₹399",
-    numericPrice: 399,
+    price: "₹349",
+    numericPrice: 349,
     originalPrice: "₹799",
     icon: Shield,
     image: collectionProtectors,
@@ -49,8 +49,8 @@ const getBundleAccessories = (device: string): BundleItem[] => [
     id: `${device.replace(/\s+/g, "-").toLowerCase()}-camera-lens`,
     name: "Camera Lens Protector",
     subtitle: `For ${device}`,
-    price: "₹299",
-    numericPrice: 299,
+    price: "₹249",
+    numericPrice: 249,
     originalPrice: "₹599",
     icon: Camera,
     image: collectionAccessories,
@@ -59,8 +59,8 @@ const getBundleAccessories = (device: string): BundleItem[] => [
     id: `${device.replace(/\s+/g, "-").toLowerCase()}-charging-cable`,
     name: "Fast Charging Cable",
     subtitle: "Type-C · 1.5m",
-    price: "₹499",
-    numericPrice: 499,
+    price: "₹399",
+    numericPrice: 399,
     originalPrice: "₹999",
     icon: Smartphone,
     image: collectionRugged,
@@ -241,20 +241,31 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -20 }}
                       transition={{ duration: 0.2 }}
-                      className="flex gap-4 items-center bg-card rounded-xl p-3"
+                      className="flex gap-4 items-center bg-card rounded-xl p-3 border border-border/50"
                     >
-                      <div className="w-20 h-20 rounded-lg bg-muted flex-shrink-0 overflow-hidden flex items-center justify-center">
+                      <div className="w-20 h-20 rounded-lg bg-muted flex-shrink-0 overflow-hidden flex items-center justify-center relative">
                         {(() => {
                           const Icon = bundleItems[bundleIndex].icon;
                           return <Icon className="w-8 h-8 text-muted-foreground" />;
+                        })()}
+                        {(() => {
+                          const orig = parseInt(bundleItems[bundleIndex].originalPrice.replace(/[₹,]/g, "")) || 0;
+                          const curr = bundleItems[bundleIndex].numericPrice;
+                          const pct = Math.round(((orig - curr) / orig) * 100);
+                          return (
+                            <span className="absolute top-1 left-1 text-[9px] font-bold bg-destructive text-destructive-foreground px-1.5 py-0.5 rounded">
+                              -{pct}%
+                            </span>
+                          );
                         })()}
                       </div>
                       <div className="flex-1 min-w-0">
                         <h5 className="text-sm font-bold leading-tight">{bundleItems[bundleIndex].name}</h5>
                         <p className="text-xs text-muted-foreground mt-0.5">{bundleItems[bundleIndex].subtitle}</p>
                         <div className="flex items-center gap-2 mt-1">
-                          <span className="text-sm font-bold">{bundleItems[bundleIndex].price}</span>
+                          <span className="text-sm font-bold text-accent">{bundleItems[bundleIndex].price}</span>
                           <span className="text-xs text-muted-foreground line-through">{bundleItems[bundleIndex].originalPrice}</span>
+                          <span className="text-[10px] font-semibold text-accent">BUNDLE PRICE</span>
                         </div>
                       </div>
                       <button
