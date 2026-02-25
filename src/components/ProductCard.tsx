@@ -204,19 +204,17 @@ const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
           <span className="text-muted-foreground text-[11px]">| {product.reviews} Reviews</span>
         </div>
 
-        {/* Color swatches */}
-        {product.colors.length > 1 && (
-          <div className="flex gap-1.5 mt-2">
-            {product.colors.map((c) => (
-              <span
-                key={c}
-                className="w-[18px] h-[18px] rounded-full border border-border/80"
-                style={{ backgroundColor: colorMap[c] || "#ccc" }}
-                title={c}
-              />
-            ))}
-          </div>
-        )}
+        {/* Color swatches — always show at least one */}
+        <div className="flex gap-1.5 mt-2">
+          {(product.colors.length > 1 ? product.colors : ["White"]).map((c) => (
+            <span
+              key={c}
+              className="w-[18px] h-[18px] rounded-full border border-border/80"
+              style={{ backgroundColor: colorMap[c] || "#ffffff" }}
+              title={c}
+            />
+          ))}
+        </div>
 
         {/* Price */}
         <div className="flex items-baseline gap-2 mt-auto pt-3">
