@@ -467,40 +467,39 @@ const ProductDetail = () => {
 
             {/* ADD TO CART + BUY NOW */}
             <div ref={ctaRef} className="flex gap-2.5 sm:gap-3 mt-6 sm:mt-7">
-              <button
+              <motion.button
                 onClick={handleAddToCart}
-                className="flex-1 bg-foreground text-background font-bold py-3.5 sm:py-4 rounded-full text-[13px] sm:text-sm tracking-widest hover:bg-foreground/90 transition-colors uppercase"
+                className="flex-1 bg-foreground text-background font-bold py-3.5 sm:py-4 rounded-full text-[13px] sm:text-sm tracking-widest uppercase relative overflow-hidden"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
               >
-                ADD TO CART
-              </button>
-              <button
+                <span className="relative z-10 flex items-center justify-center">
+                  <motion.span
+                    animate={{ opacity: [1, 1, 0.4, 1] }}
+                    transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    ADD TO CART
+                  </motion.span>
+                </span>
+                <motion.div
+                  className="absolute inset-0 bg-foreground/80"
+                  animate={{ x: ["-100%", "100%"] }}
+                  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                  style={{ background: "linear-gradient(90deg, transparent 0%, hsl(var(--background) / 0.15) 50%, transparent 100%)" }}
+                />
+              </motion.button>
+              <motion.button
                 onClick={() => {
                   handleAddToCart();
                   toast({ title: "Proceeding to checkout", description: "Redirecting..." });
                 }}
-                className="flex-1 bg-foreground text-background font-bold py-3.5 sm:py-4 rounded-full text-[13px] sm:text-sm tracking-wider hover:bg-foreground/90 transition-colors relative overflow-hidden"
+                className="flex-1 bg-foreground text-background font-bold py-3.5 sm:py-4 rounded-full text-[13px] sm:text-sm tracking-wider"
+                whileHover={{ scale: 1.05, boxShadow: "0 8px 25px -5px hsl(var(--foreground) / 0.4)" }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: "spring", stiffness: 300, damping: 15 }}
               >
-                <span className="flex items-center justify-center gap-2">
-                  <motion.span
-                    key="buy-text"
-                    className="absolute inset-0 flex items-center justify-center gap-2"
-                    animate={{ opacity: [1, 1, 0, 0, 1] }}
-                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    BUY NOW →
-                  </motion.span>
-                  <motion.span
-                    key="upi-text"
-                    className="absolute inset-0 flex items-center justify-center gap-2"
-                    animate={{ opacity: [0, 0, 1, 1, 0] }}
-                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    <IndianRupee className="w-4 h-4" /> UPI PAY
-                  </motion.span>
-                  {/* invisible spacer */}
-                  <span className="invisible">BUY NOW →</span>
-                </span>
-              </button>
+                BUY NOW →
+              </motion.button>
             </div>
 
             {/* WhatsApp help */}
