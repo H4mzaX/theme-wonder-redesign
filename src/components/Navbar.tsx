@@ -81,7 +81,7 @@ const Navbar = ({ onSearchOpen, onCartOpen }: NavbarProps) => {
           scrolled ? "shadow-md border-b border-border/30" : "border-b border-border/50"
         }`}
         initial={{ y: 0 }}
-        animate={{ y: hidden ? -100 : 0 }}
+        animate={{ y: 0 }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
         <div className="flex items-center justify-between">

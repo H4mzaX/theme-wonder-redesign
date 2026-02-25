@@ -3,7 +3,8 @@ import { useParams, Link } from "react-router-dom";
 import {
   Star, ChevronLeft, ChevronRight, Shield, Zap, Magnet, CheckCircle,
   Phone, Video, Package, Truck, CreditCard, Percent, Minus, Plus,
-  Share2, ChevronDown, MessageSquare, HelpCircle, Send, Droplets, Smartphone, Fingerprint
+  Share2, ChevronDown, Fingerprint, Smartphone, Droplets, Search as SearchIcon,
+  RotateCcw, Timer, Lock, PlusCircle
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { allProducts, colorImages, type Product } from "@/data/products";
@@ -27,148 +28,125 @@ const colorHex: Record<string, string> = {
   "Matte Black": "#333333",
 };
 
-const categoryHighlights: Record<string, { icon: typeof Shield; value: string; label: string }[]> = {
+const categoryHighlights: Record<string, { icon: typeof Shield; label: string; value: string }[]> = {
   "MagSafe Cases": [
-    { icon: Magnet, value: "MagSafe", label: "Compatible" },
-    { icon: Shield, value: "10.4ft", label: "Drop protection" },
-    { icon: Droplets, value: "Anti-Yellow", label: "Technology" },
-    { icon: Smartphone, value: "Slim Fit", label: "Profile" },
-    { icon: Fingerprint, value: "Anti-Slip", label: "Grip texture" },
-    { icon: Zap, value: "Wireless", label: "Charging" },
+    { icon: Fingerprint, label: "Anti-skid Grip", value: "Anti-skid Grip" },
+    { icon: Shield, label: "14.8 Feet Drop Protection", value: "14.8 Feet Drop Protection" },
+    { icon: Magnet, label: "MagSafe Compatible", value: "MagSafe Compatible" },
+    { icon: Smartphone, label: "Easy Click Buttons", value: "Easy Click Buttons" },
   ],
   "Silicone Cases": [
-    { icon: Shield, value: "8ft", label: "Drop protection" },
-    { icon: Fingerprint, value: "Anti-Slip", label: "Grip texture" },
-    { icon: Smartphone, value: "Microfiber", label: "Interior" },
-    { icon: Zap, value: "Wireless", label: "Charging" },
-    { icon: Droplets, value: "Washable", label: "Surface" },
-    { icon: CheckCircle, value: "1 Year", label: "Warranty" },
+    { icon: Fingerprint, label: "Anti-skid Grip", value: "Anti-skid Grip" },
+    { icon: Shield, label: "10.4 Feet Drop Protection", value: "10.4 Feet Drop Protection" },
+    { icon: Droplets, label: "Washable Surface", value: "Washable Surface" },
+    { icon: Smartphone, label: "Easy Click Buttons", value: "Easy Click Buttons" },
   ],
   "Leather Cases": [
-    { icon: Zap, value: "Genuine", label: "Leather" },
-    { icon: Shield, value: "6ft", label: "Drop protection" },
-    { icon: Magnet, value: "MagSafe", label: "Compatible" },
-    { icon: CheckCircle, value: "Patina", label: "Natural aging" },
-    { icon: Smartphone, value: "Slim", label: "Profile" },
-    { icon: Fingerprint, value: "Premium", label: "Hand feel" },
+    { icon: Fingerprint, label: "Premium Hand Feel", value: "Premium Hand Feel" },
+    { icon: Shield, label: "6 Feet Drop Protection", value: "6 Feet Drop Protection" },
+    { icon: Magnet, label: "MagSafe Compatible", value: "MagSafe Compatible" },
+    { icon: Smartphone, label: "Easy Click Buttons", value: "Easy Click Buttons" },
   ],
 };
 
 const defaultHighlights = [
-  { icon: Shield, value: "6ft", label: "Drop protection" },
-  { icon: Zap, value: "Premium", label: "Material" },
-  { icon: Magnet, value: "Wireless", label: "Charging" },
-  { icon: CheckCircle, value: "1 Year", label: "Warranty" },
-  { icon: Smartphone, value: "Slim", label: "Profile" },
-  { icon: Fingerprint, value: "Anti-Slip", label: "Grip" },
+  { icon: Fingerprint, label: "Anti-skid Grip", value: "Anti-skid Grip" },
+  { icon: Shield, label: "6 Feet Drop Protection", value: "6 Feet Drop Protection" },
+  { icon: Zap, label: "Wireless Charging", value: "Wireless Charging" },
+  { icon: Smartphone, label: "Easy Click Buttons", value: "Easy Click Buttons" },
 ];
 
 const fakeReviews = [
-  { name: "Rahul M.", rating: 5, date: "2 weeks ago", title: "Perfect fit!", body: "Snaps on perfectly with MagSafe. Love the feel and the clear back shows off my phone's color.", verified: true },
-  { name: "Priya S.", rating: 5, date: "1 month ago", title: "Best case I've bought", body: "Super premium quality. The leather develops a beautiful patina. Worth every rupee.", verified: true },
-  { name: "Arjun K.", rating: 4, date: "3 weeks ago", title: "Great protection", body: "Dropped my phone twice already and not a scratch. Only wish it came in more colors.", verified: true },
-  { name: "Sneha D.", rating: 5, date: "1 week ago", title: "Love the texture", body: "The silicone grip is amazing. Phone never slips out of my hand anymore.", verified: false },
+  { name: "Asharam Goyal", rating: 5, date: "2 weeks ago", title: "Superb quality and perfect fit", body: "The case fits perfectly on my phone. Build quality is excellent and the grip is amazing. Highly recommended for anyone looking for premium protection.", verified: true },
+  { name: "Hemanth Kumar", rating: 4, date: "1 month ago", title: "Good one and fitting also good", body: "Bold pro case is good one and fitting also good. The durability is impressive with side bumpers. Case weight around 42 grams, feels good in hand.", verified: true },
+  { name: "Priya Sharma", rating: 5, date: "3 weeks ago", title: "Best case I've ever bought", body: "Super premium quality. The material develops a beautiful look over time. Worth every rupee spent. Would buy again for sure.", verified: true },
+  { name: "Amritleen Singh", rating: 5, date: "1 week ago", title: "Premium feel, amazing protection", body: "Dropped my phone twice already and not a scratch. The anti-slip grip is fantastic. Phone never slips out of my hand anymore.", verified: true },
+  { name: "Srikanth T", rating: 4, date: "5 days ago", title: "Value for money product", body: "Good product at reasonable price. Camera protection is excellent. Only wish it came in more color options.", verified: false },
+  { name: "Rahul Menon", rating: 5, date: "2 days ago", title: "Bhai kya premium quality hai", body: "Premium build quality. Best case available in this price range. Fast delivery and good packaging too.", verified: true },
 ];
 
 const offers = [
-  { icon: Percent, title: "FLAT 5% OFF", sub: "On Purchase of Single Product." },
-  { icon: Percent, title: "FLAT 10% OFF", sub: "On Purchase of 2 or More Products." },
-  { icon: Truck, title: "FREE SHIPPING", sub: "On All Prepaid Orders." },
+  { title: "FLAT 5% OFF", highlight: "5%", sub: "On Purchase of Single Product" },
+  { title: "FLAT 10% OFF", highlight: "10%", sub: "On Purchase of 2 & More" },
+  { title: "FREE SHIPPING", highlight: "FREE", sub: "On All Prepaid Orders" },
 ];
 
-const techSpecs: Record<string, { section: string; items: { label: string; value: string }[] }[]> = {
+const productFeatures: Record<string, string[]> = {
   "MagSafe Cases": [
-    {
-      section: "Protection",
-      items: [
-        { label: "Drop Protection", value: "10.4 feet (military grade)" },
-        { label: "Corner Protection", value: "Air-cushion technology" },
-        { label: "Screen Protection", value: "Raised bezels, 1.2mm lip" },
-        { label: "Camera Protection", value: "Raised camera ring" },
-      ],
-    },
-    {
-      section: "Design",
-      items: [
-        { label: "Material", value: "Polycarbonate + TPU hybrid" },
-        { label: "Profile", value: "Slim fit, 1.2mm" },
-        { label: "Weight", value: "32g" },
-        { label: "Finish", value: "Anti-yellowing coating" },
-      ],
-    },
-    {
-      section: "Compatibility",
-      items: [
-        { label: "MagSafe", value: "Built-in magnets (38 N+)" },
-        { label: "Wireless Charging", value: "Qi & Qi2 compatible" },
-        { label: "Screen Protector", value: "Compatible with all" },
-      ],
-    },
-  ],
-  "Leather Cases": [
-    {
-      section: "Material",
-      items: [
-        { label: "Leather Type", value: "Genuine Italian full-grain" },
-        { label: "Tanning", value: "Vegetable-tanned" },
-        { label: "Interior", value: "Soft microfiber lining" },
-        { label: "Weight", value: "42g" },
-      ],
-    },
-    {
-      section: "Protection",
-      items: [
-        { label: "Drop Protection", value: "6 feet" },
-        { label: "Screen Protection", value: "Raised bezels" },
-        { label: "Camera Protection", value: "Raised camera ring" },
-      ],
-    },
-    {
-      section: "Features",
-      items: [
-        { label: "MagSafe", value: "Built-in magnets" },
-        { label: "Patina", value: "Develops natural patina over time" },
-        { label: "Wireless Charging", value: "Compatible" },
-      ],
-    },
+    "SGS tested for 14.8 feet Drop Protection",
+    "Built-in MagSafe magnets for perfect alignment",
+    "Soft Bumper Sides & Airbags at corners to enhance grip and shock absorption",
+    "Nano Oleophobic Coating resists fingerprints and smudges",
+    "See-through design reveals the phone logo while maintaining protection",
   ],
   "Silicone Cases": [
-    {
-      section: "Material",
-      items: [
-        { label: "Exterior", value: "Liquid silicone rubber" },
-        { label: "Interior", value: "Soft microfiber lining" },
-        { label: "Weight", value: "28g" },
-        { label: "Finish", value: "Soft-touch matte" },
-      ],
-    },
-    {
-      section: "Protection",
-      items: [
-        { label: "Drop Protection", value: "8 feet" },
-        { label: "Screen Protection", value: "Raised bezels, 1.5mm" },
-        { label: "Camera Protection", value: "Raised camera ring" },
-      ],
-    },
-    {
-      section: "Compatibility",
-      items: [
-        { label: "Wireless Charging", value: "Qi compatible" },
-        { label: "Screen Protector", value: "Compatible with all" },
-      ],
-    },
+    "SGS tested for 10.4 feet Drop Protection",
+    "Liquid silicone rubber exterior with soft microfiber interior",
+    "Soft Bumper Sides & Airbags at corners to enhance grip and shock absorption",
+    "Washable surface that resists stains and discoloration",
+    "Striking Color Design that makes your case truly stand out",
+  ],
+  "Leather Cases": [
+    "SGS tested for 6 feet Drop Protection",
+    "Genuine Italian full-grain leather exterior",
+    "Develops a beautiful natural patina over time",
+    "Soft microfiber lining protects your device from scratches",
+    "Slim profile that fits comfortably in your pocket",
   ],
 };
 
-const defaultSpecs = techSpecs["MagSafe Cases"];
+const defaultFeatures = [
+  "SGS tested for Drop Protection",
+  "Premium materials with precision engineering",
+  "Raised bezels for screen and camera protection",
+  "Compatible with wireless charging",
+  "Anti-slip grip texture for secure handling",
+];
+
+const productDescriptions: Record<string, { title: string; description: string; specs: { label: string; value: string }[] }> = {
+  "MagSafe Cases": {
+    title: "MagSafe Clear Case",
+    description: "Introducing our MagSafe Clear Case, a premium phone case crafted to elevate your protection game. Engineered for an active lifestyle, this rugged case offers an impressive 14.8 feet of drop protection, ensuring your device withstands life's toughest challenges. Featuring a unique design with eye-catching colors, it combines aesthetics with functionality. The soft bumper sides provide a comfortable grip, while innovative airbags at the corners absorb impact, safeguarding your phone from shocks and drops.",
+    specs: [
+      { label: "Model", value: "" },
+      { label: "Material", value: "Built with Polycarbonate + TPU hybrid" },
+      { label: "Weight", value: "32g" },
+      { label: "Compatibility", value: "Compatible with all MagSafe accessories & Wireless charging" },
+    ],
+  },
+  "Silicone Cases": {
+    title: "Silicone Snap Case",
+    description: "Introducing our Silicone Snap Case, engineered for those who demand both style and substance. This premium case features liquid silicone rubber exterior with a soft microfiber lining that cradles your phone. With 10.4 feet of drop protection, innovative corner airbags, and a washable surface, it's the perfect blend of durability and elegance. The striking color options let you express your personality while keeping your device safe.",
+    specs: [
+      { label: "Model", value: "" },
+      { label: "Material", value: "Built with Liquid Silicone + Microfiber" },
+      { label: "Weight", value: "28g" },
+      { label: "Compatibility", value: "Compatible with all VCASE products & Wireless charging" },
+    ],
+  },
+  "Leather Cases": {
+    title: "Premium Leather Case",
+    description: "Introducing our Premium Leather Case, handcrafted from genuine Italian full-grain leather. This luxurious case develops a beautiful natural patina over time, making it uniquely yours. With 6 feet of drop protection and MagSafe compatibility, it combines timeless elegance with modern functionality. The soft microfiber interior protects your device from scratches, while the slim profile ensures it fits comfortably in your pocket.",
+    specs: [
+      { label: "Model", value: "" },
+      { label: "Material", value: "Genuine Italian Full-grain Leather" },
+      { label: "Weight", value: "42g" },
+      { label: "Compatibility", value: "Compatible with MagSafe accessories & Wireless charging" },
+    ],
+  },
+};
+
+const defaultDescription = productDescriptions["MagSafe Cases"];
 
 const faqItems = [
-  { q: "Will this case make my phone bulky?", a: "No! Our cases are designed with a slim profile (1.2mm) that adds minimal bulk while providing maximum protection. You'll barely notice it's there." },
+  { q: "Will this case make my phone bulky?", a: "No! Our cases are designed with a slim profile that adds minimal bulk while providing maximum protection. You'll barely notice it's there." },
   { q: "Is the case compatible with wireless charging?", a: "Yes, all our cases are fully compatible with Qi and Qi2 wireless charging. MagSafe cases have built-in magnets for perfect alignment." },
   { q: "What if my case turns yellow?", a: "We offer a free replacement guarantee if your clear case turns yellow within the warranty period. Simply contact us with photos and we'll ship a new one." },
-  { q: "How do I clean my case?", a: "For silicone and clear cases, wipe with a damp cloth and mild soap. For leather cases, use a dry microfiber cloth. Avoid harsh chemicals or submerging in water." },
+  { q: "How do I clean my case?", a: "For silicone and clear cases, wipe with a damp cloth and mild soap. For leather cases, use a dry microfiber cloth. Avoid harsh chemicals." },
   { q: "Do you offer international shipping?", a: "Currently we ship across India with free shipping on all prepaid orders. International shipping is coming soon." },
 ];
+
+const warrantyContent = "All VCASE products come with a 6-month warranty against manufacturing defects. This covers issues such as peeling, discoloration (non-clear cases), and structural failure under normal use. Warranty does not cover physical damage from drops, scratches from everyday use, or natural patina development on leather cases.";
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -179,9 +157,9 @@ const ProductDetail = () => {
   const [currentImg, setCurrentImg] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [showStickyBar, setShowStickyBar] = useState(false);
-  const thumbRef = useRef<HTMLDivElement>(null);
+  const [countdownMinutes, setCountdownMinutes] = useState(4);
+  const [countdownSeconds, setCountdownSeconds] = useState(59);
   const ctaRef = useRef<HTMLDivElement>(null);
   const { addToCart } = useCart();
 
@@ -196,6 +174,20 @@ const ProductDetail = () => {
   useEffect(() => {
     setCurrentImg(selectedColor);
   }, [selectedColor]);
+
+  // Countdown timer
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCountdownSeconds((prev) => {
+        if (prev === 0) {
+          setCountdownMinutes((m) => (m === 0 ? 4 : m - 1));
+          return 59;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Show sticky bar when CTA is out of view
   useEffect(() => {
@@ -225,13 +217,22 @@ const ProductDetail = () => {
   }
 
   const highlights = categoryHighlights[product.category] || defaultHighlights;
-  const specs = techSpecs[product.category] || defaultSpecs;
+  const features = productFeatures[product.category] || defaultFeatures;
+  const descData = productDescriptions[product.category] || defaultDescription;
   const relatedProducts = allProducts
-    .filter((p) => p.category === product.category && p.id !== product.id)
-    .slice(0, 4);
+    .filter((p) => p.device === product.device && p.id !== product.id)
+    .slice(0, 8);
   const pairsWellWith = allProducts
     .filter((p) => p.category !== product.category && p.device === product.device)
     .slice(0, 4);
+
+  // Get all devices for the same case type for model selector
+  const availableModels = allProducts
+    .filter((p) => p.name === product.name)
+    .map((p) => p.device)
+    .filter((v, i, a) => a.indexOf(v) === i);
+
+  const emiPrice = Math.ceil(parseInt(product.price.replace(/[₹,]/g, "")) / 3);
 
   const handleAddToCart = () => {
     for (let i = 0; i < quantity; i++) {
@@ -248,6 +249,13 @@ const ProductDetail = () => {
     setCartOpen(true);
   };
 
+  const handleModelChange = (device: string) => {
+    const targetProduct = allProducts.find((p) => p.name === product.name && p.device === device);
+    if (targetProduct) {
+      window.location.href = `/product/${targetProduct.id}`;
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <AnnouncementBar />
@@ -256,136 +264,175 @@ const ProductDetail = () => {
       <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
 
       {/* ═══════ MAIN PRODUCT SECTION ═══════ */}
-      <section className="max-w-[1400px] mx-auto w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2">
+      <section className="max-w-[1440px] mx-auto w-full px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-10 pt-4 lg:pt-8">
 
-          {/* ── LEFT: Gallery (scrollable images stacked vertically on desktop) ── */}
-          <div className="lg:sticky lg:top-0 lg:self-start">
-            {/* Main image */}
-            <div className="relative aspect-square bg-[#f5f5f5]">
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={currentImg}
-                  src={galleryImages[currentImg] || product.image}
-                  alt={product.name}
-                  className="w-full h-full object-contain p-8 sm:p-16"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.25 }}
-                />
-              </AnimatePresence>
+          {/* ── LEFT: Vertical Thumbnails + Main Image (sticky) ── */}
+          <div className="lg:col-span-7 lg:sticky lg:top-[80px] lg:self-start">
+            <div className="flex gap-3">
+              {/* Vertical thumbnails - desktop only */}
+              <div
+                className="hidden lg:flex flex-col gap-2 w-[80px] max-h-[600px] overflow-y-auto flex-shrink-0"
+                style={{ scrollbarWidth: "none" }}
+              >
+                {galleryImages.map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentImg(i)}
+                    className={`w-[76px] h-[76px] rounded-lg overflow-hidden border-2 transition-all flex-shrink-0 ${
+                      i === currentImg ? "border-foreground" : "border-border hover:border-foreground/40"
+                    }`}
+                  >
+                    <img src={img} alt="" className="w-full h-full object-contain bg-secondary/30 p-1" />
+                  </button>
+                ))}
+              </div>
 
-              {galleryImages.length > 1 && (
-                <>
-                  <button
-                    onClick={() => setCurrentImg((p) => (p - 1 + galleryImages.length) % galleryImages.length)}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center hover:bg-background transition-colors shadow-sm"
-                  >
-                    <ChevronLeft className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={() => setCurrentImg((p) => (p + 1) % galleryImages.length)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center hover:bg-background transition-colors shadow-sm"
-                  >
-                    <ChevronRight className="w-5 h-5" />
-                  </button>
-                </>
-              )}
+              {/* Main image */}
+              <div className="relative flex-1 aspect-square bg-secondary/30 rounded-xl overflow-hidden">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={currentImg}
+                    src={galleryImages[currentImg] || product.image}
+                    alt={product.name}
+                    className="w-full h-full object-contain p-8 sm:p-12"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  />
+                </AnimatePresence>
+
+                {/* Zoom icon */}
+                <button className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-background shadow-md flex items-center justify-center hover:bg-muted transition-colors">
+                  <SearchIcon className="w-4 h-4 text-foreground" />
+                </button>
+
+                {/* Mobile arrows */}
+                {galleryImages.length > 1 && (
+                  <div className="lg:hidden">
+                    <button
+                      onClick={() => setCurrentImg((p) => (p - 1 + galleryImages.length) % galleryImages.length)}
+                      className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center shadow-sm"
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => setCurrentImg((p) => (p + 1) % galleryImages.length)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center shadow-sm"
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
 
-            {/* Thumbnails */}
+            {/* Mobile thumbnails */}
             <div
-              ref={thumbRef}
-              className="flex gap-2 px-4 py-3 overflow-x-auto bg-background"
+              className="flex lg:hidden gap-2 px-1 py-3 overflow-x-auto"
               style={{ scrollbarWidth: "none" }}
             >
               {galleryImages.map((img, i) => (
                 <button
                   key={i}
                   onClick={() => setCurrentImg(i)}
-                  className={`flex-none w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border-2 transition-all ${
+                  className={`flex-none w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${
                     i === currentImg ? "border-foreground" : "border-transparent hover:border-border"
                   }`}
                 >
-                  <img src={img} alt="" className="w-full h-full object-contain bg-[#f5f5f5] p-1" />
+                  <img src={img} alt="" className="w-full h-full object-contain bg-secondary/30 p-1" />
                 </button>
               ))}
-            </div>
-
-            {/* Product Highlights bar (below gallery like reference) */}
-            <div className="hidden lg:block border-t border-border">
-              <div className="px-6 py-5">
-                <p className="text-xs font-semibold text-muted-foreground tracking-widest uppercase mb-4">Product highlights</p>
-                <div className="grid grid-cols-3 gap-4">
-                  {highlights.map(({ icon: Icon, value, label }) => (
-                    <div key={label} className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
-                        <Icon className="w-4 h-4 text-foreground" />
-                      </div>
-                      <div>
-                        <p className="text-xs font-bold text-foreground leading-tight">{value}</p>
-                        <p className="text-[10px] text-muted-foreground">{label}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
           </div>
 
           {/* ── RIGHT: Product Info ── */}
-          <div className="px-5 sm:px-8 lg:px-10 py-6 lg:py-10">
-            {/* Vendor / Brand */}
-            <Link to="/collection/all" className="text-xs text-muted-foreground tracking-wider uppercase hover:text-foreground transition-colors">
-              {product.brand}
-            </Link>
-
-            {/* Title + Price row */}
-            <div className="flex items-start justify-between gap-4 mt-2">
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground leading-tight">
-                {product.name}
-              </h1>
-              <p className="text-xl sm:text-2xl font-bold text-foreground whitespace-nowrap pt-1">
-                {product.price}
-              </p>
-            </div>
+          <div className="lg:col-span-5 py-2 lg:py-0">
+            {/* Product Title */}
+            <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-bold text-foreground leading-tight">
+              {product.name}
+            </h1>
 
             {/* Subtitle */}
             <p className="text-sm text-muted-foreground mt-1">{product.subtitle}</p>
 
-            {/* Rating */}
-            <div className="flex items-center gap-2 mt-3">
-              <div className="flex gap-0.5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className={`w-4 h-4 ${i < Math.round(product.rating) ? "fill-foreground text-foreground" : "text-border"}`} />
-                ))}
+            {/* Rating + Social proof */}
+            <div className="flex flex-wrap items-center gap-3 mt-3">
+              <div className="inline-flex items-center gap-1.5 border border-border rounded px-2.5 py-1">
+                <span className="text-sm font-bold text-foreground">{product.rating.toFixed(1)}</span>
+                <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                <span className="text-muted-foreground text-xs">| {product.reviews} Reviews</span>
               </div>
-              <span className="text-sm font-medium">{product.rating.toFixed(1)}</span>
-              <span className="text-sm text-muted-foreground">{product.reviews} reviews</span>
+              <div className="inline-flex items-center gap-1.5 border border-border rounded px-2.5 py-1">
+                <span className="text-xs font-bold text-foreground">800+</span>
+                <span className="text-xs text-muted-foreground">Bought in 10 Days.</span>
+              </div>
             </div>
 
-            {/* Description */}
-            <p className="text-sm text-muted-foreground leading-relaxed mt-4">
-              Crafted for perfect fit and everyday protection. Premium materials meet precise engineering to keep your {product.device} safe without adding bulk.
-            </p>
+            {/* Price Box */}
+            <div className="mt-5 border border-border rounded-xl p-4">
+              <div className="flex items-baseline gap-3">
+                <span className="text-2xl font-bold text-foreground">{product.price}</span>
+                <span className="text-sm text-muted-foreground">MRP <span className="line-through">{product.originalPrice}</span></span>
+                <span className="text-xs font-semibold text-green-600 border border-green-600 rounded px-2 py-0.5">{product.discount}</span>
+              </div>
+              <div className="flex items-center gap-2 mt-2">
+                <span className="text-xs text-muted-foreground">or pay</span>
+                <span className="text-sm font-bold text-foreground">₹{emiPrice}/month</span>
+                <span className="text-xs text-muted-foreground">at 0% EMI via <span className="font-bold text-foreground">VCASE</span></span>
+                <button className="text-[10px] font-semibold border border-foreground rounded px-2 py-0.5 hover:bg-foreground hover:text-background transition-colors">Buy On EMI</button>
+              </div>
+            </div>
 
-            {/* Divider */}
-            <div className="h-px bg-border my-6" />
+            {/* Feature Highlights - 2x2 grid with icons */}
+            <div className="grid grid-cols-2 gap-4 mt-6">
+              {highlights.map(({ icon: Icon, label }) => (
+                <div key={label} className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-secondary/60 flex items-center justify-center flex-shrink-0">
+                    <Icon className="w-5 h-5 text-foreground" />
+                  </div>
+                  <span className="text-sm font-medium text-foreground">{label}</span>
+                </div>
+              ))}
+            </div>
 
-            {/* Color selector */}
+            {/* Step 1: Select Model */}
+            <div className="mt-7">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="w-6 h-6 rounded-full bg-foreground text-background text-xs font-bold flex items-center justify-center">1</span>
+                <span className="text-sm font-semibold text-foreground">Select Model:</span>
+                <span className="text-sm text-muted-foreground">{product.device}</span>
+              </div>
+              <div className="relative">
+                <select
+                  value={product.device}
+                  onChange={(e) => handleModelChange(e.target.value)}
+                  className="w-full border border-border rounded-xl px-4 py-3.5 text-sm font-medium text-foreground bg-background appearance-none cursor-pointer hover:border-foreground/50 transition-colors"
+                >
+                  {availableModels.map((model) => (
+                    <option key={model} value={model}>{model}</option>
+                  ))}
+                </select>
+                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+              </div>
+            </div>
+
+            {/* Step 2: Select Colour */}
             {product.colors.length > 0 && (
-              <div className="mb-6">
-                <p className="text-sm text-foreground mb-3">
-                  Color: <span className="font-semibold">{product.colors[selectedColor]}</span>
-                </p>
+              <div className="mt-6">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="w-6 h-6 rounded-full bg-foreground text-background text-xs font-bold flex items-center justify-center">2</span>
+                  <span className="text-sm font-semibold text-foreground">Select Colour:</span>
+                  <span className="text-sm text-muted-foreground">{product.colors[selectedColor]}</span>
+                </div>
                 <div className="flex gap-3">
                   {product.colors.map((color, i) => (
                     <button
                       key={color}
                       onClick={() => setSelectedColor(i)}
                       className={`w-10 h-10 rounded-full border-2 transition-all ${
-                        i === selectedColor ? "border-foreground scale-110 ring-2 ring-foreground/10" : "border-border hover:border-foreground/50"
+                        i === selectedColor ? "border-foreground ring-2 ring-foreground/20 scale-110" : "border-border hover:border-foreground/50"
                       }`}
                       style={{ backgroundColor: colorHex[color] || "#ccc" }}
                       title={color}
@@ -395,166 +442,88 @@ const ProductDetail = () => {
               </div>
             )}
 
-            {/* Product Highlights (mobile only) */}
-            <div className="lg:hidden mb-6">
-              <p className="text-xs font-semibold text-muted-foreground tracking-widest uppercase mb-3">Product highlights</p>
-              <div className="grid grid-cols-3 gap-3">
-                {highlights.map(({ icon: Icon, value, label }) => (
-                  <div key={label} className="flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
-                      <Icon className="w-3.5 h-3.5 text-foreground" />
-                    </div>
-                    <div>
-                      <p className="text-[11px] font-bold text-foreground leading-tight">{value}</p>
-                      <p className="text-[9px] text-muted-foreground">{label}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Stock urgency */}
-            <p className="text-sm font-medium text-foreground mb-4">
-              Hurry, only <span className="font-bold text-red-600">5</span> items left in stock!
-            </p>
-
-            {/* Quantity + Add to Cart */}
-            <div ref={ctaRef} className="flex items-stretch gap-3 mb-3">
-              <div className="flex items-center border border-border rounded-lg">
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="px-3 py-3 hover:bg-muted transition-colors"
-                >
-                  <Minus className="w-4 h-4" />
-                </button>
-                <span className="px-3 text-sm font-medium min-w-[2rem] text-center">{quantity}</span>
-                <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="px-3 py-3 hover:bg-muted transition-colors"
-                >
-                  <Plus className="w-4 h-4" />
-                </button>
-              </div>
+            {/* ADD TO CART + BUY NOW */}
+            <div ref={ctaRef} className="flex gap-3 mt-7">
               <button
                 onClick={handleAddToCart}
-                className="flex-1 bg-foreground text-background font-semibold py-3.5 rounded-lg text-sm tracking-wide hover:bg-foreground/90 transition-colors"
+                className="flex-1 bg-foreground text-background font-bold py-4 rounded-full text-sm tracking-widest hover:bg-foreground/90 transition-colors uppercase"
               >
-                Add to cart — {product.price}
+                ADD TO CART
+              </button>
+              <button
+                onClick={() => {
+                  handleAddToCart();
+                  toast({ title: "Proceeding to checkout", description: "Redirecting..." });
+                }}
+                className="flex-1 bg-foreground text-background font-bold py-4 rounded-full text-sm tracking-wider hover:bg-foreground/90 transition-colors"
+              >
+                BUY NOW →
               </button>
             </div>
 
-            {/* Buy Now */}
-            <button
-              onClick={() => {
-                handleAddToCart();
-                toast({ title: "Proceeding to checkout", description: "Redirecting..." });
-              }}
-              className="w-full border-2 border-foreground text-foreground font-semibold py-3.5 rounded-lg text-sm tracking-wide hover:bg-foreground hover:text-background transition-colors mb-6"
-            >
-              Buy it now
-            </button>
-
-            {/* Pickup info */}
-            <div className="flex items-start gap-3 mb-4">
-              <Package className="w-5 h-5 text-foreground mt-0.5 flex-shrink-0" />
-              <div>
-                <p className="text-sm font-medium text-foreground">Ships within 1-2 business days</p>
-                <p className="text-xs text-muted-foreground">Usually ready in 24 hours</p>
+            {/* Available Offers */}
+            <div className="mt-7">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-base font-bold text-foreground">Available Offers</h3>
+                <span className="text-xs text-muted-foreground cursor-pointer hover:text-foreground">View All</span>
               </div>
-            </div>
-
-            {/* Share */}
-            <div className="flex items-center gap-3 mb-6">
-              <span className="text-sm text-muted-foreground">Share:</span>
-              <button className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors">
-                <Share2 className="w-3.5 h-3.5" />
-              </button>
-            </div>
-
-            {/* Divider */}
-            <div className="h-px bg-border mb-6" />
-
-            {/* Pairs well with */}
-            {pairsWellWith.length > 0 && (
-              <div className="mb-6">
-                <h3 className="text-base font-bold text-foreground mb-4">Pairs well with</h3>
-                <div className="space-y-3">
-                  {pairsWellWith.slice(0, 3).map((p) => (
-                    <Link
-                      key={p.id}
-                      to={`/product/${p.id}`}
-                      className="flex items-center gap-3 border border-border rounded-xl p-3 hover:border-foreground/30 transition-colors"
-                    >
-                      <div className="w-16 h-16 rounded-lg bg-[#f5f5f5] overflow-hidden flex-shrink-0">
-                        <img src={p.image} alt={p.name} className="w-full h-full object-contain p-1" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-foreground truncate">{p.name}</p>
-                        <p className="text-xs text-muted-foreground">{p.subtitle}</p>
-                      </div>
-                      <div className="text-right flex-shrink-0">
-                        <p className="text-sm font-bold text-foreground">{p.price}</p>
-                        <span className="text-[10px] text-muted-foreground underline">View</span>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Trust badges row */}
-            <div className="grid grid-cols-4 gap-3 py-5 border-y border-border mb-6">
-              {[
-                { icon: Truck, label: "Free Shipping" },
-                { icon: Shield, label: "90-Day Trial" },
-                { icon: CheckCircle, label: "1-Year Warranty" },
-                { icon: CreditCard, label: "COD Available" },
-              ].map(({ icon: Icon, label }) => (
-                <div key={label} className="flex flex-col items-center gap-1.5 text-center">
-                  <Icon className="w-5 h-5 text-muted-foreground" />
-                  <span className="text-[10px] sm:text-xs text-muted-foreground font-medium leading-tight">{label}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Need help? Accordion */}
-            <div className="mb-6">
-              <h3 className="text-base font-bold text-foreground mb-3">Need help?</h3>
-              <p className="text-xs text-muted-foreground mb-4">
-                If you have any questions, you are always welcome to contact us. We'll get back to you within 24 hours.
-              </p>
-              <div className="border border-border rounded-xl overflow-hidden divide-y divide-border">
-                {[
-                  { key: "shipping", title: "Shipping Information", icon: Truck, content: "Ships within 1-2 business days. Free shipping on all prepaid orders. Cash on delivery available across India." },
-                  { key: "support", title: "Customer Support", icon: Phone, content: "Available Monday to Saturday (9am-9pm IST). Connect via phone, WhatsApp, email, or live chat." },
-                  { key: "faq", title: "FAQ's", icon: HelpCircle, content: "Visit our FAQ section below for answers to common questions about our products." },
-                  { key: "contact", title: "Contact Us", icon: MessageSquare, content: "We'd love to hear from you. Drop us a message and our team will get back to you within 24 hours." },
-                ].map(({ key, title, icon: Icon, content }) => (
-                  <div key={key}>
-                    <button
-                      onClick={() => setOpenAccordion(openAccordion === key ? null : key)}
-                      className="flex items-center gap-3 w-full px-4 py-3.5 text-left hover:bg-muted/50 transition-colors"
-                    >
-                      <Icon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                      <span className="text-sm font-medium text-foreground flex-1">{title}</span>
-                      <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform ${openAccordion === key ? "rotate-180" : ""}`} />
-                    </button>
-                    <AnimatePresence>
-                      {openAccordion === key && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.2 }}
-                          className="overflow-hidden"
-                        >
-                          <p className="px-4 pb-4 text-xs text-muted-foreground leading-relaxed pl-11">{content}</p>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+              <div className="flex gap-3 overflow-x-auto pb-1" style={{ scrollbarWidth: "none" }}>
+                {offers.map((offer) => (
+                  <div key={offer.title} className="flex-none flex items-center gap-3 border border-border rounded-xl p-4 min-w-[220px] hover:border-foreground/30 transition-colors">
+                    <div className="w-10 h-10 rounded-full bg-foreground flex items-center justify-center flex-shrink-0">
+                      <Percent className="w-5 h-5 text-background" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-foreground">
+                        FLAT <span className="text-green-600">{offer.highlight} OFF</span>
+                      </p>
+                      <p className="text-xs text-muted-foreground">{offer.sub}</p>
+                    </div>
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* OR divider */}
+            <div className="flex items-center gap-4 my-6">
+              <div className="flex-1 h-px bg-border" />
+              <span className="text-sm font-medium text-muted-foreground">OR</span>
+              <div className="flex-1 h-px bg-border" />
+            </div>
+
+            {/* Support cards */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="flex items-center gap-3 border border-border rounded-xl p-4 hover:border-foreground/30 transition-colors cursor-pointer">
+                <Phone className="w-5 h-5 text-foreground" />
+                <div>
+                  <p className="text-sm font-bold text-foreground">Get Support on Call</p>
+                  <p className="text-xs text-muted-foreground">Talk to an agent</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 border border-border rounded-xl p-4 hover:border-foreground/30 transition-colors cursor-pointer">
+                <Video className="w-5 h-5 text-foreground" />
+                <div>
+                  <p className="text-sm font-bold text-foreground">Live Product Demo</p>
+                  <p className="text-xs text-muted-foreground">Shop on video call</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Trust badges */}
+            <div className="flex items-center justify-between mt-6 py-4 border-t border-border">
+              {[
+                { icon: RotateCcw, label: "7-Days", sub: "Returnable" },
+                { icon: Package, label: "COD", sub: "Available" },
+                { icon: Lock, label: "Secure", sub: "Payments" },
+              ].map(({ icon: Icon, label, sub }) => (
+                <div key={label} className="flex items-center gap-2">
+                  <Icon className="w-5 h-5 text-foreground" />
+                  <div>
+                    <p className="text-xs font-bold text-foreground leading-tight">{label}</p>
+                    <p className="text-[10px] text-muted-foreground">{sub}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -562,99 +531,204 @@ const ProductDetail = () => {
 
       {/* ═══════ BELOW-FOLD SECTIONS ═══════ */}
 
-      {/* Available Offers */}
-      <section className="max-w-[1400px] mx-auto w-full px-5 sm:px-8 lg:px-10 py-8 border-t border-border">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg sm:text-xl font-bold text-foreground">Available Offers</h2>
-          <span className="text-xs text-muted-foreground cursor-pointer hover:text-foreground">View All</span>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {offers.map((offer) => (
-            <div key={offer.title} className="flex items-center gap-3 border border-border rounded-xl p-4 hover:border-foreground/30 transition-colors">
-              <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
-                <offer.icon className="w-5 h-5 text-foreground" />
-              </div>
-              <div>
-                <p className="text-sm font-bold text-foreground">{offer.title}</p>
-                <p className="text-xs text-muted-foreground">{offer.sub}</p>
-              </div>
+      {/* Product Description + Specs Card */}
+      <section className="max-w-[1440px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-10">
+        <div className="bg-secondary/30 rounded-2xl p-6 sm:p-10 lg:p-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-5">{descData.title}</h2>
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{descData.description}</p>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Tech Specs Section */}
-      <section className="max-w-[1400px] mx-auto w-full px-5 sm:px-8 lg:px-10 py-10 border-t border-border">
-        <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-8">Tech Specs</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {specs.map(({ section, items }) => (
-            <div key={section}>
-              <h3 className="text-sm font-bold text-foreground tracking-wide uppercase mb-4 pb-2 border-b border-border">{section}</h3>
-              <div className="space-y-3">
-                {items.map(({ label, value }) => (
-                  <div key={label}>
-                    <p className="text-xs text-muted-foreground">{label}</p>
-                    <p className="text-sm font-medium text-foreground">{value}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Customer Reviews */}
-      <section className="max-w-[1400px] mx-auto w-full px-5 sm:px-8 lg:px-10 py-10 border-t border-border">
-        <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-6">Customer Reviews</h2>
-
-        {/* Review summary */}
-        <div className="flex items-center gap-6 mb-8">
-          <div className="text-center">
-            <p className="text-5xl font-bold text-foreground">{product.rating.toFixed(1)}</p>
-            <div className="flex gap-0.5 mt-2 justify-center">
-              {Array.from({ length: 5 }).map((_, s) => (
-                <Star key={s} className={`w-4 h-4 ${s < Math.round(product.rating) ? "fill-foreground text-foreground" : "text-border"}`} />
+            <div className="space-y-0">
+              {descData.specs.map(({ label, value }) => (
+                <div key={label} className="flex py-4 border-b border-border last:border-b-0">
+                  <span className="text-sm font-bold text-foreground w-36 flex-shrink-0">{label}</span>
+                  <span className="text-sm text-muted-foreground">{value || `For ${product.device}`}</span>
+                </div>
               ))}
             </div>
-            <p className="text-xs text-muted-foreground mt-1">{product.reviews} reviews</p>
           </div>
-          <div className="flex-1 space-y-1.5">
-            {[5, 4, 3, 2, 1].map((star) => {
-              const pct = star === 5 ? 72 : star === 4 ? 20 : star === 3 ? 5 : star === 2 ? 2 : 1;
-              return (
-                <div key={star} className="flex items-center gap-2">
-                  <span className="text-xs text-muted-foreground w-3">{star}</span>
-                  <Star className="w-3 h-3 fill-foreground text-foreground" />
-                  <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
-                    <div className="h-full bg-foreground rounded-full" style={{ width: `${pct}%` }} />
+        </div>
+      </section>
+
+      {/* Accordions: Product Features, Warranty, FAQs */}
+      <section className="max-w-[1440px] mx-auto w-full px-4 sm:px-6 lg:px-8 pb-10">
+        <div className="bg-secondary/30 rounded-2xl overflow-hidden divide-y divide-border">
+          {/* Product Features */}
+          <div>
+            <button
+              onClick={() => setOpenAccordion(openAccordion === "features" ? null : "features")}
+              className="flex items-center justify-between w-full px-6 sm:px-10 py-6 text-left hover:bg-secondary/50 transition-colors"
+            >
+              <h3 className="text-lg font-bold text-foreground">Product Features</h3>
+              <PlusCircle className={`w-6 h-6 text-foreground transition-transform ${openAccordion === "features" ? "rotate-45" : ""}`} />
+            </button>
+            <AnimatePresence>
+              {openAccordion === "features" && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.25 }}
+                  className="overflow-hidden"
+                >
+                  <ul className="px-6 sm:px-10 pb-6 space-y-3">
+                    {features.map((f, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-foreground flex-shrink-0" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Warranty */}
+          <div>
+            <button
+              onClick={() => setOpenAccordion(openAccordion === "warranty" ? null : "warranty")}
+              className="flex items-center justify-between w-full px-6 sm:px-10 py-6 text-left hover:bg-secondary/50 transition-colors"
+            >
+              <h3 className="text-lg font-bold text-foreground">Warranty</h3>
+              <PlusCircle className={`w-6 h-6 text-foreground transition-transform ${openAccordion === "warranty" ? "rotate-45" : ""}`} />
+            </button>
+            <AnimatePresence>
+              {openAccordion === "warranty" && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.25 }}
+                  className="overflow-hidden"
+                >
+                  <p className="px-6 sm:px-10 pb-6 text-sm text-muted-foreground leading-relaxed">{warrantyContent}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* FAQs */}
+          <div>
+            <button
+              onClick={() => setOpenAccordion(openAccordion === "faqs" ? null : "faqs")}
+              className="flex items-center justify-between w-full px-6 sm:px-10 py-6 text-left hover:bg-secondary/50 transition-colors"
+            >
+              <h3 className="text-lg font-bold text-foreground">Frequently Asked Questions</h3>
+              <PlusCircle className={`w-6 h-6 text-foreground transition-transform ${openAccordion === "faqs" ? "rotate-45" : ""}`} />
+            </button>
+            <AnimatePresence>
+              {openAccordion === "faqs" && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.25 }}
+                  className="overflow-hidden"
+                >
+                  <div className="px-6 sm:px-10 pb-6 space-y-4">
+                    {faqItems.map((item, i) => (
+                      <div key={i} className="border-b border-border pb-4 last:border-b-0">
+                        <p className="text-sm font-semibold text-foreground mb-1">{item.q}</p>
+                        <p className="text-sm text-muted-foreground leading-relaxed">{item.a}</p>
+                      </div>
+                    ))}
                   </div>
-                  <span className="text-[10px] text-muted-foreground w-7 text-right">{pct}%</span>
-                </div>
-              );
-            })}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════ REVIEWS & RATINGS ═══════ */}
+      <section className="max-w-[1440px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-10">
+        <div className="bg-secondary/30 rounded-2xl p-6 sm:p-10">
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground text-center mb-8">Reviews & Ratings</h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-8 items-center">
+            {/* Rating summary */}
+            <div className="text-center md:text-left">
+              <div className="flex gap-1 justify-center md:justify-start mb-2">
+                {Array.from({ length: 5 }).map((_, s) => (
+                  <Star key={s} className={`w-5 h-5 ${s < Math.round(product.rating) ? "fill-amber-400 text-amber-400" : "text-border"}`} />
+                ))}
+              </div>
+              <p className="text-lg font-semibold text-foreground">{product.rating.toFixed(2)} out of 5</p>
+              <p className="text-sm text-muted-foreground">Based on {product.reviews} reviews</p>
+            </div>
+
+            {/* Rating bars */}
+            <div className="space-y-2">
+              {[
+                { stars: 5, count: 234 },
+                { stars: 4, count: 49 },
+                { stars: 3, count: 17 },
+                { stars: 2, count: 1 },
+                { stars: 1, count: 0 },
+              ].map(({ stars, count }) => {
+                const total = 301;
+                const pct = Math.round((count / total) * 100);
+                return (
+                  <div key={stars} className="flex items-center gap-2">
+                    <div className="flex gap-0.5 w-20 flex-shrink-0">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star key={i} className={`w-3 h-3 ${i < stars ? "fill-amber-400 text-amber-400" : "text-border"}`} />
+                      ))}
+                    </div>
+                    <div className="flex-1 h-2.5 bg-border/50 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-foreground rounded-full"
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                    <span className="text-xs text-muted-foreground w-8 text-right">{count}</span>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Write a review / Ask a question */}
+            <div className="flex flex-col gap-3">
+              <button className="px-6 py-3 bg-foreground text-background rounded-full text-sm font-semibold hover:bg-foreground/90 transition-colors">
+                Write a review
+              </button>
+              <button className="px-6 py-3 border-2 border-foreground text-foreground rounded-full text-sm font-semibold hover:bg-foreground hover:text-background transition-colors">
+                Ask a question
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Individual reviews */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Sort filter */}
+        <div className="mt-6 border-b border-border pb-3">
+          <select className="text-sm text-muted-foreground bg-transparent cursor-pointer">
+            <option>Pictures First</option>
+            <option>Most Recent</option>
+            <option>Highest Rated</option>
+          </select>
+        </div>
+
+        {/* Review cards - masonry style */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
           {fakeReviews.map((review, i) => (
-            <div key={i} className="border border-border rounded-xl p-5">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center text-sm font-bold text-foreground">
-                    {review.name.charAt(0)}
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">{review.name}</p>
-                    {review.verified && <p className="text-[10px] text-green-600 font-medium">✓ Verified Purchase</p>}
-                  </div>
-                </div>
-                <span className="text-xs text-muted-foreground">{review.date}</span>
-              </div>
-              <div className="flex gap-0.5 mb-2">
+            <div key={i} className="bg-secondary/30 rounded-2xl p-5">
+              <div className="flex gap-0.5 mb-3">
                 {Array.from({ length: 5 }).map((_, s) => (
-                  <Star key={s} className={`w-3.5 h-3.5 ${s < review.rating ? "fill-foreground text-foreground" : "text-border"}`} />
+                  <Star key={s} className={`w-4 h-4 ${s < review.rating ? "fill-amber-400 text-amber-400" : "text-border"}`} />
                 ))}
+              </div>
+              <div className="flex items-center gap-2.5 mb-3">
+                <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-xs font-bold text-foreground">
+                  {review.name.charAt(0)}
+                </div>
+                <div>
+                  <span className="text-sm font-semibold text-foreground">{review.name}</span>
+                  {review.verified && (
+                    <span className="ml-2 text-[10px] font-medium bg-green-100 text-green-700 px-2 py-0.5 rounded">Verified</span>
+                  )}
+                </div>
               </div>
               <p className="text-sm font-semibold text-foreground mb-1">{review.title}</p>
               <p className="text-xs text-muted-foreground leading-relaxed">{review.body}</p>
@@ -663,42 +737,20 @@ const ProductDetail = () => {
         </div>
       </section>
 
-      {/* FAQs */}
-      <section className="max-w-[1400px] mx-auto w-full px-5 sm:px-8 lg:px-10 py-10 border-t border-border">
-        <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">FAQs</h2>
-        <p className="text-sm text-muted-foreground mb-6">Frequently asked questions about our products.</p>
-        <div className="border border-border rounded-xl overflow-hidden divide-y divide-border max-w-3xl">
-          {faqItems.map((item, i) => (
-            <div key={i}>
-              <button
-                onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                className="flex items-center justify-between w-full px-5 py-4 text-left hover:bg-muted/50 transition-colors"
-              >
-                <span className="text-sm font-medium text-foreground pr-4">{item.q}</span>
-                <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform flex-shrink-0 ${openFaq === i ? "rotate-180" : ""}`} />
-              </button>
-              <AnimatePresence>
-                {openFaq === i && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="overflow-hidden"
-                  >
-                    <p className="px-5 pb-4 text-sm text-muted-foreground leading-relaxed">{item.a}</p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* You may also like */}
+      {/* ═══════ YOU MAY ALSO LIKE (horizontal scroll) ═══════ */}
       {relatedProducts.length > 0 && (
-        <section className="max-w-[1400px] mx-auto w-full px-5 sm:px-8 lg:px-10 py-10 border-t border-border">
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-6">You may also like</h2>
+        <section className="max-w-[1440px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 border-t border-border">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground">You may also like</h2>
+            <div className="flex gap-2">
+              <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors">
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors">
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
           <div
             className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory"
             style={{ scrollbarWidth: "none" }}
@@ -716,43 +768,51 @@ const ProductDetail = () => {
       <AnimatePresence>
         {showStickyBar && (
           <motion.div
-            initial={{ y: 80 }}
+            initial={{ y: 100 }}
             animate={{ y: 0 }}
-            exit={{ y: 80 }}
+            exit={{ y: 100 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-md border-t border-border z-50"
+            className="fixed bottom-0 left-0 right-0 z-50"
           >
-            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-3 flex items-center gap-3">
-              {/* Product info */}
-              <div className="hidden sm:flex items-center gap-3 flex-1 min-w-0">
-                <div className="w-10 h-10 rounded-lg bg-[#f5f5f5] overflow-hidden flex-shrink-0">
-                  <img src={galleryImages[selectedColor] || product.image} alt="" className="w-full h-full object-contain p-0.5" />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-sm font-semibold text-foreground truncate">{product.name}</p>
-                  <p className="text-xs text-muted-foreground">{product.subtitle}</p>
-                </div>
-              </div>
+            {/* Countdown banner */}
+            <div className="bg-foreground text-background text-center py-2 text-xs sm:text-sm font-medium">
+              For Extra Discount, order within <span className="text-amber-400 font-bold">{countdownMinutes}:{countdownSeconds.toString().padStart(2, "0")}</span>
+            </div>
 
-              {/* Price */}
-              <div className="flex-1 sm:flex-none">
-                <p className="text-lg font-bold text-foreground">{product.price}</p>
-                <p className="text-[10px] text-muted-foreground line-through sm:hidden">{product.originalPrice}</p>
-              </div>
+            {/* Product bar */}
+            <div className="bg-background border-t border-border">
+              <div className="max-w-[1440px] mx-auto px-4 sm:px-6 py-3 flex items-center gap-3">
+                <div className="hidden sm:flex items-center gap-3 flex-1 min-w-0">
+                  <div className="w-12 h-12 rounded-lg bg-secondary/30 overflow-hidden flex-shrink-0">
+                    <img src={galleryImages[selectedColor] || product.image} alt="" className="w-full h-full object-contain p-0.5" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-bold text-foreground truncate">{product.name} {product.subtitle}</p>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-sm font-bold text-foreground">{product.price}</span>
+                      <span className="text-xs text-muted-foreground">MRP <span className="line-through">{product.originalPrice}</span></span>
+                    </div>
+                  </div>
+                </div>
 
-              {/* Add to cart button */}
-              <button
-                onClick={handleAddToCart}
-                className="flex-1 sm:flex-none sm:px-8 bg-foreground text-background font-semibold py-3 rounded-lg text-sm tracking-wide hover:bg-foreground/90 transition-colors"
-              >
-                Add to cart
-              </button>
+                <div className="flex-1 sm:hidden">
+                  <p className="text-base font-bold text-foreground">{product.price}</p>
+                  <p className="text-[10px] text-muted-foreground line-through">{product.originalPrice}</p>
+                </div>
+
+                <button
+                  onClick={handleAddToCart}
+                  className="flex-1 sm:flex-none sm:px-10 bg-foreground text-background font-bold py-3.5 rounded-full text-sm tracking-wider hover:bg-foreground/90 transition-colors"
+                >
+                  ADD TO CART
+                </button>
+              </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <div className={showStickyBar ? "h-16" : ""} />
+      <div className={showStickyBar ? "h-24" : ""} />
       <Footer />
     </div>
   );
