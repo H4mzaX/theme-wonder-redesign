@@ -32,7 +32,7 @@ const ExploreLineup = () => {
   return (
     <section className="py-5 sm:py-6 lg:py-8">
       <ScrollReveal className="px-4 sm:px-6 lg:px-10">
-        <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold tracking-tight italic text-foreground mb-4 lg:mb-6">
+        <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold tracking-tight italic text-foreground mb-4 lg:mb-6 text-center">
           Explore The Line-up
         </h2>
       </ScrollReveal>
