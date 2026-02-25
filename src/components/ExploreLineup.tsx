@@ -26,14 +26,14 @@ const ExploreLineup = () => {
   }, [activeTab]);
 
   return (
-    <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-5 sm:py-6 lg:py-8">
-      <ScrollReveal>
+    <section className="py-5 sm:py-6 lg:py-8">
+      <ScrollReveal className="px-4 sm:px-6 lg:px-10">
         <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold tracking-tight italic text-foreground mb-4 lg:mb-6">
           Explore The Line-up
         </h2>
       </ScrollReveal>
 
-      <div className="flex mb-5 sm:mb-8">
+      <div className="flex mb-5 sm:mb-8 px-4 sm:px-6 lg:px-10">
         <div className="inline-flex border border-foreground rounded-full overflow-hidden overflow-x-auto" style={{ scrollbarWidth: "none" }}>
           {tabs.map((tab, i) => (
             <button
@@ -53,21 +53,26 @@ const ExploreLineup = () => {
         <motion.div key={activeTab} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
           <div
             ref={scrollRef}
-            className="flex gap-3 sm:gap-4 overflow-x-auto pb-4 snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0"
+            className="flex gap-3 sm:gap-4 overflow-x-auto pb-4 snap-x snap-mandatory px-4 sm:px-6 lg:px-10"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
             {products.map((product) => (
-              <div key={product.id} className="flex-none w-[44vw] sm:w-[260px] lg:w-[280px] snap-start">
+              <div key={product.id} className="flex-none w-[calc(50%-6px)] sm:w-[calc(50%-8px)] md:w-[260px] lg:w-[280px] snap-start">
                 <ProductCard product={product} />
               </div>
             ))}
           </div>
 
-          <div className="mx-auto mt-2 h-[3px] bg-border rounded-full max-w-[200px] overflow-hidden">
-            <div
-              className="h-full bg-foreground rounded-full transition-transform duration-100 ease-out origin-left"
-              style={{ transform: `scaleX(${0.2 + scrollProgress * 0.8})` }}
-            />
+          {/* Segmented progress bar */}
+          <div className="flex gap-1 mx-auto mt-3 sm:mt-4 max-w-[280px] sm:max-w-[320px] px-4">
+            {Array.from({ length: Math.ceil(products.length / 2) }).map((_, i) => (
+              <div
+                key={i}
+                className={`h-[3px] flex-1 rounded-full transition-colors duration-300 ${
+                  i <= Math.round(scrollProgress * (Math.ceil(products.length / 2) - 1)) ? "bg-foreground" : "bg-border"
+                }`}
+              />
+            ))}
           </div>
         </motion.div>
       </AnimatePresence>

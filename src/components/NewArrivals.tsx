@@ -18,31 +18,58 @@ const NewArrivals = () => {
     return () => el.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const totalCards = newArrivalProducts.length;
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const handleScroll = () => {
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      if (maxScroll > 0) {
+        const progress = el.scrollLeft / maxScroll;
+        const segments = Math.ceil(totalCards / 2);
+        const index = Math.round(progress * (segments - 1));
+        setActiveIndex(Math.min(index, segments - 1));
+        setScrollProgress(progress);
+      }
+    };
+    el.addEventListener("scroll", handleScroll, { passive: true });
+    return () => el.removeEventListener("scroll", handleScroll);
+  }, [totalCards]);
+
+  const segments = Math.ceil(totalCards / 2);
+
   return (
-    <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-5 sm:py-6 lg:py-8">
-      <ScrollReveal className="mb-3 sm:mb-4 lg:mb-6">
-        <h2 className="text-lg sm:text-2xl lg:text-4xl font-bold tracking-tight italic text-foreground">
+    <section className="py-5 sm:py-6 lg:py-8">
+      <ScrollReveal className="mb-3 sm:mb-4 lg:mb-6 px-4 sm:px-6 lg:px-10">
+        <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold tracking-tight italic text-foreground">
           iPhone 17 Essentials
         </h2>
       </ScrollReveal>
 
       <div
         ref={scrollRef}
-        className="flex gap-2.5 sm:gap-4 overflow-x-auto pb-3 snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0"
+        className="flex gap-3 sm:gap-4 overflow-x-auto snap-x snap-mandatory px-4 sm:px-6 lg:px-10"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {newArrivalProducts.map((product) => (
-          <div key={product.id} className="flex-none w-[42vw] sm:w-[260px] lg:w-[280px] snap-start">
+          <div key={product.id} className="flex-none w-[calc(50%-6px)] sm:w-[calc(50%-8px)] md:w-[260px] lg:w-[280px] snap-start">
             <ProductCard product={product} />
           </div>
         ))}
       </div>
 
-      <div className="mx-auto mt-2 h-[3px] bg-border rounded-full max-w-[200px] overflow-hidden">
-        <div
-          className="h-full bg-foreground rounded-full transition-transform duration-100 ease-out origin-left"
-          style={{ transform: `scaleX(${0.2 + scrollProgress * 0.8})` }}
-        />
+      {/* Segmented progress bar */}
+      <div className="flex gap-1 mx-auto mt-3 sm:mt-4 max-w-[280px] sm:max-w-[320px] px-4">
+        {Array.from({ length: segments }).map((_, i) => (
+          <div
+            key={i}
+            className={`h-[3px] flex-1 rounded-full transition-colors duration-300 ${
+              i <= activeIndex ? "bg-foreground" : "bg-border"
+            }`}
+          />
+        ))}
       </div>
     </section>
   );
