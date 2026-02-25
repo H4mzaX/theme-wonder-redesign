@@ -105,6 +105,7 @@ const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
       price: product.price,
       image: product.image,
       color: product.colors[0] || "Default",
+      device: product.device,
     });
     toast({ title: "Added to cart", description: `${product.name} — ${product.subtitle}` });
   };
