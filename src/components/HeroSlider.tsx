@@ -87,7 +87,7 @@ const HeroSlider = () => {
 
   return (
     <section className="relative">
-      <div className="relative h-[65vh] min-h-[400px] max-h-[500px] sm:h-[500px] sm:max-h-none lg:h-[750px]">
+      <div className="relative h-[75vh] min-h-[480px] max-h-[600px] sm:h-[500px] sm:max-h-none lg:h-[750px]">
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
             key={current}
