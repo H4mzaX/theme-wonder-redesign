@@ -1,8 +1,10 @@
 import { useRef, useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ScrollReveal } from "@/hooks/useScrollAnimations";
-import watchShop1 from "@/assets/watch-shop-1.mp4";
-import watchShop2 from "@/assets/watch-shop-2.mp4";
+import watchMagsafe from "@/assets/watch-shop-magsafe.mp4";
+import watchLeather from "@/assets/watch-shop-leather.mp4";
+import watchSilicone from "@/assets/watch-shop-silicone.mp4";
+import watchRugged from "@/assets/watch-shop-rugged.mp4";
 import magsafeClearImg from "@/assets/case-magsafe-clear.jpg";
 import leatherBrownImg from "@/assets/case-leather-brown.jpg";
 import magsafeBlackImg from "@/assets/case-magsafe-black.jpg";
@@ -10,32 +12,32 @@ import siliconePinkImg from "@/assets/case-silicone-pink.jpg";
 
 const videoProducts = [
   {
-    video: watchShop1,
-    productName: "Clear Pro Lens",
+    video: watchMagsafe,
+    productName: "MagSafe Clear Case",
     productImage: magsafeClearImg,
-    tagline: "Unmatched Clarity",
-    href: "#",
+    tagline: "Snap-on Perfection",
+    href: "/collections/magsafe-cases",
   },
   {
-    video: watchShop2,
-    productName: "Modern Leatherite Case",
+    video: watchLeather,
+    productName: "Premium Leather Case",
     productImage: leatherBrownImg,
-    tagline: "Premium Texture",
-    href: "#",
+    tagline: "Handcrafted Luxury",
+    href: "/collections/leather-cases",
   },
   {
-    video: watchShop1,
-    productName: "Snap Fit Case",
-    productImage: magsafeBlackImg,
-    tagline: "Smooth Microfiber Inside",
-    href: "#",
-  },
-  {
-    video: watchShop2,
-    productName: "Grip Armour Case",
+    video: watchSilicone,
+    productName: "Silicone Snap Case",
     productImage: siliconePinkImg,
-    tagline: "12 Feet Protection",
-    href: "#",
+    tagline: "Express Your Color",
+    href: "/collections/iphone-cases",
+  },
+  {
+    video: watchRugged,
+    productName: "Rugged Armor Case",
+    productImage: magsafeBlackImg,
+    tagline: "Built to Survive",
+    href: "/collections/iphone-cases",
   },
 ];
 
@@ -63,8 +65,8 @@ const WatchAndShop = () => {
   return (
     <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-4 lg:py-8">
       <ScrollReveal>
-        <div className="flex items-center justify-between mb-4 lg:mb-6">
-          <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold tracking-tight text-foreground">
+        <div className="flex flex-col items-center mb-4 lg:mb-6">
+          <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold tracking-tight text-foreground text-center">
             Watch and Shop
           </h2>
           <div className="hidden sm:flex items-center gap-2">
