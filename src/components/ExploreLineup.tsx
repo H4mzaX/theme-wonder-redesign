@@ -26,7 +26,7 @@ const ExploreLineup = () => {
   }, [activeTab]);
 
   return (
-    <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-4 lg:py-8">
+    <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-5 sm:py-6 lg:py-8">
       <ScrollReveal>
         <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold tracking-tight italic text-foreground mb-4 lg:mb-6">
           Explore The Line-up

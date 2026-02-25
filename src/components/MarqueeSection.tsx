@@ -14,7 +14,7 @@ const MarqueeSection = () => {
   const doubled = [...items, ...items, ...items];
 
   return (
-    <section className="py-3 sm:py-4 overflow-hidden bg-muted/50 border-y border-border">
+    <section className="py-2.5 sm:py-4 overflow-hidden bg-muted/50 border-y border-border">
       <motion.div
         className="flex whitespace-nowrap"
         animate={{ x: ["0%", "-33.33%"] }}

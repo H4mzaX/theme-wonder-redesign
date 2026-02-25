@@ -26,18 +26,18 @@ const ProductBanner = ({
   const isRight = layout === "right";
 
   return (
-    <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
+    <section className="max-w-[1400px] mx-auto px-3 sm:px-6 lg:px-10">
       <Link to={href} className="group block">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className={`relative rounded-2xl overflow-hidden ${isDark ? "bg-foreground" : "bg-muted"}`}
+          className={`relative rounded-xl sm:rounded-2xl overflow-hidden ${isDark ? "bg-foreground" : "bg-muted"}`}
         >
           {/* Image */}
           <div
-            className={`flex ${isCenter ? "flex-col items-center" : isRight ? "flex-row-reverse" : "flex-row"} min-h-[280px] sm:min-h-[360px] lg:min-h-[420px]`}
+            className={`flex ${isCenter ? "flex-col items-center" : isRight ? "flex-row-reverse" : "flex-row"} min-h-[220px] sm:min-h-[360px] lg:min-h-[420px]`}
           >
             {/* Text content */}
             <div

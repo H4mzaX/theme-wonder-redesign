@@ -4,13 +4,13 @@ import lookbookImg from "@/assets/lookbook.jpg";
 
 const PromoBanner = () => {
   return (
-    <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-4 lg:py-6">
+    <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-3 sm:py-4 lg:py-6">
       <ScaleOnScroll>
         <a href="#" className="block relative rounded-2xl overflow-hidden group">
           <ParallaxImage
             src={lookbookImg}
             alt="Premium collection showcase"
-            className="h-[280px] sm:h-[380px] lg:h-[460px] rounded-2xl"
+            className="h-[240px] sm:h-[380px] lg:h-[460px] rounded-2xl"
             speed={0.1}
           />
           <div className="absolute inset-0 bg-foreground/20 group-hover:bg-foreground/30 transition-colors duration-500" />

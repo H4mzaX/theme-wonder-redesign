@@ -30,14 +30,14 @@ const ExploreProducts = () => {
   }, []);
 
   return (
-    <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-4 lg:py-8">
-      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight italic text-foreground text-center mb-4 lg:mb-6">
+    <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-5 sm:py-6 lg:py-8">
+      <h2 className="text-xl sm:text-3xl lg:text-4xl font-bold tracking-tight italic text-foreground text-center mb-3 sm:mb-4 lg:mb-6">
         Explore Products
       </h2>
 
       <div
         ref={scrollRef}
-        className="flex gap-3 sm:gap-4 overflow-x-auto pb-4 snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0"
+        className="flex gap-2.5 sm:gap-4 overflow-x-auto pb-3 snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {categories.map((cat, i) => (
@@ -47,7 +47,7 @@ const ExploreProducts = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.08, duration: 0.5 }}
-            className="flex-none w-[60vw] sm:w-[240px] lg:w-[calc(25%-12px)] snap-start"
+            className="flex-none w-[48vw] sm:w-[240px] lg:w-[calc(25%-12px)] snap-start"
           >
             <Link
               to={cat.href}
