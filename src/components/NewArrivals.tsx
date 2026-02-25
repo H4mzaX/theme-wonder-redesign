@@ -5,21 +5,9 @@ import ProductCard from "@/components/ProductCard";
 
 const NewArrivals = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const handleScroll = () => {
-      const maxScroll = el.scrollWidth - el.clientWidth;
-      if (maxScroll > 0) setScrollProgress(el.scrollLeft / maxScroll);
-    };
-    el.addEventListener("scroll", handleScroll, { passive: true });
-    return () => el.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const totalCards = newArrivalProducts.length;
   const [activeIndex, setActiveIndex] = useState(0);
+  const totalCards = newArrivalProducts.length;
+  const segments = Math.ceil(totalCards / 2);
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -28,17 +16,12 @@ const NewArrivals = () => {
       const maxScroll = el.scrollWidth - el.clientWidth;
       if (maxScroll > 0) {
         const progress = el.scrollLeft / maxScroll;
-        const segments = Math.ceil(totalCards / 2);
-        const index = Math.round(progress * (segments - 1));
-        setActiveIndex(Math.min(index, segments - 1));
-        setScrollProgress(progress);
+        setActiveIndex(Math.min(Math.round(progress * (segments - 1)), segments - 1));
       }
     };
     el.addEventListener("scroll", handleScroll, { passive: true });
     return () => el.removeEventListener("scroll", handleScroll);
-  }, [totalCards]);
-
-  const segments = Math.ceil(totalCards / 2);
+  }, [segments]);
 
   return (
     <section className="py-5 sm:py-6 lg:py-8">
@@ -50,18 +33,17 @@ const NewArrivals = () => {
 
       <div
         ref={scrollRef}
-        className="flex gap-3 sm:gap-4 overflow-x-auto snap-x snap-mandatory px-4 sm:px-6 lg:px-10"
+        className="flex gap-3 sm:gap-4 overflow-x-auto snap-x snap-mandatory pl-4 pr-4 sm:pl-6 sm:pr-6 lg:pl-10 lg:pr-10"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {newArrivalProducts.map((product) => (
-          <div key={product.id} className="flex-none w-[calc(50%-6px)] sm:w-[calc(50%-8px)] md:w-[260px] lg:w-[280px] snap-start">
+          <div key={product.id} className="flex-none w-[calc(50vw-22px)] sm:w-[calc(50vw-28px)] md:w-[260px] lg:w-[280px] snap-start">
             <ProductCard product={product} />
           </div>
         ))}
       </div>
 
-      {/* Segmented progress bar */}
-      <div className="flex gap-1 mx-auto mt-3 sm:mt-4 max-w-[280px] sm:max-w-[320px] px-4">
+      <div className="flex gap-1.5 mx-auto mt-3 sm:mt-4 max-w-[260px] sm:max-w-[320px] px-4">
         {Array.from({ length: segments }).map((_, i) => (
           <div
             key={i}

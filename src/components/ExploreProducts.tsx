@@ -41,7 +41,7 @@ const ExploreProducts = () => {
 
       <div
         ref={scrollRef}
-        className="flex gap-2 sm:gap-4 overflow-x-auto snap-x snap-mandatory px-3 sm:px-6 lg:px-10"
+        className="flex gap-3 sm:gap-4 overflow-x-auto snap-x snap-mandatory pl-4 pr-4 sm:pl-6 sm:pr-6 lg:pl-10 lg:pr-10"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {categories.map((cat, i) => (
@@ -51,7 +51,7 @@ const ExploreProducts = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.08, duration: 0.5 }}
-            className="flex-none w-[46vw] sm:w-[44vw] md:w-[240px] lg:w-[calc(25%-12px)] snap-start"
+            className="flex-none w-[calc(50vw-22px)] sm:w-[44vw] md:w-[240px] lg:w-[calc(25%-12px)] snap-start"
           >
             <Link
               to={cat.href}
