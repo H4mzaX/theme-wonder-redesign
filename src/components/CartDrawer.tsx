@@ -1,9 +1,10 @@
-import { X, Minus, Plus, ArrowRight, ChevronLeft, ChevronRight, FileText, Package, Tag, Shield, Camera, Smartphone, Zap, Clock, Users, Flame, Timer } from "lucide-react";
+import { X, Minus, Plus, ArrowRight, ChevronLeft, ChevronRight, FileText, Package, Tag, Shield, Camera, Smartphone, Zap, Clock, Users, Flame, Timer, Sparkles, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useMemo, useEffect } from "react";
 import { useCart } from "@/context/CartContext";
 import { Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { bestSellerTabs, newArrivalProducts } from "@/data/products";
 import collectionCases from "@/assets/collection-headphones.jpg";
 import collectionProtectors from "@/assets/collection-earphones.jpg";
 import collectionRugged from "@/assets/collection-speakers.jpg";
@@ -16,11 +17,33 @@ interface CartDrawerProps {
 
 const FREE_SHIPPING_THRESHOLD = 1000;
 
-const emptySuggestions = [
-  { name: "iPhone Cases", image: collectionCases, href: "#" },
-  { name: "Screen Protectors", image: collectionProtectors, href: "#" },
-  { name: "Rugged Cases", image: collectionRugged, href: "#" },
-  { name: "Accessories", image: collectionAccessories, href: "#" },
+// Top picks for empty cart — real products with working links
+const topPicks = [
+  ...Object.values(bestSellerTabs).flat().slice(0, 3).map((p) => ({
+    id: p.id,
+    name: p.name,
+    subtitle: p.subtitle,
+    price: p.price,
+    originalPrice: p.originalPrice,
+    image: p.image,
+    href: `/product/${p.id}`,
+  })),
+  ...newArrivalProducts.slice(0, 3).map((p) => ({
+    id: p.id,
+    name: p.name,
+    subtitle: p.subtitle,
+    price: p.price,
+    originalPrice: p.originalPrice,
+    image: p.image,
+    href: `/product/${p.id}`,
+  })),
+].slice(0, 6);
+
+const collectionLinks = [
+  { name: "iPhone Cases", image: collectionCases, href: "/collection/iphone" },
+  { name: "Samsung Cases", image: collectionProtectors, href: "/collection/samsung" },
+  { name: "OnePlus Cases", image: collectionRugged, href: "/collection/oneplus" },
+  { name: "All Accessories", image: collectionAccessories, href: "/collection/accessories" },
 ];
 
 interface BundleItem {
@@ -134,7 +157,7 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
   const [shippingNote, setShippingNote] = useState("");
   const [couponCode, setCouponCode] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState("");
-  const { items, totalItems, subtotal, updateQuantity, removeFromCart, addToCart } = useCart();
+  const { items, totalItems, subtotal, updateQuantity, removeFromCart, addToCart, recentlyViewed } = useCart();
   const isMobile = useIsMobile();
   const countdown = useCountdown();
 
@@ -204,22 +227,52 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
       <div className="flex-1 overflow-y-auto">
         {activeTab === "cart" ? (
           items.length === 0 ? (
-            <div className="text-center max-w-sm mx-auto mt-12 px-6">
-              <h3 className="text-2xl font-display font-semibold mb-3">Your cart is currently empty.</h3>
-              <p className="text-sm text-muted-foreground mb-8">Not sure where to start?<br />Try these collections:</p>
-              <ul className="space-y-3 text-left">
-                {emptySuggestions.map((s) => (
-                  <li key={s.name}>
-                    <a href={s.href} className="flex items-center justify-between p-3 rounded-lg hover:bg-card transition-colors group">
-                      <div className="flex items-center gap-3">
-                        <img src={s.image} alt={s.name} className="w-9 h-9 rounded-md object-cover" />
-                        <span className="font-medium text-sm">{s.name}</span>
+            <div className="px-6 mt-6">
+              <h3 className="text-xl font-display font-semibold mb-1">Your cart is empty</h3>
+              <p className="text-sm text-muted-foreground mb-5">Explore our top picks to get started</p>
+              
+              {/* Top product picks */}
+              <div className="grid grid-cols-2 gap-3 mb-6">
+                {topPicks.map((p) => {
+                  const numPrice = parseInt(p.price.replace(/[₹,]/g, "")) || 0;
+                  const numOrig = parseInt(p.originalPrice.replace(/[₹,]/g, "")) || 0;
+                  const pct = numOrig > 0 ? Math.round(((numOrig - numPrice) / numOrig) * 100) : 0;
+                  return (
+                    <Link key={p.id} to={p.href} onClick={onClose} className="group rounded-xl border border-border overflow-hidden hover:border-foreground/20 transition-colors">
+                      <div className="relative aspect-square bg-muted">
+                        <img src={p.image} alt={p.name} className="w-full h-full object-contain p-3" />
+                        {pct > 0 && (
+                          <span className="absolute top-1.5 left-1.5 text-[9px] font-bold bg-destructive text-destructive-foreground px-1.5 py-0.5 rounded">
+                            -{pct}%
+                          </span>
+                        )}
                       </div>
-                      <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-1 transition-all" />
-                    </a>
-                  </li>
+                      <div className="p-2.5">
+                        <p className="text-xs font-semibold leading-tight truncate">{p.name}</p>
+                        <p className="text-[10px] text-muted-foreground truncate">{p.subtitle}</p>
+                        <div className="flex items-center gap-1.5 mt-1">
+                          <span className="text-xs font-bold">{p.price}</span>
+                          {numOrig > numPrice && <span className="text-[10px] text-muted-foreground line-through">{p.originalPrice}</span>}
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+
+              {/* Collection quick links */}
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Browse Collections</p>
+              <div className="space-y-2">
+                {collectionLinks.map((c) => (
+                  <Link key={c.name} to={c.href} onClick={onClose} className="flex items-center justify-between p-2.5 rounded-lg hover:bg-muted transition-colors group">
+                    <div className="flex items-center gap-3">
+                      <img src={c.image} alt={c.name} className="w-8 h-8 rounded-md object-cover" />
+                      <span className="font-medium text-sm">{c.name}</span>
+                    </div>
+                    <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-1 transition-all" />
+                  </Link>
                 ))}
-              </ul>
+              </div>
             </div>
           ) : (
             <div className="px-6">
@@ -546,8 +599,40 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
             </div>
           )
         ) : (
-          <div className="text-center mt-12 px-6">
-            <p className="text-muted-foreground">No recently viewed items</p>
+          <div className="px-6 mt-4">
+            {recentlyViewed.length === 0 ? (
+              <div className="text-center mt-8">
+                <Eye className="w-8 h-8 text-muted-foreground/30 mx-auto mb-3" />
+                <p className="text-sm text-muted-foreground">No recently viewed items yet</p>
+                <p className="text-xs text-muted-foreground/60 mt-1">Products you view will appear here</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {recentlyViewed.map((item) => (
+                  <Link
+                    key={item.id}
+                    to={`/product/${item.id}`}
+                    onClick={onClose}
+                    className="flex gap-3 items-center p-2 rounded-lg hover:bg-muted transition-colors group"
+                  >
+                    <div className="w-14 h-14 rounded-lg bg-muted flex-shrink-0 overflow-hidden">
+                      <img src={item.image} alt={item.name} className="w-full h-full object-contain p-1" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold truncate">{item.name}</p>
+                      <p className="text-[11px] text-muted-foreground">{item.subtitle}</p>
+                      <div className="flex items-center gap-1.5 mt-0.5">
+                        <span className="text-xs font-bold">{item.price}</span>
+                        {item.originalPrice && (
+                          <span className="text-[10px] text-muted-foreground line-through">{item.originalPrice}</span>
+                        )}
+                      </div>
+                    </div>
+                    <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-1 transition-all flex-shrink-0" />
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -671,14 +756,14 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
           </div>
         )}
 
-        {/* Discount row */}
+        {/* Total Savings */}
         {discount > 0 && (
-          <div className="flex items-center justify-between px-6 py-3 border-b border-border">
+          <div className="flex items-center justify-between px-6 py-2.5 border-b border-border">
             <div className="flex items-center gap-2">
-              <Tag className="w-4 h-4" />
-              <span className="text-sm font-medium">Order discount</span>
+              <Sparkles className="w-3.5 h-3.5 text-green-600" />
+              <span className="text-sm font-medium">Total Savings</span>
             </div>
-            <span className="text-sm font-bold text-destructive bg-destructive/10 px-3 py-1 rounded-full">-₹{discount.toLocaleString("en-IN")}</span>
+            <span className="text-sm font-bold text-green-600">-₹{discount.toLocaleString("en-IN")}</span>
           </div>
         )}
 
