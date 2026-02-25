@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Star } from "lucide-react";
+import { Star, Shield, Magnet, Zap, Droplets } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
 import { toast } from "@/hooks/use-toast";
@@ -15,6 +15,46 @@ const colorMap: Record<string, string> = {
   "Saddle Brown": "#92400e",
   "Matte Black": "#333333",
 };
+
+const categoryFeatures: Record<string, { icon: React.ElementType; label: string }[]> = {
+  "MagSafe Cases": [
+    { icon: Magnet, label: "MagSafe" },
+    { icon: Shield, label: "6ft Drop" },
+    { icon: Zap, label: "Wireless" },
+    { icon: Droplets, label: "Anti-Slip" },
+  ],
+  "Silicone Cases": [
+    { icon: Shield, label: "Shock Proof" },
+    { icon: Droplets, label: "Anti-Slip" },
+    { icon: Zap, label: "Wireless" },
+    { icon: Star, label: "Soft Touch" },
+  ],
+  "Leather Cases": [
+    { icon: Star, label: "Genuine" },
+    { icon: Shield, label: "6ft Drop" },
+    { icon: Magnet, label: "MagSafe" },
+    { icon: Zap, label: "Wireless" },
+  ],
+  "Clear Cases": [
+    { icon: Shield, label: "Anti-Yellow" },
+    { icon: Droplets, label: "Anti-Slip" },
+    { icon: Zap, label: "Wireless" },
+    { icon: Star, label: "Crystal" },
+  ],
+  "Black Cases": [
+    { icon: Shield, label: "Shock Proof" },
+    { icon: Star, label: "Matte" },
+    { icon: Zap, label: "Wireless" },
+    { icon: Droplets, label: "Anti-Slip" },
+  ],
+};
+
+const defaultFeatures = [
+  { icon: Shield, label: "Protected" },
+  { icon: Zap, label: "Wireless" },
+  { icon: Droplets, label: "Anti-Slip" },
+  { icon: Star, label: "Premium" },
+];
 
 const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
   const { addToCart } = useCart();
@@ -34,7 +74,7 @@ const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
     toast({ title: "Added to cart", description: `${product.name} — ${product.subtitle}` });
   };
 
-  const displayImage = isHovered && product.hoverImage ? product.hoverImage : product.image;
+  const features = categoryFeatures[product.category] || defaultFeatures;
 
   return (
     <Link
@@ -43,22 +83,60 @@ const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Image area — light gray bg like CaseGear */}
+      {/* Image area with crossfade */}
       <div className="relative aspect-square bg-secondary/50 overflow-hidden">
         {(tag || product.discount) && (
           <span className="absolute top-3 left-3 z-10 bg-foreground text-background text-[11px] px-3 py-1 rounded-full font-medium">
             {tag || product.discount}
           </span>
         )}
+
+        {/* Primary image */}
         <img
-          src={displayImage}
+          src={product.image}
           alt={product.name}
-          className="w-full h-full object-contain p-6 sm:p-8 transition-transform duration-500 ease-out group-hover:scale-105"
+          className="absolute inset-0 w-full h-full object-contain p-6 sm:p-8 transition-opacity duration-500 ease-in-out"
+          style={{ opacity: isHovered && product.hoverImage ? 0 : 1 }}
           loading="lazy"
         />
+
+        {/* Hover image (crossfade) */}
+        {product.hoverImage && (
+          <img
+            src={product.hoverImage}
+            alt={`${product.name} alternate`}
+            className="absolute inset-0 w-full h-full object-contain p-6 sm:p-8 transition-all duration-500 ease-in-out"
+            style={{
+              opacity: isHovered ? 1 : 0,
+              transform: isHovered ? "scale(1.05)" : "scale(1)",
+            }}
+            loading="lazy"
+          />
+        )}
+
+        {/* Feature icons overlay — slides up on hover */}
+        <div
+          className="absolute bottom-0 left-0 right-0 flex justify-center gap-1 px-2 pb-2 pt-6 bg-gradient-to-t from-background/90 via-background/50 to-transparent transition-all duration-400 ease-out"
+          style={{
+            opacity: isHovered ? 1 : 0,
+            transform: isHovered ? "translateY(0)" : "translateY(100%)",
+          }}
+        >
+          {features.map((feat) => (
+            <div
+              key={feat.label}
+              className="flex flex-col items-center gap-0.5 px-1.5 py-1"
+            >
+              <feat.icon className="w-3.5 h-3.5 text-foreground" strokeWidth={2} />
+              <span className="text-[9px] sm:text-[10px] font-medium text-foreground leading-none whitespace-nowrap">
+                {feat.label}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Info area — white bg, structured spacing */}
+      {/* Info area */}
       <div className="flex flex-col flex-1 px-4 pt-4 pb-4 gap-1">
         <h3 className="font-semibold text-[14px] sm:text-[15px] leading-tight line-clamp-1 text-foreground">{product.name}</h3>
         <p className="text-[12px] sm:text-[13px] text-muted-foreground">{product.subtitle}</p>
@@ -84,7 +162,7 @@ const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
           </div>
         )}
 
-        {/* Price — pushed to bottom */}
+        {/* Price */}
         <div className="flex items-baseline gap-2 mt-auto pt-3">
           <span className="font-bold text-[16px] sm:text-[18px] leading-none text-foreground">{product.price}</span>
           <span className="text-[11px] sm:text-[12px] text-muted-foreground">MRP <span className="line-through">{product.originalPrice}</span></span>
