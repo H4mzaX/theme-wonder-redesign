@@ -1,6 +1,6 @@
-import { X, Minus, Plus, ArrowRight, ChevronLeft, ChevronRight, FileText, Package, Tag, Shield, Camera, Smartphone, Zap, Clock, Users, Flame } from "lucide-react";
+import { X, Minus, Plus, ArrowRight, ChevronLeft, ChevronRight, FileText, Package, Tag, Shield, Camera, Smartphone, Zap, Clock, Users, Flame, Timer } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useCart } from "@/context/CartContext";
 import { Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -67,11 +67,71 @@ const getBundleAccessories = (device: string): BundleItem[] => [
   },
 ];
 
+// 24hr deal items
+const flashDealItems: BundleItem[] = [
+  {
+    id: "flash-deal-wireless-charger",
+    name: "15W MagSafe Wireless Charger",
+    subtitle: "Fast charge · LED indicator",
+    price: "₹699",
+    numericPrice: 699,
+    originalPrice: "₹1,999",
+    icon: Zap,
+    image: collectionRugged,
+  },
+  {
+    id: "flash-deal-car-mount",
+    name: "Magnetic Car Mount",
+    subtitle: "360° rotation · Air vent",
+    price: "₹499",
+    numericPrice: 499,
+    originalPrice: "₹1,499",
+    icon: Smartphone,
+    image: collectionAccessories,
+  },
+];
+
+// Countdown hook
+function useCountdown() {
+  const getTarget = () => {
+    const stored = localStorage.getItem("flash-deal-end");
+    if (stored) {
+      const end = parseInt(stored);
+      if (end > Date.now()) return end;
+    }
+    const end = Date.now() + 24 * 60 * 60 * 1000;
+    localStorage.setItem("flash-deal-end", String(end));
+    return end;
+  };
+
+  const [endTime] = useState(getTarget);
+  const [timeLeft, setTimeLeft] = useState(() => Math.max(0, endTime - Date.now()));
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const left = Math.max(0, endTime - Date.now());
+      setTimeLeft(left);
+      if (left <= 0) {
+        localStorage.removeItem("flash-deal-end");
+        clearInterval(interval);
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [endTime]);
+
+  const hours = Math.floor(timeLeft / 3600000);
+  const minutes = Math.floor((timeLeft % 3600000) / 60000);
+  const seconds = Math.floor((timeLeft % 60000) / 1000);
+
+  return { hours, minutes, seconds, isActive: timeLeft > 0 };
+}
+
 const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
   const [activeTab, setActiveTab] = useState<"cart" | "recent">("cart");
   const [bundleIndex, setBundleIndex] = useState(0);
   const { items, totalItems, subtotal, updateQuantity, removeFromCart, addToCart } = useCart();
   const isMobile = useIsMobile();
+  const countdown = useCountdown();
 
   const shippingProgress = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
   const remaining = FREE_SHIPPING_THRESHOLD - subtotal;
@@ -80,6 +140,7 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
   const finalTotal = subtotal - discount;
 
   // Smart bundle: detect device from cart items and suggest matching accessories
+  // Filter by both ID and name to catch items added from different sources
   const bundleItems = useMemo(() => {
     const devices = items
       .map((item) => item.device || item.subtitle?.replace("For ", ""))
@@ -87,10 +148,22 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
     const uniqueDevice = devices[0];
     if (!uniqueDevice) return [];
     const accessories = getBundleAccessories(uniqueDevice);
-    // Filter out items already in cart
     const cartIds = new Set(items.map((i) => i.id));
-    return accessories.filter((a) => !cartIds.has(a.id));
+    const cartNames = new Set(items.map((i) => i.name.toLowerCase()));
+    return accessories.filter((a) => !cartIds.has(a.id) && !cartNames.has(a.name.toLowerCase()));
   }, [items]);
+
+  // Flash deal items also filtered
+  const availableFlashDeals = useMemo(() => {
+    const cartIds = new Set(items.map((i) => i.id));
+    const cartNames = new Set(items.map((i) => i.name.toLowerCase()));
+    return flashDealItems.filter((a) => !cartIds.has(a.id) && !cartNames.has(a.name.toLowerCase()));
+  }, [items]);
+
+  // Reset bundleIndex when items change
+  useEffect(() => {
+    if (bundleIndex >= bundleItems.length) setBundleIndex(Math.max(0, bundleItems.length - 1));
+  }, [bundleItems.length, bundleIndex]);
 
   const handleAddBundle = (bundle: BundleItem) => {
     addToCart({
@@ -98,6 +171,7 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
       name: bundle.name,
       subtitle: bundle.subtitle,
       price: bundle.price,
+      originalPrice: bundle.originalPrice,
       image: bundle.image,
       color: "Default",
     });
@@ -163,40 +237,56 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
                 </div>
               </div>
 
-              {/* Cart items */}
+              {/* Cart items with MRP display */}
               <div className="space-y-4 py-2">
-                {items.map((item) => (
-                  <div key={`${item.id}-${item.color}`} className="flex gap-4">
-                    <Link to={`/product/${item.id}`} onClick={onClose} className="w-24 h-24 rounded-lg bg-muted flex-shrink-0 overflow-hidden">
-                      <img src={item.image} alt={item.name} className="w-full h-full object-contain p-2" />
-                    </Link>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <h4 className="text-base font-bold">{item.name}</h4>
-                          <p className="text-sm text-muted-foreground">{item.color}</p>
-                          <p className="text-base font-bold mt-1">{item.price}</p>
+                {items.map((item) => {
+                  const numericPrice = parseInt(item.price.replace(/[₹,]/g, "")) || 0;
+                  const numericOriginal = item.originalPrice ? parseInt(item.originalPrice.replace(/[₹,]/g, "")) || 0 : 0;
+                  const discountPct = numericOriginal > 0 ? Math.round(((numericOriginal - numericPrice) / numericOriginal) * 100) : 0;
+
+                  return (
+                    <div key={`${item.id}-${item.color}`} className="flex gap-4">
+                      <Link to={`/product/${item.id}`} onClick={onClose} className="w-24 h-24 rounded-lg bg-muted flex-shrink-0 overflow-hidden">
+                        <img src={item.image} alt={item.name} className="w-full h-full object-contain p-2" />
+                      </Link>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <h4 className="text-base font-bold">{item.name}</h4>
+                            <p className="text-sm text-muted-foreground">{item.color}</p>
+                            <div className="flex items-center gap-2 mt-1">
+                              <span className="text-base font-bold">{item.price}</span>
+                              {numericOriginal > numericPrice && (
+                                <>
+                                  <span className="text-xs text-muted-foreground line-through">MRP ₹{numericOriginal.toLocaleString("en-IN")}</span>
+                                  <span className="text-[10px] font-bold text-green-600 bg-green-500/10 px-1.5 py-0.5 rounded">
+                                    {discountPct}% OFF
+                                  </span>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                          <div className="w-12 h-10 border border-border rounded-lg flex items-center justify-center text-sm font-semibold">
+                            {item.quantity}
+                          </div>
                         </div>
-                        <div className="w-12 h-10 border border-border rounded-lg flex items-center justify-center text-sm font-semibold">
-                          {item.quantity}
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between mt-2">
-                        <div className="flex items-center gap-2">
-                          <button onClick={() => updateQuantity(item.id, item.color, item.quantity - 1)} className="w-7 h-7 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors">
-                            <Minus className="w-3 h-3" />
+                        <div className="flex items-center justify-between mt-2">
+                          <div className="flex items-center gap-2">
+                            <button onClick={() => updateQuantity(item.id, item.color, item.quantity - 1)} className="w-7 h-7 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors">
+                              <Minus className="w-3 h-3" />
+                            </button>
+                            <button onClick={() => updateQuantity(item.id, item.color, item.quantity + 1)} className="w-7 h-7 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors">
+                              <Plus className="w-3 h-3" />
+                            </button>
+                          </div>
+                          <button onClick={() => removeFromCart(item.id, item.color)} className="text-sm font-medium underline underline-offset-2 text-foreground hover:text-accent transition-colors">
+                            Remove
                           </button>
-                          <button onClick={() => updateQuantity(item.id, item.color, item.quantity + 1)} className="w-7 h-7 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors">
-                            <Plus className="w-3 h-3" />
-                          </button>
                         </div>
-                        <button onClick={() => removeFromCart(item.id, item.color)} className="text-sm font-medium underline underline-offset-2 text-foreground hover:text-accent transition-colors">
-                          Remove
-                        </button>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               {/* Bundle Deal — Flash Section */}
@@ -339,6 +429,113 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
                       </span>
                     </motion.button>
                   )}
+                </div>
+              )}
+
+              {/* 24hr Flash Deal with Countdown Timer */}
+              {countdown.isActive && availableFlashDeals.length > 0 && items.length > 0 && (
+                <div className="py-5 border-t border-border">
+                  {/* Timer header */}
+                  <div className="relative rounded-xl overflow-hidden mb-4" style={{ background: "linear-gradient(135deg, hsl(0 72% 50%), hsl(25 95% 53%))" }}>
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                      animate={{ x: ["-100%", "200%"] }}
+                      transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                    />
+                    <div className="relative p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                          <motion.div
+                            animate={{ rotate: [0, 15, -15, 0] }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                          >
+                            <Timer className="w-5 h-5 text-white" />
+                          </motion.div>
+                          <div>
+                            <h4 className="text-base font-display font-bold text-white">Flash Sale</h4>
+                            <p className="text-[11px] text-white/70">Ends soon — don't miss out!</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          {[
+                            { val: String(countdown.hours).padStart(2, "0"), label: "HRS" },
+                            { val: String(countdown.minutes).padStart(2, "0"), label: "MIN" },
+                            { val: String(countdown.seconds).padStart(2, "0"), label: "SEC" },
+                          ].map((t, i) => (
+                            <div key={t.label} className="flex items-center gap-1">
+                              <div className="bg-black/30 backdrop-blur-sm rounded-md px-2 py-1 text-center min-w-[36px]">
+                                <motion.span
+                                  key={t.val}
+                                  initial={{ y: -8, opacity: 0 }}
+                                  animate={{ y: 0, opacity: 1 }}
+                                  className="text-sm font-mono font-bold text-white block"
+                                >
+                                  {t.val}
+                                </motion.span>
+                                <span className="text-[7px] text-white/60 font-semibold">{t.label}</span>
+                              </div>
+                              {i < 2 && <span className="text-white/50 font-bold text-xs">:</span>}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 pt-2 border-t border-white/15">
+                        <motion.div
+                          animate={{ scale: [1, 1.15, 1] }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                          className="w-2 h-2 rounded-full bg-green-400"
+                        />
+                        <span className="text-[11px] text-white/80"><strong className="text-white">47 people</strong> viewing this deal</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Flash deal items */}
+                  <div className="space-y-3">
+                    {availableFlashDeals.map((deal) => {
+                      const orig = parseInt(deal.originalPrice.replace(/[₹,]/g, "")) || 0;
+                      const pct = Math.round(((orig - deal.numericPrice) / orig) * 100);
+                      return (
+                        <motion.div
+                          key={deal.id}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="relative rounded-xl border border-destructive/30 overflow-hidden bg-destructive/5"
+                        >
+                          <div className="flex gap-3 items-center p-3">
+                            <div className="w-16 h-16 rounded-lg bg-muted flex-shrink-0 flex items-center justify-center relative">
+                              {(() => { const Icon = deal.icon; return <Icon className="w-7 h-7 text-muted-foreground" />; })()}
+                              <motion.span
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                className="absolute -top-1 -left-1 text-[9px] font-bold bg-destructive text-destructive-foreground px-1.5 py-0.5 rounded"
+                              >
+                                -{pct}%
+                              </motion.span>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h5 className="text-sm font-bold leading-tight">{deal.name}</h5>
+                              <p className="text-[11px] text-muted-foreground mt-0.5">{deal.subtitle}</p>
+                              <div className="flex items-center gap-2 mt-1">
+                                <span className="text-base font-bold">{deal.price}</span>
+                                <span className="text-xs text-muted-foreground line-through">{deal.originalPrice}</span>
+                                <span className="text-[9px] font-bold text-green-600 bg-green-500/10 px-1.5 py-0.5 rounded">
+                                  SAVE ₹{(orig - deal.numericPrice).toLocaleString("en-IN")}
+                                </span>
+                              </div>
+                            </div>
+                            <motion.button
+                              whileTap={{ scale: 0.9 }}
+                              onClick={() => handleAddBundle(deal)}
+                              className="w-10 h-10 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center hover:bg-destructive/90 transition-colors flex-shrink-0"
+                            >
+                              <Plus className="w-4 h-4" />
+                            </motion.button>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
                 </div>
               )}
             </div>
