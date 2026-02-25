@@ -39,32 +39,32 @@ const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
   return (
     <Link
       to={`/product/${product.id}`}
-      className="group block rounded-xl overflow-hidden bg-card border border-border/40 shadow-[0_1px_6px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_20px_rgba(0,0,0,0.10)] transition-all duration-300"
+      className="group flex flex-col bg-card rounded-lg border border-border/50 overflow-hidden transition-shadow duration-300 hover:shadow-md"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Image area — fixed aspect ratio */}
-      <div className="relative aspect-square bg-muted/30 overflow-hidden">
+      {/* Image */}
+      <div className="relative aspect-[4/5] bg-muted/20 overflow-hidden">
         {(tag || product.discount) && (
-          <span className="absolute top-2.5 left-2.5 z-10 bg-foreground text-background text-[10px] sm:text-[11px] px-2.5 py-1 rounded-full font-semibold tracking-wide">
+          <span className="absolute top-3 left-3 z-10 bg-foreground text-background text-[11px] px-3 py-1 rounded-full font-semibold tracking-wide">
             {tag || product.discount}
           </span>
         )}
         <img
           src={displayImage}
           alt={product.name}
-          className="w-full h-full object-contain p-6 sm:p-8 transition-all duration-500 ease-out group-hover:scale-105"
+          className="w-full h-full object-contain p-4 sm:p-6 transition-transform duration-500 ease-out group-hover:scale-105"
           loading="lazy"
         />
       </div>
 
-      {/* Info area */}
-      <div className="p-3 sm:p-4 space-y-2">
-        <h3 className="font-semibold text-sm sm:text-base leading-tight line-clamp-1">{product.name}</h3>
-        <p className="text-xs sm:text-sm text-muted-foreground">{product.subtitle}</p>
+      {/* Info */}
+      <div className="flex flex-col flex-1 p-3 sm:p-4 gap-1.5">
+        <h3 className="font-semibold text-sm sm:text-[15px] leading-snug line-clamp-1">{product.name}</h3>
+        <p className="text-xs sm:text-sm text-muted-foreground leading-tight">{product.subtitle}</p>
 
         {/* Rating */}
-        <div className="inline-flex items-center gap-1 border border-border rounded px-2 py-0.5">
+        <div className="inline-flex items-center gap-1 border border-border rounded w-fit px-2 py-0.5 mt-1">
           <span className="text-xs font-bold">{product.rating.toFixed(1)}</span>
           <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
           <span className="text-muted-foreground text-[10px] sm:text-xs">| {product.reviews} Reviews</span>
@@ -72,11 +72,11 @@ const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
 
         {/* Color swatches */}
         {product.colors.length > 1 && (
-          <div className="flex gap-1.5 pt-0.5">
+          <div className="flex gap-1.5 mt-1">
             {product.colors.map((c) => (
               <span
                 key={c}
-                className="w-4 h-4 rounded-full border-2 border-border/60"
+                className="w-4 h-4 rounded-full border border-border"
                 style={{ backgroundColor: colorMap[c] || "#ccc" }}
                 title={c}
               />
@@ -85,15 +85,15 @@ const ProductCard = ({ product, tag }: { product: Product; tag?: string }) => {
         )}
 
         {/* Price */}
-        <div className="flex items-baseline gap-2 pt-0.5">
-          <span className="font-bold text-base sm:text-lg">{product.price}</span>
+        <div className="flex items-baseline gap-2 mt-auto pt-2">
+          <span className="font-bold text-base sm:text-lg leading-none">{product.price}</span>
           <span className="text-xs text-muted-foreground">MRP <span className="line-through">{product.originalPrice}</span></span>
         </div>
 
         {/* Add to cart */}
         <button
           onClick={handleAddToCart}
-          className="w-full bg-foreground text-background text-xs sm:text-sm font-semibold py-2.5 sm:py-3 rounded-lg tracking-wider hover:bg-foreground/90 transition-colors"
+          className="w-full bg-foreground text-background text-xs sm:text-sm font-semibold py-2.5 rounded-md tracking-wider hover:bg-foreground/90 transition-colors mt-2"
         >
           ADD TO CART
         </button>
