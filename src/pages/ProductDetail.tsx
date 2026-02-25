@@ -478,9 +478,28 @@ const ProductDetail = () => {
                   handleAddToCart();
                   toast({ title: "Proceeding to checkout", description: "Redirecting..." });
                 }}
-                className="flex-1 bg-foreground text-background font-bold py-3.5 sm:py-4 rounded-full text-[13px] sm:text-sm tracking-wider hover:bg-foreground/90 transition-colors"
+                className="flex-1 bg-foreground text-background font-bold py-3.5 sm:py-4 rounded-full text-[13px] sm:text-sm tracking-wider hover:bg-foreground/90 transition-colors relative overflow-hidden"
               >
-                BUY NOW →
+                <span className="flex items-center justify-center gap-2">
+                  <motion.span
+                    key="buy-text"
+                    className="absolute inset-0 flex items-center justify-center gap-2"
+                    animate={{ opacity: [1, 1, 0, 0, 1] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    BUY NOW →
+                  </motion.span>
+                  <motion.span
+                    key="upi-text"
+                    className="absolute inset-0 flex items-center justify-center gap-2"
+                    animate={{ opacity: [0, 0, 1, 1, 0] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <IndianRupee className="w-4 h-4" /> UPI PAY
+                  </motion.span>
+                  {/* invisible spacer */}
+                  <span className="invisible">BUY NOW →</span>
+                </span>
               </button>
             </div>
 
@@ -519,40 +538,40 @@ const ProductDetail = () => {
             </div>
 
             {/* Trust badges */}
-            <div className="grid grid-cols-4 gap-2 mt-5 sm:mt-6 py-4 sm:py-5 border-t border-b border-border">
+            <div className="grid grid-cols-4 gap-3 sm:gap-4 mt-5 sm:mt-6 py-5 sm:py-6 border-t border-b border-border">
               {[
                 { icon: RotateCcw, label: "7-Day Returns" },
                 { icon: Award, label: "6-Month Warranty" },
                 { icon: Truck, label: "Free Shipping" },
                 { icon: ShieldCheck, label: "100% Genuine" },
               ].map(({ icon: Icon, label }) => (
-                <div key={label} className="flex flex-col items-center gap-1.5 text-center">
-                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border-2 border-foreground/15 flex items-center justify-center">
-                    <Icon className="w-5 h-5 sm:w-5.5 sm:h-5.5 text-foreground" strokeWidth={1.5} />
+                <div key={label} className="flex flex-col items-center gap-2 text-center">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-foreground/15 flex items-center justify-center">
+                    <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-foreground" strokeWidth={1.5} />
                   </div>
-                  <p className="text-[9px] sm:text-[11px] font-semibold text-foreground leading-tight">{label}</p>
+                  <p className="text-[10px] sm:text-xs font-semibold text-foreground leading-tight">{label}</p>
                 </div>
               ))}
             </div>
 
             {/* Payment methods */}
-            <div className="mt-4 sm:mt-5">
-              <p className="text-[11px] sm:text-xs font-bold text-foreground mb-3 uppercase tracking-wider">Payment Methods</p>
-              <div className="flex items-center gap-2 flex-wrap">
+            <div className="mt-5 sm:mt-6">
+              <p className="text-[11px] sm:text-sm font-bold text-foreground mb-3 uppercase tracking-wider">Payment Methods</p>
+              <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap">
                 {[
                   { icon: IndianRupee, name: "UPI" },
                   { icon: Wallet, name: "Cards" },
                   { icon: Banknote, name: "Net Banking" },
                   { icon: Package, name: "COD" },
                 ].map(({ icon: Icon, name }) => (
-                  <div key={name} className="flex items-center gap-1.5 bg-secondary/50 rounded-lg px-3 py-2">
-                    <Icon className="w-4 h-4 text-foreground" strokeWidth={1.5} />
-                    <span className="text-[11px] sm:text-xs font-semibold text-foreground">{name}</span>
+                  <div key={name} className="flex items-center gap-2 border border-border rounded-lg px-3.5 sm:px-4 py-2 sm:py-2.5">
+                    <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-foreground" strokeWidth={1.5} />
+                    <span className="text-[11px] sm:text-sm font-semibold text-foreground">{name}</span>
                   </div>
                 ))}
               </div>
-              <div className="flex items-center gap-1.5 mt-3 text-[10px] sm:text-[11px] text-muted-foreground">
-                <Lock className="w-3.5 h-3.5" />
+              <div className="flex items-center gap-1.5 mt-3 text-[10px] sm:text-xs text-muted-foreground">
+                <Lock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 <span>256-bit SSL encrypted · 100% secure checkout</span>
               </div>
             </div>
