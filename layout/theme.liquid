@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }}</title>
+    <link rel="stylesheet" href="{{ 'styles.css' | asset_url }}">
+</head>
+<body>
+    <header>
+        <h1>{{ shop.name }}</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ shop.url }}">Home</a></li>
+                <li><a href="{{ routes.collections_url }}">Collections</a></li>
+                <li><a href="{{ routes.cart_url }}">Cart</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {{ content }}
+    </main>
+
+    <footer>
+        <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}</p>
+    </footer>
+
+    <script src="{{ 'scripts.js' | asset_url }}"></script>
+</body>
+</html>
