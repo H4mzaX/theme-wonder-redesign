@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import {
   Star, ChevronLeft, ChevronRight, Shield, Zap, Magnet, CheckCircle,
@@ -17,6 +17,7 @@ import Footer from "@/components/Footer";
 import SearchDrawer from "@/components/SearchDrawer";
 import CartDrawer from "@/components/CartDrawer";
 import ProductCard from "@/components/ProductCard";
+import { ProductLightbox } from "@/components/ProductLightbox";
 
 const colorHex: Record<string, string> = {
   Clear: "#e5e5e5",
@@ -306,18 +307,37 @@ const ProductDetail = () => {
                     key={currentImg}
                     src={galleryImages[currentImg] || product.image}
                     alt={product.name}
-                    className="w-full h-full object-contain p-4 sm:p-6 lg:p-8"
+                    className="w-full h-full object-contain p-4 sm:p-6 lg:p-8 cursor-zoom-in"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
+                    onClick={() => {
+                      const gallery = document.getElementById("product-gallery");
+                      if (gallery) {
+                        const links = gallery.querySelectorAll("a");
+                        if (links[currentImg]) (links[currentImg] as HTMLElement).click();
+                      }
+                    }}
                   />
                 </AnimatePresence>
 
-                {/* Zoom icon */}
-                <button className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-background shadow-md flex items-center justify-center hover:bg-muted transition-colors">
+                {/* Zoom icon — opens lightbox */}
+                <button
+                  className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-background shadow-md flex items-center justify-center hover:bg-muted transition-colors"
+                  onClick={() => {
+                    const gallery = document.getElementById("product-gallery");
+                    if (gallery) {
+                      const links = gallery.querySelectorAll("a");
+                      if (links[currentImg]) (links[currentImg] as HTMLElement).click();
+                    }
+                  }}
+                >
                   <SearchIcon className="w-4 h-4 text-foreground" />
                 </button>
+
+                {/* PhotoSwipe lightbox (hidden gallery) */}
+                <ProductLightbox images={galleryImages} startIndex={currentImg} />
 
                 {/* Mobile arrows */}
                 {galleryImages.length > 1 && (
