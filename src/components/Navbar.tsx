@@ -170,60 +170,106 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
           </div>
         </div>
 
-        <AnimatePresence>
+        <AnimatePresence mode="wait">
           {activeMega && (
             <motion.div
+              key={activeMega}
               className="absolute left-0 top-full w-full bg-background border-t border-border/30 shadow-xl z-50"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
               onMouseEnter={handleMegaEnter}
               onMouseLeave={handleMouseLeave}
             >
               <div className="section-padding py-8">
-                <div className="grid grid-cols-12 gap-8">
-                  <div className="col-span-9">
-                    <p className="text-xs uppercase tracking-widest text-muted-foreground mb-5 font-medium">
-                      {activeMega === "Explore" ? "Pages" : "Collections"}
-                    </p>
-                    <div className="grid grid-cols-4 gap-5">
-                      {megaMenuData[activeMega].collections.map((col, idx) => (
-                        <Link key={col.name} to={col.href} onClick={() => setActiveMega(null)} className="group block">
-                          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05, duration: 0.3 }}>
-                            {activeMega !== "Explore" && (
-                              <div className="aspect-square rounded-lg overflow-hidden mb-3 relative">
-                                <img src={col.image} alt={col.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                                <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors duration-300" />
-                              </div>
-                            )}
-                            <div className="flex items-center justify-between">
+                {activeMega === "Explore" ? (
+                  /* Explore: vertical text links + featured card */
+                  <div className="grid grid-cols-12 gap-8">
+                    <div className="col-span-5">
+                      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-5 font-medium">Pages</p>
+                      <div className="flex flex-col gap-1">
+                        {megaMenuData[activeMega].collections.map((col, idx) => (
+                          <Link key={col.name} to={col.href} onClick={() => setActiveMega(null)} className="group">
+                            <motion.div
+                              className="flex items-center justify-between py-2.5 border-b border-border/20 last:border-0"
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: idx * 0.04, duration: 0.25 }}
+                            >
                               <div>
-                                <span className="font-display text-lg font-semibold tracking-tight group-hover:text-accent transition-colors relative">
-                                  {col.name}
-                                  {col.count > 0 && <sup className="text-[10px] font-body ml-1 text-muted-foreground">{col.count}</sup>}
-                                </span>
+                                <span className="text-base font-semibold group-hover:text-accent transition-colors duration-200">{col.name}</span>
                                 <p className="text-xs text-muted-foreground mt-0.5">{col.subtitle}</p>
                               </div>
                               <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-accent group-hover:translate-x-1 transition-all duration-200" />
-                            </div>
-                          </motion.div>
+                            </motion.div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="col-span-4">
+                      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-5 font-medium">Featured</p>
+                      <motion.div className="bg-card rounded-lg p-6" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.3 }}>
+                        <h3 className="font-display text-xl font-semibold mb-2">{megaMenuData[activeMega].featured.title}</h3>
+                        <p className="text-sm text-muted-foreground mb-6 leading-relaxed">{megaMenuData[activeMega].featured.description}</p>
+                        <Link to={megaMenuData[activeMega].featured.href} onClick={() => setActiveMega(null)} className="inline-flex items-center gap-2 text-sm font-medium bg-foreground text-background px-5 py-2.5 rounded-full hover:bg-foreground/90 transition-colors">
+                          {megaMenuData[activeMega].featured.cta}
+                          <ArrowRight className="w-3.5 h-3.5" />
                         </Link>
-                      ))}
+                      </motion.div>
+                    </div>
+                    <div className="col-span-3">
+                      <motion.div
+                        className="rounded-lg overflow-hidden h-full"
+                        initial={{ opacity: 0, scale: 0.97 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.12, duration: 0.35 }}
+                      >
+                        <img src={collectionCases} alt="Featured" className="w-full h-full object-cover" loading="eager" />
+                      </motion.div>
                     </div>
                   </div>
-                  <div className="col-span-3">
-                    <p className="text-xs uppercase tracking-widest text-muted-foreground mb-5 font-medium">Featured</p>
-                    <motion.div className="bg-card rounded-lg p-6 h-[calc(100%-2rem)]" initial={{ opacity: 0, x: 15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15, duration: 0.3 }}>
-                      <h3 className="font-display text-xl font-semibold mb-2">{megaMenuData[activeMega].featured.title}</h3>
-                      <p className="text-sm text-muted-foreground mb-6 leading-relaxed">{megaMenuData[activeMega].featured.description}</p>
-                      <Link to={megaMenuData[activeMega].featured.href} onClick={() => setActiveMega(null)} className="inline-flex items-center gap-2 text-sm font-medium bg-foreground text-background px-5 py-2.5 rounded-full hover:bg-foreground/90 transition-colors">
-                        {megaMenuData[activeMega].featured.cta}
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </Link>
-                    </motion.div>
+                ) : (
+                  /* Shop / Collections: image grid + featured card */
+                  <div className="grid grid-cols-12 gap-8">
+                    <div className="col-span-9">
+                      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-5 font-medium">Collections</p>
+                      <div className="grid grid-cols-4 gap-5">
+                        {megaMenuData[activeMega].collections.map((col, idx) => (
+                          <Link key={col.name} to={col.href} onClick={() => setActiveMega(null)} className="group block">
+                            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.04, duration: 0.25, ease: "easeOut" }}>
+                              <div className="aspect-square rounded-lg overflow-hidden mb-3 relative">
+                                <img src={col.image} alt={col.name} className="w-full h-full object-cover transition-transform duration-500 will-change-transform group-hover:scale-110" loading="eager" decoding="async" />
+                                <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors duration-300" />
+                              </div>
+                              <div className="flex items-center justify-between">
+                                <div>
+                                  <span className="font-display text-lg font-semibold tracking-tight group-hover:text-accent transition-colors duration-200">
+                                    {col.name}
+                                    {col.count > 0 && <sup className="text-[10px] font-body ml-1 text-muted-foreground">{col.count}</sup>}
+                                  </span>
+                                  <p className="text-xs text-muted-foreground mt-0.5">{col.subtitle}</p>
+                                </div>
+                                <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-accent group-hover:translate-x-1 transition-all duration-200" />
+                              </div>
+                            </motion.div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="col-span-3">
+                      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-5 font-medium">Featured</p>
+                      <motion.div className="bg-card rounded-lg p-6 h-[calc(100%-2rem)]" initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1, duration: 0.3 }}>
+                        <h3 className="font-display text-xl font-semibold mb-2">{megaMenuData[activeMega].featured.title}</h3>
+                        <p className="text-sm text-muted-foreground mb-6 leading-relaxed">{megaMenuData[activeMega].featured.description}</p>
+                        <Link to={megaMenuData[activeMega].featured.href} onClick={() => setActiveMega(null)} className="inline-flex items-center gap-2 text-sm font-medium bg-foreground text-background px-5 py-2.5 rounded-full hover:bg-foreground/90 transition-colors">
+                          {megaMenuData[activeMega].featured.cta}
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </Link>
+                      </motion.div>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </motion.div>
           )}
