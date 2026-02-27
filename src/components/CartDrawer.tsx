@@ -1,6 +1,7 @@
 import { X, Minus, Plus, ArrowRight, ChevronLeft, ChevronRight, FileText, Package, Tag, Shield, Camera, Smartphone, Zap, Clock, Users, Flame, Timer, Sparkles, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useMemo, useEffect } from "react";
+import { drawerSpring } from "@/lib/motion";
 import { useCart } from "@/context/CartContext";
 import { Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -791,11 +792,11 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
           <>
             <motion.div className="fixed inset-0 bg-foreground/40 z-50" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} />
             <motion.div
-              className="fixed inset-x-0 bottom-0 bg-background z-50 rounded-t-2xl max-h-[92vh] flex flex-col"
+              className="fixed inset-x-0 bottom-0 bg-background z-50 rounded-t-2xl h-[min(85dvh,720px)] flex flex-col will-change-transform"
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              transition={drawerSpring}
             >
               {/* Drag handle + close */}
               <div className="flex justify-center pt-3 pb-1">
@@ -819,7 +820,7 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
       {open && (
         <>
           <motion.div className="fixed inset-0 bg-foreground/40 z-50" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} />
-          <motion.div className="fixed inset-y-0 right-0 w-full sm:w-[480px] bg-background z-50 flex flex-col" initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={{ type: "spring", damping: 25, stiffness: 200 }}>
+          <motion.div className="fixed inset-y-0 right-0 w-full sm:w-[480px] bg-background z-50 flex flex-col will-change-transform" initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={drawerSpring}>
             {cartContent}
           </motion.div>
         </>

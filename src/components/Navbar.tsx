@@ -3,6 +3,7 @@ import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useScrollDirection } from "@/hooks/useScrollAnimations";
+import { drawerSpring, premiumEase } from "@/lib/motion";
 import { useCart } from "@/context/CartContext";
 import collectionCases from "@/assets/collection-headphones.jpg";
 import collectionProtectors from "@/assets/collection-earphones.jpg";
@@ -63,7 +64,7 @@ interface NavbarProps {
 }
 
 const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) => {
-  const { scrolled, hidden } = useScrollDirection();
+  const { scrolled } = useScrollDirection();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeMega, setActiveMega] = useState<MegaMenuKey | null>(null);
   const [mobileSubmenu, setMobileSubmenu] = useState<string | null>(null);
@@ -103,7 +104,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
         }`}
         initial={{ y: 0 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
+        transition={{ duration: 0.26, ease: premiumEase }}
       >
         <div className="flex items-center justify-between">
           <button
@@ -174,11 +175,11 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
           {activeMega && (
             <motion.div
               key={activeMega}
-              className="absolute left-1/2 top-full z-50 w-[min(1240px,calc(100vw-2rem))] -translate-x-1/2 bg-background border border-border/30 shadow-xl rounded-b-2xl"
+              className="absolute left-1/2 top-full z-50 w-[min(1240px,calc(100vw-2rem))] -translate-x-1/2 bg-background border border-border/30 shadow-xl rounded-b-2xl transform-gpu will-change-transform"
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+              transition={{ duration: 0.24, ease: premiumEase }}
               onMouseEnter={handleMegaEnter}
               onMouseLeave={handleMouseLeave}
             >
@@ -282,11 +283,11 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
           <>
             <motion.div className="fixed inset-0 bg-foreground/40 z-50 lg:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setMobileOpen(false)} />
             <motion.div
-              className="fixed inset-x-0 bottom-0 w-full bg-background z-50 lg:hidden rounded-t-2xl h-[min(85dvh,720px)] flex flex-col"
+              className="fixed inset-x-0 bottom-0 w-full bg-background z-50 lg:hidden rounded-t-2xl h-[min(85dvh,720px)] flex flex-col will-change-transform"
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              transition={drawerSpring}
             >
               {/* Drag handle */}
               <div className="flex justify-center pt-3 pb-1">

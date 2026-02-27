@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { allProducts, Product } from "@/data/products";
 import { useNavigate } from "react-router-dom";
+import { drawerSpring, premiumEase } from "@/lib/motion";
 
 interface SearchDrawerProps {
   open: boolean;
@@ -31,7 +32,6 @@ const SearchDrawer = ({ open, onClose }: SearchDrawerProps) => {
   const results = useMemo(() => {
     if (!query.trim()) return [];
     const q = query.toLowerCase();
-    // Deduplicate by name+device, limit to 8
     const seen = new Set<string>();
     return allProducts.filter((p) => {
       const key = `${p.name}-${p.device}`;
@@ -59,7 +59,7 @@ const SearchDrawer = ({ open, onClose }: SearchDrawerProps) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.22, ease: premiumEase }}
         >
           <p className="text-xs uppercase tracking-widest text-muted-foreground mb-4 pb-2 border-b border-border">
             {results.length} Result{results.length > 1 ? "s" : ""}
@@ -71,7 +71,7 @@ const SearchDrawer = ({ open, onClose }: SearchDrawerProps) => {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.25, delay: i * 0.04 }}
+                transition={{ duration: 0.22, delay: i * 0.03, ease: premiumEase }}
                 onClick={() => handleProductClick(product)}
                 className="w-full flex items-center gap-4 p-3 rounded-xl hover:bg-muted/60 transition-colors text-left group"
               >
@@ -112,7 +112,7 @@ const SearchDrawer = ({ open, onClose }: SearchDrawerProps) => {
   );
 
   const renderDefault = () => (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.08, duration: 0.24, ease: premiumEase }}>
       <div className="mb-8">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-4 pb-2 border-b border-border">
           Popular categories
@@ -171,11 +171,11 @@ const SearchDrawer = ({ open, onClose }: SearchDrawerProps) => {
           <>
             <motion.div className="fixed inset-0 bg-foreground/40 z-50" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} />
             <motion.div
-              className="fixed inset-x-0 bottom-0 bg-background z-50 rounded-t-2xl max-h-[85vh] flex flex-col"
+              className="fixed inset-x-0 bottom-0 bg-background z-50 rounded-t-2xl h-[min(85dvh,720px)] flex flex-col will-change-transform"
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              transition={drawerSpring}
             >
               <div className="flex justify-center pt-3 pb-1">
                 <div className="w-10 h-1 rounded-full bg-muted-foreground/30" />
@@ -202,7 +202,7 @@ const SearchDrawer = ({ open, onClose }: SearchDrawerProps) => {
       {open && (
         <>
           <motion.div className="fixed inset-0 bg-foreground/40 z-50" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} />
-          <motion.div className="fixed inset-y-0 right-0 w-full sm:w-[480px] bg-background z-50 flex flex-col" initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={{ type: "spring", damping: 25, stiffness: 200 }}>
+          <motion.div className="fixed inset-y-0 right-0 w-full sm:w-[480px] bg-background z-50 flex flex-col will-change-transform" initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={drawerSpring}>
             <div className="flex items-center justify-between p-6 border-b border-border">
               <h2 className="text-2xl font-display font-bold">Search</h2>
               <button onClick={onClose} className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-card transition-colors">
@@ -221,3 +221,4 @@ const SearchDrawer = ({ open, onClose }: SearchDrawerProps) => {
 };
 
 export default SearchDrawer;
+

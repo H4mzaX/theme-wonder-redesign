@@ -1,21 +1,23 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { forwardRef, useEffect, useRef, useState, type ReactNode } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 
 // Scroll reveal wrapper
-export const ScrollReveal = ({
-  children,
-  className = "",
-  delay = 0,
-  direction = "up",
-  duration = 0.6,
-}: {
+interface ScrollRevealProps {
   children: ReactNode;
   className?: string;
   delay?: number;
   direction?: "up" | "down" | "left" | "right" | "none";
   duration?: number;
-}) => {
-  const ref = useRef(null);
+}
+
+export const ScrollReveal = forwardRef<HTMLDivElement, ScrollRevealProps>(({
+  children,
+  className = "",
+  delay = 0,
+  direction = "up",
+  duration = 0.6,
+}, _forwardedRef) => {
+  const ref = useRef<HTMLDivElement | null>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   const directionMap = {
@@ -39,19 +41,22 @@ export const ScrollReveal = ({
       {children}
     </motion.div>
   );
-};
+});
+ScrollReveal.displayName = "ScrollReveal";
 
 // Staggered children
-export const StaggerContainer = ({
-  children,
-  className = "",
-  staggerDelay = 0.08,
-}: {
+interface StaggerContainerProps {
   children: ReactNode;
   className?: string;
   staggerDelay?: number;
-}) => {
-  const ref = useRef(null);
+}
+
+export const StaggerContainer = forwardRef<HTMLDivElement, StaggerContainerProps>(({
+  children,
+  className = "",
+  staggerDelay = 0.08,
+}, _forwardedRef) => {
+  const ref = useRef<HTMLDivElement | null>(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
@@ -70,15 +75,15 @@ export const StaggerContainer = ({
       {children}
     </motion.div>
   );
-};
+});
+StaggerContainer.displayName = "StaggerContainer";
 
-export const StaggerItem = ({
-  children,
-  className = "",
-}: {
+interface StaggerItemProps {
   children: ReactNode;
   className?: string;
-}) => (
+}
+
+export const StaggerItem = forwardRef<HTMLDivElement, StaggerItemProps>(({ children, className = "" }, _forwardedRef) => (
   <motion.div
     className={className}
     variants={{
@@ -93,7 +98,8 @@ export const StaggerItem = ({
   >
     {children}
   </motion.div>
-);
+));
+StaggerItem.displayName = "StaggerItem";
 
 // Parallax image wrapper
 export const ParallaxImage = ({
