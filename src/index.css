@@ -82,12 +82,32 @@
     @apply border-border;
   }
 
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
   body {
     @apply bg-background text-foreground font-body antialiased;
+    overflow-x: clip;
+  }
+
+  #root {
+    width: 100%;
+    min-height: 100dvh;
+    overflow-x: clip;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-display;
+  }
+}
+
+@media (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
   }
 }
 

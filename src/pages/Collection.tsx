@@ -143,7 +143,7 @@ const Collection = () => {
   return (
     <motion.div
       key={slug}
-      className="min-h-screen bg-background"
+      className="min-h-screen bg-background overflow-x-clip"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}

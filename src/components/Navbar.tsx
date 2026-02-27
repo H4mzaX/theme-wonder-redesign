@@ -94,7 +94,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
   return (
     <>
       <motion.nav
-        className={`section-padding py-4 sticky top-0 z-50 transition-all duration-300 ${
+        className={`section-padding w-full py-4 sticky top-0 z-50 overflow-visible transition-all duration-300 ${
           isTransparent
             ? "bg-transparent text-background"
             : scrolled
@@ -174,7 +174,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
           {activeMega && (
             <motion.div
               key={activeMega}
-              className="absolute left-0 top-full w-full bg-background border-t border-border/30 shadow-xl z-50"
+              className="absolute left-1/2 top-full z-50 w-[min(1240px,calc(100vw-2rem))] -translate-x-1/2 bg-background border border-border/30 shadow-xl rounded-b-2xl"
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
@@ -182,7 +182,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
               onMouseEnter={handleMegaEnter}
               onMouseLeave={handleMouseLeave}
             >
-              <div className="section-padding py-8">
+              <div className="px-4 sm:px-6 lg:px-8 py-8">
                 {activeMega === "Explore" ? (
                   /* Explore: vertical text links + featured card */
                   <div className="grid grid-cols-12 gap-8">
@@ -282,7 +282,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
           <>
             <motion.div className="fixed inset-0 bg-foreground/40 z-50 lg:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setMobileOpen(false)} />
             <motion.div
-              className="fixed inset-x-0 bottom-0 bg-background z-50 lg:hidden rounded-t-2xl max-h-[85vh] flex flex-col"
+              className="fixed inset-x-0 bottom-0 w-full bg-background z-50 lg:hidden rounded-t-2xl h-[min(85dvh,720px)] flex flex-col"
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
