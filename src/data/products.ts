@@ -13,13 +13,21 @@ import siliconeLifestyleClearImg from "@/assets/silicone-lifestyle-clear.jpg";
 import leatherBrownImg from "@/assets/case-leather-brown.jpg";
 import leatherBlackImg from "@/assets/case-leather-black.jpg";
 
-// iPhone 17 Pro specific images
+// iPhone 17 Pro specific images (these need to be re-uploaded — currently same as iPhone 17)
 import iphone17proMagsafeClearImg from "@/assets/iphone17pro-magsafe-clear.jpg";
 import iphone17proSlimImg from "@/assets/iphone17pro-slim-design.jpg";
 import iphone17proProtectionImg from "@/assets/iphone17pro-protection.jpg";
 import iphone17proStrongImg from "@/assets/iphone17pro-strong.jpg";
 import iphone17proMagsafeAttachImg from "@/assets/iphone17pro-magsafe-attach.jpg";
 import iphone17proFingerprintsImg from "@/assets/iphone17pro-fingerprints.jpg";
+
+// iPhone 17 specific images
+import iphone17MagsafeClearImg from "@/assets/iphone17-magsafe-clear.jpg";
+import iphone17SlimImg from "@/assets/iphone17-slim-design.jpg";
+import iphone17ProtectionImg from "@/assets/iphone17-protection.jpg";
+import iphone17StrongImg from "@/assets/iphone17-strong.jpg";
+import iphone17MagsafeAttachImg from "@/assets/iphone17-magsafe-attach.jpg";
+import iphone17FingerprintsImg from "@/assets/iphone17-fingerprints.jpg";
 
 // Samsung device-specific images
 import samsungSiliconeBlueImg from "@/assets/samsung-silicone-blue.jpg";
@@ -170,6 +178,25 @@ iphoneProducts.forEach(p => {
   }
 });
 
+// Override iPhone 17 product images with new clear case shots
+iphoneProducts.forEach(p => {
+  if (p.device === "iPhone 17") {
+    if (p.category === "MagSafe Cases" && p.name.includes("Clear")) {
+      p.image = iphone17MagsafeClearImg;
+      p.hoverImage = iphone17MagsafeAttachImg;
+    } else if (p.category === "MagSafe Cases" && p.name.includes("Black")) {
+      p.image = iphone17StrongImg;
+      p.hoverImage = iphone17MagsafeClearImg;
+    } else if (p.category === "Silicone Cases") {
+      p.image = iphone17ProtectionImg;
+      p.hoverImage = iphone17FingerprintsImg;
+    } else if (p.category === "Leather Cases") {
+      p.image = iphone17SlimImg;
+      p.hoverImage = iphone17MagsafeAttachImg;
+    }
+  }
+});
+
 // Deduplicate products — keep only unique id entries
 const deduplicateProducts = (products: Product[]): Product[] => {
   const seen = new Set<string>();
@@ -262,6 +289,16 @@ export const iphone17ProGalleryImages = [
   iphone17proProtectionImg,
   iphone17proStrongImg,
   iphone17proFingerprintsImg,
+];
+
+// iPhone 17 gallery images for product detail page
+export const iphone17GalleryImages = [
+  iphone17MagsafeClearImg,
+  iphone17MagsafeAttachImg,
+  iphone17SlimImg,
+  iphone17ProtectionImg,
+  iphone17StrongImg,
+  iphone17FingerprintsImg,
 ];
 
 // Silicone gallery images for product detail
