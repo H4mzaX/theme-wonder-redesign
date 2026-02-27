@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { ScaleOnScroll, ParallaxImage } from "@/hooks/useScrollAnimations";
-import lookbookImg from "@/assets/lookbook.jpg";
+import bannerOrangeImg from "@/assets/banner-magsafe-orange-2.png";
 
 const PromoBanner = () => {
   return (
@@ -8,8 +8,8 @@ const PromoBanner = () => {
       <ScaleOnScroll>
         <a href="#" className="block relative rounded-2xl overflow-hidden group">
           <ParallaxImage
-            src={lookbookImg}
-            alt="Premium collection showcase"
+            src={bannerOrangeImg}
+            alt="MagSafe premium collection showcase"
             className="h-[240px] sm:h-[380px] lg:h-[460px] rounded-2xl"
             speed={0.1}
           />
@@ -22,9 +22,9 @@ const PromoBanner = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <p className="text-white/80 text-sm tracking-widest uppercase mb-3">Premium Collection</p>
+              <p className="text-white/80 text-sm tracking-widest uppercase mb-3">MagSafe Collection</p>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 tracking-tight">
-                Designed to Protect
+                Snap. Protect. Style.
               </h2>
               <motion.span
                 className="inline-block bg-white text-foreground px-8 py-3 rounded-full text-sm font-medium"
