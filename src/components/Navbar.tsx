@@ -108,10 +108,10 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
       >
         <div className="flex items-center justify-between">
           <button
-            className="lg:hidden hover:text-accent transition-colors"
+            className="lg:hidden w-10 h-10 flex items-center justify-center -ml-2 rounded-full hover:bg-muted active:scale-95 transition-all"
             onClick={() => setMobileOpen(true)}
           >
-            <Menu className="w-5 h-5" />
+            <Menu className="w-6 h-6" strokeWidth={1.8} />
           </button>
 
           <Link to="/" className="flex-shrink-0 flex items-center gap-2">
@@ -280,10 +280,10 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
       {/* Mobile menu - bottom sheet style */}
       <AnimatePresence>
         {mobileOpen && (
-          <motion.div key="mobile-menu" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <motion.div className="fixed inset-0 bg-foreground/40 z-50 lg:hidden" onClick={() => setMobileOpen(false)} />
+          <motion.div key="mobile-menu" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[60]">
+            <motion.div className="absolute inset-0 bg-foreground/40 lg:hidden" onClick={() => setMobileOpen(false)} />
             <motion.div
-              className="fixed inset-x-0 bottom-0 w-full bg-background z-50 lg:hidden rounded-t-2xl h-[min(85dvh,720px)] flex flex-col will-change-transform"
+              className="fixed inset-x-0 bottom-0 w-full bg-background lg:hidden rounded-t-2xl h-[min(85dvh,720px)] flex flex-col will-change-transform"
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               exit={{ y: "100%" }}

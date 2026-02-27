@@ -1,8 +1,9 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Home, SlidersHorizontal, ChevronDown, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { allProducts, type Product } from "@/data/products";
+import { premiumEase } from "@/lib/motion";
 import Navbar from "@/components/Navbar";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Footer from "@/components/Footer";
@@ -114,6 +115,15 @@ const Collection = () => {
   const [sortBy, setSortBy] = useState<SortOption>("featured");
   const [showFilters, setShowFilters] = useState(false);
   const [sortDropdown, setSortDropdown] = useState(false);
+  const heroRef = useRef<HTMLElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const heroY = useTransform(scrollYProgress, [0, 1], [0, 120]);
+  const heroScale = useTransform(scrollYProgress, [0, 1], [1.05, 1.2]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.4]);
 
   const collection = collectionDefs[slug || "all"] || collectionDefs["all"];
 
@@ -153,29 +163,30 @@ const Collection = () => {
       <SearchDrawer open={searchOpen} onClose={() => setSearchOpen(false)} />
       <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
 
-      {/* Hero Banner — pulled up behind transparent navbar */}
+      {/* Hero Banner — parallax with scroll */}
       <motion.section
-        className="relative -mt-[60px] h-[380px] sm:h-[480px] lg:h-[560px] overflow-hidden rounded-b-2xl sm:rounded-b-3xl"
+        ref={heroRef}
+        className="relative -mt-[60px] h-[340px] sm:h-[460px] lg:h-[560px] overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
       >
-        <motion.img
-          src={collection.heroImage}
-          alt={collection.title}
-          className="w-full h-full object-cover scale-110"
-          initial={{ scale: 1.15 }}
-          animate={{ scale: 1.05 }}
-          transition={{ duration: 8, ease: "easeOut" }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-foreground/10" />
+        <motion.div className="absolute inset-0" style={{ y: heroY, opacity: heroOpacity }}>
+          <motion.img
+            src={collection.heroImage}
+            alt={collection.title}
+            className="w-full h-full object-cover"
+            style={{ scale: heroScale }}
+          />
+        </motion.div>
+        <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-foreground/5" />
         <div className="absolute bottom-0 left-0 right-0 section-padding pb-8 sm:pb-10 lg:pb-14">
           {/* Breadcrumb */}
           <motion.nav
             className="flex items-center gap-2 text-background/70 text-xs sm:text-sm mb-3 sm:mb-4"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.4 }}
+            transition={{ delay: 0.2, duration: 0.4, ease: premiumEase }}
           >
             <Link to="/" className="hover:text-background transition-colors flex items-center gap-1">
               <Home className="w-3.5 h-3.5" />
@@ -185,15 +196,23 @@ const Collection = () => {
             <span>/</span>
             <span className="text-background font-medium">{collection.title}</span>
           </motion.nav>
-          {/* Title */}
+          {/* Title + description */}
           <motion.h1
-            className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold text-background tracking-tight"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
+            className="text-3xl sm:text-5xl lg:text-7xl font-display font-bold text-background tracking-tight"
+            initial={{ opacity: 0, y: 30, clipPath: "inset(100% 0 0 0)" }}
+            animate={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
+            transition={{ delay: 0.3, duration: 0.6, ease: premiumEase }}
           >
             {collection.title}
           </motion.h1>
+          <motion.p
+            className="text-background/70 text-sm sm:text-base mt-2 max-w-md"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45, duration: 0.4, ease: premiumEase }}
+          >
+            {collection.description}
+          </motion.p>
         </div>
       </motion.section>
 

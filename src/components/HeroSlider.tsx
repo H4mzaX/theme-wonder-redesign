@@ -93,7 +93,7 @@ const HeroSlider = () => {
 
   return (
     <section className="relative overflow-hidden">
-      <div className="relative h-[75vh] min-h-[480px] max-h-[600px] sm:h-[500px] sm:max-h-none lg:h-[750px]">
+      <div className="relative h-[75vh] min-h-[480px] max-h-[600px] sm:h-[500px] sm:max-h-none lg:h-[750px]" style={{ margin: 0, padding: 0 }}>
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
             key={current}
@@ -116,7 +116,7 @@ const HeroSlider = () => {
           </motion.div>
         </AnimatePresence>
 
-        <div className="absolute inset-0 flex items-end sm:items-center px-4 sm:px-12 lg:px-20 pb-20 sm:pb-12 pointer-events-none z-10">
+        <div className="absolute inset-0 flex items-end sm:items-center px-5 sm:px-12 lg:px-20 pb-24 sm:pb-12 pointer-events-none z-10">
           <div className="pointer-events-auto w-full sm:max-w-xl">
             <AnimatePresence mode="wait">
               <motion.div key={current}>
@@ -139,7 +139,7 @@ const HeroSlider = () => {
                     exit={{ opacity: 0, y: -15 }}
                     transition={{ duration: shouldReduceMotion ? 0 : 0.64, delay: shouldReduceMotion ? 0 : 0.2 + li * 0.1, ease: premiumEase }}
                   >
-                    <span className="block text-2xl sm:text-5xl lg:text-7xl font-display font-bold text-background sm:text-foreground leading-[1.1] tracking-tight">
+                    <span className="block text-3xl sm:text-5xl lg:text-7xl font-display font-bold text-background sm:text-foreground leading-[1.05] tracking-tight">
                       {line}
                     </span>
                   </motion.div>
