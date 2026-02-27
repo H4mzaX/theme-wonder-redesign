@@ -31,14 +31,14 @@ const ExploreLineup = () => {
 
   return (
     <section className="py-5 sm:py-6 lg:py-8">
-      <div className="max-w-[1400px] mx-auto">
-        <ScrollReveal className="px-4 sm:px-6 lg:px-10">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
+        <ScrollReveal>
           <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold tracking-tight italic text-foreground mb-4 lg:mb-6 text-center">
             Explore The Line-up
           </h2>
         </ScrollReveal>
 
-        <div className="flex mb-5 sm:mb-8 px-4 sm:px-6 lg:px-10">
+        <div className="flex mb-5 sm:mb-8">
           <div className="inline-flex border border-foreground rounded-full overflow-hidden overflow-x-auto" style={{ scrollbarWidth: "none" }}>
             {tabs.map((tab, i) => (
               <button
@@ -58,7 +58,7 @@ const ExploreLineup = () => {
           <motion.div key={activeTab} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
             <div
               ref={scrollRef}
-              className="flex gap-3 sm:gap-4 overflow-x-auto snap-x snap-mandatory px-4 sm:px-6 lg:px-10"
+              className="flex gap-3 sm:gap-4 overflow-x-auto snap-x snap-mandatory"
               style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
               {products.map((product) => (
