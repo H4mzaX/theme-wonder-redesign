@@ -311,17 +311,17 @@ const ProductDetail = () => {
                   <button
                     key={i}
                     onClick={() => setCurrentImg(i)}
-                    className={`w-[68px] h-[68px] rounded-2xl overflow-hidden border-2 transition-all flex-shrink-0 ${
-                      i === currentImg ? "border-foreground ring-1 ring-foreground/20" : "border-border hover:border-foreground/40"
+                    className={`w-[68px] h-[68px] rounded-xl overflow-hidden transition-all flex-shrink-0 ${
+                      i === currentImg ? "border-[2.5px] border-foreground" : "border border-border hover:border-foreground/40"
                     }`}
                   >
-                    <img src={img} alt="" className="w-full h-full object-contain bg-secondary/30 rounded-xl p-1" />
+                    <img src={img} alt="" className="w-full h-full object-contain bg-secondary/30 p-1" />
                   </button>
                 ))}
               </div>
 
               {/* Main image */}
-              <div className="relative flex-1 aspect-[4/5] lg:aspect-square bg-secondary/30 rounded-xl overflow-hidden">
+              <div className="relative flex-1 aspect-[4/5] lg:aspect-square bg-secondary/30 rounded-2xl overflow-hidden">
                 <AnimatePresence mode="wait">
                   <motion.img
                     key={currentImg}
@@ -388,13 +388,13 @@ const ProductDetail = () => {
                 <button
                   key={i}
                   onClick={() => setCurrentImg(i)}
-                  className={`flex-none w-[60px] h-[60px] sm:w-[72px] sm:h-[72px] rounded-2xl overflow-hidden transition-all snap-start ${
+                  className={`flex-none w-[62px] h-[62px] sm:w-[72px] sm:h-[72px] rounded-xl overflow-hidden transition-all snap-start ${
                     i === currentImg
-                      ? "ring-2 ring-foreground ring-offset-2 ring-offset-background scale-105"
+                      ? "border-[2.5px] border-foreground"
                       : "border border-border/60 hover:border-foreground/40"
                   }`}
                 >
-                  <img src={img} alt="" className="w-full h-full object-contain bg-secondary/30 rounded-2xl p-1" />
+                  <img src={img} alt="" className="w-full h-full object-contain bg-secondary/30 p-1" />
                 </button>
               ))}
             </div>
