@@ -68,9 +68,9 @@ const fakeReviews = [
 ];
 
 const offers = [
-  { title: "FLAT 5% OFF", highlight: "5%", sub: "On Purchase of Single Product" },
-  { title: "FLAT 10% OFF", highlight: "10%", sub: "On Purchase of 2 & More" },
-  { title: "FREE SHIPPING", highlight: "FREE", sub: "On All Prepaid Orders" },
+  { title: "FLAT 5% OFF", highlight: "5%", sub: "On Single Product", icon: "percent" as const },
+  { title: "FLAT 10% OFF", highlight: "10%", sub: "On 2 or More Products", icon: "percent" as const },
+  { title: "FREE SHIPPING", highlight: "FREE", sub: "On All Prepaid Orders", icon: "truck" as const },
 ];
 
 const productFeatures: Record<string, string[]> = {
@@ -311,11 +311,11 @@ const ProductDetail = () => {
                   <button
                     key={i}
                     onClick={() => setCurrentImg(i)}
-                    className={`w-[68px] h-[68px] rounded-lg overflow-hidden border-2 transition-all flex-shrink-0 ${
-                      i === currentImg ? "border-foreground" : "border-border hover:border-foreground/40"
+                    className={`w-[68px] h-[68px] rounded-2xl overflow-hidden border-2 transition-all flex-shrink-0 ${
+                      i === currentImg ? "border-foreground ring-1 ring-foreground/20" : "border-border hover:border-foreground/40"
                     }`}
                   >
-                    <img src={img} alt="" className="w-full h-full object-contain bg-secondary/30 p-1" />
+                    <img src={img} alt="" className="w-full h-full object-contain bg-secondary/30 rounded-xl p-1" />
                   </button>
                 ))}
               </div>
@@ -379,20 +379,22 @@ const ProductDetail = () => {
               </div>
             </div>
 
-            {/* Mobile thumbnails - smaller, tighter */}
+            {/* Mobile thumbnails - rounded, horizontally scrollable */}
             <div
-              className="flex lg:hidden gap-2 py-3 overflow-x-auto"
-              style={{ scrollbarWidth: "none" }}
+              className="flex lg:hidden gap-2.5 py-3 overflow-x-auto snap-x snap-mandatory scroll-pl-1"
+              style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch" }}
             >
               {galleryImages.map((img, i) => (
                 <button
                   key={i}
                   onClick={() => setCurrentImg(i)}
-                  className={`flex-none w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden border-2 transition-all ${
-                    i === currentImg ? "border-foreground" : "border-transparent hover:border-border"
+                  className={`flex-none w-[60px] h-[60px] sm:w-[72px] sm:h-[72px] rounded-2xl overflow-hidden transition-all snap-start ${
+                    i === currentImg
+                      ? "ring-2 ring-foreground ring-offset-2 ring-offset-background scale-105"
+                      : "border border-border/60 hover:border-foreground/40"
                   }`}
                 >
-                  <img src={img} alt="" className="w-full h-full object-contain bg-secondary/30 p-1" />
+                  <img src={img} alt="" className="w-full h-full object-contain bg-secondary/30 rounded-2xl p-1" />
                 </button>
               ))}
             </div>
@@ -556,18 +558,29 @@ const ProductDetail = () => {
             {/* Available Offers */}
             <div className="mt-6 sm:mt-7">
               <div className="flex items-center justify-between mb-2.5 sm:mb-3">
-                <h3 className="text-[15px] sm:text-base font-bold text-foreground">Available Offers</h3>
-                <span className="text-[11px] sm:text-xs text-muted-foreground cursor-pointer hover:text-foreground">View All</span>
+                <h3 className="text-[15px] sm:text-base font-bold text-foreground flex items-center gap-2">
+                  <Percent className="w-4 h-4 text-green-600" />
+                  Available Offers
+                </h3>
               </div>
-              <div className="flex gap-2.5 sm:gap-3 overflow-x-auto pb-1" style={{ scrollbarWidth: "none" }}>
+              <div className="flex gap-2.5 sm:gap-3 overflow-x-auto pb-1 snap-x snap-mandatory" style={{ scrollbarWidth: "none" }}>
                 {offers.map((offer) => (
-                  <div key={offer.title} className="flex-none flex items-center gap-2.5 sm:gap-3 border border-border rounded-xl p-3 sm:p-4 min-w-[190px] sm:min-w-[220px] hover:border-foreground/30 transition-colors">
-                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-foreground flex items-center justify-center flex-shrink-0">
-                      <Percent className="w-4 h-4 sm:w-5 sm:h-5 text-background" />
+                  <div key={offer.title} className="flex-none flex items-center gap-3 border border-border rounded-2xl p-3.5 sm:p-4 min-w-[200px] sm:min-w-[230px] hover:border-green-500/40 hover:bg-green-50/30 dark:hover:bg-green-950/10 transition-all snap-start">
+                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-green-600 flex items-center justify-center flex-shrink-0">
+                      {offer.icon === "truck" ? (
+                        <Truck className="w-5 h-5 text-white" />
+                      ) : (
+                        <Percent className="w-5 h-5 text-white" />
+                      )}
                     </div>
                     <div>
                       <p className="text-[12px] sm:text-sm font-bold text-foreground">
-                        FLAT <span className="text-green-600">{offer.highlight} OFF</span>
+                        {offer.icon === "truck" ? (
+                          <span className="text-green-600">{offer.highlight}</span>
+                        ) : (
+                          <>FLAT <span className="text-green-600">{offer.highlight}</span> OFF</>
+                        )}
+                        {offer.icon === "truck" && " SHIPPING"}
                       </p>
                       <p className="text-[10px] sm:text-xs text-muted-foreground">{offer.sub}</p>
                     </div>
