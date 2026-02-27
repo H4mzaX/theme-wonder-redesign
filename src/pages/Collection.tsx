@@ -11,6 +11,7 @@ import SearchDrawer from "@/components/SearchDrawer";
 import CartDrawer from "@/components/CartDrawer";
 import CollectionProductCard from "@/components/CollectionProductCard";
 import MobileBottomNav from "@/components/MobileBottomNav";
+import TextBehindImageSection from "@/components/TextBehindImageSection";
 
 // Per-collection hero images
 import collectionHero from "@/assets/collection-hero-cases.jpg";
@@ -525,6 +526,36 @@ const Collection = () => {
                 </div>
               )}
             </div>
+          </div>
+        </section>
+
+        {/* ═══ Text-behind-image parallax section ═══ */}
+        <TextBehindImageSection />
+
+        {/* ═══ You May Also Like — larger cards ═══ */}
+        <section className="section-padding py-8 sm:py-12">
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-foreground mb-5 sm:mb-7">
+            You May Also Like
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+            {allProducts
+              .filter((p) => !products.find((pp) => pp.id === p.id))
+              .slice(0, 4)
+              .map((product) => (
+                <CollectionProductCard key={product.id} product={product} large />
+              ))}
+          </div>
+        </section>
+
+        {/* ═══ Recently Viewed — larger cards ═══ */}
+        <section className="section-padding py-8 sm:py-12 pb-24 sm:pb-16">
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-foreground mb-5 sm:mb-7">
+            Recently Viewed
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+            {products.slice(0, 4).map((product) => (
+              <CollectionProductCard key={`rv-${product.id}`} product={product} large />
+            ))}
           </div>
         </section>
 
