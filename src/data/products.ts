@@ -7,6 +7,14 @@ import siliconeBlackImg from "@/assets/case-silicone-black.jpg";
 import leatherBrownImg from "@/assets/case-leather-brown.jpg";
 import leatherBlackImg from "@/assets/case-leather-black.jpg";
 
+// iPhone 17 Pro specific images
+import iphone17proMagsafeClearImg from "@/assets/iphone17pro-magsafe-clear.jpg";
+import iphone17proSlimImg from "@/assets/iphone17pro-slim-design.jpg";
+import iphone17proProtectionImg from "@/assets/iphone17pro-protection.jpg";
+import iphone17proStrongImg from "@/assets/iphone17pro-strong.jpg";
+import iphone17proMagsafeAttachImg from "@/assets/iphone17pro-magsafe-attach.jpg";
+import iphone17proFingerprintsImg from "@/assets/iphone17pro-fingerprints.jpg";
+
 // Samsung device-specific images
 import samsungSiliconeBlueImg from "@/assets/samsung-silicone-blue.jpg";
 import samsungClearCaseImg from "@/assets/samsung-clear-case.jpg";
@@ -136,6 +144,22 @@ const iqooCaseTypes = [
 ];
 
 export const iphoneProducts = generateProducts(iphoneDevices, caseTypes);
+
+// Override iPhone 17 Pro images with real product shots
+iphoneProducts.forEach(p => {
+  if (p.device === "iPhone 17 Pro") {
+    if (p.category === "MagSafe Cases") {
+      p.image = iphone17proMagsafeClearImg;
+      p.hoverImage = iphone17proMagsafeAttachImg;
+    } else if (p.category === "Silicone Cases") {
+      p.image = iphone17proProtectionImg;
+      p.hoverImage = iphone17proStrongImg;
+    } else if (p.category === "Leather Cases") {
+      p.image = iphone17proSlimImg;
+      p.hoverImage = iphone17proFingerprintsImg;
+    }
+  }
+});
 export const samsungProducts = generateProducts(samsungDevices, samsungCaseTypes);
 export const oneplusProducts = generateProducts(oneplusDevices, oneplusCaseTypes);
 export const iqooProducts = generateProducts(iqooDevices, iqooCaseTypes);
