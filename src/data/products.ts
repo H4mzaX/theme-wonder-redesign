@@ -247,3 +247,13 @@ export const colorImages: Record<string, string> = {
   "Jet Black": magsafeBlackImg,
   "Matte Black": magsafeBlackImg,
 };
+
+// iPhone 17 Pro gallery images for product detail page
+export const iphone17ProGalleryImages = [
+  iphone17proMagsafeClearImg,
+  iphone17proMagsafeAttachImg,
+  iphone17proSlimImg,
+  iphone17proProtectionImg,
+  iphone17proStrongImg,
+  iphone17proFingerprintsImg,
+];

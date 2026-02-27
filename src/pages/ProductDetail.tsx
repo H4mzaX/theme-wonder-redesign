@@ -8,7 +8,7 @@ import {
   ShieldCheck, Waves, CircleDot, ScanLine, BadgeCheck, Wallet, IndianRupee, Banknote
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { allProducts, colorImages, type Product } from "@/data/products";
+import { allProducts, colorImages, iphone17ProGalleryImages, type Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 import { toast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
@@ -165,8 +165,22 @@ const ProductDetail = () => {
   const ctaRef = useRef<HTMLDivElement>(null);
   const { addToCart, addRecentlyViewed } = useCart();
 
+  // Build gallery: for iPhone 17 Pro use all 6 real shots, otherwise product image + hover + color variants
   const galleryImages = product
-    ? product.colors.map((c) => colorImages[c] || product.image)
+    ? (() => {
+        if (product.device === "iPhone 17 Pro") {
+          return iphone17ProGalleryImages;
+        }
+        const imgs: string[] = [product.image];
+        if (product.hoverImage && product.hoverImage !== product.image) {
+          imgs.push(product.hoverImage);
+        }
+        product.colors.forEach((c) => {
+          const ci = colorImages[c];
+          if (ci && !imgs.includes(ci)) imgs.push(ci);
+        });
+        return imgs;
+      })()
     : [];
 
   // Track recently viewed
