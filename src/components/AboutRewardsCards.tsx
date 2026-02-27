@@ -9,7 +9,7 @@ const AboutRewardsCards = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <ScrollReveal direction="left" duration={0.6}>
           <a href="#" className="group block relative rounded-2xl overflow-hidden h-[260px] sm:h-[320px]">
-            <img src={lookbookImg} alt="About VCASE" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+            <img src={lookbookImg} alt="About VCASE" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
             <div className="absolute inset-0 bg-foreground/40 group-hover:bg-foreground/50 transition-colors duration-500" />
             <div className="absolute inset-0 flex flex-col justify-end p-7">
               <p className="text-white/70 text-xs tracking-widest uppercase mb-2">About Us</p>

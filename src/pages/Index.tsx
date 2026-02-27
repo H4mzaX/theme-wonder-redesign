@@ -1,27 +1,35 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Navbar from "@/components/Navbar";
 import HeroSlider from "@/components/HeroSlider";
 import ExploreProducts from "@/components/ExploreProducts";
-import NewArrivals from "@/components/NewArrivals";
-import PromoBanner from "@/components/PromoBanner";
-import ExploreLineup from "@/components/ExploreLineup";
-import WatchAndShop from "@/components/WatchAndShop";
-import AboutRewardsCards from "@/components/AboutRewardsCards";
-import FeaturedIn from "@/components/FeaturedIn";
-import TrustBadges from "@/components/TrustBadges";
-import Footer from "@/components/Footer";
-import FloatingSidebar from "@/components/FloatingSidebar";
 import LoadingBar from "@/components/LoadingBar";
 import SearchDrawer from "@/components/SearchDrawer";
 import CartDrawer from "@/components/CartDrawer";
 import MarqueeSection from "@/components/MarqueeSection";
-import ProductBanner from "@/components/ProductBanner";
+import FloatingSidebar from "@/components/FloatingSidebar";
+
+// Lazy-load below-fold sections for faster initial paint
+const NewArrivals = lazy(() => import("@/components/NewArrivals"));
+const ProductBanner = lazy(() => import("@/components/ProductBanner"));
+const PromoBanner = lazy(() => import("@/components/PromoBanner"));
+const ExploreLineup = lazy(() => import("@/components/ExploreLineup"));
+const WatchAndShop = lazy(() => import("@/components/WatchAndShop"));
+const AboutRewardsCards = lazy(() => import("@/components/AboutRewardsCards"));
+const FeaturedIn = lazy(() => import("@/components/FeaturedIn"));
+const TrustBadges = lazy(() => import("@/components/TrustBadges"));
+const Footer = lazy(() => import("@/components/Footer"));
 
 import bannerProduct1 from "@/assets/banner-magsafe-orange-1.png";
 import bannerProduct2 from "@/assets/banner-product-2.jpg";
 import bannerWide1 from "@/assets/banner-wide-1.jpg";
 import bannerWide2 from "@/assets/banner-silicone-fan.jpg";
+
+const LazySection = ({ children }: { children: React.ReactNode }) => (
+  <Suspense fallback={<div className="min-h-[200px]" />}>
+    {children}
+  </Suspense>
+);
 
 const Index = () => {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -40,62 +48,66 @@ const Index = () => {
         <MarqueeSection />
         <ExploreProducts />
 
-        {/* Banner: MagSafe Collection */}
-        <ProductBanner
-          image={bannerProduct1}
-          title="MagSafe Ready. Always."
-          subtitle="New Collection"
-          cta="Shop MagSafe"
-          href="/collections/magsafe-cases"
-          layout="right"
-          theme="light"
-        />
+        <LazySection>
+          <ProductBanner
+            image={bannerProduct1}
+            title="MagSafe Ready. Always."
+            subtitle="New Collection"
+            cta="Shop MagSafe"
+            href="/collections/magsafe-cases"
+            layout="right"
+            theme="light"
+          />
+        </LazySection>
 
-        <NewArrivals />
+        <LazySection><NewArrivals /></LazySection>
 
-        {/* Banner: Black Edition */}
-        <ProductBanner
-          image={bannerWide1}
-          title="The Black Edition"
-          subtitle="Limited Drop"
-          cta="Shop Now"
-          href="/collections/black-cases"
-          layout="center"
-          theme="dark"
-        />
+        <LazySection>
+          <ProductBanner
+            image={bannerWide1}
+            title="The Black Edition"
+            subtitle="Limited Drop"
+            cta="Shop Now"
+            href="/collections/black-cases"
+            layout="center"
+            theme="dark"
+          />
+        </LazySection>
 
-        <PromoBanner />
-        <ExploreLineup />
+        <LazySection><PromoBanner /></LazySection>
+        <LazySection><ExploreLineup /></LazySection>
 
-        {/* Banner: Clear Case */}
-        <ProductBanner
-          image={bannerProduct2}
-          title="Crystal Clear Protection"
-          subtitle="Bestseller"
-          cta="Explore Clear Cases"
-          href="/collections/clear-cases"
-          layout="left"
-          theme="light"
-        />
+        <LazySection>
+          <ProductBanner
+            image={bannerProduct2}
+            title="Crystal Clear Protection"
+            subtitle="Bestseller"
+            cta="Explore Clear Cases"
+            href="/collections/clear-cases"
+            layout="left"
+            theme="light"
+          />
+        </LazySection>
 
-        <WatchAndShop />
+        <LazySection><WatchAndShop /></LazySection>
 
-        {/* Banner: Color Collection */}
-        <ProductBanner
-          image={bannerWide2}
-          title="Express Your Color"
-          subtitle="Silicone Collection"
-          cta="Shop Colors"
-          href="/collections/silicone-cases"
-          layout="center"
-          theme="light"
-        />
+        <LazySection>
+          <ProductBanner
+            image={bannerWide2}
+            title="Express Your Color"
+            subtitle="Silicone Collection"
+            cta="Shop Colors"
+            href="/collections/silicone-cases"
+            layout="center"
+            theme="light"
+          />
+        </LazySection>
 
-        <AboutRewardsCards />
-        <FeaturedIn />
-        <TrustBadges />
+        <LazySection><AboutRewardsCards /></LazySection>
+        <LazySection><FeaturedIn /></LazySection>
+        <LazySection><TrustBadges /></LazySection>
       </main>
-      <Footer />
+      <LazySection><Footer /></LazySection>
     </div>
   );
 };
