@@ -21,7 +21,7 @@ import ProductBanner from "@/components/ProductBanner";
 import bannerProduct1 from "@/assets/banner-magsafe-orange-1.png";
 import bannerProduct2 from "@/assets/banner-product-2.jpg";
 import bannerWide1 from "@/assets/banner-wide-1.jpg";
-import bannerWide2 from "@/assets/banner-wide-2.jpg";
+import bannerWide2 from "@/assets/banner-silicone-fan.jpg";
 
 const Index = () => {
   const [searchOpen, setSearchOpen] = useState(false);

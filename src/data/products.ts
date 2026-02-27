@@ -4,6 +4,12 @@ import siliconeBluImg from "@/assets/case-silicone-blue.jpg";
 import siliconePinkImg from "@/assets/case-silicone-pink.jpg";
 import siliconeGreenImg from "@/assets/case-silicone-green.jpg";
 import siliconeBlackImg from "@/assets/case-silicone-black.jpg";
+import siliconeMintImg from "@/assets/silicone-mint.png";
+import siliconeBlackNewImg from "@/assets/silicone-black-new.png";
+import siliconeColorsFloatingImg from "@/assets/silicone-colors-floating.jpg";
+import siliconeLifestyleGreenImg from "@/assets/silicone-lifestyle-green.jpg";
+import siliconeLifestyleNavyImg from "@/assets/silicone-lifestyle-navy.jpg";
+import siliconeLifestyleClearImg from "@/assets/silicone-lifestyle-clear.jpg";
 import leatherBrownImg from "@/assets/case-leather-brown.jpg";
 import leatherBlackImg from "@/assets/case-leather-black.jpg";
 
@@ -115,7 +121,7 @@ function generateProducts(
 const caseTypes = [
   { type: "MagSafe Clear Case", category: "MagSafe Cases", image: magsafeClearImg, hoverImage: magsafeBlackImg, colors: ["Clear"], basePrice: 1499, originalPrice: 2499, discount: "Save 40%", rating: 5, reviewBase: 120 },
   { type: "MagSafe Black Case", category: "MagSafe Cases", image: magsafeBlackImg, hoverImage: magsafeClearImg, colors: ["Jet Black"], basePrice: 1699, originalPrice: 2999, discount: "Save 43%", rating: 5, reviewBase: 95 },
-  { type: "Silicone Snap Case", category: "Silicone Cases", image: siliconeBlackImg, hoverImage: siliconeBluImg, colors: ["Black", "Blue", "Pink", "Green"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 200 },
+  { type: "Silicone Snap Case", category: "Silicone Cases", image: siliconeBlackNewImg, hoverImage: siliconeMintImg, colors: ["Black", "Blue", "Pink", "Green"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 200 },
   { type: "Premium Leather Case", category: "Leather Cases", image: leatherBrownImg, hoverImage: leatherBlackImg, colors: ["Saddle Brown", "Black"], basePrice: 1999, originalPrice: 3499, discount: "Save 43%", rating: 5, reviewBase: 80 },
 ];
 
@@ -237,10 +243,10 @@ export const featuredProduct = {
 
 // Color variant images for reference
 export const colorImages: Record<string, string> = {
-  "Black": siliconeBlackImg,
+  "Black": siliconeBlackNewImg,
   "Blue": siliconeBluImg,
   "Pink": siliconePinkImg,
-  "Green": siliconeGreenImg,
+  "Green": siliconeMintImg,
   "Saddle Brown": leatherBrownImg,
   "Leather Black": leatherBlackImg,
   "Clear": magsafeClearImg,
@@ -256,4 +262,14 @@ export const iphone17ProGalleryImages = [
   iphone17proProtectionImg,
   iphone17proStrongImg,
   iphone17proFingerprintsImg,
+];
+
+// Silicone gallery images for product detail
+export const siliconeGalleryImages = [
+  siliconeBlackNewImg,
+  siliconeMintImg,
+  siliconeColorsFloatingImg,
+  siliconeLifestyleGreenImg,
+  siliconeLifestyleNavyImg,
+  siliconeLifestyleClearImg,
 ];
