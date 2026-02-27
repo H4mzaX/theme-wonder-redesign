@@ -1,61 +1,81 @@
-import { Search, User, ShoppingBag, Menu, X, ChevronRight, ArrowRight } from "lucide-react";
+import { Search, User, ShoppingBag, Menu, X, ChevronRight, ChevronDown, ArrowRight } from "lucide-react";
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useScrollDirection } from "@/hooks/useScrollAnimations";
 import { drawerSpring, premiumEase } from "@/lib/motion";
 import { useCart } from "@/context/CartContext";
-import collectionCases from "@/assets/collection-headphones.jpg";
-import collectionProtectors from "@/assets/collection-earphones.jpg";
-import collectionRugged from "@/assets/collection-speakers.jpg";
-import collectionAccessories from "@/assets/collection-accessories.jpg";
 
-const megaMenuData = {
-  Shop: {
-    collections: [
-      { name: "iPhone Cases", subtitle: "Premium protection for iPhone", count: 24, image: collectionCases, href: "/collections/iphone-cases" },
-      { name: "Samsung Cases", subtitle: "Galaxy protection", count: 18, image: collectionProtectors, href: "/collections/samsung-cases" },
-      { name: "OnePlus Cases", subtitle: "Never settle on protection", count: 12, image: collectionRugged, href: "/collections/oneplus-cases" },
-      { name: "All Products", subtitle: "Browse everything", count: 84, image: collectionAccessories, href: "/collections/all" },
-    ],
-    featured: {
-      title: "New Arrivals",
-      description: "Check out our latest cases for iPhone 16 and Samsung Galaxy S25 series.",
-      cta: "Shop New",
-      href: "/collections/all",
-    },
-  },
-  Collections: {
-    collections: [
-      { name: "MagSafe Cases", subtitle: "Snap-on perfection", count: 20, image: collectionCases, href: "/collections/magsafe-cases" },
-      { name: "Leather Cases", subtitle: "Handcrafted premium", count: 20, image: collectionProtectors, href: "/collections/leather-cases" },
-      { name: "All Products", subtitle: "Browse everything", count: 84, image: collectionRugged, href: "/collections/all" },
-      { name: "iPhone Cases", subtitle: "Premium protection", count: 24, image: collectionAccessories, href: "/collections/iphone-cases" },
-    ],
-    featured: {
-      title: "Best Sellers",
-      description: "Our most popular cases chosen by thousands of customers worldwide.",
-      cta: "View All",
-      href: "/collections/all",
-    },
-  },
-  Explore: {
-    collections: [
-      { name: "About Us", subtitle: "Our story & mission", count: 0, image: collectionCases, href: "#" },
-      { name: "Shipping Policy", subtitle: "Fast & free delivery", count: 0, image: collectionProtectors, href: "#" },
-      { name: "Return & Refund", subtitle: "Hassle-free returns", count: 0, image: collectionRugged, href: "#" },
-      { name: "Privacy Policy", subtitle: "Your data is safe", count: 0, image: collectionAccessories, href: "#" },
-    ],
-    featured: {
-      title: "Need Help?",
-      description: "Contact our support team for any questions about orders, shipping or products.",
-      cta: "Contact Us",
-      href: "#",
-    },
-  },
+// ── Mega-menu data ──
+
+const casesMenu = {
+  title: "Shop by Type",
+  items: [
+    { name: "MagLock Clear", href: "/collections/magsafe-cases", tag: "Popular" },
+    { name: "MagLock Pro", href: "/collections/magsafe-cases" },
+    { name: "AirGrip Case", href: "/collections/silicone-cases", tag: "Bestseller" },
+    { name: "VoltHide Case", href: "/collections/leather-cases" },
+    { name: "ClearVault Case", href: "/collections/all" },
+    { name: "StealthX Case", href: "/collections/all" },
+  ],
+  collections: [
+    { name: "All Cases", href: "/collections/all" },
+    { name: "MagSafe Cases", href: "/collections/magsafe-cases" },
+    { name: "Silicone Cases", href: "/collections/silicone-cases" },
+    { name: "Leather Cases", href: "/collections/leather-cases" },
+  ],
 };
 
-type MegaMenuKey = keyof typeof megaMenuData;
+const devicesMenu = {
+  brands: [
+    {
+      name: "iPhone",
+      models: [
+        { name: "iPhone 17 Pro Max", href: "/collections/iphone-cases", tag: "New" },
+        { name: "iPhone 17 Pro", href: "/collections/iphone-cases" },
+        { name: "iPhone 17", href: "/collections/iphone-cases" },
+        { name: "iPhone 16 Pro Max", href: "/collections/iphone-cases" },
+        { name: "iPhone 16 Pro", href: "/collections/iphone-cases" },
+        { name: "iPhone 16", href: "/collections/iphone-cases" },
+        { name: "iPhone 15 Series", href: "/collections/iphone-cases" },
+      ],
+    },
+    {
+      name: "Samsung",
+      models: [
+        { name: "Galaxy S26 Ultra", href: "/collections/samsung-cases", tag: "New" },
+        { name: "Galaxy S26", href: "/collections/samsung-cases" },
+        { name: "Galaxy S25 Ultra", href: "/collections/samsung-cases" },
+        { name: "Galaxy S25", href: "/collections/samsung-cases" },
+      ],
+    },
+    {
+      name: "OnePlus",
+      models: [
+        { name: "OnePlus 15", href: "/collections/oneplus-cases", tag: "New" },
+        { name: "OnePlus 15R", href: "/collections/oneplus-cases" },
+        { name: "OnePlus 14", href: "/collections/oneplus-cases" },
+        { name: "OnePlus 13 Series", href: "/collections/oneplus-cases" },
+      ],
+    },
+    {
+      name: "iQOO",
+      models: [
+        { name: "iQOO 15R", href: "/collections/all" },
+      ],
+    },
+  ],
+};
+
+const exploreMenu = [
+  { name: "About Us", subtitle: "Our story & mission", href: "#" },
+  { name: "Shipping Policy", subtitle: "Fast & free delivery", href: "#" },
+  { name: "Return & Refund", subtitle: "Hassle-free returns", href: "#" },
+  { name: "Privacy Policy", subtitle: "Your data is safe", href: "#" },
+  { name: "Contact Us", subtitle: "Get in touch", href: "#" },
+];
+
+type MegaKey = "Cases" | "Devices" | "Explore";
 
 interface NavbarProps {
   onSearchOpen: () => void;
@@ -66,31 +86,28 @@ interface NavbarProps {
 const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) => {
   const { scrolled } = useScrollDirection();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeMega, setActiveMega] = useState<MegaMenuKey | null>(null);
+  const [activeMega, setActiveMega] = useState<MegaKey | null>(null);
   const [mobileSubmenu, setMobileSubmenu] = useState<string | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { totalItems } = useCart();
 
   const isTransparent = transparent && !scrolled && !activeMega;
+  const navItems: MegaKey[] = ["Cases", "Devices", "Explore"];
 
-  const navItems = ["Shop", "Collections", "Explore"];
-
-  const handleMouseEnter = (item: string) => {
+  const handleMouseEnter = (item: MegaKey) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    if (item in megaMenuData) {
-      setActiveMega(item as MegaMenuKey);
-    }
+    setActiveMega(item);
   };
 
   const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => {
-      setActiveMega(null);
-    }, 150);
+    timeoutRef.current = setTimeout(() => setActiveMega(null), 180);
   };
 
   const handleMegaEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
   };
+
+  const closeMega = () => setActiveMega(null);
 
   return (
     <>
@@ -107,6 +124,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
         transition={{ duration: 0.26, ease: premiumEase }}
       >
         <div className="flex items-center justify-between">
+          {/* Mobile hamburger */}
           <button
             className="lg:hidden w-10 h-10 flex items-center justify-center -ml-2 rounded-full hover:bg-muted active:scale-95 transition-all"
             onClick={() => setMobileOpen(true)}
@@ -114,6 +132,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
             <Menu className="w-6 h-6" strokeWidth={1.8} />
           </button>
 
+          {/* Logo */}
           <Link to="/" className="flex-shrink-0 flex items-center gap-2">
             <motion.span
               className="font-display font-bold text-xl tracking-tight"
@@ -124,7 +143,8 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
             </motion.span>
           </Link>
 
-          <div className="hidden lg:flex items-center gap-1 relative">
+          {/* Desktop nav */}
+          <div className="hidden lg:flex items-center gap-0.5 relative">
             {navItems.map((item, i) => {
               const isActive = activeMega === item;
               return (
@@ -134,9 +154,8 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                   onMouseEnter={() => handleMouseEnter(item)}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <motion.a
-                    href="#"
-                    className={`relative z-10 text-sm font-medium tracking-wide flex items-center gap-1 px-4 py-2 rounded-full transition-colors duration-200 ${
+                  <motion.button
+                    className={`relative z-10 text-[13px] font-semibold uppercase tracking-[0.08em] flex items-center gap-1 px-4 py-2 rounded-full transition-colors duration-200 ${
                       isActive ? "text-background" : isTransparent ? "text-background/90 hover:text-background" : "text-foreground hover:text-foreground"
                     }`}
                     initial={{ opacity: 0, y: -10 }}
@@ -144,7 +163,8 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                     transition={{ delay: 0.1 * i, duration: 0.4 }}
                   >
                     {item}
-                  </motion.a>
+                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isActive ? "rotate-180" : ""}`} />
+                  </motion.button>
                   {isActive && (
                     <motion.div
                       className={`absolute inset-0 rounded-full ${isTransparent ? "bg-background/20" : "bg-foreground"}`}
@@ -155,8 +175,19 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                 </div>
               );
             })}
+
+            {/* Static links */}
+            <Link
+              to="/collections/all"
+              className={`text-[13px] font-semibold uppercase tracking-[0.08em] px-4 py-2 transition-colors duration-200 ${
+                isTransparent ? "text-background/90 hover:text-background" : "text-foreground hover:text-accent"
+              }`}
+            >
+              Sale
+            </Link>
           </div>
 
+          {/* Right icons */}
           <div className="flex items-center gap-5">
             <motion.button className="hover:text-accent transition-colors" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} onClick={onSearchOpen}>
               <Search className="w-5 h-5" />
@@ -171,101 +202,196 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
           </div>
         </div>
 
+        {/* ── Desktop Mega Menu ── */}
         <AnimatePresence mode="wait">
           {activeMega && (
             <motion.div
               key={activeMega}
-              className="absolute left-1/2 top-full z-50 w-[min(1240px,calc(100vw-2rem))] -translate-x-1/2 bg-background border border-border/30 shadow-xl rounded-b-2xl transform-gpu will-change-transform"
-              initial={{ opacity: 0, y: -8 }}
+              className="absolute left-0 right-0 top-full z-50 bg-background border-t border-border/20 shadow-2xl transform-gpu will-change-transform"
+              initial={{ opacity: 0, y: -4 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.24, ease: premiumEase }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.22, ease: premiumEase }}
               onMouseEnter={handleMegaEnter}
               onMouseLeave={handleMouseLeave}
             >
-              <div className="px-4 sm:px-6 lg:px-8 py-8">
-                {activeMega === "Explore" ? (
-                  /* Explore: vertical text links + featured card */
-                  <div className="grid grid-cols-12 gap-8">
-                    <div className="col-span-5">
-                      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-5 font-medium">Pages</p>
-                      <div className="flex flex-col gap-1">
-                        {megaMenuData[activeMega].collections.map((col, idx) => (
-                          <Link key={col.name} to={col.href} onClick={() => setActiveMega(null)} className="group">
+              <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-8">
+                {/* ── CASES MEGA ── */}
+                {activeMega === "Cases" && (
+                  <div className="grid grid-cols-12 gap-10">
+                    {/* Shop by Type */}
+                    <div className="col-span-4">
+                      <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-4">Shop by Type</p>
+                      <div className="flex flex-col">
+                        {casesMenu.items.map((item, idx) => (
+                          <Link
+                            key={item.name}
+                            to={item.href}
+                            onClick={closeMega}
+                            className="group"
+                          >
                             <motion.div
-                              className="flex items-center justify-between py-2.5 border-b border-border/20 last:border-0"
-                              initial={{ opacity: 0, x: -10 }}
+                              className="flex items-center justify-between py-2.5 border-b border-border/10 last:border-0"
+                              initial={{ opacity: 0, x: -8 }}
                               animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: idx * 0.04, duration: 0.25 }}
+                              transition={{ delay: idx * 0.03, duration: 0.2 }}
                             >
-                              <div>
-                                <span className="text-base font-semibold group-hover:text-accent transition-colors duration-200">{col.name}</span>
-                                <p className="text-xs text-muted-foreground mt-0.5">{col.subtitle}</p>
+                              <div className="flex items-center gap-2.5">
+                                <span className="text-[15px] font-medium text-foreground group-hover:text-accent transition-colors duration-200">
+                                  {item.name}
+                                </span>
+                                {item.tag && (
+                                  <span className="text-[9px] uppercase tracking-wider font-bold bg-accent/10 text-accent px-1.5 py-0.5 rounded">
+                                    {item.tag}
+                                  </span>
+                                )}
                               </div>
-                              <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-accent group-hover:translate-x-1 transition-all duration-200" />
+                              <ArrowRight className="w-3.5 h-3.5 text-muted-foreground/40 group-hover:text-accent group-hover:translate-x-1 transition-all duration-200" />
                             </motion.div>
                           </Link>
                         ))}
                       </div>
                     </div>
-                    <div className="col-span-4">
-                      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-5 font-medium">Featured</p>
-                      <motion.div className="bg-card rounded-lg p-6" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.3 }}>
-                        <h3 className="font-display text-xl font-semibold mb-2">{megaMenuData[activeMega].featured.title}</h3>
-                        <p className="text-sm text-muted-foreground mb-6 leading-relaxed">{megaMenuData[activeMega].featured.description}</p>
-                        <Link to={megaMenuData[activeMega].featured.href} onClick={() => setActiveMega(null)} className="inline-flex items-center gap-2 text-sm font-medium bg-foreground text-background px-5 py-2.5 rounded-full hover:bg-foreground/90 transition-colors">
-                          {megaMenuData[activeMega].featured.cta}
-                          <ArrowRight className="w-3.5 h-3.5" />
+
+                    {/* Collections */}
+                    <div className="col-span-3">
+                      <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-4">Collections</p>
+                      <div className="flex flex-col gap-1">
+                        {casesMenu.collections.map((col, idx) => (
+                          <Link
+                            key={col.name}
+                            to={col.href}
+                            onClick={closeMega}
+                            className="group"
+                          >
+                            <motion.div
+                              className="py-2 flex items-center gap-2"
+                              initial={{ opacity: 0, x: -8 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: idx * 0.03 + 0.05, duration: 0.2 }}
+                            >
+                              <span className="text-[15px] font-medium text-foreground group-hover:text-accent transition-colors duration-200">
+                                {col.name}
+                              </span>
+                            </motion.div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Featured promo */}
+                    <div className="col-span-5">
+                      <motion.div
+                        className="bg-muted/50 rounded-xl p-6 h-full flex flex-col justify-center"
+                        initial={{ opacity: 0, scale: 0.97 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.08, duration: 0.3 }}
+                      >
+                        <span className="text-[10px] uppercase tracking-[0.2em] text-accent font-bold mb-2">New Arrivals</span>
+                        <h3 className="text-2xl font-bold tracking-tight mb-2">iPhone 17 Series</h3>
+                        <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
+                          Discover our latest MagLock, AirGrip & VoltHide cases designed for the all-new iPhone 17 lineup.
+                        </p>
+                        <Link
+                          to="/collections/iphone-cases"
+                          onClick={closeMega}
+                          className="inline-flex items-center gap-2 text-[13px] font-semibold uppercase tracking-wider bg-foreground text-background px-5 py-2.5 rounded-full hover:bg-foreground/90 transition-colors w-fit"
+                        >
+                          Shop Now <ArrowRight className="w-3.5 h-3.5" />
                         </Link>
                       </motion.div>
                     </div>
-                    <div className="col-span-3">
-                      <motion.div
-                        className="rounded-lg overflow-hidden h-full"
-                        initial={{ opacity: 0, scale: 0.97 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.12, duration: 0.35 }}
-                      >
-                        <img src={collectionCases} alt="Featured" className="w-full h-full object-cover" loading="eager" />
-                      </motion.div>
-                    </div>
                   </div>
-                ) : (
-                  /* Shop / Collections: image grid + featured card */
+                )}
+
+                {/* ── DEVICES MEGA ── */}
+                {activeMega === "Devices" && (
                   <div className="grid grid-cols-12 gap-8">
-                    <div className="col-span-9">
-                      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-5 font-medium">Collections</p>
-                      <div className="grid grid-cols-4 gap-5">
-                        {megaMenuData[activeMega].collections.map((col, idx) => (
-                          <Link key={col.name} to={col.href} onClick={() => setActiveMega(null)} className="group block">
-                            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.04, duration: 0.25, ease: "easeOut" }}>
-                              <div className="aspect-square rounded-lg overflow-hidden mb-3 relative">
-                                <img src={col.image} alt={col.name} className="w-full h-full object-cover transition-transform duration-500 will-change-transform group-hover:scale-110" loading="eager" decoding="async" />
-                                <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors duration-300" />
-                              </div>
-                              <div className="flex items-center justify-between">
-                                <div>
-                                  <span className="font-display text-lg font-semibold tracking-tight group-hover:text-accent transition-colors duration-200">
-                                    {col.name}
-                                    {col.count > 0 && <sup className="text-[10px] font-body ml-1 text-muted-foreground">{col.count}</sup>}
-                                  </span>
-                                  <p className="text-xs text-muted-foreground mt-0.5">{col.subtitle}</p>
+                    {devicesMenu.brands.map((brand, bi) => (
+                      <div key={brand.name} className="col-span-3">
+                        <motion.div
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: bi * 0.04, duration: 0.25 }}
+                        >
+                          <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-4">
+                            {brand.name}
+                          </p>
+                          <div className="flex flex-col">
+                            {brand.models.map((model) => (
+                              <Link
+                                key={model.name}
+                                to={model.href}
+                                onClick={closeMega}
+                                className="group"
+                              >
+                                <div className="flex items-center justify-between py-2 border-b border-border/10 last:border-0">
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-[14px] font-medium text-foreground group-hover:text-accent transition-colors duration-200">
+                                      {model.name}
+                                    </span>
+                                    {model.tag && (
+                                      <span className="text-[9px] uppercase tracking-wider font-bold bg-accent/10 text-accent px-1.5 py-0.5 rounded">
+                                        {model.tag}
+                                      </span>
+                                    )}
+                                  </div>
+                                  <ArrowRight className="w-3 h-3 text-muted-foreground/30 group-hover:text-accent group-hover:translate-x-0.5 transition-all duration-200 opacity-0 group-hover:opacity-100" />
                                 </div>
-                                <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-accent group-hover:translate-x-1 transition-all duration-200" />
+                              </Link>
+                            ))}
+                          </div>
+                        </motion.div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* ── EXPLORE MEGA ── */}
+                {activeMega === "Explore" && (
+                  <div className="grid grid-cols-12 gap-10">
+                    <div className="col-span-5">
+                      <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-4">Pages</p>
+                      <div className="flex flex-col">
+                        {exploreMenu.map((item, idx) => (
+                          <Link key={item.name} to={item.href} onClick={closeMega} className="group">
+                            <motion.div
+                              className="flex items-center justify-between py-3 border-b border-border/10 last:border-0"
+                              initial={{ opacity: 0, x: -8 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: idx * 0.03, duration: 0.2 }}
+                            >
+                              <div>
+                                <span className="text-[15px] font-semibold text-foreground group-hover:text-accent transition-colors duration-200">
+                                  {item.name}
+                                </span>
+                                <p className="text-[12px] text-muted-foreground mt-0.5">{item.subtitle}</p>
                               </div>
+                              <ArrowRight className="w-4 h-4 text-muted-foreground/40 group-hover:text-accent group-hover:translate-x-1 transition-all duration-200" />
                             </motion.div>
                           </Link>
                         ))}
                       </div>
                     </div>
-                    <div className="col-span-3">
-                      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-5 font-medium">Featured</p>
-                      <motion.div className="bg-card rounded-lg p-6 h-[calc(100%-2rem)]" initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1, duration: 0.3 }}>
-                        <h3 className="font-display text-xl font-semibold mb-2">{megaMenuData[activeMega].featured.title}</h3>
-                        <p className="text-sm text-muted-foreground mb-6 leading-relaxed">{megaMenuData[activeMega].featured.description}</p>
-                        <Link to={megaMenuData[activeMega].featured.href} onClick={() => setActiveMega(null)} className="inline-flex items-center gap-2 text-sm font-medium bg-foreground text-background px-5 py-2.5 rounded-full hover:bg-foreground/90 transition-colors">
-                          {megaMenuData[activeMega].featured.cta}
-                          <ArrowRight className="w-3.5 h-3.5" />
+
+                    <div className="col-span-7">
+                      <motion.div
+                        className="bg-muted/50 rounded-xl p-8 h-full flex flex-col justify-center"
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.08, duration: 0.3 }}
+                      >
+                        <span className="text-[10px] uppercase tracking-[0.2em] text-accent font-bold mb-2">Need Help?</span>
+                        <h3 className="text-2xl font-bold tracking-tight mb-2">We're here for you</h3>
+                        <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
+                          Contact our support team for any questions about orders, shipping or products. We respond within 24 hours.
+                        </p>
+                        <Link
+                          to="#"
+                          onClick={closeMega}
+                          className="inline-flex items-center gap-2 text-[13px] font-semibold uppercase tracking-wider bg-foreground text-background px-5 py-2.5 rounded-full hover:bg-foreground/90 transition-colors w-fit"
+                        >
+                          Contact Us <ArrowRight className="w-3.5 h-3.5" />
                         </Link>
                       </motion.div>
                     </div>
@@ -277,7 +403,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
         </AnimatePresence>
       </motion.nav>
 
-      {/* Mobile menu - bottom sheet style */}
+      {/* ── Mobile menu ── */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div key="mobile-menu" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[60]">
@@ -293,47 +419,116 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
               <div className="flex justify-center pt-3 pb-1">
                 <div className="w-10 h-1 rounded-full bg-muted-foreground/30" />
               </div>
-
-              {/* Close button */}
               <div className="flex justify-center py-3">
                 <button onClick={() => setMobileOpen(false)}><X className="w-5 h-5" /></button>
               </div>
 
               <div className="flex-1 overflow-y-auto px-6 pb-8">
                 <div className="flex flex-col gap-1">
-                  {navItems.map((item, i) => {
-                    const hasMega = item in megaMenuData;
-                    return (
-                      <div key={item}>
-                        <motion.button
-                          className="flex items-center justify-between w-full text-2xl font-display font-bold text-foreground hover:text-accent transition-colors py-3"
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.05 * i }}
-                          onClick={() => { if (hasMega) setMobileSubmenu(mobileSubmenu === item ? null : item); }}
-                        >
-                          {item}
-                          {hasMega && <ChevronRight className={`w-5 h-5 text-muted-foreground transition-transform duration-200 ${mobileSubmenu === item ? "rotate-90" : ""}`} />}
-                        </motion.button>
-                        <AnimatePresence>
-                          {hasMega && mobileSubmenu === item && (
-                            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
-                              <div className="pl-2 pt-1 pb-3 flex flex-col gap-3">
-                                {megaMenuData[item as MegaMenuKey].collections.map((col) => (
-                                  <Link key={col.name} to={col.href} onClick={() => setMobileOpen(false)} className="flex items-center gap-3 group py-1">
-                                    <div>
-                                      <span className="text-base font-medium group-hover:text-accent transition-colors">{col.name}</span>
-                                      <p className="text-xs text-muted-foreground">{col.subtitle}</p>
-                                    </div>
+                  {/* Cases */}
+                  <div>
+                    <motion.button
+                      className="flex items-center justify-between w-full text-2xl font-display font-bold text-foreground hover:text-accent transition-colors py-3"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.05 }}
+                      onClick={() => setMobileSubmenu(mobileSubmenu === "Cases" ? null : "Cases")}
+                    >
+                      Cases
+                      <ChevronRight className={`w-5 h-5 text-muted-foreground transition-transform duration-200 ${mobileSubmenu === "Cases" ? "rotate-90" : ""}`} />
+                    </motion.button>
+                    <AnimatePresence>
+                      {mobileSubmenu === "Cases" && (
+                        <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
+                          <div className="pl-3 pb-3 flex flex-col gap-0.5">
+                            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold mt-1 mb-2">Shop by Type</p>
+                            {casesMenu.items.map((item) => (
+                              <Link key={item.name} to={item.href} onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-1.5 group">
+                                <span className="text-[15px] font-medium text-foreground group-hover:text-accent transition-colors">{item.name}</span>
+                                {item.tag && <span className="text-[8px] uppercase tracking-wider font-bold bg-accent/10 text-accent px-1.5 py-0.5 rounded">{item.tag}</span>}
+                              </Link>
+                            ))}
+                            <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold mt-3 mb-2">Collections</p>
+                            {casesMenu.collections.map((col) => (
+                              <Link key={col.name} to={col.href} onClick={() => setMobileOpen(false)} className="py-1.5 group">
+                                <span className="text-[15px] font-medium text-foreground group-hover:text-accent transition-colors">{col.name}</span>
+                              </Link>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+
+                  {/* Devices */}
+                  <div>
+                    <motion.button
+                      className="flex items-center justify-between w-full text-2xl font-display font-bold text-foreground hover:text-accent transition-colors py-3"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 }}
+                      onClick={() => setMobileSubmenu(mobileSubmenu === "Devices" ? null : "Devices")}
+                    >
+                      Devices
+                      <ChevronRight className={`w-5 h-5 text-muted-foreground transition-transform duration-200 ${mobileSubmenu === "Devices" ? "rotate-90" : ""}`} />
+                    </motion.button>
+                    <AnimatePresence>
+                      {mobileSubmenu === "Devices" && (
+                        <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
+                          <div className="pl-3 pb-3 flex flex-col gap-0.5">
+                            {devicesMenu.brands.map((brand) => (
+                              <div key={brand.name}>
+                                <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold mt-2 mb-2">{brand.name}</p>
+                                {brand.models.map((model) => (
+                                  <Link key={model.name} to={model.href} onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-1.5 group">
+                                    <span className="text-[14px] font-medium text-foreground group-hover:text-accent transition-colors">{model.name}</span>
+                                    {model.tag && <span className="text-[8px] uppercase tracking-wider font-bold bg-accent/10 text-accent px-1.5 py-0.5 rounded">{model.tag}</span>}
                                   </Link>
                                 ))}
                               </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    );
-                  })}
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+
+                  {/* Explore */}
+                  <div>
+                    <motion.button
+                      className="flex items-center justify-between w-full text-2xl font-display font-bold text-foreground hover:text-accent transition-colors py-3"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.15 }}
+                      onClick={() => setMobileSubmenu(mobileSubmenu === "Explore" ? null : "Explore")}
+                    >
+                      Explore
+                      <ChevronRight className={`w-5 h-5 text-muted-foreground transition-transform duration-200 ${mobileSubmenu === "Explore" ? "rotate-90" : ""}`} />
+                    </motion.button>
+                    <AnimatePresence>
+                      {mobileSubmenu === "Explore" && (
+                        <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
+                          <div className="pl-3 pb-3 flex flex-col gap-0.5">
+                            {exploreMenu.map((item) => (
+                              <Link key={item.name} to={item.href} onClick={() => setMobileOpen(false)} className="py-2 group">
+                                <span className="text-[15px] font-medium text-foreground group-hover:text-accent transition-colors">{item.name}</span>
+                                <p className="text-[11px] text-muted-foreground">{item.subtitle}</p>
+                              </Link>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+
+                  {/* Sale link */}
+                  <Link
+                    to="/collections/all"
+                    onClick={() => setMobileOpen(false)}
+                    className="text-2xl font-display font-bold text-accent py-3"
+                  >
+                    Sale
+                  </Link>
                 </div>
               </div>
             </motion.div>
