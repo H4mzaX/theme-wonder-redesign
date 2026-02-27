@@ -35,15 +35,16 @@ const ExploreProducts = () => {
 
   return (
     <section className="py-6 sm:py-8 lg:py-10">
-      <h2 className="text-xl sm:text-3xl lg:text-4xl font-bold tracking-tight italic text-foreground text-center mb-4 sm:mb-5 lg:mb-7 px-4">
-        Explore Products
-      </h2>
+      <div className="max-w-[1400px] mx-auto">
+        <h2 className="text-xl sm:text-3xl lg:text-4xl font-bold tracking-tight italic text-foreground text-center mb-4 sm:mb-5 lg:mb-7 px-4 sm:px-6 lg:px-10">
+          Explore Products
+        </h2>
 
-      <div
-        ref={scrollRef}
-        className="flex gap-3 sm:gap-4 overflow-x-auto snap-x snap-mandatory scroll-pl-4 sm:scroll-pl-6 lg:scroll-pl-10 px-4 sm:px-6 lg:px-10"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-      >
+        <div
+          ref={scrollRef}
+          className="flex gap-3 sm:gap-4 overflow-x-auto snap-x snap-mandatory scroll-pl-4 sm:scroll-pl-6 lg:scroll-pl-10 px-4 sm:px-6 lg:px-10"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
         {categories.map((cat, i) => (
           <motion.div
             key={cat.name}
@@ -84,6 +85,7 @@ const ExploreProducts = () => {
             }`}
           />
         ))}
+      </div>
       </div>
     </section>
   );
