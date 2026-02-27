@@ -8,7 +8,7 @@ import {
   ShieldCheck, Waves, CircleDot, ScanLine, BadgeCheck, Wallet, IndianRupee, Banknote
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { allProducts, colorImages, iphone17ProGalleryImages, type Product } from "@/data/products";
+import { allProducts, colorImages, iphone17ProGalleryImages, siliconeGalleryImages, type Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 import { toast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
@@ -170,6 +170,9 @@ const ProductDetail = () => {
     ? (() => {
         if (product.device === "iPhone 17 Pro") {
           return iphone17ProGalleryImages;
+        }
+        if (product.category === "Silicone Cases") {
+          return siliconeGalleryImages;
         }
         const imgs: string[] = [product.image];
         if (product.hoverImage && product.hoverImage !== product.image) {
