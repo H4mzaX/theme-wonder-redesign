@@ -145,9 +145,9 @@ const CollectionProductCard = ({ product, large = false }: CollectionProductCard
 
       {/* Info area */}
       <div className="flex flex-col px-3 pt-3 pb-1 gap-0.5">
-        {/* Brand */}
+        {/* Device model */}
         <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.15em] text-muted-foreground font-medium">
-          {product.brand}
+          {product.device}
         </span>
 
         {/* Product name */}
@@ -163,15 +163,15 @@ const CollectionProductCard = ({ product, large = false }: CollectionProductCard
 
       {/* Spec badges row — icon stacked above value & label */}
       <div
-        className="flex gap-0 mt-2 mx-3 mb-3 overflow-x-auto border border-border rounded-lg"
+        className="flex gap-0 mt-2 mx-3 mb-3 overflow-x-auto border border-border/30 rounded-lg scroll-smooth"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {specs.map((spec, i) => (
           <div
             key={spec.label}
-            className={`flex flex-col items-center justify-center py-2.5 px-3 flex-1 min-w-[80px] ${i !== 0 ? "border-l border-border" : ""}`}
+            className={`flex flex-col items-center justify-center py-2.5 px-3 flex-1 min-w-[80px] ${i !== 0 ? "border-l border-border/30" : ""}`}
           >
-            <spec.icon className="w-4 h-4 text-muted-foreground mb-1" strokeWidth={1.5} />
+            <spec.icon className="w-4 h-4 text-muted-foreground/50 mb-1" strokeWidth={1.5} />
             <span className="text-[12px] sm:text-[13px] font-bold text-foreground leading-none">{spec.value}</span>
             <span className="text-[9px] sm:text-[10px] text-muted-foreground mt-0.5 whitespace-nowrap">{spec.label}</span>
           </div>
