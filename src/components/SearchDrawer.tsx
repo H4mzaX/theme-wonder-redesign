@@ -168,8 +168,8 @@ const SearchDrawer = ({ open, onClose }: SearchDrawerProps) => {
     return (
       <AnimatePresence>
         {open && (
-          <>
-            <motion.div className="fixed inset-0 bg-foreground/40 z-50" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} />
+          <motion.div key="search-mobile" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <motion.div className="fixed inset-0 bg-foreground/40 z-50" onClick={onClose} />
             <motion.div
               className="fixed inset-x-0 bottom-0 bg-background z-50 rounded-t-2xl h-[min(85dvh,720px)] flex flex-col will-change-transform"
               initial={{ y: "100%" }}
@@ -191,7 +191,7 @@ const SearchDrawer = ({ open, onClose }: SearchDrawerProps) => {
                 {query.trim() ? renderResults() : renderDefault()}
               </div>
             </motion.div>
-          </>
+          </motion.div>
         )}
       </AnimatePresence>
     );
@@ -200,8 +200,8 @@ const SearchDrawer = ({ open, onClose }: SearchDrawerProps) => {
   return (
     <AnimatePresence>
       {open && (
-        <>
-          <motion.div className="fixed inset-0 bg-foreground/40 z-50" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} />
+        <motion.div key="search-desktop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <motion.div className="fixed inset-0 bg-foreground/40 z-50" onClick={onClose} />
           <motion.div className="fixed inset-y-0 right-0 w-full sm:w-[480px] bg-background z-50 flex flex-col will-change-transform" initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={drawerSpring}>
             <div className="flex items-center justify-between p-6 border-b border-border">
               <h2 className="text-2xl font-display font-bold">Search</h2>
@@ -214,7 +214,7 @@ const SearchDrawer = ({ open, onClose }: SearchDrawerProps) => {
               {query.trim() ? renderResults() : renderDefault()}
             </div>
           </motion.div>
-        </>
+        </motion.div>
       )}
     </AnimatePresence>
   );

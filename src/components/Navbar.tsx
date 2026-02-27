@@ -280,8 +280,8 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
       {/* Mobile menu - bottom sheet style */}
       <AnimatePresence>
         {mobileOpen && (
-          <>
-            <motion.div className="fixed inset-0 bg-foreground/40 z-50 lg:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setMobileOpen(false)} />
+          <motion.div key="mobile-menu" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <motion.div className="fixed inset-0 bg-foreground/40 z-50 lg:hidden" onClick={() => setMobileOpen(false)} />
             <motion.div
               className="fixed inset-x-0 bottom-0 w-full bg-background z-50 lg:hidden rounded-t-2xl h-[min(85dvh,720px)] flex flex-col will-change-transform"
               initial={{ y: "100%" }}
@@ -337,7 +337,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                 </div>
               </div>
             </motion.div>
-          </>
+          </motion.div>
         )}
       </AnimatePresence>
     </>
