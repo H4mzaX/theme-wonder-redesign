@@ -14,6 +14,23 @@ import WhatsAppButton from "./components/WhatsAppButton";
 
 const queryClient = new QueryClient();
 
+const pageVariants = {
+  initial: {
+    opacity: 0,
+    clipPath: "inset(0 0 100% 0)",
+  },
+  animate: {
+    opacity: 1,
+    clipPath: "inset(0 0 0% 0)",
+    transition: { duration: 0.5, ease: premiumEase },
+  },
+  exit: {
+    opacity: 0,
+    clipPath: "inset(100% 0 0 0)",
+    transition: { duration: 0.3, ease: premiumEase },
+  },
+};
+
 const AnimatedRoutes = () => {
   const location = useLocation();
 
@@ -21,10 +38,11 @@ const AnimatedRoutes = () => {
     <AnimatePresence mode="wait" initial={false}>
       <motion.div
         key={location.pathname}
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -8 }}
-        transition={{ duration: 0.28, ease: premiumEase }}
+        variants={pageVariants}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        style={{ willChange: "clip-path, opacity" }}
       >
         <Routes location={location}>
           <Route path="/" element={<Index />} />
