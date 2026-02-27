@@ -1,26 +1,31 @@
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
+import { z } from "zod";
 
-export interface CartItem {
-  id: string;
-  name: string;
-  subtitle: string;
-  price: string;
-  originalPrice?: string;
-  image: string;
-  color: string;
-  quantity: number;
-  device?: string;
-}
+const CartItemSchema = z.object({
+  id: z.string().max(200),
+  name: z.string().max(500),
+  subtitle: z.string().max(500),
+  price: z.string().max(50),
+  originalPrice: z.string().max(50).optional(),
+  image: z.string().max(1000),
+  color: z.string().max(100),
+  quantity: z.number().int().min(1).max(999),
+  device: z.string().max(200).optional(),
+});
 
-export interface RecentlyViewedItem {
-  id: string;
-  name: string;
-  subtitle: string;
-  price: string;
-  originalPrice?: string;
-  image: string;
-  viewedAt: number;
-}
+const RecentlyViewedItemSchema = z.object({
+  id: z.string().max(200),
+  name: z.string().max(500),
+  subtitle: z.string().max(500),
+  price: z.string().max(50),
+  originalPrice: z.string().max(50).optional(),
+  image: z.string().max(1000),
+  viewedAt: z.number(),
+});
+
+export type CartItem = z.infer<typeof CartItemSchema>;
+
+export type RecentlyViewedItem = z.infer<typeof RecentlyViewedItemSchema>;
 
 interface CartContextType {
   items: CartItem[];
@@ -39,18 +44,20 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 const CART_STORAGE_KEY = "vcase-cart";
 const RECENT_STORAGE_KEY = "vcase-recently-viewed";
 
-function loadFromStorage<T>(key: string, fallback: T): T {
+function loadFromStorage<T>(key: string, fallback: T, schema: z.ZodType<T>): T {
   try {
     const stored = localStorage.getItem(key);
-    return stored ? JSON.parse(stored) : fallback;
+    if (!stored) return fallback;
+    const parsed = JSON.parse(stored);
+    return schema.parse(parsed);
   } catch {
     return fallback;
   }
 }
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [items, setItems] = useState<CartItem[]>(() => loadFromStorage(CART_STORAGE_KEY, []));
-  const [recentlyViewed, setRecentlyViewed] = useState<RecentlyViewedItem[]>(() => loadFromStorage(RECENT_STORAGE_KEY, []));
+  const [items, setItems] = useState<CartItem[]>(() => loadFromStorage<CartItem[]>(CART_STORAGE_KEY, [], z.array(CartItemSchema)));
+  const [recentlyViewed, setRecentlyViewed] = useState<RecentlyViewedItem[]>(() => loadFromStorage<RecentlyViewedItem[]>(RECENT_STORAGE_KEY, [], z.array(RecentlyViewedItemSchema)));
 
   // Persist cart
   useEffect(() => {
