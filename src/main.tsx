@@ -2,19 +2,33 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 
+const enforceFixedMobileViewport = () => {
+  if (typeof document === "undefined") return;
+
+  const desiredViewport = "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover";
+  let viewportMeta = document.querySelector('meta[name="viewport"]');
+
+  if (!viewportMeta) {
+    viewportMeta = document.createElement("meta");
+    viewportMeta.setAttribute("name", "viewport");
+    document.head.appendChild(viewportMeta);
+  }
+
+  viewportMeta.setAttribute("content", desiredViewport);
+};
+
 const disableMobilePinchZoom = () => {
   if (typeof window === "undefined") return;
 
   const isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
   if (!isTouchDevice) return;
 
-  const preventDefault = (event: Event) => {
-    event.preventDefault();
-  };
+  const preventGesture = (event: Event) => event.preventDefault();
 
-  document.addEventListener("gesturestart", preventDefault, { passive: false });
-  document.addEventListener("gesturechange", preventDefault, { passive: false });
-  document.addEventListener("gestureend", preventDefault, { passive: false });
+  document.addEventListener("gesturestart", preventGesture, { passive: false });
+  document.addEventListener("gesturechange", preventGesture, { passive: false });
+  document.addEventListener("gestureend", preventGesture, { passive: false });
+
   document.addEventListener(
     "touchmove",
     (event) => {
@@ -26,6 +40,7 @@ const disableMobilePinchZoom = () => {
   );
 };
 
+enforceFixedMobileViewport();
 disableMobilePinchZoom();
 
 createRoot(document.getElementById("root")!).render(<App />);

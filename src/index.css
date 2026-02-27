@@ -52,6 +52,10 @@
     --section-alt: 0 0% 97%;
     --gold: 30 80% 50%;
     --gold-foreground: 0 0% 100%;
+
+    /* Motion tokens */
+    --motion-ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+    --motion-ease-soft: cubic-bezier(0.25, 0.1, 0.25, 1);
   }
 
   .dark {
@@ -86,12 +90,15 @@
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
     touch-action: pan-x pan-y;
+    overscroll-behavior-x: none;
+    scroll-behavior: smooth;
   }
 
   body {
     @apply bg-background text-foreground font-body antialiased;
     overflow-x: clip;
     touch-action: pan-x pan-y;
+    overscroll-behavior-x: none;
   }
 
   #root {
@@ -110,6 +117,15 @@
   select,
   textarea {
     font-size: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 

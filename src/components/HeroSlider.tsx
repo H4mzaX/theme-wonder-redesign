@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, animate, useMotionValue, useReducedMotion } from "framer-motion";
+import { premiumEase, smoothSpring } from "@/lib/motion";
 import hero1 from "@/assets/hero-1.jpg";
 import hero2 from "@/assets/hero-2.jpg";
 import hero3 from "@/assets/hero-3-poster.jpg";
@@ -42,21 +43,25 @@ const AUTOPLAY_DURATION = 7000;
 const HeroSlider = () => {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
-  const [progress, setProgress] = useState(0);
-  const progressRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const shouldReduceMotion = useReducedMotion();
+  const progress = useMotionValue(0);
+  const progressAnimationRef = useRef<ReturnType<typeof animate> | null>(null);
   const autoplayRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const startProgress = useCallback(() => {
-    setProgress(0);
-    if (progressRef.current) clearInterval(progressRef.current);
-    const startTime = Date.now();
-    progressRef.current = setInterval(() => {
-      const elapsed = Date.now() - startTime;
-      const pct = Math.min(elapsed / AUTOPLAY_DURATION, 1);
-      setProgress(pct);
-      if (pct >= 1 && progressRef.current) clearInterval(progressRef.current);
-    }, 30);
-  }, []);
+    progressAnimationRef.current?.stop();
+    progress.set(0);
+
+    if (shouldReduceMotion) {
+      progress.set(1);
+      return;
+    }
+
+    progressAnimationRef.current = animate(progress, 1, {
+      duration: AUTOPLAY_DURATION / 1000,
+      ease: "linear",
+    });
+  }, [progress, shouldReduceMotion]);
 
   const next = useCallback(() => {
     setDirection(1);
@@ -77,16 +82,17 @@ const HeroSlider = () => {
     startProgress();
     if (autoplayRef.current) clearTimeout(autoplayRef.current);
     autoplayRef.current = setTimeout(next, AUTOPLAY_DURATION);
+
     return () => {
       if (autoplayRef.current) clearTimeout(autoplayRef.current);
-      if (progressRef.current) clearInterval(progressRef.current);
+      progressAnimationRef.current?.stop();
     };
   }, [current, next, startProgress]);
 
   const slide = slides[current];
 
   return (
-    <section className="relative">
+    <section className="relative overflow-hidden">
       <div className="relative h-[75vh] min-h-[480px] max-h-[600px] sm:h-[500px] sm:max-h-none lg:h-[750px]">
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
@@ -96,21 +102,20 @@ const HeroSlider = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
+            transition={{ duration: shouldReduceMotion ? 0 : 0.75, ease: premiumEase }}
           >
             <motion.img
               src={slide.image}
               alt={slide.title}
-              className="w-full h-full object-cover"
-              initial={{ scale: 1.15 }}
+              className="w-full h-full object-cover will-change-transform"
+              initial={{ scale: shouldReduceMotion ? 1 : 1.12 }}
               animate={{ scale: 1 }}
-              transition={{ duration: 8, ease: "linear" }}
+              transition={{ duration: shouldReduceMotion ? 0 : 8, ease: "linear" }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent sm:bg-gradient-to-r sm:from-foreground/60 sm:via-foreground/20 sm:to-transparent" />
           </motion.div>
         </AnimatePresence>
 
-        {/* Content overlay */}
         <div className="absolute inset-0 flex items-end sm:items-center px-4 sm:px-12 lg:px-20 pb-20 sm:pb-12 pointer-events-none z-10">
           <div className="pointer-events-auto w-full sm:max-w-xl">
             <AnimatePresence mode="wait">
@@ -121,7 +126,7 @@ const HeroSlider = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
+                    transition={{ duration: shouldReduceMotion ? 0 : 0.45, delay: shouldReduceMotion ? 0 : 0.16, ease: premiumEase }}
                   >
                     {slide.badge}
                   </motion.span>
@@ -132,7 +137,7 @@ const HeroSlider = () => {
                     initial={{ opacity: 0, y: 30, clipPath: "inset(100% 0 0 0)" }}
                     animate={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
                     exit={{ opacity: 0, y: -15 }}
-                    transition={{ duration: 0.7, delay: 0.3 + li * 0.12, ease: [0.25, 0.1, 0.25, 1] }}
+                    transition={{ duration: shouldReduceMotion ? 0 : 0.64, delay: shouldReduceMotion ? 0 : 0.2 + li * 0.1, ease: premiumEase }}
                   >
                     <span className="block text-2xl sm:text-5xl lg:text-7xl font-display font-bold text-background sm:text-foreground leading-[1.1] tracking-tight">
                       {line}
@@ -144,7 +149,7 @@ const HeroSlider = () => {
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
-                  transition={{ delay: 0.6, duration: 0.5 }}
+                  transition={{ delay: shouldReduceMotion ? 0 : 0.52, duration: shouldReduceMotion ? 0 : 0.45, ease: premiumEase }}
                 >
                   {slide.subtitle}
                 </motion.p>
@@ -154,7 +159,7 @@ const HeroSlider = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
-                  transition={{ delay: 0.75, duration: 0.5 }}
+                  transition={{ delay: shouldReduceMotion ? 0 : 0.62, duration: shouldReduceMotion ? 0 : 0.45, ease: premiumEase }}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -166,21 +171,40 @@ const HeroSlider = () => {
         </div>
       </div>
 
-      {/* Navigation */}
       <div className="absolute bottom-0 left-0 right-0 sm:left-auto sm:right-0 z-20 pb-4 sm:pb-6 px-4 sm:px-12 lg:px-20 flex items-center justify-center sm:justify-end gap-4">
         <div className="flex items-center gap-2">
           {slides.map((_, i) => (
-            <button key={i} onClick={() => goTo(i)} className="relative h-1.5 sm:h-2 rounded-full overflow-hidden transition-all duration-300" style={{ width: i === current ? 28 : 8 }}>
+            <button
+              key={i}
+              onClick={() => goTo(i)}
+              className="relative h-1.5 sm:h-2 rounded-full overflow-hidden transition-all duration-300"
+              style={{ width: i === current ? 28 : 8 }}
+            >
               <span className="absolute inset-0 bg-background/40 sm:bg-foreground/30 rounded-full" />
-              {i === current && <motion.span className="absolute inset-0 bg-background sm:bg-foreground rounded-full origin-left" style={{ scaleX: progress }} />}
+              {i === current && (
+                <motion.span
+                  className="absolute inset-0 bg-background sm:bg-foreground rounded-full origin-left"
+                  style={{ scaleX: progress }}
+                />
+              )}
             </button>
           ))}
         </div>
         <div className="hidden md:flex items-center gap-2">
-          <motion.button onClick={prev} className="w-10 h-10 rounded-full border border-foreground/30 flex items-center justify-center text-foreground hover:bg-foreground hover:text-background transition-colors" whileTap={{ scale: 0.9 }}>
+          <motion.button
+            onClick={prev}
+            className="w-10 h-10 rounded-full border border-foreground/30 flex items-center justify-center text-foreground hover:bg-foreground hover:text-background transition-colors"
+            whileTap={{ scale: 0.9 }}
+            transition={smoothSpring}
+          >
             <ArrowLeft className="w-4 h-4" strokeWidth={1.5} />
           </motion.button>
-          <motion.button onClick={next} className="w-10 h-10 rounded-full border border-foreground/30 flex items-center justify-center text-foreground hover:bg-foreground hover:text-background transition-colors" whileTap={{ scale: 0.9 }}>
+          <motion.button
+            onClick={next}
+            className="w-10 h-10 rounded-full border border-foreground/30 flex items-center justify-center text-foreground hover:bg-foreground hover:text-background transition-colors"
+            whileTap={{ scale: 0.9 }}
+            transition={smoothSpring}
+          >
             <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
           </motion.button>
         </div>
@@ -190,3 +214,4 @@ const HeroSlider = () => {
 };
 
 export default HeroSlider;
+
