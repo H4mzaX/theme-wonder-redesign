@@ -408,12 +408,16 @@ const Collection = () => {
                     <div>
                       <h4 className="text-xs uppercase tracking-widest text-muted-foreground mb-3 font-medium">Device</h4>
                       <div className="space-y-2">
-                        {["iPhone 17", "iPhone 16", "iPhone 15", "Samsung S26", "Samsung S25", "OnePlus 15"].map((device) => (
-                          <label key={device} className="flex items-center gap-2 cursor-pointer group">
-                            <input type="checkbox" className="rounded border-border" />
-                            <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">{device}</span>
-                          </label>
-                        ))}
+                        {(() => {
+                          const collectionProducts = allProducts.filter(collection.filter);
+                          const devices = [...new Set(collectionProducts.map(p => p.device))].sort();
+                          return devices.map((device) => (
+                            <label key={device} className="flex items-center gap-2 cursor-pointer group">
+                              <input type="checkbox" className="rounded border-border" />
+                              <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">{device}</span>
+                            </label>
+                          ));
+                        })()}
                       </div>
                     </div>
                     <div>
