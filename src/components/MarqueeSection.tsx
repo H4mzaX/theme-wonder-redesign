@@ -34,7 +34,7 @@ const MarqueeSection = () => {
   }, []);
 
   return (
-    <section className="mt-1 sm:mt-2 py-4 sm:py-5 overflow-hidden bg-background select-none">
+    <section className="my-5 sm:my-8 py-5 sm:py-6 overflow-hidden bg-background select-none">
       <div className="relative">
         <div ref={scrollRef} className="flex whitespace-nowrap will-change-transform">
           {/* Render twice for seamless loop */}
@@ -42,7 +42,7 @@ const MarqueeSection = () => {
             items.map((item, i) => (
               <span
                 key={`${set}-${i}`}
-                className="flex items-center gap-2.5 px-6 sm:px-8 whitespace-nowrap text-xs sm:text-sm font-bold tracking-[0.2em] uppercase text-accent"
+                className="flex items-center gap-3 px-7 sm:px-10 whitespace-nowrap text-sm sm:text-base font-bold tracking-[0.2em] uppercase text-accent"
               >
                 <item.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent/60 flex-shrink-0" strokeWidth={1.5} />
                 {item.text}
