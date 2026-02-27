@@ -797,9 +797,14 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
               exit={{ y: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
             >
-              {/* Drag handle */}
+              {/* Drag handle + close */}
               <div className="flex justify-center pt-3 pb-1">
                 <div className="w-10 h-1 rounded-full bg-muted-foreground/30" />
+              </div>
+              <div className="flex justify-center py-2">
+                <button onClick={onClose} className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-muted transition-colors">
+                  <X className="w-5 h-5" />
+                </button>
               </div>
               {cartContent}
             </motion.div>
