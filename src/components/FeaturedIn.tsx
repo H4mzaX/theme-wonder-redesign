@@ -19,15 +19,15 @@ const FeaturedIn = () => {
 
   return (
     <section ref={ref} className="py-6 lg:py-10 overflow-hidden">
-      <ScrollReveal className="text-center mb-8">
+      <ScrollReveal className="text-center mb-8 px-4 sm:px-6 lg:px-10">
         <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">Featured In</h2>
       </ScrollReveal>
-      <motion.div className="flex gap-4 w-max" style={{ x }}>
+      <motion.div className="flex gap-4 w-max pl-4 sm:pl-6 lg:pl-10" style={{ x }}>
         {doubled.map((item, i) => (
           <a
             key={i}
             href="#"
-            className="flex-none w-[320px] sm:w-[380px] border border-border rounded-xl p-5 hover:bg-muted transition-colors"
+            className="flex-none w-[280px] sm:w-[380px] border border-border rounded-xl p-5 hover:bg-muted transition-colors"
           >
             <span className="text-base font-bold block mb-2">{item.name}</span>
             <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">

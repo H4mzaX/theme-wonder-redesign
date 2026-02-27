@@ -50,19 +50,19 @@ const Footer = () => {
               <p className="text-sm text-background/60 mb-4">
                 Subscribe to get special offers and first access to new cases.
               </p>
-              <div className="flex">
-                <input type="email" placeholder="Enter your email" className="bg-background/10 border border-background/20 text-background placeholder:text-background/40 px-4 py-2.5 text-sm flex-1 rounded-l-lg focus:outline-none focus:border-background/40 transition-colors" />
-                <button className="bg-background text-foreground px-5 py-2.5 text-sm font-medium rounded-r-lg hover:bg-background/90 transition-colors">
-                  Subscribe
+              <div className="flex gap-0">
+                <input type="email" placeholder="Enter your email" className="bg-background/10 border border-background/20 text-background placeholder:text-background/40 px-3 sm:px-4 py-2.5 text-sm flex-1 min-w-0 rounded-l-lg focus:outline-none focus:border-background/40 transition-colors" />
+                <button className="bg-background text-foreground px-4 py-2.5 text-sm font-medium rounded-r-lg hover:bg-background/90 transition-colors flex-shrink-0">
+                  Join
                 </button>
               </div>
             </div>
           </StaggerItem>
         </StaggerContainer>
 
-        <div className="border-t border-background/10 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="border-t border-background/10 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 pb-2">
           <p className="text-xs text-background/40">© 2026 VCASE. All rights reserved.</p>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-5 sm:gap-6 flex-wrap justify-center">
             {["Facebook", "X", "Instagram", "YouTube"].map((s) => (
               <a key={s} href="#" className="text-xs text-background/40 hover:text-background transition-colors">
                 {s}

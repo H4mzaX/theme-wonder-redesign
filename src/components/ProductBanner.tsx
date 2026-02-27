@@ -26,7 +26,7 @@ const ProductBanner = ({
   const isRight = layout === "right";
 
   return (
-    <section className="max-w-[1400px] mx-auto px-3 sm:px-6 lg:px-10">
+    <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
       <Link to={href} className="group block">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
