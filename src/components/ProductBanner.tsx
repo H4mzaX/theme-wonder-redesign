@@ -83,6 +83,7 @@ const ProductBanner = ({
                   isCenter ? "opacity-40" : ""
                 }`}
                 loading="lazy"
+                decoding="async"
               />
             </div>
           </div>

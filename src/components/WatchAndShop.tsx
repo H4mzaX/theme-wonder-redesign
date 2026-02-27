@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import LazyVideo from "@/components/LazyVideo";
 import { ScrollReveal } from "@/hooks/useScrollAnimations";
 import watchMagsafe from "@/assets/watch-shop-magsafe.mp4";
 import watchLeather from "@/assets/watch-shop-leather.mp4";
@@ -95,19 +96,15 @@ const WatchAndShop = () => {
           <div key={idx} className="flex-none w-[44vw] sm:w-[260px] lg:w-[280px] snap-start">
             <a href={item.href} className="group block">
               <div className="relative rounded-2xl overflow-hidden aspect-[3/4] sm:aspect-[9/16] mb-2">
-                <video
+                <LazyVideo
                   src={item.video}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-foreground/5 group-hover:bg-foreground/15 transition-colors" />
 
                 {/* Product thumbnail overlay */}
                 <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden border-2 border-background shadow-lg">
-                  <img src={item.productImage} alt={item.productName} className="w-full h-full object-cover" />
+                  <img src={item.productImage} alt={item.productName} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                 </div>
               </div>
               <div className="text-center px-1">
