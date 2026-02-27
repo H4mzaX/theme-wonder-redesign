@@ -25,8 +25,8 @@ const NewArrivals = () => {
 
   return (
     <section className="py-5 sm:py-6 lg:py-8">
-      <div className="max-w-[1400px] mx-auto">
-        <ScrollReveal className="mb-3 sm:mb-4 lg:mb-6 px-4 sm:px-6 lg:px-10">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
+        <ScrollReveal className="mb-3 sm:mb-4 lg:mb-6">
           <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold tracking-tight italic text-foreground text-center">
             New Arrivals
           </h2>
@@ -34,7 +34,7 @@ const NewArrivals = () => {
 
         <div
           ref={scrollRef}
-          className="flex gap-3 sm:gap-4 overflow-x-auto snap-x snap-mandatory px-4 sm:px-6 lg:px-10"
+          className="flex gap-3 sm:gap-4 overflow-x-auto snap-x snap-mandatory"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {newArrivalProducts.map((product) => (
