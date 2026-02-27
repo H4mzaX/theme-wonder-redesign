@@ -789,8 +789,8 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
     return (
       <AnimatePresence>
         {open && (
-          <>
-            <motion.div className="fixed inset-0 bg-foreground/40 z-50" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} />
+          <motion.div key="cart-mobile" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <motion.div className="fixed inset-0 bg-foreground/40 z-50" onClick={onClose} />
             <motion.div
               className="fixed inset-x-0 bottom-0 bg-background z-50 rounded-t-2xl h-[min(85dvh,720px)] flex flex-col will-change-transform"
               initial={{ y: "100%" }}
@@ -809,7 +809,7 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
               </div>
               {cartContent}
             </motion.div>
-          </>
+          </motion.div>
         )}
       </AnimatePresence>
     );
@@ -818,12 +818,12 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
   return (
     <AnimatePresence>
       {open && (
-        <>
-          <motion.div className="fixed inset-0 bg-foreground/40 z-50" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} />
+        <motion.div key="cart-desktop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <motion.div className="fixed inset-0 bg-foreground/40 z-50" onClick={onClose} />
           <motion.div className="fixed inset-y-0 right-0 w-full sm:w-[480px] bg-background z-50 flex flex-col will-change-transform" initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={drawerSpring}>
             {cartContent}
           </motion.div>
-        </>
+        </motion.div>
       )}
     </AnimatePresence>
   );
