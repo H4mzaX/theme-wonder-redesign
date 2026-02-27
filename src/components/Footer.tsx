@@ -3,7 +3,7 @@ import { ScrollReveal, StaggerContainer, StaggerItem } from "@/hooks/useScrollAn
 const Footer = () => {
   return (
     <footer className="bg-foreground text-background">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-14 lg:py-18">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-10 sm:py-12 lg:py-14">
         <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12" staggerDelay={0.1}>
           <StaggerItem>
             <div className="space-y-4">
