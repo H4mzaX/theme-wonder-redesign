@@ -25,22 +25,24 @@ const NewArrivals = () => {
 
   return (
     <section className="py-5 sm:py-6 lg:py-8">
-      <ScrollReveal className="mb-3 sm:mb-4 lg:mb-6 px-4 sm:px-6 lg:px-10">
-        <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold tracking-tight italic text-foreground text-center">
-          New Arrivals
-        </h2>
-      </ScrollReveal>
+      <div className="max-w-[1400px] mx-auto">
+        <ScrollReveal className="mb-3 sm:mb-4 lg:mb-6 px-4 sm:px-6 lg:px-10">
+          <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold tracking-tight italic text-foreground text-center">
+            New Arrivals
+          </h2>
+        </ScrollReveal>
 
-      <div
-        ref={scrollRef}
-        className="flex gap-3 sm:gap-4 overflow-x-auto snap-x snap-mandatory pl-4 pr-4 sm:pl-6 sm:pr-6 lg:pl-10 lg:pr-10"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-      >
-        {newArrivalProducts.map((product) => (
-          <div key={product.id} className="flex-none w-[calc(50vw-22px)] sm:w-[calc(50vw-28px)] md:w-[260px] lg:w-[280px] snap-start">
-            <ProductCard product={product} />
-          </div>
-        ))}
+        <div
+          ref={scrollRef}
+          className="flex gap-3 sm:gap-4 overflow-x-auto snap-x snap-mandatory px-4 sm:px-6 lg:px-10"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
+          {newArrivalProducts.map((product) => (
+            <div key={product.id} className="flex-none w-[calc(50vw-22px)] sm:w-[calc(50vw-28px)] md:w-[260px] lg:w-[280px] snap-start">
+              <ProductCard product={product} />
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="flex gap-1.5 mx-auto mt-3 sm:mt-4 max-w-[260px] sm:max-w-[320px] px-4">
