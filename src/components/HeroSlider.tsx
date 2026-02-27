@@ -25,15 +25,15 @@ const slides: Slide[] = [
   {
     image: hero1,
     badge: "New Arrival",
-    title: "BOLD PRO CASE",
-    subtitle: "Meet the New Standard of Protection.",
+    title: "MAGSAFE\nTRANSPARENT",
+    subtitle: "Crystal clarity meets magnetic precision.",
     cta: "SHOP NOW",
   },
   {
     image: hero2,
     badge: "Best Seller",
-    title: "CRYSTAL CLEAR\nPROTECTION",
-    subtitle: "MagSafe-ready cases that feel invisible.",
+    title: "BOLD PRO\nCASE",
+    subtitle: "Statement protection for the fearless.",
     cta: "Shop All",
   },
   {
