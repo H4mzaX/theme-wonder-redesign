@@ -118,12 +118,7 @@ const CollectionProductCard = ({ product, large = false }: CollectionProductCard
     >
       {/* Image area */}
       <div className={`relative bg-secondary/30 rounded-2xl overflow-hidden ${large ? "aspect-[3/4]" : "aspect-square"}`}>
-        {/* Discount badge — top left */}
-        {product.discount && (
-          <span className="absolute top-2.5 left-2.5 z-10 bg-destructive text-destructive-foreground text-[10px] font-bold px-2 py-0.5 rounded">
-            {product.discount}
-          </span>
-        )}
+      {/* No discount badge */}
 
         {/* Rating badge — top right */}
         <div className="absolute top-2.5 right-2.5 z-10 flex items-center gap-1 bg-foreground text-background rounded-full px-2 py-0.5 shadow-md">
@@ -150,23 +145,6 @@ const CollectionProductCard = ({ product, large = false }: CollectionProductCard
         </motion.button>
       </div>
 
-      {/* Horizontally scrollable feature icons */}
-      <div
-        className="flex gap-2 mt-2.5 overflow-x-auto pb-1 px-0.5"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-      >
-        {features.map((feat) => (
-          <div
-            key={feat.label}
-            className="flex items-center gap-1 bg-muted rounded-full px-2.5 py-1 flex-shrink-0"
-          >
-            <feat.icon className="w-3 h-3 text-muted-foreground" strokeWidth={2.5} />
-            <span className="text-[9px] sm:text-[10px] font-medium text-muted-foreground whitespace-nowrap">
-              {feat.label}
-            </span>
-          </div>
-        ))}
-      </div>
 
       {/* Info area */}
       <div className="flex flex-col px-0.5 pt-2 pb-2 gap-0.5">
@@ -185,29 +163,10 @@ const CollectionProductCard = ({ product, large = false }: CollectionProductCard
           {product.subtitle}
         </p>
 
-        {/* Price row */}
-        <div className="flex items-baseline gap-2 mt-1">
-          <span className={`font-bold leading-none text-foreground ${large ? "text-[16px] sm:text-[18px]" : "text-[14px] sm:text-[16px]"}`}>
-            {product.price}
-          </span>
-          {product.originalPrice && (
-            <span className="text-[10px] sm:text-[11px] text-muted-foreground line-through">
-              {product.originalPrice}
-            </span>
-          )}
-        </div>
-
-        {/* Color swatches */}
-        <div className="flex gap-1.5 mt-1.5">
-          {(product.colors.length > 1 ? product.colors : ["White"]).slice(0, 4).map((c) => (
-            <span
-              key={c}
-              className={`rounded-full border border-border/80 ${large ? "w-5 h-5" : "w-4 h-4"}`}
-              style={{ backgroundColor: colorMap[c] || "#ffffff" }}
-              title={c}
-            />
-          ))}
-        </div>
+        {/* Price */}
+        <span className={`font-bold leading-none text-foreground mt-0.5 ${large ? "text-[16px] sm:text-[18px]" : "text-[14px] sm:text-[16px]"}`}>
+          {product.price}
+        </span>
 
         {/* Spec badges row */}
         <div
