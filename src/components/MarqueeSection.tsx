@@ -34,7 +34,7 @@ const MarqueeSection = () => {
   }, []);
 
   return (
-    <section className="mt-1 sm:mt-2 py-3.5 sm:py-4 overflow-hidden bg-background border-y border-border select-none">
+    <section className="mt-1 sm:mt-2 py-4 sm:py-5 overflow-hidden bg-background select-none">
       <div className="relative">
         <div ref={scrollRef} className="flex whitespace-nowrap will-change-transform">
           {/* Render twice for seamless loop */}
