@@ -1,9 +1,44 @@
-import { Star, ShoppingCart, Shield, Zap, Droplets, Magnet } from "lucide-react";
+import { Star, ShoppingCart, Shield, Zap, Droplets, Magnet, Ruler, Gauge, Weight, Layers } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useCart } from "@/context/CartContext";
 import { toast } from "@/hooks/use-toast";
 import type { Product } from "@/data/products";
+
+/* Spec badges per category — horizontal row at bottom of card */
+const categorySpecs: Record<string, { icon: React.ElementType; label: string; value: string }[]> = {
+  "MagSafe Cases": [
+    { icon: Gauge, label: "MagSafe", value: "38T" },
+    { icon: Ruler, label: "Thickness", value: "1.2mm" },
+    { icon: Weight, label: "Weight", value: "32g" },
+  ],
+  "Silicone Cases": [
+    { icon: Layers, label: "Material", value: "Silicone" },
+    { icon: Ruler, label: "Thickness", value: "1.5mm" },
+    { icon: Weight, label: "Weight", value: "28g" },
+  ],
+  "Leather Cases": [
+    { icon: Layers, label: "Material", value: "Leather" },
+    { icon: Ruler, label: "Thickness", value: "1.8mm" },
+    { icon: Weight, label: "Weight", value: "42g" },
+  ],
+  "Clear Cases": [
+    { icon: Layers, label: "Material", value: "PC+TPU" },
+    { icon: Ruler, label: "Thickness", value: "1.2mm" },
+    { icon: Shield, label: "IP Rating", value: "IP54" },
+  ],
+  "Black Cases": [
+    { icon: Layers, label: "Finish", value: "Matte" },
+    { icon: Ruler, label: "Thickness", value: "1.4mm" },
+    { icon: Weight, label: "Weight", value: "30g" },
+  ],
+};
+
+const defaultSpecs = [
+  { icon: Layers, label: "Material", value: "TPU" },
+  { icon: Ruler, label: "Thickness", value: "1.3mm" },
+  { icon: Weight, label: "Weight", value: "30g" },
+];
 
 const colorMap: Record<string, string> = {
   Clear: "#e5e5e5",
@@ -58,6 +93,7 @@ interface CollectionProductCardProps {
 const CollectionProductCard = ({ product, large = false }: CollectionProductCardProps) => {
   const { addToCart } = useCart();
   const features = categoryFeatures[product.category] || defaultFeatures;
+  const specs = categorySpecs[product.category] || defaultSpecs;
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -170,6 +206,25 @@ const CollectionProductCard = ({ product, large = false }: CollectionProductCard
               style={{ backgroundColor: colorMap[c] || "#ffffff" }}
               title={c}
             />
+          ))}
+        </div>
+
+        {/* Spec badges row */}
+        <div
+          className="flex gap-1.5 mt-2.5 overflow-x-auto pb-0.5"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
+          {specs.map((spec) => (
+            <div
+              key={spec.label}
+              className="flex items-center gap-1 border border-border rounded-md px-2 py-1 flex-shrink-0"
+            >
+              <spec.icon className="w-3 h-3 text-muted-foreground" strokeWidth={2} />
+              <div className="flex flex-col leading-none">
+                <span className="text-[8px] text-muted-foreground">{spec.label}</span>
+                <span className="text-[10px] font-semibold text-foreground">{spec.value}</span>
+              </div>
+            </div>
           ))}
         </div>
       </div>
