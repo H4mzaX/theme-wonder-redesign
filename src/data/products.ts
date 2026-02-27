@@ -137,7 +137,7 @@ const caseTypes = [
 const samsungCaseTypes = [
   { type: "AirGrip Case", category: "Silicone Cases", image: samsungSiliconeBlueImg, hoverImage: samsungMatteBlackImg, colors: ["Black", "Blue", "Pink", "Green"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 150 },
   { type: "VoltHide Case", category: "Leather Cases", image: samsungLeatherBrownImg, hoverImage: samsungMatteBlackImg, colors: ["Saddle Brown", "Black"], basePrice: 1999, originalPrice: 3499, discount: "Save 43%", rating: 5, reviewBase: 60 },
-  { type: "CrystalX Case", category: "Clear Cases", image: samsungClearCaseImg, hoverImage: samsungSiliconeBlueImg, colors: ["Clear"], basePrice: 1199, originalPrice: 1999, discount: "Save 40%", rating: 5, reviewBase: 100 },
+  { type: "ClearVault Case", category: "Clear Cases", image: samsungClearCaseImg, hoverImage: samsungSiliconeBlueImg, colors: ["Clear"], basePrice: 1199, originalPrice: 1999, discount: "Save 40%", rating: 5, reviewBase: 100 },
   { type: "StealthX Case", category: "Black Cases", image: samsungMatteBlackImg, hoverImage: samsungClearCaseImg, colors: ["Matte Black"], basePrice: 1399, originalPrice: 2499, discount: "Save 44%", rating: 5, reviewBase: 110 },
 ];
 
@@ -145,7 +145,7 @@ const samsungCaseTypes = [
 const oneplusCaseTypes = [
   { type: "AirGrip Case", category: "Silicone Cases", image: oneplusSiliconeBlueImg, hoverImage: oneplusMatteBlackImg, colors: ["Black", "Blue", "Pink", "Green"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 150 },
   { type: "VoltHide Case", category: "Leather Cases", image: oneplusLeatherBrownImg, hoverImage: oneplusMatteBlackImg, colors: ["Saddle Brown", "Black"], basePrice: 1999, originalPrice: 3499, discount: "Save 43%", rating: 5, reviewBase: 60 },
-  { type: "CrystalX Case", category: "Clear Cases", image: oneplusClearCaseImg, hoverImage: oneplusSiliconeBlueImg, colors: ["Clear"], basePrice: 1199, originalPrice: 1999, discount: "Save 40%", rating: 5, reviewBase: 100 },
+  { type: "ClearVault Case", category: "Clear Cases", image: oneplusClearCaseImg, hoverImage: oneplusSiliconeBlueImg, colors: ["Clear"], basePrice: 1199, originalPrice: 1999, discount: "Save 40%", rating: 5, reviewBase: 100 },
   { type: "StealthX Case", category: "Black Cases", image: oneplusMatteBlackImg, hoverImage: oneplusClearCaseImg, colors: ["Matte Black"], basePrice: 1399, originalPrice: 2499, discount: "Save 44%", rating: 5, reviewBase: 110 },
 ];
 
@@ -153,7 +153,7 @@ const oneplusCaseTypes = [
 const iqooCaseTypes = [
   { type: "AirGrip Case", category: "Silicone Cases", image: iqooSiliconeBlueImg, hoverImage: iqooMatteBlackImg, colors: ["Black", "Blue", "Pink", "Green"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 150 },
   { type: "VoltHide Case", category: "Leather Cases", image: iqooLeatherBrownImg, hoverImage: iqooMatteBlackImg, colors: ["Saddle Brown", "Black"], basePrice: 1999, originalPrice: 3499, discount: "Save 43%", rating: 5, reviewBase: 60 },
-  { type: "CrystalX Case", category: "Clear Cases", image: iqooClearCaseImg, hoverImage: iqooSiliconeBlueImg, colors: ["Clear"], basePrice: 1199, originalPrice: 1999, discount: "Save 40%", rating: 5, reviewBase: 100 },
+  { type: "ClearVault Case", category: "Clear Cases", image: iqooClearCaseImg, hoverImage: iqooSiliconeBlueImg, colors: ["Clear"], basePrice: 1199, originalPrice: 1999, discount: "Save 40%", rating: 5, reviewBase: 100 },
   { type: "StealthX Case", category: "Black Cases", image: iqooMatteBlackImg, hoverImage: iqooClearCaseImg, colors: ["Matte Black"], basePrice: 1399, originalPrice: 2499, discount: "Save 44%", rating: 5, reviewBase: 110 },
 ];
 
