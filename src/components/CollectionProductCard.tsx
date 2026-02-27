@@ -114,30 +114,28 @@ const CollectionProductCard = ({ product, large = false }: CollectionProductCard
   return (
     <Link
       to={`/product/${product.id}`}
-      className="group flex flex-col bg-background rounded-2xl overflow-hidden"
+      className="group flex flex-col bg-background rounded-xl overflow-hidden border border-border/60"
     >
-      {/* Image area */}
-      <div className={`relative bg-secondary/30 rounded-2xl overflow-hidden ${large ? "aspect-[3/4]" : "aspect-square"}`}>
-      {/* No discount badge */}
-
-        {/* Rating badge — top right */}
-        <div className="absolute top-2.5 right-2.5 z-10 flex items-center gap-1 bg-foreground text-background rounded-full px-2 py-0.5 shadow-md">
-          <Star className="w-2.5 h-2.5 fill-amber-400 text-amber-400" />
-          <span className="text-[10px] font-bold leading-none">{product.rating.toFixed(1)}</span>
+      {/* Full-bleed image — no padding, no inner rounding */}
+      <div className={`relative overflow-hidden ${large ? "aspect-[3/4]" : "aspect-square"}`}>
+        {/* Rating pill — top right */}
+        <div className="absolute top-3 right-3 z-10 flex items-center gap-1 bg-background/90 backdrop-blur-sm rounded-full px-2.5 py-1 shadow-sm">
+          <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+          <span className="text-[11px] font-bold leading-none text-foreground">{product.rating.toFixed(1)}</span>
         </div>
 
-        {/* Product image */}
+        {/* Product image — full cover, no padding */}
         <img
           src={product.image}
           alt={product.name}
-          className={`w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-105 ${large ? "p-4" : "p-3"}`}
+          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
           loading="lazy"
         />
 
         {/* Cart button — bottom right */}
         <motion.button
           onClick={handleAddToCart}
-          className="absolute bottom-2.5 right-2.5 z-10 w-10 h-10 rounded-full bg-foreground text-background flex items-center justify-center shadow-lg"
+          className="absolute bottom-3 right-3 z-10 w-10 h-10 rounded-full bg-background/90 backdrop-blur-sm text-foreground flex items-center justify-center shadow-md border border-border/40"
           whileTap={{ scale: 0.9 }}
           transition={{ type: "spring", stiffness: 400, damping: 20 }}
         >
@@ -145,47 +143,39 @@ const CollectionProductCard = ({ product, large = false }: CollectionProductCard
         </motion.button>
       </div>
 
-
       {/* Info area */}
-      <div className="flex flex-col px-0.5 pt-2 pb-2 gap-0.5">
+      <div className="flex flex-col px-3 pt-3 pb-1 gap-0.5">
         {/* Brand */}
-        <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-medium">
+        <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.15em] text-muted-foreground font-medium">
           {product.brand}
         </span>
 
         {/* Product name */}
-        <h3 className={`font-semibold leading-tight line-clamp-1 text-foreground ${large ? "text-[14px] sm:text-[16px]" : "text-[12px] sm:text-[14px]"}`}>
+        <h3 className={`font-bold leading-tight line-clamp-1 text-foreground ${large ? "text-[16px] sm:text-[18px]" : "text-[14px] sm:text-[16px]"}`}>
           {product.name}
         </h3>
 
-        {/* Subtitle / device */}
-        <p className="text-[10px] sm:text-[11px] text-muted-foreground line-clamp-1">
-          {product.subtitle}
-        </p>
-
         {/* Price */}
-        <span className={`font-bold leading-none text-foreground mt-0.5 ${large ? "text-[16px] sm:text-[18px]" : "text-[14px] sm:text-[16px]"}`}>
+        <span className={`font-semibold leading-none text-foreground mt-1 ${large ? "text-[16px] sm:text-[18px]" : "text-[14px] sm:text-[16px]"}`}>
           {product.price}
         </span>
+      </div>
 
-        {/* Spec badges row */}
-        <div
-          className="flex gap-1.5 mt-2.5 overflow-x-auto pb-0.5"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-        >
-          {specs.map((spec) => (
-            <div
-              key={spec.label}
-              className="flex items-center gap-1 border border-border rounded-md px-2 py-1 flex-shrink-0"
-            >
-              <spec.icon className="w-3 h-3 text-muted-foreground" strokeWidth={2} />
-              <div className="flex flex-col leading-none">
-                <span className="text-[8px] text-muted-foreground">{spec.label}</span>
-                <span className="text-[10px] font-semibold text-foreground">{spec.value}</span>
-              </div>
-            </div>
-          ))}
-        </div>
+      {/* Spec badges row — icon stacked above value & label */}
+      <div
+        className="flex gap-0 mt-2 mx-3 mb-3 overflow-x-auto border border-border rounded-lg"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
+        {specs.map((spec, i) => (
+          <div
+            key={spec.label}
+            className={`flex flex-col items-center justify-center py-2.5 px-3 flex-1 min-w-[80px] ${i !== 0 ? "border-l border-border" : ""}`}
+          >
+            <spec.icon className="w-4 h-4 text-muted-foreground mb-1" strokeWidth={1.5} />
+            <span className="text-[12px] sm:text-[13px] font-bold text-foreground leading-none">{spec.value}</span>
+            <span className="text-[9px] sm:text-[10px] text-muted-foreground mt-0.5 whitespace-nowrap">{spec.label}</span>
+          </div>
+        ))}
       </div>
     </Link>
   );
