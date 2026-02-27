@@ -127,34 +127,34 @@ function generateProducts(
 }
 
 const caseTypes = [
-  { type: "MagSafe Clear Case", category: "MagSafe Cases", image: magsafeClearImg, hoverImage: magsafeBlackImg, colors: ["Clear"], basePrice: 1499, originalPrice: 2499, discount: "Save 40%", rating: 5, reviewBase: 120 },
-  { type: "MagSafe Black Case", category: "MagSafe Cases", image: magsafeBlackImg, hoverImage: magsafeClearImg, colors: ["Jet Black"], basePrice: 1699, originalPrice: 2999, discount: "Save 43%", rating: 5, reviewBase: 95 },
-  { type: "Silicone Snap Case", category: "Silicone Cases", image: siliconeBlackNewImg, hoverImage: siliconeMintImg, colors: ["Black", "Blue", "Pink", "Green"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 200 },
-  { type: "Premium Leather Case", category: "Leather Cases", image: leatherBrownImg, hoverImage: leatherBlackImg, colors: ["Saddle Brown", "Black"], basePrice: 1999, originalPrice: 3499, discount: "Save 43%", rating: 5, reviewBase: 80 },
+  { type: "MagLock Clear", category: "MagSafe Cases", image: magsafeClearImg, hoverImage: magsafeBlackImg, colors: ["Clear"], basePrice: 1499, originalPrice: 2499, discount: "Save 40%", rating: 5, reviewBase: 120 },
+  { type: "MagLock Pro", category: "MagSafe Cases", image: magsafeBlackImg, hoverImage: magsafeClearImg, colors: ["Jet Black"], basePrice: 1699, originalPrice: 2999, discount: "Save 43%", rating: 5, reviewBase: 95 },
+  { type: "AirGrip Case", category: "Silicone Cases", image: siliconeBlackNewImg, hoverImage: siliconeMintImg, colors: ["Black", "Blue", "Pink", "Green"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 200 },
+  { type: "VoltHide Case", category: "Leather Cases", image: leatherBrownImg, hoverImage: leatherBlackImg, colors: ["Saddle Brown", "Black"], basePrice: 1999, originalPrice: 3499, discount: "Save 43%", rating: 5, reviewBase: 80 },
 ];
 
 // Samsung-specific case types
 const samsungCaseTypes = [
-  { type: "Silicone Snap Case", category: "Silicone Cases", image: samsungSiliconeBlueImg, hoverImage: samsungMatteBlackImg, colors: ["Black", "Blue", "Pink", "Green"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 150 },
-  { type: "Premium Leather Case", category: "Leather Cases", image: samsungLeatherBrownImg, hoverImage: samsungMatteBlackImg, colors: ["Saddle Brown", "Black"], basePrice: 1999, originalPrice: 3499, discount: "Save 43%", rating: 5, reviewBase: 60 },
-  { type: "Clear Armor Case", category: "Clear Cases", image: samsungClearCaseImg, hoverImage: samsungSiliconeBlueImg, colors: ["Clear"], basePrice: 1199, originalPrice: 1999, discount: "Save 40%", rating: 5, reviewBase: 100 },
-  { type: "Matte Black Case", category: "Black Cases", image: samsungMatteBlackImg, hoverImage: samsungClearCaseImg, colors: ["Matte Black"], basePrice: 1399, originalPrice: 2499, discount: "Save 44%", rating: 5, reviewBase: 110 },
+  { type: "AirGrip Case", category: "Silicone Cases", image: samsungSiliconeBlueImg, hoverImage: samsungMatteBlackImg, colors: ["Black", "Blue", "Pink", "Green"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 150 },
+  { type: "VoltHide Case", category: "Leather Cases", image: samsungLeatherBrownImg, hoverImage: samsungMatteBlackImg, colors: ["Saddle Brown", "Black"], basePrice: 1999, originalPrice: 3499, discount: "Save 43%", rating: 5, reviewBase: 60 },
+  { type: "CrystalX Case", category: "Clear Cases", image: samsungClearCaseImg, hoverImage: samsungSiliconeBlueImg, colors: ["Clear"], basePrice: 1199, originalPrice: 1999, discount: "Save 40%", rating: 5, reviewBase: 100 },
+  { type: "StealthX Case", category: "Black Cases", image: samsungMatteBlackImg, hoverImage: samsungClearCaseImg, colors: ["Matte Black"], basePrice: 1399, originalPrice: 2499, discount: "Save 44%", rating: 5, reviewBase: 110 },
 ];
 
 // OnePlus-specific case types
 const oneplusCaseTypes = [
-  { type: "Silicone Snap Case", category: "Silicone Cases", image: oneplusSiliconeBlueImg, hoverImage: oneplusMatteBlackImg, colors: ["Black", "Blue", "Pink", "Green"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 150 },
-  { type: "Premium Leather Case", category: "Leather Cases", image: oneplusLeatherBrownImg, hoverImage: oneplusMatteBlackImg, colors: ["Saddle Brown", "Black"], basePrice: 1999, originalPrice: 3499, discount: "Save 43%", rating: 5, reviewBase: 60 },
-  { type: "Clear Armor Case", category: "Clear Cases", image: oneplusClearCaseImg, hoverImage: oneplusSiliconeBlueImg, colors: ["Clear"], basePrice: 1199, originalPrice: 1999, discount: "Save 40%", rating: 5, reviewBase: 100 },
-  { type: "Matte Black Case", category: "Black Cases", image: oneplusMatteBlackImg, hoverImage: oneplusClearCaseImg, colors: ["Matte Black"], basePrice: 1399, originalPrice: 2499, discount: "Save 44%", rating: 5, reviewBase: 110 },
+  { type: "AirGrip Case", category: "Silicone Cases", image: oneplusSiliconeBlueImg, hoverImage: oneplusMatteBlackImg, colors: ["Black", "Blue", "Pink", "Green"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 150 },
+  { type: "VoltHide Case", category: "Leather Cases", image: oneplusLeatherBrownImg, hoverImage: oneplusMatteBlackImg, colors: ["Saddle Brown", "Black"], basePrice: 1999, originalPrice: 3499, discount: "Save 43%", rating: 5, reviewBase: 60 },
+  { type: "CrystalX Case", category: "Clear Cases", image: oneplusClearCaseImg, hoverImage: oneplusSiliconeBlueImg, colors: ["Clear"], basePrice: 1199, originalPrice: 1999, discount: "Save 40%", rating: 5, reviewBase: 100 },
+  { type: "StealthX Case", category: "Black Cases", image: oneplusMatteBlackImg, hoverImage: oneplusClearCaseImg, colors: ["Matte Black"], basePrice: 1399, originalPrice: 2499, discount: "Save 44%", rating: 5, reviewBase: 110 },
 ];
 
 // iQOO-specific case types
 const iqooCaseTypes = [
-  { type: "Silicone Snap Case", category: "Silicone Cases", image: iqooSiliconeBlueImg, hoverImage: iqooMatteBlackImg, colors: ["Black", "Blue", "Pink", "Green"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 150 },
-  { type: "Premium Leather Case", category: "Leather Cases", image: iqooLeatherBrownImg, hoverImage: iqooMatteBlackImg, colors: ["Saddle Brown", "Black"], basePrice: 1999, originalPrice: 3499, discount: "Save 43%", rating: 5, reviewBase: 60 },
-  { type: "Clear Armor Case", category: "Clear Cases", image: iqooClearCaseImg, hoverImage: iqooSiliconeBlueImg, colors: ["Clear"], basePrice: 1199, originalPrice: 1999, discount: "Save 40%", rating: 5, reviewBase: 100 },
-  { type: "Matte Black Case", category: "Black Cases", image: iqooMatteBlackImg, hoverImage: iqooClearCaseImg, colors: ["Matte Black"], basePrice: 1399, originalPrice: 2499, discount: "Save 44%", rating: 5, reviewBase: 110 },
+  { type: "AirGrip Case", category: "Silicone Cases", image: iqooSiliconeBlueImg, hoverImage: iqooMatteBlackImg, colors: ["Black", "Blue", "Pink", "Green"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 150 },
+  { type: "VoltHide Case", category: "Leather Cases", image: iqooLeatherBrownImg, hoverImage: iqooMatteBlackImg, colors: ["Saddle Brown", "Black"], basePrice: 1999, originalPrice: 3499, discount: "Save 43%", rating: 5, reviewBase: 60 },
+  { type: "CrystalX Case", category: "Clear Cases", image: iqooClearCaseImg, hoverImage: iqooSiliconeBlueImg, colors: ["Clear"], basePrice: 1199, originalPrice: 1999, discount: "Save 40%", rating: 5, reviewBase: 100 },
+  { type: "StealthX Case", category: "Black Cases", image: iqooMatteBlackImg, hoverImage: iqooClearCaseImg, colors: ["Matte Black"], basePrice: 1399, originalPrice: 2499, discount: "Save 44%", rating: 5, reviewBase: 110 },
 ];
 
 export const iphoneProducts = generateProducts(iphoneDevices, caseTypes);
@@ -165,7 +165,7 @@ iphoneProducts.forEach(p => {
     if (p.category === "MagSafe Cases" && p.name.includes("Clear")) {
       p.image = iphone17proMagsafeClearImg;
       p.hoverImage = iphone17proMagsafeAttachImg;
-    } else if (p.category === "MagSafe Cases" && p.name.includes("Black")) {
+    } else if (p.category === "MagSafe Cases" && p.name.includes("Pro")) {
       p.image = iphone17proStrongImg;
       p.hoverImage = iphone17proMagsafeClearImg;
     } else if (p.category === "Silicone Cases") {
@@ -184,7 +184,7 @@ iphoneProducts.forEach(p => {
     if (p.category === "MagSafe Cases" && p.name.includes("Clear")) {
       p.image = iphone17MagsafeClearImg;
       p.hoverImage = iphone17MagsafeAttachImg;
-    } else if (p.category === "MagSafe Cases" && p.name.includes("Black")) {
+    } else if (p.category === "MagSafe Cases" && p.name.includes("Pro")) {
       p.image = iphone17StrongImg;
       p.hoverImage = iphone17MagsafeClearImg;
     } else if (p.category === "Silicone Cases") {
@@ -245,7 +245,7 @@ export const newArrivalProducts = iphoneProducts
 
 // Featured product
 export const featuredProduct = {
-  name: "Premium Leather Case",
+  name: "VoltHide Case",
   subtitle: "For iPhone 17 Pro Max",
   price: "₹1,999",
   originalPrice: "₹3,499",
