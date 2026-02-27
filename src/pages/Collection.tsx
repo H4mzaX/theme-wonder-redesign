@@ -471,7 +471,7 @@ const Collection = () => {
               </p>
 
               {/* First batch of products */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
                 {firstHalf.map((product) => (
                   <div key={product.id}>
                     <CollectionProductCard product={product} />
@@ -508,7 +508,7 @@ const Collection = () => {
 
               {/* Second batch of products */}
               {secondHalf.length > 0 && (
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
                   {secondHalf.map((product) => (
                     <div key={product.id}>
                       <CollectionProductCard product={product} />
@@ -532,29 +532,39 @@ const Collection = () => {
         {/* ═══ Text-behind-image parallax section ═══ */}
         <TextBehindImageSection />
 
-        {/* ═══ You May Also Like — larger cards ═══ */}
+        {/* ═══ You May Also Like — horizontal scroll carousel ═══ */}
         <section className="section-padding py-8 sm:py-12">
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-foreground mb-5 sm:mb-7">
             You May Also Like
           </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+          <div
+            className="flex gap-4 sm:gap-5 overflow-x-auto pb-4 snap-x snap-mandatory scroll-smooth"
+            style={{ scrollbarWidth: "none" }}
+          >
             {allProducts
               .filter((p) => !products.find((pp) => pp.id === p.id))
-              .slice(0, 4)
+              .slice(0, 8)
               .map((product) => (
-                <CollectionProductCard key={product.id} product={product} large />
+                <div key={product.id} className="flex-none w-[55vw] sm:w-[280px] lg:w-[320px] snap-start">
+                  <CollectionProductCard product={product} large />
+                </div>
               ))}
           </div>
         </section>
 
-        {/* ═══ Recently Viewed — larger cards ═══ */}
+        {/* ═══ Recently Viewed — horizontal scroll carousel ═══ */}
         <section className="section-padding py-8 sm:py-12 pb-24 sm:pb-16">
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-foreground mb-5 sm:mb-7">
             Recently Viewed
           </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
-            {products.slice(0, 4).map((product) => (
-              <CollectionProductCard key={`rv-${product.id}`} product={product} large />
+          <div
+            className="flex gap-4 sm:gap-5 overflow-x-auto pb-4 snap-x snap-mandatory scroll-smooth"
+            style={{ scrollbarWidth: "none" }}
+          >
+            {products.slice(0, 8).map((product) => (
+              <div key={`rv-${product.id}`} className="flex-none w-[55vw] sm:w-[280px] lg:w-[320px] snap-start">
+                <CollectionProductCard product={product} large />
+              </div>
             ))}
           </div>
         </section>

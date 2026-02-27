@@ -145,21 +145,34 @@ const iqooCaseTypes = [
 
 export const iphoneProducts = generateProducts(iphoneDevices, caseTypes);
 
-// Override iPhone 17 Pro images with real product shots
+// Override ALL iPhone 17 Pro product images with real product shots
 iphoneProducts.forEach(p => {
   if (p.device === "iPhone 17 Pro") {
-    if (p.category === "MagSafe Cases") {
+    if (p.category === "MagSafe Cases" && p.name.includes("Clear")) {
       p.image = iphone17proMagsafeClearImg;
       p.hoverImage = iphone17proMagsafeAttachImg;
+    } else if (p.category === "MagSafe Cases" && p.name.includes("Black")) {
+      p.image = iphone17proStrongImg;
+      p.hoverImage = iphone17proMagsafeClearImg;
     } else if (p.category === "Silicone Cases") {
       p.image = iphone17proProtectionImg;
-      p.hoverImage = iphone17proStrongImg;
+      p.hoverImage = iphone17proFingerprintsImg;
     } else if (p.category === "Leather Cases") {
       p.image = iphone17proSlimImg;
-      p.hoverImage = iphone17proFingerprintsImg;
+      p.hoverImage = iphone17proMagsafeAttachImg;
     }
   }
 });
+
+// Deduplicate products — keep only unique id entries
+const deduplicateProducts = (products: Product[]): Product[] => {
+  const seen = new Set<string>();
+  return products.filter(p => {
+    if (seen.has(p.id)) return false;
+    seen.add(p.id);
+    return true;
+  });
+};
 export const samsungProducts = generateProducts(samsungDevices, samsungCaseTypes);
 export const oneplusProducts = generateProducts(oneplusDevices, oneplusCaseTypes);
 export const iqooProducts = generateProducts(iqooDevices, iqooCaseTypes);
@@ -175,7 +188,7 @@ oneplusProducts.filter(p => p.device === "OnePlus 15" && p.category === "Clear C
 // Sale — one leather
 iphoneProducts.filter(p => p.device === "iPhone 16 Pro" && p.category === "Leather Cases").forEach(p => { p.tag = "Sale"; });
 
-export const allProducts = [...iphoneProducts, ...samsungProducts, ...oneplusProducts, ...iqooProducts];
+export const allProducts = deduplicateProducts([...iphoneProducts, ...samsungProducts, ...oneplusProducts, ...iqooProducts]);
 
 // ── Grouped for tabs ──
 
