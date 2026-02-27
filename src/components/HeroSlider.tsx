@@ -6,6 +6,13 @@ import hero1 from "@/assets/hero-1.jpg";
 import hero2 from "@/assets/hero-2.jpg";
 import hero3 from "@/assets/hero-3-poster.jpg";
 
+// Preload all hero images immediately so they're cached before render
+const preloadImages = [hero1, hero2, hero3];
+preloadImages.forEach((src) => {
+  const img = new Image();
+  img.src = src;
+});
+
 interface Slide {
   image: string;
   badge?: string;
@@ -110,6 +117,9 @@ const HeroSlider = () => {
                 <motion.img
                   src={slide.image}
                   alt={slide.title}
+                  loading="eager"
+                  decoding="sync"
+                  fetchPriority="high"
                   className="w-full h-full object-cover will-change-transform"
                   initial={{ scale: shouldReduceMotion ? 1 : 1.08 }}
                   animate={{ scale: 1 }}
