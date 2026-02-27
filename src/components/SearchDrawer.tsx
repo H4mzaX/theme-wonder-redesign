@@ -143,7 +143,12 @@ const SearchDrawer = ({ open, onClose }: SearchDrawerProps) => {
   );
 
   const searchInput = (
-    <div className="relative mb-6">
+    <motion.div
+      className="relative mb-6"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.1, duration: 0.3, ease: premiumEase }}
+    >
       <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground/50" />
       <input
         type="text"
@@ -154,24 +159,27 @@ const SearchDrawer = ({ open, onClose }: SearchDrawerProps) => {
         autoFocus
       />
       {query && (
-        <button
+        <motion.button
           onClick={() => setQuery("")}
           className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors bg-muted px-2 py-1 rounded-md"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.15 }}
         >
           Clear
-        </button>
+        </motion.button>
       )}
-    </div>
+    </motion.div>
   );
 
   if (isMobile) {
     return (
       <AnimatePresence>
         {open && (
-          <motion.div key="search-mobile" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <motion.div className="fixed inset-0 bg-foreground/40 z-50" onClick={onClose} />
+          <motion.div key="search-mobile" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[60]">
+            <motion.div className="absolute inset-0 bg-foreground/40" onClick={onClose} />
             <motion.div
-              className="fixed inset-x-0 bottom-0 bg-background z-50 rounded-t-2xl h-[min(85dvh,720px)] flex flex-col will-change-transform"
+              className="fixed inset-x-0 bottom-0 bg-background rounded-t-2xl h-[min(85dvh,720px)] flex flex-col will-change-transform"
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
