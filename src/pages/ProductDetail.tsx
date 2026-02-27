@@ -304,8 +304,8 @@ const ProductDetail = () => {
             <div className="flex gap-3">
               {/* Vertical thumbnails - desktop only */}
               <div
-                className="hidden lg:flex flex-col gap-2 w-[72px] max-h-[620px] overflow-y-auto flex-shrink-0"
-                style={{ scrollbarWidth: "none" }}
+                className="hidden lg:flex flex-col gap-2 w-[72px] max-h-[620px] overflow-y-auto overflow-x-hidden flex-shrink-0 pr-1"
+                style={{ scrollbarWidth: "thin" }}
               >
                 {galleryImages.map((img, i) => (
                   <button
@@ -379,16 +379,16 @@ const ProductDetail = () => {
               </div>
             </div>
 
-            {/* Mobile thumbnails - rounded, horizontally scrollable */}
+            {/* Mobile thumbnails - horizontally scrollable */}
             <div
-              className="flex lg:hidden gap-2.5 py-3 overflow-x-auto snap-x snap-mandatory scroll-pl-1"
+              className="flex lg:hidden gap-2 py-3 px-0.5 overflow-x-auto"
               style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch" }}
             >
               {galleryImages.map((img, i) => (
                 <button
                   key={i}
                   onClick={() => setCurrentImg(i)}
-                  className={`flex-none w-[62px] h-[62px] sm:w-[72px] sm:h-[72px] rounded-xl overflow-hidden transition-all snap-start ${
+                  className={`flex-shrink-0 w-[62px] h-[62px] sm:w-[72px] sm:h-[72px] rounded-xl overflow-hidden transition-all ${
                     i === currentImg
                       ? "border-[2.5px] border-foreground"
                       : "border border-border/60 hover:border-foreground/40"
