@@ -29,6 +29,13 @@ import iphone17StrongImg from "@/assets/iphone17-strong.jpg";
 import iphone17MagsafeAttachImg from "@/assets/iphone17-magsafe-attach.jpg";
 import iphone17FingerprintsImg from "@/assets/iphone17-fingerprints.jpg";
 
+// iPhone 16 MagSafe specific images
+import iphone16MagsafeLifestyleImg from "@/assets/iphone16-magsafe-lifestyle.jpg";
+import iphone16MagsafeClearImg from "@/assets/iphone16-magsafe-clear.png";
+import iphone16MagsafeFeaturesImg from "@/assets/iphone16-magsafe-features.png";
+import iphone16MagsafeGridImg from "@/assets/iphone16-magsafe-grid.png";
+import iphone16MagsafeDetailsImg from "@/assets/iphone16-magsafe-details.jpg";
+
 // Samsung device-specific images
 import samsungSiliconeBlueImg from "@/assets/samsung-silicone-blue.jpg";
 import samsungClearCaseImg from "@/assets/samsung-clear-case.jpg";
