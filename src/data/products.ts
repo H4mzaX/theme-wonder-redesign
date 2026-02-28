@@ -197,6 +197,19 @@ iphoneProducts.forEach(p => {
   }
 });
 
+// Override iPhone 16 MagSafe product images
+iphoneProducts.forEach(p => {
+  if (p.device === "iPhone 16" || p.device === "iPhone 16 Pro") {
+    if (p.category === "MagSafe Cases" && p.name.includes("Clear")) {
+      p.image = iphone16MagsafeClearImg;
+      p.hoverImage = iphone16MagsafeLifestyleImg;
+    } else if (p.category === "MagSafe Cases" && p.name.includes("Pro")) {
+      p.image = iphone16MagsafeFeaturesImg;
+      p.hoverImage = iphone16MagsafeClearImg;
+    }
+  }
+});
+
 // Deduplicate products — keep only unique id entries
 const deduplicateProducts = (products: Product[]): Product[] => {
   const seen = new Set<string>();
