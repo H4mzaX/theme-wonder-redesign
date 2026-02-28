@@ -321,6 +321,15 @@ export const iphone17GalleryImages = [
   iphone17FingerprintsImg,
 ];
 
+// iPhone 16 MagSafe gallery images for product detail page
+export const iphone16MagsafeGalleryImages = [
+  iphone16MagsafeClearImg,
+  iphone16MagsafeLifestyleImg,
+  iphone16MagsafeFeaturesImg,
+  iphone16MagsafeGridImg,
+  iphone16MagsafeDetailsImg,
+];
+
 // Silicone gallery images for product detail
 export const siliconeGalleryImages = [
   siliconeBlackNewImg,
