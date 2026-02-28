@@ -8,7 +8,7 @@ import {
   ShieldCheck, Waves, CircleDot, ScanLine, BadgeCheck, Wallet, IndianRupee, Banknote
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { allProducts, colorImages, iphone17ProGalleryImages, iphone17GalleryImages, siliconeGalleryImages, type Product } from "@/data/products";
+import { allProducts, colorImages, iphone17ProGalleryImages, iphone17GalleryImages, iphone16MagsafeGalleryImages, siliconeGalleryImages, type Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 import { toast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
@@ -173,6 +173,9 @@ const ProductDetail = () => {
         }
         if (product.device === "iPhone 17") {
           return iphone17GalleryImages;
+        }
+        if ((product.device === "iPhone 16" || product.device === "iPhone 16 Pro") && product.category === "MagSafe Cases") {
+          return iphone16MagsafeGalleryImages;
         }
         if (product.category === "Silicone Cases") {
           return siliconeGalleryImages;
