@@ -1,4 +1,5 @@
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/hooks/useScrollAnimations";
+import logoFull from "@/assets/logo-full.png";
 
 const Footer = () => {
   return (
@@ -7,7 +8,7 @@ const Footer = () => {
         <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12" staggerDelay={0.1}>
           <StaggerItem>
             <div className="space-y-4">
-              <span className="font-bold text-xl">VCASE</span>
+              <img src={logoFull} alt="VCASE" className="h-6 w-auto brightness-0 invert" />
               <p className="text-sm text-background/60 leading-relaxed">
                 Premium phone cases and screen protectors for iPhone, Samsung, OnePlus & more. Style meets protection.
               </p>

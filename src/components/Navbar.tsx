@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useScrollDirection } from "@/hooks/useScrollAnimations";
 import { drawerSpring, premiumEase } from "@/lib/motion";
 import { useCart } from "@/context/CartContext";
+import logoFull from "@/assets/logo-full.png";
 
 // ── Mega-menu data ──
 
@@ -132,13 +133,13 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
 
           {/* Logo */}
           <Link to="/" className="flex-shrink-0 flex items-center gap-2">
-            <motion.span
-              className="font-display font-bold text-xl tracking-tight"
+            <motion.img
+              src={logoFull}
+              alt="VCASE"
+              className="h-6 sm:h-7 lg:h-8 w-auto"
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            >
-              VCASE
-            </motion.span>
+            />
           </Link>
 
           {/* Desktop nav */}
