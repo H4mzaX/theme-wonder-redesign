@@ -6,9 +6,7 @@ const items = [
   "Drop-Proof Design.",
   "MagSafe Ready.",
   "Same Day Shipping.",
-  "Lifetime Warranty.",
-  "6Ft Drop Tested.",
-  "Free Returns.",
+  "Easy Returns.",
 ];
 
 const MarqueeSection = () => {
