@@ -42,7 +42,7 @@ const MarqueeSection = () => {
           items.map((item, i) =>
           <span
             key={`${set}-${i}`}
-            className="flex items-center gap-3 px-7 sm:px-10 whitespace-nowrap text-sm font-bold tracking-[0.2em] uppercase text-accent font-sans py-[20px] sm:text-2xl">
+            className="flex items-center gap-3 px-7 sm:px-10 whitespace-nowrap text-sm tracking-[0.2em] uppercase font-sans sm:text-2xl font-extrabold text-center py-0 text-[#f97f06]">
 
                 <item.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent/60 flex-shrink-0" strokeWidth={1.5} />
                 {item.text}
