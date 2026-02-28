@@ -11,12 +11,12 @@ import { useCart } from "@/context/CartContext";
 const casesMenu = {
   title: "Shop by Type",
   items: [
-    { name: "MagLock Clear", href: "/collections/magsafe-cases", tag: "Popular" },
-    { name: "MagLock Pro", href: "/collections/magsafe-cases" },
-    { name: "AirGrip Case", href: "/collections/silicone-cases", tag: "Bestseller" },
-    { name: "VoltHide Case", href: "/collections/leather-cases" },
-    { name: "ClearVault Case", href: "/collections/all" },
-    { name: "StealthX Case", href: "/collections/all" },
+    { name: "MagSafe Clear Case", href: "/collections/magsafe-cases", tag: "Popular" },
+    { name: "MagSafe Pro Case", href: "/collections/magsafe-cases" },
+    { name: "Silicone Case", href: "/collections/silicone-cases", tag: "Bestseller" },
+    { name: "Leather Case", href: "/collections/leather-cases" },
+    { name: "Clear Case", href: "/collections/all" },
+    { name: "Matte Black Case", href: "/collections/all" },
   ],
   collections: [
     { name: "All Cases", href: "/collections/all" },
@@ -31,10 +31,8 @@ const devicesMenu = {
     {
       name: "iPhone",
       models: [
-        { name: "iPhone 17 Pro Max", href: "/collections/iphone-cases", tag: "New" },
-        { name: "iPhone 17 Pro", href: "/collections/iphone-cases" },
+        { name: "iPhone 17 Pro", href: "/collections/iphone-cases", tag: "New" },
         { name: "iPhone 17", href: "/collections/iphone-cases" },
-        { name: "iPhone 16 Pro Max", href: "/collections/iphone-cases" },
         { name: "iPhone 16 Pro", href: "/collections/iphone-cases" },
         { name: "iPhone 16", href: "/collections/iphone-cases" },
         { name: "iPhone 15 Series", href: "/collections/iphone-cases" },
@@ -290,7 +288,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                         <span className="text-[10px] uppercase tracking-[0.2em] text-accent font-bold mb-2">New Arrivals</span>
                         <h3 className="text-2xl font-bold tracking-tight mb-2">iPhone 17 Series</h3>
                         <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
-                          Discover our latest MagLock, AirGrip & VoltHide cases designed for the all-new iPhone 17 lineup.
+                          Discover our latest MagSafe, Silicone & Leather cases designed for the all-new iPhone 17 lineup.
                         </p>
                         <Link
                           to="/collections/iphone-cases"

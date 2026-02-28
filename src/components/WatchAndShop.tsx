@@ -14,21 +14,21 @@ import siliconePinkImg from "@/assets/case-silicone-pink.jpg";
 const videoProducts = [
   {
     video: watchMagsafe,
-    productName: "MagLock Clear",
+    productName: "MagSafe Clear Case",
     productImage: magsafeClearImg,
     tagline: "Snap-on Perfection",
     href: "/collections/magsafe-cases",
   },
   {
     video: watchLeather,
-    productName: "VoltHide Case",
+    productName: "Leather Case",
     productImage: leatherBrownImg,
     tagline: "Handcrafted Luxury",
     href: "/collections/leather-cases",
   },
   {
     video: watchSilicone,
-    productName: "AirGrip Case",
+    productName: "Silicone Case",
     productImage: siliconePinkImg,
     tagline: "Express Your Color",
     href: "/collections/iphone-cases",
