@@ -2,15 +2,15 @@ import { useRef, useEffect } from "react";
 import { Shield, Sparkles, Zap, Gem, Star, Diamond } from "lucide-react";
 
 const items = [
-  { text: "DROP-PROOF DESIGN", icon: Shield },
-  { text: "CRYSTAL CLEAR", icon: Sparkles },
-  { text: "MAGSAFE READY", icon: Zap },
-  { text: "PREMIUM LEATHER", icon: Gem },
-  { text: "6FT DROP TESTED", icon: Shield },
-  { text: "WIRELESS CHARGING", icon: Zap },
-  { text: "SLIM FIT", icon: Star },
-  { text: "ECO FRIENDLY", icon: Diamond },
-];
+{ text: "DROP-PROOF DESIGN", icon: Shield },
+{ text: "CRYSTAL CLEAR", icon: Sparkles },
+{ text: "MAGSAFE READY", icon: Zap },
+{ text: "PREMIUM LEATHER", icon: Gem },
+{ text: "6FT DROP TESTED", icon: Shield },
+{ text: "WIRELESS CHARGING", icon: Zap },
+{ text: "SLIM FIT", icon: Star },
+{ text: "ECO FRIENDLY", icon: Diamond }];
+
 
 const MarqueeSection = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -39,21 +39,21 @@ const MarqueeSection = () => {
         <div ref={scrollRef} className="flex whitespace-nowrap will-change-transform">
           {/* Render twice for seamless loop */}
           {[0, 1].map((set) =>
-            items.map((item, i) => (
-              <span
-                key={`${set}-${i}`}
-                className="flex items-center gap-3 px-7 sm:px-10 whitespace-nowrap text-sm sm:text-base font-bold tracking-[0.2em] uppercase text-accent"
-              >
+          items.map((item, i) =>
+          <span
+            key={`${set}-${i}`}
+            className="flex items-center gap-3 px-7 sm:px-10 whitespace-nowrap text-sm font-bold tracking-[0.2em] uppercase text-accent font-sans py-[20px] sm:text-2xl">
+
                 <item.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent/60 flex-shrink-0" strokeWidth={1.5} />
                 {item.text}
                 <span className="text-accent/30 ml-4 sm:ml-6 text-[8px]">✦</span>
               </span>
-            ))
+          )
           )}
         </div>
       </div>
-    </section>
-  );
+    </section>);
+
 };
 
 export default MarqueeSection;
