@@ -1,59 +1,88 @@
 import { useRef, useEffect } from "react";
-import { Shield, Sparkles, Zap, Gem, Star, Diamond } from "lucide-react";
 
 const items = [
-{ text: "DROP-PROOF DESIGN", icon: Shield },
-{ text: "CRYSTAL CLEAR", icon: Sparkles },
-{ text: "MAGSAFE READY", icon: Zap },
-{ text: "PREMIUM LEATHER", icon: Gem },
-{ text: "6FT DROP TESTED", icon: Shield },
-{ text: "WIRELESS CHARGING", icon: Zap },
-{ text: "SLIM FIT", icon: Star },
-{ text: "ECO FRIENDLY", icon: Diamond }];
-
+  "Premium Accessories.",
+  "Unbeatable Prices.",
+  "Drop-Proof Design.",
+  "MagSafe Ready.",
+  "Same Day Shipping.",
+  "Lifetime Warranty.",
+  "6Ft Drop Tested.",
+  "Free Returns.",
+];
 
 const MarqueeSection = () => {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef(null);
 
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
-    let raf: number;
+    let raf;
     let pos = 0;
-    const speed = 0.5; // px per frame
+    const speed = 1.2;
 
     const step = () => {
       pos += speed;
-      // Reset when first set scrolls out
       if (pos >= el.scrollWidth / 2) pos = 0;
       el.style.transform = `translateX(-${pos}px)`;
       raf = requestAnimationFrame(step);
     };
+
     raf = requestAnimationFrame(step);
     return () => cancelAnimationFrame(raf);
   }, []);
 
   return (
-    <section className="my-5 sm:my-8 py-5 sm:py-6 overflow-hidden bg-background select-none">
-      <div className="relative">
-        <div ref={scrollRef} className="flex whitespace-nowrap will-change-transform">
-          {/* Render twice for seamless loop */}
-          {[0, 1].map((set) =>
-          items.map((item, i) =>
-          <span
-            key={`${set}-${i}`}
-            className="flex items-center gap-3 px-7 sm:px-10 whitespace-nowrap text-sm tracking-[0.2em] uppercase font-sans sm:text-2xl font-extrabold text-center py-0 text-[#f97f06]">
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap');
+        .marquee-text {
+          font-family: 'Montserrat', sans-serif;
+          font-weight: 900;
+          font-size: clamp(2.8rem, 6vw, 5.5rem);
+          color: #f97f06;
+          line-height: 1;
+          white-space: nowrap;
+          display: inline-flex;
+          align-items: center;
+        }
+        .marquee-dot {
+          color: #f97f06;
+          opacity: 0.35;
+          margin: 0 2rem;
+          font-size: clamp(1rem, 2vw, 1.8rem);
+        }
+      `}</style>
 
-                <item.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent/60 flex-shrink-0" strokeWidth={1.5} />
-                {item.text}
-                <span className="text-accent/30 ml-4 sm:ml-6 text-[8px]">✦</span>
+      <section
+        style={{
+          overflow: "hidden",
+          padding: "2.5rem 0",
+          background: "#ffffff",
+          userSelect: "none",
+        }}
+      >
+        <div
+          ref={scrollRef}
+          style={{
+            display: "flex",
+            whiteSpace: "nowrap",
+            willChange: "transform",
+            alignItems: "center",
+          }}
+        >
+          {[0, 1].map((set) =>
+            items.map((text, i) => (
+              <span key={`${set}-${i}`} className="marquee-text">
+                {text}
+                <span className="marquee-dot">✦</span>
               </span>
-          )
+            )),
           )}
         </div>
-      </div>
-    </section>);
-
+      </section>
+    </>
+  );
 };
 
 export default MarqueeSection;
