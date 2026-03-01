@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, TouchEvent as ReactTouchEvent } from "react";
 import { useParams, Link } from "react-router-dom";
 import {
   Star, ChevronLeft, ChevronRight, Shield, Zap, Magnet, CheckCircle,
@@ -245,7 +245,10 @@ const ProductDetail = () => {
             <Link to="/" className="text-sm text-muted-foreground underline">Back to Home</Link>
           </div>
         </div>
-        <Footer />
+        <div className="bg-foreground relative pt-12 sm:pt-14">
+          <div className="absolute top-0 left-0 right-0 h-10 bg-background rounded-b-[2.5rem] sm:rounded-b-[3rem] z-10" />
+          <Footer />
+        </div>
       </div>
     );
   }
@@ -323,18 +326,38 @@ const ProductDetail = () => {
                 ))}
               </div>
 
-              {/* Main image */}
-              <div className="relative flex-1 aspect-[4/5] lg:aspect-square bg-secondary/30 rounded-2xl overflow-hidden">
+              {/* Main image — swipeable */}
+              <div
+                className="relative flex-1 aspect-[4/5] lg:aspect-square bg-secondary/30 rounded-2xl overflow-hidden touch-pan-y"
+                onTouchStart={(e) => {
+                  const touch = e.touches[0];
+                  (e.currentTarget as any)._swipeStartX = touch.clientX;
+                  (e.currentTarget as any)._swipeStartY = touch.clientY;
+                }}
+                onTouchEnd={(e) => {
+                  const startX = (e.currentTarget as any)._swipeStartX;
+                  const startY = (e.currentTarget as any)._swipeStartY;
+                  if (startX == null) return;
+                  const touch = e.changedTouches[0];
+                  const dx = touch.clientX - startX;
+                  const dy = touch.clientY - startY;
+                  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+                    if (dx < 0) setCurrentImg((p) => (p + 1) % galleryImages.length);
+                    else setCurrentImg((p) => (p - 1 + galleryImages.length) % galleryImages.length);
+                  }
+                }}
+              >
                 <AnimatePresence mode="wait">
                   <motion.img
                     key={currentImg}
                     src={galleryImages[currentImg] || product.image}
                     alt={product.name}
-                    className="w-full h-full object-contain p-4 sm:p-6 lg:p-8 cursor-zoom-in"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
+                    className="w-full h-full object-contain p-4 sm:p-6 lg:p-8 cursor-zoom-in select-none"
+                    initial={{ opacity: 0, x: 30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -30 }}
+                    transition={{ duration: 0.25 }}
+                    draggable={false}
                     onClick={() => {
                       const gallery = document.getElementById("product-gallery");
                       if (gallery) {
@@ -344,6 +367,19 @@ const ProductDetail = () => {
                     }}
                   />
                 </AnimatePresence>
+
+                {/* Dot indicators */}
+                {galleryImages.length > 1 && (
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 lg:hidden">
+                    {galleryImages.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setCurrentImg(i)}
+                        className={`w-2 h-2 rounded-full transition-all ${i === currentImg ? "bg-foreground w-5" : "bg-foreground/30"}`}
+                      />
+                    ))}
+                  </div>
+                )}
 
                 {/* Zoom icon — opens lightbox */}
                 <button
@@ -362,18 +398,18 @@ const ProductDetail = () => {
                 {/* PhotoSwipe lightbox (hidden gallery) */}
                 <ProductLightbox images={galleryImages} startIndex={currentImg} />
 
-                {/* Mobile arrows */}
+                {/* Desktop arrows */}
                 {galleryImages.length > 1 && (
-                  <div className="lg:hidden">
+                  <div className="hidden lg:block">
                     <button
                       onClick={() => setCurrentImg((p) => (p - 1 + galleryImages.length) % galleryImages.length)}
-                      className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center shadow-sm"
+                      className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center shadow-sm hover:bg-background transition-colors"
                     >
                       <ChevronLeft className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => setCurrentImg((p) => (p + 1) % galleryImages.length)}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center shadow-sm"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center shadow-sm hover:bg-background transition-colors"
                     >
                       <ChevronRight className="w-4 h-4" />
                     </button>
@@ -878,56 +914,60 @@ const ProductDetail = () => {
         </section>
       )}
 
-      {/* ═══════ STICKY BOTTOM BAR ═══════ */}
+      {/* ═══════ STICKY FLOATING ADD TO CART + COUNTDOWN PILL ═══════ */}
       <AnimatePresence>
         {showStickyBar && (
-          <motion.div
-            initial={{ y: 100 }}
-            animate={{ y: 0 }}
-            exit={{ y: 100 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed bottom-0 left-0 right-0 z-50"
-          >
-            {/* Countdown banner */}
-            <div className="bg-foreground text-background text-center py-1.5 sm:py-2 text-[11px] sm:text-sm font-medium">
-              For Extra Discount, order within <span className="text-amber-400 font-bold">{countdownMinutes}:{countdownSeconds.toString().padStart(2, "0")}</span>
-            </div>
-
-            {/* Product bar */}
-            <div className="bg-background border-t border-border">
-              <div className="max-w-[1440px] mx-auto px-3 sm:px-6 py-2.5 sm:py-3 flex items-center gap-3">
-                <div className="hidden sm:flex items-center gap-3 flex-1 min-w-0">
-                  <div className="w-12 h-12 rounded-lg bg-secondary/30 overflow-hidden flex-shrink-0">
-                    <img src={galleryImages[selectedColor] || product.image} alt="" className="w-full h-full object-contain p-0.5" />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-bold text-foreground truncate">{product.name} {product.subtitle}</p>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-sm font-bold text-foreground">{product.price}</span>
-                      <span className="text-xs text-muted-foreground">MRP <span className="line-through">{product.originalPrice}</span></span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex-1 sm:hidden">
-                  <p className="text-[15px] font-bold text-foreground">{product.price}</p>
-                  <p className="text-[10px] text-muted-foreground line-through">{product.originalPrice}</p>
-                </div>
-
-                <button
-                  onClick={handleAddToCart}
-                  className="flex-1 sm:flex-none sm:px-10 bg-foreground text-background font-bold py-3 sm:py-3.5 rounded-full text-[12px] sm:text-sm tracking-wider hover:bg-foreground/90 transition-colors"
+          <>
+            {/* Animated countdown pill — bottom-left corner */}
+            <motion.div
+              initial={{ x: -100, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -100, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              className="fixed bottom-20 sm:bottom-6 left-3 sm:left-6 z-50"
+            >
+              <motion.div
+                className="flex items-center gap-2 bg-foreground text-background rounded-full px-3.5 sm:px-4 py-2 sm:py-2.5 shadow-[0_4px_20px_rgba(0,0,0,0.25)]"
+                animate={{ scale: [1, 1.03, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <motion.div
+                  animate={{ rotate: [0, -10, 10, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
                 >
-                  ADD TO CART
-                </button>
-              </div>
-            </div>
-          </motion.div>
+                  <Flame className="w-3.5 h-3.5 text-amber-400" />
+                </motion.div>
+                <span className="text-[10px] sm:text-xs font-medium whitespace-nowrap">
+                  Extra off in <span className="text-amber-400 font-bold">{countdownMinutes}:{countdownSeconds.toString().padStart(2, "0")}</span>
+                </span>
+              </motion.div>
+            </motion.div>
+
+            {/* Floating Add to Cart — bottom-right corner */}
+            <motion.button
+              initial={{ y: 100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 100, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              onClick={handleAddToCart}
+              className="fixed bottom-20 sm:bottom-6 right-3 sm:right-6 z-50 flex items-center gap-2 bg-foreground text-background font-bold rounded-full px-5 sm:px-6 py-3 sm:py-3.5 shadow-[0_4px_20px_rgba(0,0,0,0.3)] text-[12px] sm:text-sm tracking-wider hover:bg-foreground/90 transition-colors"
+              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.03 }}
+            >
+              <Package className="w-4 h-4" />
+              ADD TO CART — {product.price}
+            </motion.button>
+          </>
         )}
       </AnimatePresence>
 
-      <div className={showStickyBar ? "h-20 sm:h-24" : ""} />
-      <Footer />
+      <div className={showStickyBar ? "h-8 sm:h-12" : ""} />
+      
+      {/* Footer with floating rounded overlap */}
+      <div className="bg-foreground relative -mt-0 pt-12 sm:pt-14">
+        <div className="absolute top-0 left-0 right-0 h-10 bg-background rounded-b-[2.5rem] sm:rounded-b-[3rem] z-10" />
+        <Footer />
+      </div>
     </div>
   );
 };
