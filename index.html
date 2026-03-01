@@ -3,30 +3,69 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Default title & meta (overridden per-page by useSEO hook) -->
     <title>VCASE — Premium Phone Cases & Protection</title>
-    <meta name="description" content="Premium phone cases for iPhone, Samsung & OnePlus. MagSafe, leather & silicone cases with military-grade drop protection. Free shipping on prepaid orders.">
+    <meta name="description" content="Premium phone cases for iPhone, Samsung & OnePlus. MagSafe, leather & silicone cases with military-grade drop protection. Free shipping on prepaid orders." />
     <meta name="author" content="VCASE" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#0a0a0a" />
 
-    <!-- Preconnect to Google Fonts for faster loading -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Canonical (overridden per-page by useSEO) -->
+    <link rel="canonical" href="https://vcase.in/" />
 
-    <!-- Preload hero image for instant render -->
-    <link rel="preload" as="image" href="/src/assets/hero-1.jpg" />
-
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/075f9c68-ccba-4e4e-afac-74d9b4d95950/id-preview-784fda9e--8d0a63ad-74ba-46ce-b720-bcbf6a617fda.lovable.app-1772057944101.png">
+    <meta property="og:site_name" content="VCASE" />
+    <meta property="og:title" content="VCASE — Premium Phone Cases & Protection" />
+    <meta property="og:description" content="Premium phone cases for iPhone, Samsung & OnePlus. MagSafe, leather & silicone with military-grade protection." />
+    <meta property="og:image" content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/075f9c68-ccba-4e4e-afac-74d9b4d95950/id-preview-784fda9e--8d0a63ad-74ba-46ce-b720-bcbf6a617fda.lovable.app-1772057944101.png" />
+    <meta property="og:url" content="https://vcase.in/" />
+
+    <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@VCASE" />
-    <meta name="twitter:image" content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/075f9c68-ccba-4e4e-afac-74d9b4d95950/id-preview-784fda9e--8d0a63ad-74ba-46ce-b720-bcbf6a617fda.lovable.app-1772057944101.png">
-    <meta property="og:title" content="VCASE — Premium Phone Cases & Protection">
-    <meta name="twitter:title" content="VCASE — Premium Phone Cases & Protection">
-    <meta property="og:description" content="Premium phone cases for iPhone, Samsung & OnePlus. MagSafe, leather & silicone with military-grade protection.">
-    <meta name="twitter:description" content="Premium phone cases for iPhone, Samsung & OnePlus. MagSafe, leather & silicone with military-grade protection.">
-  </head>
+    <meta name="twitter:title" content="VCASE — Premium Phone Cases & Protection" />
+    <meta name="twitter:description" content="Premium phone cases for iPhone, Samsung & OnePlus. MagSafe, leather & silicone with military-grade protection." />
+    <meta name="twitter:image" content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/075f9c68-ccba-4e4e-afac-74d9b4d95950/id-preview-784fda9e--8d0a63ad-74ba-46ce-b720-bcbf6a617fda.lovable.app-1772057944101.png" />
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!--
+      Preconnect to external origins — eliminates DNS+TCP+TLS latency.
+      Only list origins you ACTUALLY load resources from.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev" crossorigin />
+
+    <!--
+      NOTE ON HERO IMAGE PRELOAD:
+      DO NOT preload /src/assets/hero-1.jpg here.
+
+      Reason: After Vite build, assets get content-hashed filenames like
+      /assets/hero-1-a3f8c2d1.jpg. The path in index.html becomes wrong,
+      so the browser makes TWO requests (one 404, one real) and the preload
+      is wasted — actually hurting performance.
+
+      The correct approach: In HeroSlider, add fetchpriority="high" and
+      loading="eager" on the first hero <img>. Vite knows the hashed path
+      at build time and will correctly set up the connection.
+    -->
+
+    <!-- font-display: swap prevents FOIT (flash of invisible text) -->
+    <style>
+      @font-face { font-display: swap; }
+      #root { min-height: 100dvh; }
+    </style>
+  </head>
   <body>
     <div id="root"></div>
+    <!-- type="module" is automatically deferred — non-blocking by spec -->
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
