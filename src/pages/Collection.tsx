@@ -296,7 +296,7 @@ const Collection = () => {
 
       {/* ═══ White content panel — floating above hero with rounded top ═══ */}
       <motion.div
-        className="relative -mt-10 bg-background rounded-t-[2.5rem] sm:rounded-t-[3rem] z-10 pb-20 sm:pb-8 shadow-[0_-8px_30px_rgba(0,0,0,0.12)]"
+        className="relative -mt-10 bg-background rounded-t-[2.5rem] sm:rounded-t-[3rem] z-10 shadow-[0_-8px_30px_rgba(0,0,0,0.12)] rounded-b-[2.5rem] sm:rounded-b-[3rem]"
         initial={{ y: 40, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.3, duration: 0.7, ease: premiumEase }}
@@ -562,7 +562,7 @@ const Collection = () => {
         </section>
 
         {/* ═══ Recently Viewed — horizontal scroll carousel ═══ */}
-        <section className="section-padding py-8 sm:py-12 pb-24 sm:pb-16">
+        <section className="section-padding py-8 sm:py-12 pb-28 sm:pb-20">
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-foreground mb-5 sm:mb-7">
             Recently Viewed
           </h2>
@@ -594,11 +594,8 @@ const Collection = () => {
         </div>
       </motion.div>
 
-      {/* ═══ Footer — with white rounded overlap floating above ═══ */}
-      <div className="relative">
-        <div className="relative z-10 -mb-10 pointer-events-none">
-          <div className="h-12 bg-background rounded-b-[2.5rem] sm:rounded-b-[3rem] shadow-[0_8px_30px_rgba(0,0,0,0.12)]" />
-        </div>
+      {/* ═══ Footer — dark bg visible behind rounded white panel ═══ */}
+      <div className="bg-foreground relative -mt-8 pt-12 sm:pt-14">
         <Footer />
       </div>
 
