@@ -294,8 +294,13 @@ const Collection = () => {
         </div>
       </motion.section>
 
-      {/* ═══ White content panel — overlapping hero with rounded top ═══ */}
-      <div className="relative -mt-8 bg-background rounded-t-[2rem] sm:rounded-t-[2.5rem] z-10 pb-20 sm:pb-8">
+      {/* ═══ White content panel — floating above hero with rounded top ═══ */}
+      <motion.div
+        className="relative -mt-10 bg-background rounded-t-[2.5rem] sm:rounded-t-[3rem] z-10 pb-20 sm:pb-8 shadow-[0_-8px_30px_rgba(0,0,0,0.12)]"
+        initial={{ y: 40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.3, duration: 0.7, ease: premiumEase }}
+      >
         {/* Breadcrumb */}
         <div className="section-padding pt-6 sm:pt-8 pb-2">
           <nav className="flex items-center gap-2 text-muted-foreground text-xs sm:text-sm">
@@ -587,9 +592,15 @@ const Collection = () => {
             Filter and sort
           </motion.button>
         </div>
-      </div>
+      </motion.div>
 
-      <Footer />
+      {/* ═══ Footer — with white rounded overlap floating above ═══ */}
+      <div className="relative">
+        <div className="relative z-10 -mb-10 pointer-events-none">
+          <div className="h-12 bg-background rounded-b-[2.5rem] sm:rounded-b-[3rem] shadow-[0_8px_30px_rgba(0,0,0,0.12)]" />
+        </div>
+        <Footer />
+      </div>
 
       {/* Mobile Bottom Navigation */}
       <MobileBottomNav
