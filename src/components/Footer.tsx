@@ -1,4 +1,5 @@
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/hooks/useScrollAnimations";
+import { Link } from "react-router-dom";
 import logoFull from "@/assets/logo-full.png";
 
 const Footer = () => {
@@ -34,13 +35,11 @@ const Footer = () => {
             <div>
               <h4 className="font-semibold mb-4">Company</h4>
               <ul className="space-y-2.5 text-sm text-background/60">
-                {["About Us", "Contact", "FAQ's", "Shipping & Returns", "Warranty"].map((item) => (
-                  <li key={item}>
-                    <a href="#" className="hover:text-background transition-colors">
-                      {item}
-                    </a>
-                  </li>
-                ))}
+                <li><a href="#" className="hover:text-background transition-colors">About Us</a></li>
+                <li><Link to="/contact" className="hover:text-background transition-colors">Contact Us</Link></li>
+                <li><a href="#" className="hover:text-background transition-colors">FAQ's</a></li>
+                <li><Link to="/terms" className="hover:text-background transition-colors">Terms & Conditions</Link></li>
+                <li><Link to="/refund-policy" className="hover:text-background transition-colors">Refund Policy</Link></li>
               </ul>
             </div>
           </StaggerItem>
