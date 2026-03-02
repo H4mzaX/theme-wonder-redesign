@@ -11,8 +11,10 @@ const Footer = () => {
             <div className="space-y-4">
               <img src={logoFull} alt="VCASE" className="h-6 w-auto brightness-0 invert" />
               <p className="text-sm text-background/60 leading-relaxed">
-                Premium phone cases and screen protectors for iPhone, Samsung, OnePlus & more. Style meets protection.
+                VeeCart Retail<br />
+                Shop No 2, Main Bazar, Vijayanagara, Karnataka
               </p>
+              <p className="text-sm text-background/60">veecartretail@gmail.com</p>
             </div>
           </StaggerItem>
 

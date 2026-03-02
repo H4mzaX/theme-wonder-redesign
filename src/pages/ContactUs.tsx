@@ -35,7 +35,7 @@ const ContactUs = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">Email</h3>
-                    <p className="text-sm text-muted-foreground">support@vcase.in</p>
+                    <p className="text-sm text-muted-foreground">veecartretail@gmail.com</p>
                   </div>
                 </div>
 
@@ -55,7 +55,7 @@ const ContactUs = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">Address</h3>
-                    <p className="text-sm text-muted-foreground">VCASE HQ, India</p>
+                    <p className="text-sm text-muted-foreground">VeeCart Retail<br />Shop No 2, Main Bazar,<br />Vijayanagara, Karnataka</p>
                   </div>
                 </div>
 
