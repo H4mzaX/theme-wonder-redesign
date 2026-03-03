@@ -1,7 +1,10 @@
 import { forwardRef, useEffect, useRef, useState, type ReactNode } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 
-// Scroll reveal wrapper
+/* ── Signature easing: expo-out — fast start, feather-soft landing ── */
+const expoOut: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
+// ── Scroll reveal wrapper ──
 interface ScrollRevealProps {
   children: ReactNode;
   className?: string;
@@ -15,16 +18,16 @@ export const ScrollReveal = forwardRef<HTMLDivElement, ScrollRevealProps>(({
   className = "",
   delay = 0,
   direction = "up",
-  duration = 0.6,
+  duration = 1.5,
 }, _forwardedRef) => {
   const ref = useRef<HTMLDivElement | null>(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   const directionMap = {
-    up: { y: 40, x: 0 },
-    down: { y: -40, x: 0 },
-    left: { y: 0, x: -40 },
-    right: { y: 0, x: 40 },
+    up: { y: "2rem", x: 0 },
+    down: { y: "-2rem", x: 0 },
+    left: { y: 0, x: "-2rem" },
+    right: { y: 0, x: "2rem" },
     none: { y: 0, x: 0 },
   };
 
@@ -36,7 +39,7 @@ export const ScrollReveal = forwardRef<HTMLDivElement, ScrollRevealProps>(({
       className={className}
       initial={{ opacity: 0, y, x }}
       animate={isInView ? { opacity: 1, y: 0, x: 0 } : { opacity: 0, y, x }}
-      transition={{ duration, delay, ease: [0.25, 0.1, 0.25, 1] }}
+      transition={{ duration, delay, ease: expoOut }}
     >
       {children}
     </motion.div>
@@ -44,7 +47,7 @@ export const ScrollReveal = forwardRef<HTMLDivElement, ScrollRevealProps>(({
 });
 ScrollReveal.displayName = "ScrollReveal";
 
-// Staggered children
+// ── Staggered children ──
 interface StaggerContainerProps {
   children: ReactNode;
   className?: string;
@@ -54,10 +57,10 @@ interface StaggerContainerProps {
 export const StaggerContainer = forwardRef<HTMLDivElement, StaggerContainerProps>(({
   children,
   className = "",
-  staggerDelay = 0.08,
+  staggerDelay = 0.1,
 }, _forwardedRef) => {
   const ref = useRef<HTMLDivElement | null>(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   return (
     <motion.div
@@ -87,12 +90,11 @@ export const StaggerItem = forwardRef<HTMLDivElement, StaggerItemProps>(({ child
   <motion.div
     className={className}
     variants={{
-      hidden: { opacity: 0, y: 30, scale: 0.97 },
+      hidden: { opacity: 0, y: "2.5rem" },
       visible: {
         opacity: 1,
         y: 0,
-        scale: 1,
-        transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] },
+        transition: { duration: 0.6, ease: [0.075, 0.82, 0.165, 1] },
       },
     }}
   >
@@ -101,24 +103,37 @@ export const StaggerItem = forwardRef<HTMLDivElement, StaggerItemProps>(({ child
 ));
 StaggerItem.displayName = "StaggerItem";
 
-// Parallax image wrapper
+// ── Parallax media wrapper (vertical / horizontal / zoom) ──
 export const ParallaxImage = ({
   src,
   alt,
   className = "",
-  speed = 0.2,
+  speed = 0.15,
+  direction = "vertical",
 }: {
   src: string;
   alt: string;
   className?: string;
   speed?: number;
+  direction?: "vertical" | "horizontal" | "zoom";
 }) => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
-  const y = useTransform(scrollYProgress, [0, 1], [speed * -100, speed * 100]);
+
+  const scale = 1 + speed;
+  const translate = (speed * 100) / (1 + speed);
+
+  const y = useTransform(scrollYProgress, [0, 1], [`${translate}%`, "0%"]);
+  const x = useTransform(scrollYProgress, [0, 1], [`${translate}%`, "0%"]);
+  const scaleVal = useTransform(scrollYProgress, [0, 1], [1, scale]);
+
+  const style =
+    direction === "horizontal" ? { x, scale } :
+    direction === "zoom" ? { scale: scaleVal } :
+    { y, scale };
 
   return (
     <div ref={ref} className={`overflow-hidden ${className}`}>
@@ -126,19 +141,25 @@ export const ParallaxImage = ({
         src={src}
         alt={alt}
         className="w-full h-[120%] object-cover"
-        style={{ y }}
+        style={style}
       />
     </div>
   );
 };
 
-// Counter animation
+// ── Counter animation ──
 export const AnimatedCounter = ({
   value,
   className = "",
+  suffix = "",
+  prefix = "",
+  duration = 2,
 }: {
   value: number;
   className?: string;
+  suffix?: string;
+  prefix?: string;
+  duration?: number;
 }) => {
   const [display, setDisplay] = useState(0);
   const ref = useRef(null);
@@ -146,29 +167,28 @@ export const AnimatedCounter = ({
 
   useEffect(() => {
     if (!isInView) return;
-    let start = 0;
-    const end = value;
-    const duration = 1500;
+    const durationMs = duration * 1000;
     const startTime = Date.now();
 
     const tick = () => {
       const elapsed = Date.now() - startTime;
-      const progress = Math.min(elapsed / duration, 1);
+      const progress = Math.min(elapsed / durationMs, 1);
+      // expo-out easing
       const eased = 1 - Math.pow(1 - progress, 3);
-      setDisplay(Math.floor(eased * end));
+      setDisplay(Math.floor(eased * value));
       if (progress < 1) requestAnimationFrame(tick);
     };
     tick();
-  }, [isInView, value]);
+  }, [isInView, value, duration]);
 
   return (
     <span ref={ref} className={className}>
-      {display}
+      {prefix}{display.toLocaleString()}{suffix}
     </span>
   );
 };
 
-// Text reveal animation (word by word)
+// ── Text reveal animation (word by word) ──
 export const TextReveal = ({
   children,
   className = "",
@@ -193,7 +213,7 @@ export const TextReveal = ({
           transition={{
             duration: 0.4,
             delay: delay + i * 0.05,
-            ease: [0.25, 0.1, 0.25, 1],
+            ease: expoOut,
           }}
         >
           {word}
@@ -203,7 +223,7 @@ export const TextReveal = ({
   );
 };
 
-// Scale on scroll
+// ── Scale on scroll ──
 export const ScaleOnScroll = ({
   children,
   className = "",
@@ -226,22 +246,33 @@ export const ScaleOnScroll = ({
   );
 };
 
-// Hook for scroll-based navbar
+// ── Hook for scroll-based navbar with hysteresis ──
 export const useScrollDirection = () => {
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const lastScrollY = useRef(0);
+  const buffer = 10;
 
   useEffect(() => {
+    const threshold = 80;
     const handleScroll = () => {
       const currentY = window.scrollY;
-      setScrolled(currentY > 50);
-      setHidden(currentY > lastScrollY.current && currentY > 200);
+
+      // Hysteresis
+      if (!scrolled && currentY > threshold + buffer) setScrolled(true);
+      else if (scrolled && currentY < threshold - buffer) setScrolled(false);
+
+      // Hide/show
+      if (currentY > threshold + 100) {
+        if (currentY > lastScrollY.current) setHidden(true);
+        else if (currentY < lastScrollY.current) setHidden(false);
+      }
+
       lastScrollY.current = currentY;
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [scrolled]);
 
   return { scrolled, hidden };
 };

@@ -83,7 +83,7 @@ interface NavbarProps {
 }
 
 const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) => {
-  const { scrolled } = useScrollDirection();
+  const { scrolled, hidden } = useScrollDirection();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeMega, setActiveMega] = useState<MegaKey | null>(null);
   const [mobileSubmenu, setMobileSubmenu] = useState<string | null>(null);
@@ -111,7 +111,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
   return (
     <>
       <motion.nav
-        className={`section-padding w-full py-4 sticky top-0 z-50 overflow-visible transition-all duration-300 ${
+        className={`section-padding w-full py-4 sticky top-0 z-50 overflow-visible transition-all duration-300 will-change-transform ${
           isTransparent
             ? "bg-transparent text-background"
             : scrolled
@@ -119,8 +119,8 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
               : "bg-background/95 backdrop-blur-md border-b border-border/50"
         }`}
         initial={{ y: 0 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.26, ease: premiumEase }}
+        animate={{ y: hidden && !activeMega ? "-100%" : 0 }}
+        transition={{ duration: 0.5, ease: [0.6, 0, 0.4, 1] }}
       >
         <div className="flex items-center justify-between">
           {/* Mobile hamburger */}

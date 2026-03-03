@@ -53,9 +53,14 @@
     --gold: 30 80% 50%;
     --gold-foreground: 0 0% 100%;
 
-    /* Motion tokens */
+    /* Motion tokens — Concept Theme */
     --motion-ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
     --motion-ease-soft: cubic-bezier(0.25, 0.1, 0.25, 1);
+    --animation-nav: 0.5s cubic-bezier(0.6, 0, 0.4, 1);
+    --animation-primary: 0.5s cubic-bezier(0.3, 1, 0.3, 1);
+    --animation-smooth: 0.7s cubic-bezier(0.7, 0, 0.3, 1);
+    --animation-fast: 0.3s cubic-bezier(0.7, 0, 0.3, 1);
+    --animation-short: 0.2s cubic-bezier(0.7, 0, 0.3, 1);
   }
 
   .dark {
