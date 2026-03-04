@@ -14,7 +14,7 @@ import TermsAndConditions from "./pages/TermsAndConditions";
 import RefundPolicy from "./pages/RefundPolicy";
 import NotFound from "./pages/NotFound";
 import WhatsAppButton from "./components/WhatsAppButton";
-import MouseCursor from "./components/MouseCursor";
+
 
 const queryClient = new QueryClient();
 
@@ -69,7 +69,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <MouseCursor />
+          
           <AnimatedRoutes />
           <WhatsAppButton />
         </BrowserRouter>
