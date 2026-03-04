@@ -43,7 +43,7 @@ const Index = () => {
       <FloatingSidebar />
       <SearchDrawer open={searchOpen} onClose={() => setSearchOpen(false)} />
       <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
-      <main className="space-y-0 sm:space-y-2">
+      <main className="space-y-0">
         <HeroSlider />
         <MarqueeSection />
         <ExploreProducts />
