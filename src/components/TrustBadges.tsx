@@ -67,7 +67,7 @@ const TrustBadges = () => {
 
   return (
     <section className="border-y border-border">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-5 sm:py-6 lg:py-8">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-6 sm:py-8 lg:py-10">
         {/* Desktop: grid */}
         <div className="hidden lg:grid grid-cols-4 gap-8">
           {badges.map((badge) => (
