@@ -113,6 +113,7 @@ const Index = () => {
         <div className="absolute top-0 left-0 right-0 h-10 bg-background rounded-b-[2.5rem] sm:rounded-b-[3rem] z-10" />
         <LazySection><Footer /></LazySection>
       </div>
+      </div>
     </div>
   );
 };
