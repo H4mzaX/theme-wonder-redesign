@@ -111,12 +111,10 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
   return (
     <>
       <motion.nav
-        className={`section-padding w-full py-3 sticky top-0 z-50 overflow-visible transition-all duration-300 will-change-transform ${
+        className={`section-padding w-full py-2.5 sticky top-0 z-50 overflow-visible transition-all duration-300 will-change-transform ${
           isTransparent
             ? "bg-transparent text-background"
-            : scrolled
-              ? "bg-background/95 backdrop-blur-md shadow-md border-b border-border/30"
-              : "bg-background/95 backdrop-blur-md border-b border-border/50"
+            : "bg-background"
         }`}
         initial={{ y: 0 }}
         animate={{ y: hidden && !activeMega ? "-100%" : 0 }}
