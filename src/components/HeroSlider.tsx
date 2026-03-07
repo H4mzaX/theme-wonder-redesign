@@ -99,11 +99,11 @@ const HeroSlider = () => {
   const slide = slides[current];
 
   return (
-    <section className="px-4 sm:px-6 lg:px-8 pt-2 sm:pt-4 lg:pt-2">
+    <section className="px-4 sm:px-6 lg:px-8 pt-2 sm:pt-4 lg:pt-3">
       <div className="max-w-[1400px] mx-auto lg:max-w-none">
-        <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl lg:rounded-2xl">
-          {/* Aspect ratio: portrait on mobile, 16:9 on desktop */}
-          <div className="relative aspect-[3/4] sm:aspect-[16/9]">
+        <div className="relative overflow-hidden rounded-[1.1rem] sm:rounded-[1.35rem] lg:rounded-[1.6rem]">
+          {/* Aspect ratio: taller portrait on mobile, cinematic on desktop */}
+          <div className="relative aspect-[5/8] sm:aspect-[21/9]">
             <AnimatePresence initial={false} custom={direction}>
               <motion.div
                 key={current}
