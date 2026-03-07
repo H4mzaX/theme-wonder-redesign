@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Facebook, Twitter, Instagram, Youtube } from "lucide-react";
 
 const messages = [
-  "BUY ON EMI 🔥 | COD AVAILABLE ✅",
+  "COD AVAILABLE ✅",
   "GET EXTRA DISCOUNT ON PREPAID ORDERS!",
   "FREE SHIPPING ON ORDERS ABOVE ₹499 🚚",
   "NEW ARRIVALS — SHOP THE LATEST CASES 🆕",
