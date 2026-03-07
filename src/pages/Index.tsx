@@ -36,9 +36,10 @@ const Index = () => {
   const [cartOpen, setCartOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-background overflow-x-clip">
+    <div className="min-h-screen bg-announcement overflow-x-clip">
       <LoadingBar />
       <AnnouncementBar />
+      <div className="bg-background rounded-t-[1.25rem] sm:rounded-t-[1.5rem]">
       <Navbar onSearchOpen={() => setSearchOpen(true)} onCartOpen={() => setCartOpen(true)} />
       <FloatingSidebar />
       <SearchDrawer open={searchOpen} onClose={() => setSearchOpen(false)} />
@@ -111,6 +112,7 @@ const Index = () => {
       <div className="bg-foreground relative pt-12 sm:pt-14">
         <div className="absolute top-0 left-0 right-0 h-10 bg-background rounded-b-[2.5rem] sm:rounded-b-[3rem] z-10" />
         <LazySection><Footer /></LazySection>
+      </div>
       </div>
     </div>
   );

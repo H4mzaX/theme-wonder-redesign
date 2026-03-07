@@ -29,7 +29,7 @@ const FloatingSidebar = () => {
         style={{ writingMode: "vertical-rl" }}
       >
         <span className="text-[10px] tracking-widest uppercase text-muted-foreground font-medium">
-          Free Shipping $50+
+          GET 20% OFF
         </span>
       </a>
     </motion.div>
