@@ -55,7 +55,8 @@ const AnimatedRoutes = () => {
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/collections/:slug" element={<Collection />} />
           
-          {/* Series product pages */}
+          {/* Series landing & product pages */}
+          <Route path="/:seriesSlug" element={<SeriesLanding />} />
           <Route path="/:seriesSlug/:deviceSlug" element={<SeriesProduct />} />
           
           {/* Device collection pages */}
