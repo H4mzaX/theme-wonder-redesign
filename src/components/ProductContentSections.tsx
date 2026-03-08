@@ -416,8 +416,8 @@ const ProductContentSections = ({ product }: { product: Product }) => {
         textItems={content.scrollVideoTexts}
       />
 
-      {/* 2. Horizontal feature marquee */}
-      <HorizontalMarquee items={content.marqueeItems} />
+      {/* 2. Large outlined-text marquee (Concept Theme signature) */}
+      <OutlinedMarquee items={content.scrollVideoTexts.map(t => t.replace('.', ''))} />
 
       {/* 3. Concept Theme layout: Editorial text LEFT + Featured grid RIGHT */}
       <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-10 sm:py-16 lg:py-20">
@@ -436,22 +436,23 @@ const ProductContentSections = ({ product }: { product: Product }) => {
             </AnimateElement>
           </div>
 
-          {/* Right: Featured image grid (asymmetric) */}
+          {/* Right: Featured image grid — Concept Theme style with rounded corners & centered text */}
           <div className="grid grid-cols-2 gap-3 sm:gap-4">
             {content.featuredCards.map((card, i) => (
               <AnimateElement key={i} type="fade-up" delay={i * 0.08}>
-                <div className={`relative rounded-2xl overflow-hidden group ${
-                  i === 2 ? "col-span-2 aspect-[21/9]" : "aspect-[4/5]"
-                } ${i === 3 ? "col-span-2 aspect-[21/9]" : ""}`}>
+                <div className={`relative rounded-3xl overflow-hidden group ${
+                  i < 2 ? "aspect-square" : "aspect-[4/3]"
+                }`}>
                   <img
                     src={card.image}
                     alt={card.label}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-transparent to-transparent" />
-                  <div className={`absolute p-4 sm:p-5 ${i >= 2 ? "bottom-0 left-0" : "bottom-0 left-0 right-0"}`}>
-                    <p className="text-[10px] sm:text-[11px] text-background/50 font-medium">{card.label}</p>
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-foreground/40" />
+                  {/* Centered text overlay — Concept Theme style */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-end pb-5 sm:pb-7 px-4 text-center">
+                    <p className="text-[10px] sm:text-[11px] text-background/60 font-medium tracking-wide">{card.label}</p>
                     <p className="text-sm sm:text-base lg:text-lg font-bold text-background tracking-tight leading-tight mt-0.5">
                       {card.subtitle}
                     </p>
@@ -463,8 +464,11 @@ const ProductContentSections = ({ product }: { product: Product }) => {
         </div>
       </section>
 
-      {/* 4. Stats bar */}
-      <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 pb-8 sm:pb-12">
+      {/* 4. Small caps marquee */}
+      <HorizontalMarquee items={content.marqueeItems} />
+
+      {/* 5. Stats bar */}
+      <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-8 sm:py-12">
         <div className="grid grid-cols-4 gap-4 sm:gap-6 bg-secondary/30 rounded-2xl p-5 sm:p-8">
           {content.stats.map((stat, i) => (
             <StatBlock key={stat.label} value={stat.value} label={stat.label} delay={i * 0.08} />
@@ -472,15 +476,15 @@ const ProductContentSections = ({ product }: { product: Product }) => {
         </div>
       </section>
 
-      {/* 5. Feature icon grid */}
+      {/* 6. Feature icon grid */}
       <FeatureGrid cards={content.featureCards} />
 
-      {/* 6. Image + text editorial blocks (Concept Theme "Compact Power" style) */}
+      {/* 7. Image + text editorial blocks */}
       {content.imageTextBlocks.map((block, i) => (
         <ImageTextBlock key={i} {...block} />
       ))}
 
-      {/* 7. Material card */}
+      {/* 8. Material card */}
       {series && <MaterialCard series={series} />}
     </div>
   );
