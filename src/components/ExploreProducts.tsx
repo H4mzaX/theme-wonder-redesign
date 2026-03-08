@@ -6,11 +6,11 @@ import { seriesData, type SeriesSlug } from "@/data/products";
 import BrandName from "@/components/BrandName";
 
 const seriesList: { slug: SeriesSlug; href: string }[] = [
-  { slug: "clearmag", href: "/collections/clearmag" },
-  { slug: "clearmag-edge", href: "/collections/clearmag-edge" },
-  { slug: "softmag", href: "/collections/softmag" },
-  { slug: "edgeguard", href: "/collections/edgeguard" },
-  { slug: "lensguard", href: "/collections/lensguard" },
+  { slug: "clearmag", href: "/clearmag" },
+  { slug: "clearmag-edge", href: "/clearmag-edge" },
+  { slug: "softmag", href: "/softmag" },
+  { slug: "edgeguard", href: "/edgeguard" },
+  { slug: "lensguard", href: "/lensguard" },
 ];
 
 const ExploreProducts = () => {
