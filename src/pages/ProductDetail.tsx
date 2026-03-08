@@ -26,27 +26,30 @@ const colorHex: Record<string, string> = {
   Blue: "#2563eb",
   Pink: "#ec4899",
   Green: "#16a34a",
+  Stone: "#a39382",
+  Navy: "#1e3a5f",
+  Orange: "#e8632b",
   "Saddle Brown": "#92400e",
   "Matte Black": "#333333",
 };
 
 const categoryHighlights: Record<string, { icon: typeof Shield; label: string }[]> = {
-  "MagSafe Cases": [
+  Cases: [
     { icon: Waves, label: "ClearFlow™\nTechnology" },
     { icon: ShieldCheck, label: "14.8 Feet Drop\nProtection" },
     { icon: Magnet, label: "MagSafe\nCompatible" },
     { icon: BadgeCheck, label: "Lifetime\nWarranty" },
   ],
-  "Silicone Cases": [
-    { icon: CircleDot, label: "Anti-skid\nGrip" },
-    { icon: ShieldCheck, label: "10.4 Feet Drop\nProtection" },
-    { icon: Waves, label: "Washable\nSurface" },
+  "Screen Protection": [
+    { icon: ShieldCheck, label: "9H Hardness\nGlass" },
+    { icon: CircleDot, label: "Edge-to-Edge\nCoverage" },
+    { icon: Waves, label: "Anti-Fingerprint\nCoating" },
     { icon: BadgeCheck, label: "Lifetime\nWarranty" },
   ],
-  "Leather Cases": [
-    { icon: ScanLine, label: "Premium\nHand Feel" },
-    { icon: ShieldCheck, label: "6 Feet Drop\nProtection" },
-    { icon: Magnet, label: "MagSafe\nCompatible" },
+  "Camera Protection": [
+    { icon: ScanLine, label: "Sapphire-Grade\nHardness" },
+    { icon: CircleDot, label: "Anti-Reflective\nCoating" },
+    { icon: Waves, label: "0.3mm Ultra\nThin Profile" },
     { icon: BadgeCheck, label: "Lifetime\nWarranty" },
   ],
 };
