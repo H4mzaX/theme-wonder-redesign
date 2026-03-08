@@ -1,109 +1,17 @@
 import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
 import { seriesData, type SeriesSlug } from "@/data/products";
 import BrandName from "@/components/BrandName";
 
 const seriesList: { slug: SeriesSlug; href: string }[] = [
-  { slug: "clearmag", href: "/clearmag" },
-  { slug: "clearmag-edge", href: "/clearmag-edge" },
-  { slug: "softmag", href: "/softmag" },
-  { slug: "edgeguard", href: "/edgeguard" },
-  { slug: "lensguard", href: "/lensguard" },
+  { slug: "clearmag", href: "/collections/clearmag" },
+  { slug: "clearmag-edge", href: "/collections/clearmag-edge" },
+  { slug: "softmag", href: "/collections/softmag" },
+  { slug: "edgeguard", href: "/collections/edgeguard" },
+  { slug: "lensguard", href: "/collections/lensguard" },
 ];
-
-const CollectionCard = ({ slug, href, index }: { slug: SeriesSlug; href: string; index: number }) => {
-  const series = seriesData[slug];
-  const cardRef = useRef<HTMLDivElement>(null);
-  const mouseX = useMotionValue(0.5);
-  const mouseY = useMotionValue(0.5);
-
-  const rotateX = useSpring(useTransform(mouseY, [0, 1], [4, -4]), { stiffness: 200, damping: 20 });
-  const rotateY = useSpring(useTransform(mouseX, [0, 1], [-4, 4]), { stiffness: 200, damping: 20 });
-  const glareX = useTransform(mouseX, [0, 1], [0, 100]);
-  const glareY = useTransform(mouseY, [0, 1], [0, 100]);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    const rect = cardRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    mouseX.set((e.clientX - rect.left) / rect.width);
-    mouseY.set((e.clientY - rect.top) / rect.height);
-  };
-
-  const handleMouseLeave = () => {
-    mouseX.set(0.5);
-    mouseY.set(0.5);
-  };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ delay: index * 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className="flex-none w-[65vw] sm:w-[44vw] md:w-[320px] lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-12px)] snap-start"
-    >
-      <motion.div
-        ref={cardRef}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        style={{ rotateX, rotateY, transformPerspective: 800 }}
-        className="will-change-transform"
-      >
-        <Link to={href} className="group block relative rounded-2xl overflow-hidden bg-background">
-          {/* Subtle glare effect on hover */}
-          <motion.div
-            className="absolute inset-0 z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"
-            style={{
-              background: useTransform(
-                [glareX, glareY],
-                ([x, y]) => `radial-gradient(circle at ${x}% ${y}%, hsl(var(--foreground) / 0.04) 0%, transparent 60%)`
-              ),
-            }}
-          />
-
-          {/* Product image */}
-          <div className="aspect-square bg-muted/10 p-6 sm:p-8 relative overflow-hidden">
-            <motion.img
-              src={series.icon}
-              alt={series.name}
-              className="w-full h-full object-contain relative z-[1]"
-              loading="lazy"
-              decoding="async"
-              whileHover={{ scale: 1.08, y: -6 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            />
-            {/* Soft radial glow behind product */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-[60%] h-[60%] rounded-full bg-accent/5 blur-3xl group-hover:bg-accent/10 transition-colors duration-700" />
-            </div>
-          </div>
-
-          {/* Bottom info */}
-          <div className="py-5 sm:py-6 px-4 text-center relative">
-            <BrandName
-              name={series.name}
-              as="p"
-              className="text-xl sm:text-2xl lg:text-[1.75rem] tracking-tight text-foreground"
-            />
-            <motion.div
-              className="flex items-center justify-center gap-1 mt-1.5 text-muted-foreground text-xs sm:text-sm"
-              initial={{ opacity: 0.6 }}
-              whileHover={{ opacity: 1 }}
-            >
-              <span className="group-hover:text-foreground transition-colors duration-300">Shop now</span>
-              <ArrowUpRight className="w-3.5 h-3.5 group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
-            </motion.div>
-          </div>
-
-          {/* Bottom border accent on hover */}
-          <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-foreground scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-        </Link>
-      </motion.div>
-    </motion.div>
-  );
-};
 
 const ExploreProducts = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -156,9 +64,48 @@ const ExploreProducts = () => {
             className="flex gap-4 sm:gap-5 overflow-x-auto snap-x snap-mandatory scroll-pl-4 sm:scroll-pl-6 lg:scroll-pl-10 px-4 sm:px-6 lg:px-10"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
-            {seriesList.map(({ slug, href }, i) => (
-              <CollectionCard key={slug} slug={slug} href={href} index={i} />
-            ))}
+            {seriesList.map(({ slug, href }, i) => {
+              const series = seriesData[slug];
+              return (
+                <motion.div
+                  key={slug}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ delay: i * 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  className="flex-none w-[65vw] sm:w-[44vw] md:w-[320px] lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-12px)] snap-start"
+                >
+                  <Link to={href} className="group block relative rounded-2xl overflow-hidden bg-white">
+                    {/* Product image on pure white */}
+                    <div className="aspect-square p-6 sm:p-8 overflow-hidden">
+                      <img
+                        src={series.icon}
+                        alt={series.name}
+                        className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700 ease-out"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </div>
+
+                    {/* Bottom info */}
+                    <div className="py-5 sm:py-6 px-4 text-center">
+                      <BrandName
+                        name={series.name}
+                        as="p"
+                        className="text-xl sm:text-2xl lg:text-[1.75rem] tracking-tight text-foreground"
+                      />
+                      <div className="flex items-center justify-center gap-1 mt-1.5 text-muted-foreground text-xs sm:text-sm">
+                        <span className="group-hover:text-foreground transition-colors duration-300">Shop now</span>
+                        <ArrowUpRight className="w-3.5 h-3.5 group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
+                      </div>
+                    </div>
+
+                    {/* Bottom border accent on hover */}
+                    <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-foreground scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+                  </Link>
+                </motion.div>
+              );
+            })}
           </div>
 
           {/* Navigation arrows */}
