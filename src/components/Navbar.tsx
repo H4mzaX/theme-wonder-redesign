@@ -473,16 +473,18 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                                     <ChevronLeft className="w-3 h-3" /> <BrandName name={casesMenuItems.find(i => i.slug === mobileDrilldown)?.name || ""} />
                                   </button>
                                 </p>
-                                {deviceSeries.map((group) => (
-                                  <Link
-                                    key={group.slug}
-                                    to={`/${mobileDrilldown}/${group.slug}`}
-                                    onClick={() => setMobileOpen(false)}
-                                    className="flex items-center gap-2 py-2 group"
-                                  >
-                                    <span className="text-[14px] font-medium text-foreground group-hover:text-accent transition-colors">{group.name}</span>
-                                  </Link>
-                                ))}
+                                {deviceSeries.flatMap((group) =>
+                                  group.models.map((model) => (
+                                    <Link
+                                      key={model.slug}
+                                      to={`/${mobileDrilldown}/${group.slug}?model=${model.slug}`}
+                                      onClick={() => setMobileOpen(false)}
+                                      className="flex items-center gap-2 py-2 group"
+                                    >
+                                      <span className="text-[14px] font-medium text-foreground group-hover:text-accent transition-colors">{model.name}</span>
+                                    </Link>
+                                  ))
+                                )}
                               </>
                             )}
                           </div>
@@ -534,16 +536,18 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                                     <ChevronLeft className="w-3 h-3" /> <BrandName name={protectionMenuItems.find(i => i.slug === mobileDrilldown)?.name || ""} />
                                   </button>
                                 </p>
-                                {deviceSeries.map((group) => (
-                                  <Link
-                                    key={group.slug}
-                                    to={`/${mobileDrilldown}/${group.slug}`}
-                                    onClick={() => setMobileOpen(false)}
-                                    className="flex items-center gap-2 py-2 group"
-                                  >
-                                    <span className="text-[14px] font-medium text-foreground group-hover:text-accent transition-colors">{group.name}</span>
-                                  </Link>
-                                ))}
+                                {deviceSeries.flatMap((group) =>
+                                  group.models.map((model) => (
+                                    <Link
+                                      key={model.slug}
+                                      to={`/${mobileDrilldown}/${group.slug}?model=${model.slug}`}
+                                      onClick={() => setMobileOpen(false)}
+                                      className="flex items-center gap-2 py-2 group"
+                                    >
+                                      <span className="text-[14px] font-medium text-foreground group-hover:text-accent transition-colors">{model.name}</span>
+                                    </Link>
+                                  ))
+                                )}
                               </>
                             )}
                           </div>
@@ -571,16 +575,18 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                       {mobileSubmenu === "Devices" && (
                         <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
                           <div className="pl-3 pb-3 flex flex-col gap-0.5">
-                            {deviceSeries.map((group) => (
-                              <Link
-                                key={group.slug}
-                                to={`/devices/${group.slug}`}
-                                onClick={() => setMobileOpen(false)}
-                                className="py-2 group"
-                              >
-                                <span className="text-[15px] font-medium text-foreground group-hover:text-accent transition-colors">{group.name}</span>
-                              </Link>
-                            ))}
+                            {deviceSeries.flatMap((group) =>
+                              group.models.map((model) => (
+                                <Link
+                                  key={model.slug}
+                                  to={`/clearmag/${group.slug}?model=${model.slug}`}
+                                  onClick={() => setMobileOpen(false)}
+                                  className="py-2 group"
+                                >
+                                  <span className="text-[15px] font-medium text-foreground group-hover:text-accent transition-colors">{model.name}</span>
+                                </Link>
+                              ))
+                            )}
                           </div>
                         </motion.div>
                       )}
