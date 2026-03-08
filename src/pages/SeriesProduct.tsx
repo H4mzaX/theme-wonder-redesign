@@ -99,7 +99,6 @@ const SeriesProduct = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [selectedColor, setSelectedColor] = useState(0);
-  const [quantity, setQuantity] = useState(1);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [activeGalleryImg, setActiveGalleryImg] = useState(0);
   const [showStickyCart, setShowStickyCart] = useState(false);
