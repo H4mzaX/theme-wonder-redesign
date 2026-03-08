@@ -10,6 +10,12 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import { allProducts, colorImages, iphone17ProGalleryImages, iphone17GalleryImages, iphone16MagsafeGalleryImages, siliconeGalleryImages, type Product } from "@/data/products";
+import softmagCloseup from "@/assets/softmag-closeup.png";
+import softmagLifestyle from "@/assets/softmag-lifestyle.png";
+import softmagFloating from "@/assets/softmag-floating.png";
+import softmagCamera from "@/assets/softmag-camera.png";
+
+const softmagGalleryImages = [softmagFloating, softmagCamera, softmagCloseup, softmagLifestyle];
 import { useSEO } from "@/hooks/useSEO";
 import { useCart } from "@/context/CartContext";
 import { toast } from "@/hooks/use-toast";
@@ -176,6 +182,7 @@ const ProductDetail = () => {
         if (product.device === "iPhone 17 Pro") return iphone17ProGalleryImages;
         if (product.device === "iPhone 17") return iphone17GalleryImages;
         if ((product.device === "iPhone 16" || product.device === "iPhone 16 Pro") && product.category === "MagSafe Cases") return iphone16MagsafeGalleryImages;
+        if (product.seriesSlug === "softmag") return softmagGalleryImages;
         if (product.category === "Silicone Cases") return siliconeGalleryImages;
         const imgs: string[] = [product.image];
         if (product.hoverImage && product.hoverImage !== product.image) imgs.push(product.hoverImage);

@@ -16,6 +16,7 @@ import softmagCloseup from "@/assets/softmag-closeup.png";
 import softmagLifestyle from "@/assets/softmag-lifestyle.png";
 import softmagFloating from "@/assets/softmag-floating.png";
 import softmagCamera from "@/assets/softmag-camera.png";
+import softmagVideo from "@/assets/softmag-showcase.mp4";
 
 const expoOut: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -123,7 +124,7 @@ const seriesContentMap: Record<string, SeriesContent> = {
     ],
   },
   softmag: {
-    scrollVideoSrc: heroVideo,
+    scrollVideoSrc: softmagVideo,
     scrollVideoTexts: ["Soft Touch.", "Bold Colors.", "MagSafe Ready.", "Stain Proof."],
     editorialHeadline: "Designed for Comfort.",
     editorialBody: "Buttery-soft liquid silicone exterior meets a cushioning microfiber interior. Four bold colorways crafted with fade-resistant pigments ensure your case looks as good months from now as it does today.",
