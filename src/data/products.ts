@@ -17,6 +17,7 @@ import edgeguardHoverImg from "@/assets/edgeguard-screen-protector-hover.jpg";
 import lensguardImg from "@/assets/lensguard-camera-protector.jpg";
 import lensguardHoverImg from "@/assets/lensguard-camera-protector-hover.jpg";
 import armoredgeImg from "@/assets/armoredge-orange.png";
+import softmagImg from "@/assets/softmag.webp";
 
 import iphone17proMagsafeClearImg from "@/assets/iphone17pro-magsafe-clear.jpg";
 import iphone17proSlimImg from "@/assets/iphone17pro-slim-design.jpg";
@@ -226,7 +227,7 @@ interface SeriesProductDef {
 const seriesProductDefs: SeriesProductDef[] = [
   { seriesSlug: "clearmag", image: magsafeClearImg, hoverImage: magsafeBlackImg, colors: ["Clear"], basePrice: 1499, originalPrice: 2499, discount: "Save 40%", rating: 5, reviewBase: 120 },
   { seriesSlug: "clearmag-edge", image: magsafeBlackImg, hoverImage: magsafeClearImg, colors: ["Jet Black"], basePrice: 1699, originalPrice: 2999, discount: "Save 43%", rating: 5, reviewBase: 95 },
-  { seriesSlug: "softmag", image: siliconeBlackNewImg, hoverImage: siliconeMintImg, colors: ["Black", "Stone", "Navy", "Orange"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 200 },
+  { seriesSlug: "softmag", image: softmagImg, hoverImage: softmagImg, colors: ["Black", "Stone", "Navy", "Orange"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 200 },
   { seriesSlug: "armor-edge", image: armoredgeImg, hoverImage: armoredgeImg, colors: ["Orange", "Black"], basePrice: 1899, originalPrice: 2999, discount: "Save 37%", rating: 5, reviewBase: 85 },
   { seriesSlug: "edgeguard", image: edgeguardImg, hoverImage: edgeguardHoverImg, colors: ["Clear"], basePrice: 699, originalPrice: 1299, discount: "Save 46%", rating: 5, reviewBase: 180 },
   { seriesSlug: "lensguard", image: lensguardImg, hoverImage: lensguardHoverImg, colors: ["Clear"], basePrice: 499, originalPrice: 999, discount: "Save 50%", rating: 5, reviewBase: 150 },
@@ -409,8 +410,8 @@ export const siliconeGalleryImages = [
 
 // SoftMag color options
 export const softmagColors = [
-  { name: "Black", hex: "#1a1a1a", image: siliconeBlackNewImg },
-  { name: "Stone", hex: "#a39382", image: leatherBrownImg },
-  { name: "Navy", hex: "#1e3a5f", image: siliconeLifestyleNavyImg },
-  { name: "Orange", hex: "#e8632b", image: siliconePinkImg },
+  { name: "Black", hex: "#1a1a1a", image: softmagImg },
+  { name: "Stone", hex: "#a39382", image: softmagImg },
+  { name: "Navy", hex: "#1e3a5f", image: softmagImg },
+  { name: "Orange", hex: "#e8632b", image: softmagImg },
 ];
