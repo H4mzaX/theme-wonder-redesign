@@ -21,6 +21,7 @@ import CartDrawer from "@/components/CartDrawer";
 import ProductCard from "@/components/ProductCard";
 import { ProductLightbox } from "@/components/ProductLightbox";
 import ProductContentSections from "@/components/ProductContentSections";
+import FloatingNavPill from "@/components/FloatingNavPill";
 
 const colorHex: Record<string, string> = {
   Clear: "#e5e5e5",
@@ -511,6 +512,13 @@ const ProductDetail = () => {
           </div>
         </div>
       </section>
+
+      {/* ═══════ FLOATING SECTION NAV ═══════ */}
+      <FloatingNavPill sections={[
+        { id: "pdp-highlights", label: "Highlights" },
+        { id: "pdp-features", label: "Features" },
+        { id: "pdp-faqs", label: "FAQs" },
+      ]} />
 
       {/* ═══════ PREMIUM CONTENT SECTIONS ═══════ */}
       <ProductContentSections product={product} />
