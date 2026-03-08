@@ -222,7 +222,7 @@ function getSeriesContent(seriesSlug: string, device: string): SeriesContent | n
 const staticSeriesContentMap: Record<string, SeriesContent> = {
   softmag: {
     scrollVideoSrc: softmagVideo,
-    scrollVideoTexts: ["Soft Touch.", "Bold Colors.", "MagSafe Ready.", "Stain Proof."],
+    scrollVideoTexts: ["Soft to Touch.\nBold in Color.", "Silicone That\nWon't Stain.", "Snap-On\nMagSafe.", "Fade-Proof.\nWashable."],
     editorialHeadline: "Designed for Comfort.",
     editorialBody: "Buttery-soft liquid silicone exterior meets a cushioning microfiber interior. Four bold colorways crafted with fade-resistant pigments ensure your case looks as good months from now as it does today.",
     featuredCards: [
