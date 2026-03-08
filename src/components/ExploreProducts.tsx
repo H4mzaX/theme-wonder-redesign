@@ -71,25 +71,25 @@ const ExploreProducts = () => {
                 >
                   <Link
                     to={href}
-                    className="group block rounded-xl sm:rounded-2xl overflow-hidden bg-background border border-border/50 hover:border-border transition-all duration-300"
+                    className="group block rounded-2xl sm:rounded-3xl overflow-hidden bg-background border border-border/30 shadow-[0_2px_16px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] hover:border-border/60 transition-all duration-500"
                   >
-                    {/* Product image on light background */}
-                    <div className="aspect-[3/4] flex items-center justify-center p-6 sm:p-8">
+                    {/* Product image — zoomed in, clean bg */}
+                    <div className="aspect-square sm:aspect-[3/4] flex items-center justify-center p-4 sm:p-6 bg-muted/20">
                       <img
                         src={series.icon}
                         alt={series.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                        className="w-[85%] h-[85%] object-contain scale-110 group-hover:scale-[1.18] transition-transform duration-700 ease-out"
                         loading="lazy"
                         decoding="async"
                       />
                     </div>
 
                     {/* Series name with BrandName typography */}
-                    <div className="px-4 sm:px-5 pb-4 sm:pb-5 pt-0 text-center">
+                    <div className="px-4 sm:px-5 py-4 sm:py-5 text-center">
                       <BrandName
                         name={series.name}
                         as="p"
-                        className="text-lg sm:text-xl lg:text-2xl tracking-tight text-foreground"
+                        className="text-xl sm:text-2xl lg:text-3xl tracking-tight text-foreground"
                       />
                     </div>
                   </Link>
