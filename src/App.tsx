@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import ProductDetail from "./pages/ProductDetail";
 import Collection from "./pages/Collection";
 import SeriesProduct from "./pages/SeriesProduct";
+import ProductPage from "./pages/ProductPage";
 import DeviceCollection from "./pages/DeviceCollection";
 import SeriesLanding from "./pages/SeriesLanding";
 import ContactUs from "./pages/ContactUs";
@@ -58,6 +59,7 @@ const AnimatedRoutes = () => {
           {/* Series landing & product pages */}
           <Route path="/:seriesSlug" element={<SeriesLanding />} />
           <Route path="/:seriesSlug/:deviceSlug" element={<SeriesProduct />} />
+          <Route path="/:seriesSlug/:deviceSlug/:modelSlug" element={<ProductPage />} />
           
           {/* Device collection pages */}
           <Route path="/devices/:deviceSlug" element={<DeviceCollection />} />
