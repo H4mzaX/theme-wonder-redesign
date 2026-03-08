@@ -142,7 +142,7 @@ const SeriesProduct = () => {
                   className="text-3xl sm:text-4xl lg:text-5xl font-display text-foreground tracking-tight leading-[1.1]"
                 />
                 <p className="text-lg sm:text-xl text-muted-foreground mt-1">
-                  for {deviceGroup.name}
+                  for {listingLabel}
                 </p>
               </motion.div>
               <motion.p
@@ -179,18 +179,28 @@ const SeriesProduct = () => {
       {/* ═══ PRODUCT GRID — All models ═══ */}
       <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-10 sm:py-14 lg:py-16">
         <AnimateElement type="fade-up">
-          <div className="flex items-center justify-between mb-6 sm:mb-8">
+          <div className="flex items-center justify-between mb-6 sm:mb-8 gap-3">
             <h2 className="text-lg sm:text-xl lg:text-2xl font-display font-bold text-foreground tracking-tight">
-              Choose Your Model
+              {selectedModelName ? "Selected Model" : "Choose Your Model"}
             </h2>
-            <span className="text-sm text-muted-foreground">
-              {products.length} {products.length === 1 ? "product" : "products"}
-            </span>
+            <div className="flex items-center gap-3">
+              {selectedModelName && (
+                <Link
+                  to={`/${seriesSlug}/${deviceSlug}`}
+                  className="text-sm font-medium text-accent hover:underline"
+                >
+                  View all models
+                </Link>
+              )}
+              <span className="text-sm text-muted-foreground">
+                {displayedProducts.length} {displayedProducts.length === 1 ? "product" : "products"}
+              </span>
+            </div>
           </div>
         </AnimateElement>
 
         <StaggerGroup className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6" staggerDelay={0.08}>
-          {products.map((product) => (
+          {displayedProducts.map((product) => (
             <StaggerChild key={product.id}>
               <ProductCard product={product} />
             </StaggerChild>
