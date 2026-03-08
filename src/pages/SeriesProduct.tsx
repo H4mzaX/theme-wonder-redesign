@@ -1,9 +1,14 @@
 import { useState, useEffect } from "react";
-import { useParams, Link, useSearchParams } from "react-router-dom";
-import { ChevronDown, Package, Truck, Percent, Smartphone, Waves, ShieldCheck, Magnet, BadgeCheck } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import { seriesData, deviceSeries, getSeriesProducts, allProducts, type Product, type SeriesSlug } from "@/data/products";
+import { useParams, Link } from "react-router-dom";
+import {
+  Shield, Magnet, Zap, CheckCircle, ChevronDown,
+  Package, Truck, Percent, Smartphone, Waves, ShieldCheck, BadgeCheck, Star
+} from "lucide-react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { seriesData, deviceSeries, getSeriesProducts, allProducts, type SeriesSlug } from "@/data/products";
 import { useSEO } from "@/hooks/useSEO";
+import { useCart } from "@/context/CartContext";
+import { toast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Footer from "@/components/Footer";
@@ -29,7 +34,6 @@ const faqItems = [
 
 const SeriesProduct = () => {
   const { seriesSlug, deviceSlug } = useParams<{ seriesSlug: string; deviceSlug: string }>();
-  const [searchParams] = useSearchParams();
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -37,23 +41,18 @@ const SeriesProduct = () => {
   const series = seriesData[seriesSlug as SeriesSlug];
   const deviceGroup = deviceSeries.find((g) => g.slug === deviceSlug);
 
-  const selectedModelSlug = searchParams.get("model");
-  const selectedModelName = deviceGroup?.models.find((m) => m.slug === selectedModelSlug)?.name;
-  const listingLabel = selectedModelName || deviceGroup?.name || "";
-
+  const deviceName = deviceGroup?.name?.replace(" Series", "") || deviceSlug || "";
   const seriesName = series?.name || seriesSlug || "";
 
   useSEO({
-    title: series && deviceGroup ? `${seriesName} for ${listingLabel} | VCASE` : "Collection | VCASE",
-    description: series
-      ? `Shop ${seriesName} ${series.type === "case" ? "cases" : "protectors"} for ${listingLabel}. ${series.description}`
-      : "Premium phone protection by VCASE.",
+    title: series && deviceGroup ? `${seriesName} for ${deviceGroup.name} | VCASE` : "Collection | VCASE",
+    description: series ? `Shop ${seriesName} ${series.type === "case" ? "cases" : "protectors"} for ${deviceGroup?.name}. Available for ${deviceGroup?.models.map(m => m.name).join(", ")}. ${series.description}` : "Premium phone protection by VCASE.",
     canonical: `https://vcase.in/${seriesSlug}/${deviceSlug}`,
     type: "product",
     jsonLd: series && deviceGroup ? {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
-      name: `${seriesName} for ${listingLabel}`,
+      name: `${seriesName} for ${deviceGroup.name}`,
       description: series.description,
       brand: { "@type": "Brand", name: "VCASE" },
     } : undefined,
@@ -61,7 +60,7 @@ const SeriesProduct = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [seriesSlug, deviceSlug, selectedModelSlug]);
+  }, [seriesSlug, deviceSlug]);
 
   if (!series || !deviceGroup) {
     return (
@@ -80,18 +79,16 @@ const SeriesProduct = () => {
   }
 
   const products = getSeriesProducts(seriesSlug!, deviceSlug!);
-  const displayedProducts = selectedModelName
-    ? products.filter((p) => p.device === selectedModelName)
-    : products;
   const otherDeviceGroups = deviceSeries.filter((g) => g.slug !== deviceSlug);
 
   // Related products from different series for same devices
   const relatedProducts = allProducts
-    .filter((p) => deviceGroup.models.some((m) => m.name === p.device) && p.seriesSlug !== seriesSlug)
+    .filter((p) => deviceGroup.models.some(m => m.name === p.device) && p.seriesSlug !== seriesSlug)
     .reduce((acc, p) => {
-      if (!acc.find((a) => a.seriesSlug === p.seriesSlug)) acc.push(p);
+      // One per series
+      if (!acc.find(a => a.seriesSlug === p.seriesSlug)) acc.push(p);
       return acc;
-    }, [] as Product[])
+    }, [] as typeof allProducts)
     .slice(0, 4);
 
   return (
@@ -142,7 +139,7 @@ const SeriesProduct = () => {
                   className="text-3xl sm:text-4xl lg:text-5xl font-display text-foreground tracking-tight leading-[1.1]"
                 />
                 <p className="text-lg sm:text-xl text-muted-foreground mt-1">
-                  for {listingLabel}
+                  for {deviceGroup.name}
                 </p>
               </motion.div>
               <motion.p
@@ -179,28 +176,18 @@ const SeriesProduct = () => {
       {/* ═══ PRODUCT GRID — All models ═══ */}
       <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-10 sm:py-14 lg:py-16">
         <AnimateElement type="fade-up">
-          <div className="flex items-center justify-between mb-6 sm:mb-8 gap-3">
+          <div className="flex items-center justify-between mb-6 sm:mb-8">
             <h2 className="text-lg sm:text-xl lg:text-2xl font-display font-bold text-foreground tracking-tight">
-              {selectedModelName ? "Selected Model" : "Choose Your Model"}
+              Choose Your Model
             </h2>
-            <div className="flex items-center gap-3">
-              {selectedModelName && (
-                <Link
-                  to={`/${seriesSlug}/${deviceSlug}`}
-                  className="text-sm font-medium text-accent hover:underline"
-                >
-                  View all models
-                </Link>
-              )}
-              <span className="text-sm text-muted-foreground">
-                {displayedProducts.length} {displayedProducts.length === 1 ? "product" : "products"}
-              </span>
-            </div>
+            <span className="text-sm text-muted-foreground">
+              {products.length} {products.length === 1 ? "product" : "products"}
+            </span>
           </div>
         </AnimateElement>
 
         <StaggerGroup className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6" staggerDelay={0.08}>
-          {displayedProducts.map((product) => (
+          {products.map((product) => (
             <StaggerChild key={product.id}>
               <ProductCard product={product} />
             </StaggerChild>
