@@ -12,6 +12,10 @@ import siliconeLifestyleNavyImg from "@/assets/silicone-lifestyle-navy.jpg";
 import siliconeLifestyleClearImg from "@/assets/silicone-lifestyle-clear.jpg";
 import leatherBrownImg from "@/assets/case-leather-brown.jpg";
 import leatherBlackImg from "@/assets/case-leather-black.jpg";
+import edgeguardImg from "@/assets/edgeguard-screen-protector.jpg";
+import edgeguardHoverImg from "@/assets/edgeguard-screen-protector-hover.jpg";
+import lensguardImg from "@/assets/lensguard-camera-protector.jpg";
+import lensguardHoverImg from "@/assets/lensguard-camera-protector-hover.jpg";
 
 import iphone17proMagsafeClearImg from "@/assets/iphone17pro-magsafe-clear.jpg";
 import iphone17proSlimImg from "@/assets/iphone17pro-slim-design.jpg";
@@ -223,8 +227,8 @@ const seriesProductDefs: SeriesProductDef[] = [
   { seriesSlug: "clearmag", image: magsafeClearImg, hoverImage: magsafeBlackImg, colors: ["Clear"], basePrice: 1499, originalPrice: 2499, discount: "Save 40%", rating: 5, reviewBase: 120 },
   { seriesSlug: "clearmag-edge", image: magsafeBlackImg, hoverImage: magsafeClearImg, colors: ["Jet Black"], basePrice: 1699, originalPrice: 2999, discount: "Save 43%", rating: 5, reviewBase: 95 },
   { seriesSlug: "softmag", image: siliconeBlackNewImg, hoverImage: siliconeMintImg, colors: ["Black", "Stone", "Navy", "Orange"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 200 },
-  { seriesSlug: "edgeguard", image: leatherBrownImg, hoverImage: leatherBlackImg, colors: ["Clear"], basePrice: 699, originalPrice: 1299, discount: "Save 46%", rating: 5, reviewBase: 180 },
-  { seriesSlug: "lensguard", image: iphone16MagsafeClearImg, hoverImage: iphone16MagsafeDetailsImg, colors: ["Clear"], basePrice: 499, originalPrice: 999, discount: "Save 50%", rating: 5, reviewBase: 150 },
+  { seriesSlug: "edgeguard", image: edgeguardImg, hoverImage: edgeguardHoverImg, colors: ["Clear"], basePrice: 699, originalPrice: 1299, discount: "Save 46%", rating: 5, reviewBase: 180 },
+  { seriesSlug: "lensguard", image: lensguardImg, hoverImage: lensguardHoverImg, colors: ["Clear"], basePrice: 499, originalPrice: 999, discount: "Save 50%", rating: 5, reviewBase: 150 },
 ];
 
 function generateProducts(devices: string[], defs: SeriesProductDef[]): Product[] {
