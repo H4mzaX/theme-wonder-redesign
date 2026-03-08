@@ -6,12 +6,12 @@ import { seriesData, type SeriesSlug } from "@/data/products";
 import BrandName from "@/components/BrandName";
 
 const seriesList: { slug: SeriesSlug; href: string }[] = [
-  { slug: "clearmag", href: "/clearmag" },
-  { slug: "clearmag-edge", href: "/clearmag-edge" },
-  { slug: "softmag", href: "/softmag" },
-  { slug: "armor-edge", href: "/armor-edge" },
-  { slug: "edgeguard", href: "/edgeguard" },
-  { slug: "lensguard", href: "/lensguard" },
+  { slug: "clearmag", href: "/clearmag/iphone-17?model=iphone-17-pro" },
+  { slug: "clearmag-edge", href: "/clearmag-edge/iphone-17?model=iphone-17-pro" },
+  { slug: "softmag", href: "/softmag/iphone-17?model=iphone-17-pro" },
+  { slug: "armor-edge", href: "/armor-edge/iphone-17?model=iphone-17-pro" },
+  { slug: "edgeguard", href: "/edgeguard/iphone-17?model=iphone-17-pro" },
+  { slug: "lensguard", href: "/lensguard/iphone-17?model=iphone-17-pro" },
 ];
 
 const ExploreProducts = () => {

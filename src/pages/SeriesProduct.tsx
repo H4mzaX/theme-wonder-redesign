@@ -561,13 +561,13 @@ const SeriesProduct = () => {
               <div className="mt-6">
                 <p className="text-sm text-muted-foreground mb-3">Also available for:</p>
                 <div className="flex flex-wrap justify-center gap-2">
-                  {otherDeviceGroups.map((group) => (
-                    <Link
-                      key={group.slug}
-                      to={`/${seriesSlug}/${group.slug}`}
-                      className="text-sm font-medium text-accent hover:underline"
-                    >
-                      {group.name}
+                    {otherDeviceGroups.map((group) => (
+                      <Link
+                        key={group.slug}
+                        to={`/${seriesSlug}/${group.slug}?model=${group.models[0]?.slug}`}
+                        className="text-sm font-medium text-accent hover:underline"
+                      >
+                        {group.name}
                     </Link>
                   ))}
                 </div>
