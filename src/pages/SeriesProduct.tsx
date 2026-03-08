@@ -211,6 +211,17 @@ const SeriesProduct = () => {
     return () => observers.forEach((o) => o.disconnect());
   }, [seriesSlug, deviceSlug, selectedModel, selectedColor]);
 
+  // Show sticky cart bar after scrolling past the product info
+  useEffect(() => {
+    const el = productInfoRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setShowStickyCart(!entry.isIntersecting),
+      { threshold: 0, rootMargin: "-80px 0px 0px 0px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [seriesSlug, deviceSlug, selectedModel]);
   if (!series || !deviceGroup) {
     return (
       <div className="min-h-screen flex flex-col">
