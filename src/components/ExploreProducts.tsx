@@ -71,7 +71,7 @@ const ExploreProducts = () => {
                 >
                   <Link
                     to={href}
-                    className="group block rounded-xl sm:rounded-2xl overflow-hidden bg-muted/40 border border-border/50 hover:border-border transition-all duration-300"
+                    className="group block rounded-xl sm:rounded-2xl overflow-hidden bg-background border border-border/50 hover:border-border transition-all duration-300"
                   >
                     {/* Product image on light background */}
                     <div className="aspect-[3/4] flex items-center justify-center p-6 sm:p-8">
