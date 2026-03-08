@@ -25,8 +25,8 @@ interface SeriesContent {
   // Editorial headline below video
   editorialHeadline: string;
   editorialBody: string;
-  // Featured image grid (2x2 lifestyle cards)
-  featuredCards: { image: string; label: string; subtitle: string }[];
+  // Featured image grid cards — each has a text position to vary layout
+  featuredCards: { image: string; label: string; subtitle: string; textPosition?: "bottom-center" | "top-left" | "top-right" | "center" }[];
   // Image + text editorial blocks
   imageTextBlocks: {
     image: string;
