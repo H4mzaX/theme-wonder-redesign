@@ -124,7 +124,7 @@ const seriesContentMap: Record<string, SeriesContent> = {
     ],
   },
   softmag: {
-    scrollVideoSrc: heroVideo,
+    scrollVideoSrc: softmagVideo,
     scrollVideoTexts: ["Soft Touch.", "Bold Colors.", "MagSafe Ready.", "Stain Proof."],
     editorialHeadline: "Designed for Comfort.",
     editorialBody: "Buttery-soft liquid silicone exterior meets a cushioning microfiber interior. Four bold colorways crafted with fade-resistant pigments ensure your case looks as good months from now as it does today.",
