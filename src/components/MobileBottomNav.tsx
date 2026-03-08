@@ -1,4 +1,5 @@
-import { Home, Menu, Search, LayoutGrid, ShoppingCart, User } from "lucide-react";
+import { Home, LayoutGrid, User } from "lucide-react";
+import { MenuIcon, SearchIcon, CartIcon } from "@/components/icons/PremiumIcons";
 import { Link, useLocation } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
 
@@ -10,10 +11,10 @@ interface MobileBottomNavProps {
 
 const navItems = [
   { icon: Home, label: "Home", path: "/" },
-  { icon: Menu, label: "Menu", action: "menu" },
-  { icon: Search, label: "Search", action: "search" },
+  { icon: "menu" as const, label: "Menu", action: "menu" },
+  { icon: "search" as const, label: "Search", action: "search" },
   { icon: LayoutGrid, label: "Shop", path: "/collections/all" },
-  { icon: ShoppingCart, label: "Cart", action: "cart" },
+  { icon: "cart" as const, label: "Cart", action: "cart" },
   { icon: User, label: "Account", path: "#" },
 ];
 
