@@ -219,7 +219,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                                 group.models.map((model) => (
                                   <Link
                                     key={model.slug}
-                                    to={`/${item.slug}/${group.slug}/${model.slug}`}
+                                    to={`/${item.slug}/${group.slug}?model=${encodeURIComponent(model.slug)}`}
                                     onClick={closeMega}
                                     className="text-muted-foreground hover:text-accent transition-colors font-medium"
                                   >
@@ -288,7 +288,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                                 group.models.map((model) => (
                                   <Link
                                     key={model.slug}
-                                    to={`/${item.slug}/${group.slug}/${model.slug}`}
+                                    to={`/${item.slug}/${group.slug}?model=${encodeURIComponent(model.slug)}`}
                                     onClick={closeMega}
                                     className="text-muted-foreground hover:text-accent transition-colors font-medium"
                                   >
@@ -491,7 +491,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                                   group.models.map((model) => (
                                     <Link
                                       key={model.slug}
-                                      to={`/${mobileDrilldown}/${group.slug}/${model.slug}`}
+                                      to={`/${mobileDrilldown}/${group.slug}?model=${encodeURIComponent(model.slug)}`}
                                       onClick={() => setMobileOpen(false)}
                                       className="flex items-center gap-2 py-2 group"
                                     >
@@ -554,7 +554,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                                   group.models.map((model) => (
                                     <Link
                                       key={model.slug}
-                                      to={`/${mobileDrilldown}/${group.slug}/${model.slug}`}
+                                      to={`/${mobileDrilldown}/${group.slug}?model=${encodeURIComponent(model.slug)}`}
                                       onClick={() => setMobileOpen(false)}
                                       className="flex items-center gap-2 py-2 group"
                                     >

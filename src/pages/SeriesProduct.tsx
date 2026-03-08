@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useSearchParams } from "react-router-dom";
 import { ChevronDown, Package, Truck, Percent, Smartphone, Waves, ShieldCheck, Magnet, BadgeCheck } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { seriesData, deviceSeries, getSeriesProducts, allProducts, type Product, type SeriesSlug } from "@/data/products";
@@ -29,6 +29,7 @@ const faqItems = [
 
 const SeriesProduct = () => {
   const { seriesSlug, deviceSlug } = useParams<{ seriesSlug: string; deviceSlug: string }>();
+  const [searchParams] = useSearchParams();
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -36,19 +37,23 @@ const SeriesProduct = () => {
   const series = seriesData[seriesSlug as SeriesSlug];
   const deviceGroup = deviceSeries.find((g) => g.slug === deviceSlug);
 
+  const selectedModelSlug = searchParams.get("model");
+  const selectedModelName = deviceGroup?.models.find((m) => m.slug === selectedModelSlug)?.name;
+  const listingLabel = selectedModelName || deviceGroup?.name || "";
+
   const seriesName = series?.name || seriesSlug || "";
 
   useSEO({
-    title: series && deviceGroup ? `${seriesName} for ${deviceGroup.name} | VCASE` : "Collection | VCASE",
+    title: series && deviceGroup ? `${seriesName} for ${listingLabel} | VCASE` : "Collection | VCASE",
     description: series
-      ? `Shop ${seriesName} ${series.type === "case" ? "cases" : "protectors"} for ${deviceGroup?.name}. ${series.description}`
+      ? `Shop ${seriesName} ${series.type === "case" ? "cases" : "protectors"} for ${listingLabel}. ${series.description}`
       : "Premium phone protection by VCASE.",
     canonical: `https://vcase.in/${seriesSlug}/${deviceSlug}`,
     type: "product",
     jsonLd: series && deviceGroup ? {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
-      name: `${seriesName} for ${deviceGroup.name}`,
+      name: `${seriesName} for ${listingLabel}`,
       description: series.description,
       brand: { "@type": "Brand", name: "VCASE" },
     } : undefined,
@@ -56,7 +61,7 @@ const SeriesProduct = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [seriesSlug, deviceSlug]);
+  }, [seriesSlug, deviceSlug, selectedModelSlug]);
 
   if (!series || !deviceGroup) {
     return (
@@ -75,6 +80,9 @@ const SeriesProduct = () => {
   }
 
   const products = getSeriesProducts(seriesSlug!, deviceSlug!);
+  const displayedProducts = selectedModelName
+    ? products.filter((p) => p.device === selectedModelName)
+    : products;
   const otherDeviceGroups = deviceSeries.filter((g) => g.slug !== deviceSlug);
 
   // Related products from different series for same devices
@@ -134,7 +142,7 @@ const SeriesProduct = () => {
                   className="text-3xl sm:text-4xl lg:text-5xl font-display text-foreground tracking-tight leading-[1.1]"
                 />
                 <p className="text-lg sm:text-xl text-muted-foreground mt-1">
-                  for {deviceGroup.name}
+                  for {listingLabel}
                 </p>
               </motion.div>
               <motion.p
@@ -173,16 +181,26 @@ const SeriesProduct = () => {
         <AnimateElement type="fade-up">
           <div className="flex items-center justify-between mb-6 sm:mb-8 gap-3">
             <h2 className="text-lg sm:text-xl lg:text-2xl font-display font-bold text-foreground tracking-tight">
-              Choose Your Model
+              {selectedModelName ? "Selected Model" : "Choose Your Model"}
             </h2>
-            <span className="text-sm text-muted-foreground">
-              {products.length} {products.length === 1 ? "product" : "products"}
-            </span>
+            <div className="flex items-center gap-3">
+              {selectedModelName && (
+                <Link
+                  to={`/${seriesSlug}/${deviceSlug}`}
+                  className="text-sm font-medium text-accent hover:underline"
+                >
+                  View all models
+                </Link>
+              )}
+              <span className="text-sm text-muted-foreground">
+                {displayedProducts.length} {displayedProducts.length === 1 ? "product" : "products"}
+              </span>
+            </div>
           </div>
         </AnimateElement>
 
         <StaggerGroup className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6" staggerDelay={0.08}>
-          {products.map((product) => (
+          {displayedProducts.map((product) => (
             <StaggerChild key={product.id}>
               <ProductCard product={product} />
             </StaggerChild>

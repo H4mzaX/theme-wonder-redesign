@@ -334,7 +334,7 @@ export function getProductUrl(product: Product): string {
   const model = group.models.find((m) => m.name === product.device);
   if (!model) return `/${product.seriesSlug}/${group.slug}`;
 
-  return `/${product.seriesSlug}/${group.slug}/${model.slug}`;
+  return `/${product.seriesSlug}/${group.slug}?model=${encodeURIComponent(model.slug)}`;
 }
 
 export function getProductUrlById(productId: string): string {
