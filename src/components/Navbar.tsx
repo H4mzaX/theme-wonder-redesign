@@ -187,22 +187,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                       <div className="flex flex-col">
                         {casesMenuItems.map((item, idx) => (
                           <div key={item.name} className="group">
-                            {item.comingSoon ? (
-                              <motion.div
-                                className="flex items-center justify-between py-3 border-b border-border/10 last:border-0 opacity-50"
-                                initial={{ opacity: 0, x: -8 }}
-                                animate={{ opacity: 0.5, x: 0 }}
-                                transition={{ delay: idx * 0.03, duration: 0.2 }}
-                              >
-                                <div className="flex items-center gap-3">
-                                  <img src={item.icon} alt={item.name} className="w-11 h-11 rounded-lg" />
-                                  <div>
-                                    <BrandName name={item.name} className="text-[15px] font-medium text-foreground" />
-                                    <p className="text-[11px] text-muted-foreground">Coming Soon</p>
-                                  </div>
-                                </div>
-                              </motion.div>
-                            ) : (
+                            {(
                               <motion.div
                                 className="flex items-center justify-between py-3 border-b border-border/10 last:border-0"
                                 initial={{ opacity: 0, x: -8 }}
