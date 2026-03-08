@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { motion, animate, useMotionValue, AnimatePresence } from "framer-motion";
+import { motion, animate, useMotionValue } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import hero1 from "@/assets/hero-1.jpg";
 import hero2 from "@/assets/hero-2.jpg";
@@ -86,44 +86,35 @@ const HeroSlider = () => {
           onClick={handleClick}
         >
           <div className="relative aspect-[4/5] sm:aspect-[16/10] lg:aspect-[21/9]">
-            {/* Crossfade images */}
-            <AnimatePresence initial={false}>
-              <motion.img
-                key={current}
-                src={slide.image}
+            {/* All slides rendered, instant crossfade via CSS */}
+            {slides.map((s, i) => (
+              <img
+                key={i}
+                src={s.image}
                 alt="VCASE premium phone case"
                 loading="eager"
                 decoding="sync"
-                fetchPriority="high"
-                className="absolute inset-0 w-full h-full object-cover object-center"
-                initial={{ opacity: 0, scale: 1.05 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{
-                  opacity: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
-                  scale: { duration: 5, ease: [0.16, 1, 0.3, 1] },
+                fetchPriority={i === 0 ? "high" : undefined}
+                className="absolute inset-0 w-full h-full object-cover object-center will-change-[opacity,transform]"
+                style={{
+                  opacity: i === current ? 1 : 0,
+                  transform: i === current ? 'scale(1)' : 'scale(1.04)',
+                  transition: 'opacity 400ms cubic-bezier(0.25, 1, 0.5, 1), transform 4.5s cubic-bezier(0.16, 1, 0.3, 1)',
                 }}
               />
-            </AnimatePresence>
+            ))}
 
             {/* Subtle bottom gradient for text visibility */}
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/40 via-transparent to-transparent pointer-events-none" />
 
             {/* Shop CTA — bottom right */}
             <div className="absolute inset-0 flex items-end justify-center sm:justify-end px-5 sm:px-10 lg:px-16 pb-20 sm:pb-12 z-10 pointer-events-none">
-              <AnimatePresence mode="wait">
-                <motion.a
-                  key={current}
-                  href={slide.href}
-                  className="pointer-events-auto inline-block bg-background text-foreground px-8 py-3.5 sm:px-10 sm:py-4 text-sm sm:text-[15px] font-medium tracking-wide rounded-full hover:bg-foreground hover:text-background transition-colors duration-300"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-                >
-                  {slide.cta}
-                </motion.a>
-              </AnimatePresence>
+              <a
+                href={slide.href}
+                className="pointer-events-auto inline-block bg-background text-foreground px-8 py-3.5 sm:px-10 sm:py-4 text-sm sm:text-[15px] font-medium tracking-wide rounded-full hover:bg-foreground hover:text-background transition-colors duration-300"
+              >
+                {slide.cta}
+              </a>
             </div>
 
             {/* Left / Right arrows */}

@@ -89,9 +89,10 @@ const CollectionProductCard = ({ product, large = false }: CollectionProductCard
             key={i}
             src={src}
             alt={i === 0 ? product.name : `${product.name} - alt`}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-out ${
+            className={`absolute inset-0 w-full h-full object-cover will-change-[opacity] ${
               i === activeImg ? "opacity-100" : "opacity-0"
             }`}
+            style={{ transition: 'opacity 180ms cubic-bezier(0.25, 1, 0.5, 1)' }}
             loading="lazy"
             decoding="async"
           />
