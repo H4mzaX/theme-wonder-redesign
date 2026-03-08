@@ -182,6 +182,7 @@ const ProductDetail = () => {
         if (product.device === "iPhone 17 Pro") return iphone17ProGalleryImages;
         if (product.device === "iPhone 17") return iphone17GalleryImages;
         if ((product.device === "iPhone 16" || product.device === "iPhone 16 Pro") && product.category === "MagSafe Cases") return iphone16MagsafeGalleryImages;
+        if (product.seriesSlug === "softmag") return softmagGalleryImages;
         if (product.category === "Silicone Cases") return siliconeGalleryImages;
         const imgs: string[] = [product.image];
         if (product.hoverImage && product.hoverImage !== product.image) imgs.push(product.hoverImage);
