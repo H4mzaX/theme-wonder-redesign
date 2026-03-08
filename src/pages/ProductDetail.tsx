@@ -16,7 +16,15 @@ import softmagFloating from "@/assets/softmag-floating.webp";
 import softmagCamera from "@/assets/softmag-camera.webp";
 import softmagHero from "@/assets/softmag-hero.webp";
 
+import armoredgeProtection from "@/assets/armoredge-protection.webp";
+import armoredgeFeatures from "@/assets/armoredge-features.webp";
+import armoredgeCloseup from "@/assets/armoredge-closeup.webp";
+import armoredgeRing from "@/assets/armoredge-ring.webp";
+import armoredgeLifestyle from "@/assets/armoredge-lifestyle.webp";
+import armoredgeImpact from "@/assets/armoredge-impact.webp";
+
 const softmagGalleryImages = [softmagHero, softmagFloating, softmagCamera, softmagCloseup, softmagLifestyle];
+const armoredgeGalleryImages = [armoredgeProtection, armoredgeFeatures, armoredgeCloseup, armoredgeRing, armoredgeLifestyle, armoredgeImpact];
 import { useSEO } from "@/hooks/useSEO";
 import { useCart } from "@/context/CartContext";
 import { toast } from "@/hooks/use-toast";
@@ -184,6 +192,7 @@ const ProductDetail = () => {
         if (product.device === "iPhone 17") return iphone17GalleryImages;
         if ((product.device === "iPhone 16" || product.device === "iPhone 16 Pro") && product.category === "MagSafe Cases") return iphone16MagsafeGalleryImages;
         if (product.seriesSlug === "softmag") return softmagGalleryImages;
+        if (product.seriesSlug === "armor-edge") return armoredgeGalleryImages;
         if (product.category === "Silicone Cases") return siliconeGalleryImages;
         const imgs: string[] = [product.image];
         if (product.hoverImage && product.hoverImage !== product.image) imgs.push(product.hoverImage);
