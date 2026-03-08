@@ -170,15 +170,20 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
           {activeMega && (
             <motion.div
               key={activeMega}
-              className="absolute left-0 right-0 top-full z-50 bg-background border-t border-border/20 shadow-2xl transform-gpu will-change-transform"
-              initial={{ opacity: 0, y: -4 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -4 }}
-              transition={{ duration: 0.22, ease: premiumEase }}
+              className="absolute left-0 right-0 top-full z-50 bg-background border-t border-border/20 shadow-2xl transform-gpu will-change-transform overflow-hidden origin-top"
+              initial={{ opacity: 0, scaleY: 0.96, y: -8 }}
+              animate={{ opacity: 1, scaleY: 1, y: 0 }}
+              exit={{ opacity: 0, scaleY: 0.96, y: -8 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
               onMouseEnter={handleMegaEnter}
               onMouseLeave={handleMouseLeave}
             >
-              <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-8">
+              <motion.div
+                className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-8"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.08, duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              >
 
                 {/* ── CASES MEGA ── */}
                 {activeMega === "Cases" && (
