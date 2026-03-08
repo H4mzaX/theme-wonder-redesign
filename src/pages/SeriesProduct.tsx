@@ -321,10 +321,10 @@ const SeriesProduct = () => {
 
           {/* ── LEFT: Vertically stacked scroll gallery (Concept style) ── */}
           <div ref={galleryRef} className="lg:col-span-7">
-            {/* Mobile: instant-swap swipeable gallery with dots (Concept theme style) */}
-            <div className="lg:hidden -mt-1">
+            {/* Mobile: instant-swap swipeable gallery with dots */}
+            <div className="lg:hidden">
               <div
-                className="relative overflow-hidden rounded-2xl mx-1 bg-secondary/20"
+                className="relative overflow-hidden rounded-xl mx-0 bg-secondary/20"
                 onTouchStart={(e) => {
                   const touch = e.touches[0];
                   const el = e.currentTarget as any;
@@ -342,7 +342,6 @@ const SeriesProduct = () => {
                   const diffY = startY - endY;
                   const elapsed = Date.now() - (el._startTime || 0);
                   const velocity = Math.abs(diffX) / Math.max(elapsed, 1);
-                  // Swipe with velocity awareness — faster flicks need less distance
                   const threshold = velocity > 0.5 ? 20 : 40;
                   if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > threshold) {
                     if (diffX > 0 && activeGalleryImg < galleryImages.length - 1) {
@@ -367,7 +366,9 @@ const SeriesProduct = () => {
                           src={img}
                           alt={`${series.name} view ${i + 1}`}
                           className="w-full h-full object-contain p-4"
-                          loading={i < 2 ? "eager" : "lazy"}
+                          loading="eager"
+                          decoding={i < 2 ? "sync" : "async"}
+                          fetchPriority={i === 0 ? "high" : undefined}
                           draggable={false}
                         />
                       </div>

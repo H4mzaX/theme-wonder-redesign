@@ -118,9 +118,9 @@
     @apply font-display;
   }
 
-  /* Global GPU-accelerated transitions — Concept theme approach */
+  /* Remove global will-change on images — causes compositing overhead */
   img, video {
-    will-change: opacity;
+    content-visibility: auto;
   }
 
   a, button {
