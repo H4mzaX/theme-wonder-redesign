@@ -2,7 +2,7 @@ import { useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import {
   Shield, Magnet, Droplets, Zap, Layers, Ruler, Eye, ScanLine,
-  CircleDot, ShieldCheck, Waves, BadgeCheck
+  CircleDot, ShieldCheck, Waves, BadgeCheck, Zap as ZapIcon
 } from "lucide-react";
 import type { Product } from "@/data/products";
 import { seriesData, type SeriesSlug } from "@/data/products";
@@ -366,7 +366,7 @@ const ProductContentSections = ({ product }: { product: Product }) => {
 
   return (
     <div className="w-full">
-      {/* 1. Scroll-linked video with changing text — Concept Theme signature */}
+      {/* 1. Scroll-linked video with changing text */}
       <ScrollVideoReveal
         videoSrc={content.scrollVideoSrc}
         textItems={content.scrollVideoTexts}
@@ -375,22 +375,52 @@ const ProductContentSections = ({ product }: { product: Product }) => {
       {/* 2. Horizontal feature marquee */}
       <HorizontalMarquee items={content.marqueeItems} />
 
-      {/* 3. Editorial headline + description */}
-      <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-10 sm:py-16">
-        <AnimateElement type="fade-up">
-          <h2 className="text-[1.75rem] sm:text-[2.5rem] lg:text-[3.5rem] font-black text-foreground leading-[1.05] tracking-tighter">
-            {content.editorialHeadline}
-          </h2>
-        </AnimateElement>
-        <AnimateElement type="fade-up" delay={0.1}>
-          <p className="text-sm sm:text-lg text-muted-foreground mt-3 sm:mt-5 max-w-2xl leading-relaxed">
-            {content.editorialBody}
-          </p>
-        </AnimateElement>
+      {/* 3. Concept Theme layout: Editorial text LEFT + Featured grid RIGHT */}
+      <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-10 sm:py-16 lg:py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-[5fr_7fr] gap-8 lg:gap-12 xl:gap-16 items-start">
+          {/* Left: Editorial text */}
+          <div className="lg:sticky lg:top-[100px]">
+            <AnimateElement type="fade-up">
+              <h2 className="text-[1.75rem] sm:text-[2.5rem] lg:text-[3rem] xl:text-[3.5rem] font-black text-foreground leading-[1.05] tracking-tighter">
+                {content.editorialHeadline}
+              </h2>
+            </AnimateElement>
+            <AnimateElement type="fade-up" delay={0.1}>
+              <p className="text-sm sm:text-[15px] text-muted-foreground mt-4 sm:mt-6 leading-[1.7] max-w-lg">
+                {content.editorialBody}
+              </p>
+            </AnimateElement>
+          </div>
+
+          {/* Right: Featured image grid (asymmetric) */}
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
+            {content.featuredCards.map((card, i) => (
+              <AnimateElement key={i} type="fade-up" delay={i * 0.08}>
+                <div className={`relative rounded-2xl overflow-hidden group ${
+                  i === 2 ? "col-span-2 aspect-[21/9]" : "aspect-[4/5]"
+                } ${i === 3 ? "col-span-2 aspect-[21/9]" : ""}`}>
+                  <img
+                    src={card.image}
+                    alt={card.label}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-transparent to-transparent" />
+                  <div className={`absolute p-4 sm:p-5 ${i >= 2 ? "bottom-0 left-0" : "bottom-0 left-0 right-0"}`}>
+                    <p className="text-[10px] sm:text-[11px] text-background/50 font-medium">{card.label}</p>
+                    <p className="text-sm sm:text-base lg:text-lg font-bold text-background tracking-tight leading-tight mt-0.5">
+                      {card.subtitle}
+                    </p>
+                  </div>
+                </div>
+              </AnimateElement>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* 4. Stats bar */}
-      <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 pb-6 sm:pb-10">
+      <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 pb-8 sm:pb-12">
         <div className="grid grid-cols-4 gap-4 sm:gap-6 bg-secondary/30 rounded-2xl p-5 sm:p-8">
           {content.stats.map((stat, i) => (
             <StatBlock key={stat.label} value={stat.value} label={stat.label} delay={i * 0.08} />
@@ -398,18 +428,15 @@ const ProductContentSections = ({ product }: { product: Product }) => {
         </div>
       </section>
 
-      {/* 5. Featured image grid (2x2 lifestyle cards) */}
-      <FeaturedImageGrid cards={content.featuredCards} />
-
-      {/* 6. Feature icon grid */}
+      {/* 5. Feature icon grid */}
       <FeatureGrid cards={content.featureCards} />
 
-      {/* 7. Image + text editorial blocks (full-width split) */}
+      {/* 6. Image + text editorial blocks (Concept Theme "Compact Power" style) */}
       {content.imageTextBlocks.map((block, i) => (
         <ImageTextBlock key={i} {...block} />
       ))}
 
-      {/* 8. Material card */}
+      {/* 7. Material card */}
       {series && <MaterialCard series={series} />}
     </div>
   );
