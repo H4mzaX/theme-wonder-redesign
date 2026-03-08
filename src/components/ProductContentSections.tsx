@@ -10,6 +10,7 @@ import AnimateElement from "@/components/AnimateElement";
 import ScrollVideoReveal from "@/components/ScrollVideoReveal";
 import FeaturedImageGrid from "@/components/FeaturedImageGrid";
 import ImageTextBlock from "@/components/ImageTextBlock";
+import heroVideo from "@/assets/hero-video.mp4";
 
 const expoOut: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
