@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useSearchParams } from "react-router-dom";
 import {
   Shield, Magnet, Zap, CheckCircle, ChevronDown, ChevronLeft, ChevronRight,
   Minus, Plus, Package, Truck, Percent, Smartphone, Waves, ShieldCheck, BadgeCheck, Star, Heart, Share2
@@ -36,9 +36,10 @@ const faqItems = [
 
 const SeriesProduct = () => {
   const { seriesSlug, deviceSlug } = useParams<{ seriesSlug: string; deviceSlug: string }>();
+  const [searchParams] = useSearchParams();
+  const modelParam = searchParams.get("model");
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
-  const [selectedModel, setSelectedModel] = useState(0);
   const [selectedColor, setSelectedColor] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -50,18 +51,44 @@ const SeriesProduct = () => {
   const series = seriesData[seriesSlug as SeriesSlug];
   const deviceGroup = deviceSeries.find((g) => g.slug === deviceSlug);
 
-  const deviceName = deviceGroup?.name?.replace(" Series", "") || deviceSlug || "";
+  // Resolve selected model from URL query param
+  const resolveModelIndex = () => {
+    if (!deviceGroup || !seriesSlug) return 0;
+    const products = getSeriesProducts(seriesSlug, deviceSlug!);
+    if (modelParam) {
+      const model = deviceGroup.models.find((m) => m.slug === modelParam);
+      if (model) {
+        const idx = products.findIndex((p) => p.device === model.name);
+        if (idx >= 0) return idx;
+      }
+    }
+    return 0;
+  };
+  const [selectedModel, setSelectedModel] = useState(resolveModelIndex);
+
+  // Update selected model when URL changes
+  useEffect(() => {
+    setSelectedModel(resolveModelIndex());
+    setActiveGalleryImg(0);
+  }, [modelParam, seriesSlug, deviceSlug]);
+
   const seriesName = series?.name || seriesSlug || "";
 
+  // Derive device name from model param or first model
+  const resolvedModelName = modelParam && deviceGroup
+    ? deviceGroup.models.find((m) => m.slug === modelParam)?.name
+    : undefined;
+  const currentDeviceName = resolvedModelName || deviceGroup?.models[0]?.name || deviceSlug || "";
+
   useSEO({
-    title: series && deviceGroup ? `${seriesName} for ${deviceName} | VCASE` : "Product | VCASE",
-    description: series ? `Buy ${seriesName} ${series.type === "case" ? "case" : "protector"} for ${deviceName}. ${series.description} Free shipping on prepaid orders.` : "Premium phone protection by VCASE.",
+    title: series && deviceGroup ? `${seriesName} for ${currentDeviceName} | VCASE` : "Product | VCASE",
+    description: series ? `Buy ${seriesName} ${series.type === "case" ? "case" : "protector"} for ${currentDeviceName}. ${series.description} Free shipping on prepaid orders.` : "Premium phone protection by VCASE.",
     canonical: `https://vcase.in/${seriesSlug}/${deviceSlug}`,
     type: "product",
     jsonLd: series && deviceGroup ? {
       "@context": "https://schema.org",
       "@type": "Product",
-      name: `${seriesName} for ${deviceName}`,
+      name: `${seriesName} for ${currentDeviceName}`,
       description: series.description,
       brand: { "@type": "Brand", name: "VCASE" },
       offers: { "@type": "Offer", priceCurrency: "INR", availability: "https://schema.org/InStock" },
@@ -140,7 +167,7 @@ const SeriesProduct = () => {
     .slice(0, 4);
 
   const otherDeviceGroups = deviceSeries.filter((g) => g.slug !== deviceSlug);
-  const pageTitle = `${series.name} Case for ${deviceGroup.name} | VCASE`;
+  const pageTitle = `${series.name} for ${currentDeviceName} | VCASE`;
   const metaDescription = series.description;
 
   return (
@@ -165,7 +192,7 @@ const SeriesProduct = () => {
           <span>/</span>
           <span className="capitalize">{series.category}</span>
           <span>/</span>
-          <span className="text-foreground font-medium">{series.name} — {deviceGroup.name}</span>
+          <span className="text-foreground font-medium">{series.name} — {currentDeviceName}</span>
         </motion.nav>
       </div>
 
