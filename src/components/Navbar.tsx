@@ -255,46 +255,44 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                 {/* ── PROTECTION MEGA ── */}
                 {activeMega === "Protection" && (
                   <div className="grid grid-cols-12 gap-10">
-                    <div className="col-span-5">
+                    <div className="col-span-7">
                       <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-4">Protection</p>
                       <div className="flex flex-col">
                         {protectionMenuItems.map((item, idx) => (
                           <motion.div
                             key={item.name}
-                            className="flex items-center justify-between py-3 border-b border-border/10 last:border-0"
+                            className="py-3 border-b border-border/10 last:border-0"
                             initial={{ opacity: 0, x: -8 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: idx * 0.03, duration: 0.2 }}
                           >
-                            <Link
-                              to={`/${item.slug}`}
-                              onClick={closeMega}
-                              className="flex items-center gap-3 hover:opacity-80 transition-opacity"
-                            >
-                              <img src={item.icon} alt={item.name} className="w-11 h-11 rounded-lg" />
+                            <div className="flex items-center gap-3 mb-2.5">
+                              <img src={item.icon} alt={item.name} className="w-9 h-9 rounded-lg" />
                               <div>
-                                <BrandName name={item.name} className="text-[15px] font-medium text-foreground" />
+                                <BrandName name={item.name} className="text-[15px] font-semibold text-foreground" />
                                 <p className="text-[11px] text-muted-foreground">{item.subtitle}</p>
                               </div>
-                            </Link>
-                            <div className="flex items-center gap-4 text-sm">
-                              {deviceSeries.map((group) => (
-                                <Link
-                                  key={group.slug}
-                                  to={`/${item.slug}/${group.slug}`}
-                                  onClick={closeMega}
-                                  className="text-muted-foreground hover:text-accent transition-colors font-medium"
-                                >
-                                  {group.name.replace(" Series", "")}
-                                </Link>
-                              ))}
+                            </div>
+                            <div className="flex flex-wrap gap-x-4 gap-y-1.5 pl-12">
+                              {deviceSeries.flatMap((group) =>
+                                group.models.map((model) => (
+                                  <Link
+                                    key={model.slug}
+                                    to={`/${item.slug}/${group.slug}?model=${model.slug}`}
+                                    onClick={closeMega}
+                                    className="text-[13px] text-muted-foreground hover:text-accent transition-colors font-medium"
+                                  >
+                                    {model.name}
+                                  </Link>
+                                ))
+                              )}
                             </div>
                           </motion.div>
                         ))}
                       </div>
                     </div>
 
-                    <div className="col-span-7">
+                    <div className="col-span-5">
                       <motion.div
                         className="bg-muted/50 rounded-xl p-6 h-full flex flex-col justify-center"
                         initial={{ opacity: 0, scale: 0.97 }}
@@ -321,18 +319,14 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: bi * 0.04, duration: 0.25 }}
                         >
-                          <Link
-                            to={`/devices/${group.slug}`}
-                            onClick={closeMega}
-                            className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-4 block hover:text-accent transition-colors"
-                          >
+                          <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-4">
                             {group.name}
-                          </Link>
+                          </p>
                           <div className="flex flex-col">
                             {group.models.map((model) => (
                               <Link
                                 key={model.slug}
-                                to={`/devices/${group.slug}`}
+                                to={`/clearmag/${group.slug}?model=${model.slug}`}
                                 onClick={closeMega}
                                 className="group"
                               >
