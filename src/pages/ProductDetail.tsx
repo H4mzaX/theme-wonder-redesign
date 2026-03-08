@@ -917,31 +917,12 @@ const ProductDetail = () => {
         </div>
       </section>
 
-      {/* ═══════ YOU MAY ALSO LIKE ═══════ */}
+      {/* ═══════ PREMIUM PRODUCT CONTENT SECTIONS ═══════ */}
+      <ProductContentSections product={product} />
+
+      {/* ═══════ YOU MAY ALSO LIKE — CAROUSEL ═══════ */}
       {relatedProducts.length > 0 && (
-        <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-6 sm:py-10 border-t border-border">
-          <div className="flex items-center justify-between mb-4 sm:mb-6">
-            <h2 className="text-lg sm:text-2xl font-bold text-foreground">You may also like</h2>
-            <div className="flex gap-2">
-              <button className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors">
-                <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              </button>
-              <button className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors">
-                <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              </button>
-            </div>
-          </div>
-          <div
-            className="flex gap-3 sm:gap-4 overflow-x-auto pb-4 snap-x snap-mandatory"
-            style={{ scrollbarWidth: "none" }}
-          >
-            {relatedProducts.map((p) => (
-              <div key={p.id} className="flex-none w-[42vw] sm:w-[260px] lg:w-[280px] snap-start">
-                <ProductCard product={p} />
-              </div>
-            ))}
-          </div>
-        </section>
+        <RelatedProductsCarousel products={relatedProducts} />
       )}
 
       {/* ═══════ STICKY FLOATING ADD TO CART + COUNTDOWN PILL ═══════ */}
