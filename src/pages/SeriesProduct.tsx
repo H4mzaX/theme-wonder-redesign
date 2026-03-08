@@ -322,23 +322,29 @@ const SeriesProduct = () => {
           {/* ── LEFT: Vertically stacked scroll gallery (Concept style) ── */}
           <div ref={galleryRef} className="lg:col-span-7">
             {/* Mobile: instant-swap swipeable gallery with dots (Concept theme style) */}
-            <div className="lg:hidden">
+            <div className="lg:hidden -mt-1">
               <div
-                className="relative overflow-hidden mx-[-16px] sm:mx-0"
+                className="relative overflow-hidden rounded-2xl mx-1 bg-secondary/20"
                 onTouchStart={(e) => {
                   const touch = e.touches[0];
-                  (e.currentTarget as any)._startX = touch.clientX;
-                  (e.currentTarget as any)._startY = touch.clientY;
+                  const el = e.currentTarget as any;
+                  el._startX = touch.clientX;
+                  el._startY = touch.clientY;
+                  el._startTime = Date.now();
                 }}
                 onTouchEnd={(e) => {
-                  const startX = (e.currentTarget as any)._startX;
-                  const startY = (e.currentTarget as any)._startY;
+                  const el = e.currentTarget as any;
+                  const startX = el._startX;
+                  const startY = el._startY;
                   const endX = e.changedTouches[0].clientX;
                   const endY = e.changedTouches[0].clientY;
                   const diffX = startX - endX;
                   const diffY = startY - endY;
-                  // Only swipe if horizontal movement is dominant
-                  if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 40) {
+                  const elapsed = Date.now() - (el._startTime || 0);
+                  const velocity = Math.abs(diffX) / Math.max(elapsed, 1);
+                  // Swipe with velocity awareness — faster flicks need less distance
+                  const threshold = velocity > 0.5 ? 20 : 40;
+                  if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > threshold) {
                     if (diffX > 0 && activeGalleryImg < galleryImages.length - 1) {
                       setActiveGalleryImg(activeGalleryImg + 1);
                     } else if (diffX < 0 && activeGalleryImg > 0) {
@@ -347,18 +353,20 @@ const SeriesProduct = () => {
                   }
                 }}
               >
-                <div className="aspect-[4/5] bg-secondary/30 relative">
-                  {/* All images rendered, translated via CSS for instant swap */}
+                <div className="aspect-[4/5] relative">
                   <div
-                    className="flex h-full transition-transform duration-300 ease-out"
-                    style={{ transform: `translateX(-${activeGalleryImg * 100}%)` }}
+                    className="flex h-full will-change-transform"
+                    style={{
+                      transform: `translateX(-${activeGalleryImg * 100}%)`,
+                      transition: 'transform 180ms cubic-bezier(0.25, 1, 0.5, 1)',
+                    }}
                   >
                     {galleryImages.map((img, i) => (
                       <div key={i} className="w-full h-full flex-shrink-0">
                         <img
                           src={img}
                           alt={`${series.name} view ${i + 1}`}
-                          className="w-full h-full object-contain p-6"
+                          className="w-full h-full object-contain p-4"
                           loading={i < 2 ? "eager" : "lazy"}
                           draggable={false}
                         />
@@ -368,13 +376,13 @@ const SeriesProduct = () => {
                 </div>
               </div>
 
-              {/* Pagination dots — Concept theme style */}
-              <div className="flex items-center justify-center gap-1.5 py-4">
+              {/* Pagination dots */}
+              <div className="flex items-center justify-center gap-1.5 py-3">
                 {galleryImages.map((_, i) => (
                   <button
                     key={i}
                     onClick={() => setActiveGalleryImg(i)}
-                    className={`rounded-full transition-all duration-200 ${
+                    className={`rounded-full transition-all duration-150 ${
                       i === activeGalleryImg
                         ? "w-6 h-1.5 bg-foreground"
                         : "w-1.5 h-1.5 bg-foreground/20"
