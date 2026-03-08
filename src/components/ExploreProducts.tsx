@@ -39,10 +39,10 @@ const ExploreProducts = () => {
     return () => el.removeEventListener("scroll", updateScroll);
   }, []);
 
-  const scrollNext = () => {
+  const scroll = (dir: "left" | "right") => {
     const el = scrollRef.current;
     if (!el) return;
-    el.scrollBy({ left: el.clientWidth * 0.7, behavior: "smooth" });
+    el.scrollBy({ left: dir === "left" ? -el.clientWidth * 0.7 : el.clientWidth * 0.7, behavior: "smooth" });
   };
 
   return (
@@ -98,10 +98,19 @@ const ExploreProducts = () => {
             })}
           </div>
 
-          {/* Scroll arrow */}
+          {/* Scroll arrows */}
+          {canScrollLeft && (
+            <button
+              onClick={() => scroll("left")}
+              className="hidden md:flex absolute left-2 lg:-left-2 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center rounded-full bg-background border border-border shadow-md hover:bg-muted transition-colors z-10"
+              aria-label="Scroll left"
+            >
+              <ChevronLeft className="w-5 h-5 text-foreground" />
+            </button>
+          )}
           {canScrollRight && (
             <button
-              onClick={scrollNext}
+              onClick={() => scroll("right")}
               className="hidden md:flex absolute right-2 lg:right-4 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center rounded-full bg-background border border-border shadow-md hover:bg-muted transition-colors z-10"
               aria-label="Scroll right"
             >
