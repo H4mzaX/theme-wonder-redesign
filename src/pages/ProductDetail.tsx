@@ -16,15 +16,13 @@ import softmagFloating from "@/assets/softmag-floating.webp";
 import softmagCamera from "@/assets/softmag-camera.webp";
 import softmagHero from "@/assets/softmag-hero.webp";
 
-import armoredgeProtection from "@/assets/armoredge-protection.webp";
-import armoredgeFeatures from "@/assets/armoredge-features.webp";
+import armoredgeHero from "@/assets/armoredge-hero.webp";
 import armoredgeCloseup from "@/assets/armoredge-closeup.webp";
 import armoredgeRing from "@/assets/armoredge-ring.webp";
 import armoredgeLifestyle from "@/assets/armoredge-lifestyle.webp";
-import armoredgeImpact from "@/assets/armoredge-impact.webp";
 
 const softmagGalleryImages = [softmagHero, softmagFloating, softmagCamera, softmagCloseup, softmagLifestyle];
-const armoredgeGalleryImages = [armoredgeProtection, armoredgeFeatures, armoredgeCloseup, armoredgeRing, armoredgeLifestyle, armoredgeImpact];
+const armoredgeGalleryImages = [armoredgeHero, armoredgeCloseup, armoredgeRing, armoredgeLifestyle];
 import { useSEO } from "@/hooks/useSEO";
 import { useCart } from "@/context/CartContext";
 import { toast } from "@/hooks/use-toast";

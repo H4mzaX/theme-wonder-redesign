@@ -16,8 +16,8 @@ import edgeguardImg from "@/assets/edgeguard-screen-protector.jpg";
 import edgeguardHoverImg from "@/assets/edgeguard-screen-protector-hover.jpg";
 import lensguardImg from "@/assets/lensguard-camera-protector.jpg";
 import lensguardHoverImg from "@/assets/lensguard-camera-protector-hover.jpg";
-import armoredgeImg from "@/assets/armoredge-protection.webp";
-import armoredgeHoverImg from "@/assets/armoredge-features.webp";
+import armoredgeImg from "@/assets/armoredge-hero.webp";
+import armoredgeHoverImg from "@/assets/armoredge-closeup.webp";
 import softmagImg from "@/assets/softmag.webp";
 
 import iphone17proMagsafeClearImg from "@/assets/iphone17pro-magsafe-clear.jpg";
