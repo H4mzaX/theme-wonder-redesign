@@ -6,10 +6,17 @@ import AnnouncementBar from "@/components/AnnouncementBar";
 import SearchDrawer from "@/components/SearchDrawer";
 import CartDrawer from "@/components/CartDrawer";
 import { ScrollReveal } from "@/hooks/useScrollAnimations";
+import { useSEO } from "@/hooks/useSEO";
 
 const TermsAndConditions = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+
+  useSEO({
+    title: "Terms & Conditions | VCASE",
+    description: "Read the terms and conditions for using VCASE products and services. Shipping, warranty, and usage policies.",
+    canonical: "https://vcase.in/terms",
+  });
 
   return (
     <div className="min-h-screen bg-background text-foreground">

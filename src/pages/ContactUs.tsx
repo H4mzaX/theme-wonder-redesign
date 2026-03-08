@@ -7,10 +7,17 @@ import SearchDrawer from "@/components/SearchDrawer";
 import CartDrawer from "@/components/CartDrawer";
 import { ScrollReveal } from "@/hooks/useScrollAnimations";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
 
 const ContactUs = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+
+  useSEO({
+    title: "Contact Us | VCASE",
+    description: "Get in touch with VCASE for support, orders, or inquiries. Email veecartretail@gmail.com or visit our store in Vijayanagara, Karnataka.",
+    canonical: "https://vcase.in/contact",
+  });
 
   return (
     <div className="min-h-screen bg-background text-foreground">

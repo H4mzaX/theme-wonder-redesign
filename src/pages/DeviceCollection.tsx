@@ -4,6 +4,7 @@ import { Smartphone, ArrowRight, Shield, Camera } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { deviceSeries, seriesData, getDeviceProducts, type SeriesSlug } from "@/data/products";
 import { premiumEase } from "@/lib/motion";
+import { useSEO } from "@/hooks/useSEO";
 import Navbar from "@/components/Navbar";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Footer from "@/components/Footer";
@@ -49,6 +50,12 @@ const DeviceCollection = () => {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.3]);
 
   const deviceGroup = deviceSeries.find((g) => g.slug === deviceSlug);
+
+  useSEO({
+    title: deviceGroup ? `${deviceGroup.name} Cases & Protection | VCASE` : "Device Collection | VCASE",
+    description: deviceGroup ? `Shop premium cases, screen protectors & camera lens guards for ${deviceGroup.name}. MagSafe, silicone & clear cases with military-grade drop protection.` : "Browse VCASE device collections.",
+    canonical: `https://vcase.in/devices/${deviceSlug}`,
+  });
 
   useEffect(() => {
     window.scrollTo(0, 0);

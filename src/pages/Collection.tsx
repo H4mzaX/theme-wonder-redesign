@@ -4,6 +4,7 @@ import { Home, SlidersHorizontal, ChevronDown, X, ArrowRight, Headphones, Smartp
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { allProducts, type Product } from "@/data/products";
 import { premiumEase } from "@/lib/motion";
+import { useSEO } from "@/hooks/useSEO";
 import Navbar from "@/components/Navbar";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Footer from "@/components/Footer";
@@ -145,6 +146,12 @@ const Collection = () => {
 
   const collection = collectionDefs[slug || "all"] || collectionDefs["all"];
   const CollectionIcon = collectionIcons[slug || "all"] || Smartphone;
+
+  useSEO({
+    title: `${collection.title.replace("\n", " ")} | VCASE`,
+    description: collection.description,
+    canonical: `https://vcase.in/collections/${slug || "all"}`,
+  });
 
   useEffect(() => {
     setActiveSubcat(0);

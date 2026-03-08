@@ -9,6 +9,7 @@ import CartDrawer from "@/components/CartDrawer";
 import BrandName from "@/components/BrandName";
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
 
 const SeriesLanding = () => {
   const { seriesSlug } = useParams<{ seriesSlug: string }>();
@@ -16,6 +17,13 @@ const SeriesLanding = () => {
   const [cartOpen, setCartOpen] = useState(false);
 
   const series = seriesSlug ? seriesData[seriesSlug as SeriesSlug] : null;
+
+  useSEO({
+    title: series ? `${series.name} — Premium ${series.type === "case" ? "Cases" : "Protection"} | VCASE` : "Collection | VCASE",
+    description: series ? `${series.description} Available for iPhone 16 & iPhone 17 series. Free shipping on prepaid orders.` : "Browse VCASE collections.",
+    canonical: `https://vcase.in/${seriesSlug}`,
+  });
+
   if (!series) return <Navigate to="/404" replace />;
 
   return (

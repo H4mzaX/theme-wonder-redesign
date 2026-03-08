@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { allProducts, colorImages, iphone17ProGalleryImages, iphone17GalleryImages, iphone16MagsafeGalleryImages, siliconeGalleryImages, type Product } from "@/data/products";
+import { useSEO } from "@/hooks/useSEO";
 import { useCart } from "@/context/CartContext";
 import { toast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
@@ -156,6 +157,30 @@ const warrantyContent = "All VCASE products come with a 6-month warranty against
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const product = allProducts.find((p) => p.id === id);
+
+  useSEO({
+    title: product ? `${product.name} for ${product.device} | VCASE` : "Product | VCASE",
+    description: product ? `Buy VCASE ${product.name} ${product.category.toLowerCase()} for ${product.device}. ${product.price} with free shipping on prepaid orders. Military-grade protection.` : "Premium phone protection by VCASE.",
+    canonical: `https://vcase.in/product/${id}`,
+    type: "product",
+    jsonLd: product ? {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name: `${product.name} for ${product.device}`,
+      brand: { "@type": "Brand", name: "VCASE" },
+      offers: {
+        "@type": "Offer",
+        priceCurrency: "INR",
+        price: product.price.replace(/[₹,]/g, ""),
+        availability: "https://schema.org/InStock",
+      },
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: product.rating,
+        reviewCount: product.reviews,
+      },
+    } : undefined,
+  });
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [selectedColor, setSelectedColor] = useState(0);

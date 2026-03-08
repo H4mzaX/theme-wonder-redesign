@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { seriesData, deviceSeries, getSeriesProducts, softmagColors, allProducts, type SeriesSlug } from "@/data/products";
+import { useSEO } from "@/hooks/useSEO";
 import { useCart } from "@/context/CartContext";
 import { toast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
@@ -46,6 +47,24 @@ const SeriesProduct = () => {
 
   const series = seriesData[seriesSlug as SeriesSlug];
   const deviceGroup = deviceSeries.find((g) => g.slug === deviceSlug);
+
+  const deviceName = deviceGroup?.name?.replace(" Series", "") || deviceSlug || "";
+  const seriesName = series?.name || seriesSlug || "";
+
+  useSEO({
+    title: series && deviceGroup ? `${seriesName} for ${deviceName} | VCASE` : "Product | VCASE",
+    description: series ? `Buy ${seriesName} ${series.type === "case" ? "case" : "protector"} for ${deviceName}. ${series.description} Free shipping on prepaid orders.` : "Premium phone protection by VCASE.",
+    canonical: `https://vcase.in/${seriesSlug}/${deviceSlug}`,
+    type: "product",
+    jsonLd: series && deviceGroup ? {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name: `${seriesName} for ${deviceName}`,
+      description: series.description,
+      brand: { "@type": "Brand", name: "VCASE" },
+      offers: { "@type": "Offer", priceCurrency: "INR", availability: "https://schema.org/InStock" },
+    } : undefined,
+  });
 
   useEffect(() => {
     window.scrollTo(0, 0);
