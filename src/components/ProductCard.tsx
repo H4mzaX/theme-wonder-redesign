@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Star, ShoppingCart, Shield, Zap, Droplets, Magnet, Ruler, Gauge, Weight, Layers } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -33,6 +34,9 @@ const defaultSpecs = [
 const ProductCard = ({ product }: { product: Product; tag?: string }) => {
   const { addToCart } = useCart();
   const specs = categorySpecs[product.category] || defaultSpecs;
+  const hasAlt = !!(product.hoverImage && product.hoverImage !== product.image);
+  const images = hasAlt ? [product.image, product.hoverImage!] : [product.image];
+  const [activeImg, setActiveImg] = useState(0);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -50,43 +54,74 @@ const ProductCard = ({ product }: { product: Product; tag?: string }) => {
     toast({ title: "Added to cart", description: `${product.name} — ${product.subtitle}` });
   };
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!hasAlt) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    setActiveImg(x > rect.width / 2 ? 1 : 0);
+  };
+
   return (
     <Link
       to={`/product/${product.id}`}
-      className="group flex flex-col bg-background rounded-xl overflow-hidden border border-border/60 h-full [perspective:1000px]"
+      className="group flex flex-col bg-background rounded-xl overflow-hidden border border-border/60 h-full"
     >
-      {/* Flip container */}
-      <div className="relative aspect-square overflow-hidden [transform-style:preserve-3d]">
-        {/* Rating pill — top right */}
+      {/* Image area with hover zones */}
+      <div
+        className="relative aspect-square overflow-hidden"
+        onMouseMove={handleMouseMove}
+        onMouseLeave={() => setActiveImg(0)}
+      >
+        {/* Rating pill */}
         <div className="absolute top-2.5 right-2.5 z-20 flex items-center gap-1 bg-background/90 backdrop-blur-sm rounded-full px-2 py-1 shadow-sm">
           <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
           <span className="text-[11px] font-bold leading-none text-foreground">{product.rating.toFixed(1)}</span>
         </div>
 
-        {/* Front face */}
-        <div className="absolute inset-0 [backface-visibility:hidden] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:[transform:rotateY(180deg)]">
+        {/* Images stacked — crossfade */}
+        {images.map((src, i) => (
           <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-full object-cover"
-            loading="lazy"
-            decoding="async"
-            fetchPriority="auto"
-          />
-        </div>
-
-        {/* Back face */}
-        <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:[transform:rotateY(0deg)]">
-          <img
-            src={product.hoverImage || product.image}
-            alt={`${product.name} - alternate view`}
-            className="w-full h-full object-cover"
+            key={i}
+            src={src}
+            alt={i === 0 ? product.name : `${product.name} - alt`}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-out ${
+              i === activeImg ? "opacity-100" : "opacity-0"
+            }`}
             loading="lazy"
             decoding="async"
           />
-        </div>
+        ))}
 
-        {/* Cart button — bottom right */}
+        {/* Hover zone indicator — desktop only */}
+        {hasAlt && (
+          <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-10 hidden sm:flex gap-1">
+            {images.map((_, i) => (
+              <span
+                key={i}
+                className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                  i === activeImg ? "bg-foreground w-4" : "bg-foreground/30"
+                }`}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Mobile swappable dots */}
+        {hasAlt && (
+          <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-10 flex sm:hidden gap-1.5">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                onClick={(e) => { e.preventDefault(); e.stopPropagation(); setActiveImg(i); }}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  i === activeImg ? "bg-foreground w-5" : "bg-foreground/30"
+                }`}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Cart button */}
         <motion.button
           onClick={handleAddToCart}
           className="absolute bottom-2.5 right-2.5 z-20 w-9 h-9 rounded-full bg-background/90 backdrop-blur-sm text-foreground flex items-center justify-center shadow-md border border-border/40"
@@ -97,7 +132,7 @@ const ProductCard = ({ product }: { product: Product; tag?: string }) => {
         </motion.button>
       </div>
 
-      {/* Info area — compact */}
+      {/* Info area */}
       <div className="flex flex-col px-3 pt-2.5 pb-1 gap-0.5">
         <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.15em] text-muted-foreground font-medium">
           {product.device}
