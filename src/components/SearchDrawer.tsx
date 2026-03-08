@@ -2,7 +2,7 @@ import { X, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useMemo } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { allProducts, Product, getProductUrl } from "@/data/products";
+import { allProducts, Product } from "@/data/products";
 import { useNavigate } from "react-router-dom";
 import { drawerSpring, premiumEase } from "@/lib/motion";
 
@@ -48,7 +48,7 @@ const SearchDrawer = ({ open, onClose }: SearchDrawerProps) => {
 
   const handleProductClick = (product: Product) => {
     onClose();
-    navigate(getProductUrl(product));
+    navigate(`/product/${product.id}`);
   };
 
   const renderResults = () => (
