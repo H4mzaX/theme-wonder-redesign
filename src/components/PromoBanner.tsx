@@ -4,7 +4,7 @@ import bannerOrangeImg from "@/assets/banner-magsafe-orange-2.png";
 
 const PromoBanner = () => {
   return (
-    <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-3 sm:py-4 lg:py-5">
+    <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-3 sm:py-4 lg:py-6">
       <ScaleOnScroll>
         <a href="#" className="block relative rounded-2xl overflow-hidden group">
           <ParallaxImage
