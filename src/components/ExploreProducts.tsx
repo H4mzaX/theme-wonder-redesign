@@ -85,6 +85,7 @@ const ExploreProducts = () => {
                         className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700 ease-out"
                         loading="lazy"
                         decoding="async"
+                        fetchPriority="auto"
                       />
                     </div>
 

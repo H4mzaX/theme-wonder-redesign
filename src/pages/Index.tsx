@@ -1,5 +1,6 @@
 import { useState, lazy, Suspense } from "react";
 import { useSEO } from "@/hooks/useSEO";
+import { usePrefetchRoutes } from "@/hooks/usePrefetchRoutes";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Navbar from "@/components/Navbar";
 import HeroSlider from "@/components/HeroSlider";

@@ -84,6 +84,7 @@ const ProductBanner = ({
                 }`}
                 loading="lazy"
                 decoding="async"
+                fetchPriority="auto"
               />
             </div>
           </div>
