@@ -1,4 +1,5 @@
 import { useState, lazy, Suspense } from "react";
+import { useSEO } from "@/hooks/useSEO";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Navbar from "@/components/Navbar";
 import HeroSlider from "@/components/HeroSlider";
@@ -34,6 +35,20 @@ const LazySection = ({ children }: { children: React.ReactNode }) => (
 const Index = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+
+  useSEO({
+    title: "VCASE — Premium Phone Cases & Protection for iPhone",
+    description: "Shop premium MagSafe, silicone & clear cases for iPhone 16 & 17. Military-grade drop protection, screen guards & camera lens protectors. Free shipping on prepaid orders.",
+    canonical: "https://vcase.in/",
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "VCASE",
+      url: "https://vcase.in",
+      logo: "https://vcase.in/favicon.png",
+      contactPoint: { "@type": "ContactPoint", email: "veecartretail@gmail.com", contactType: "customer service" },
+    },
+  });
 
   return (
     <div className="min-h-screen bg-announcement overflow-x-clip">

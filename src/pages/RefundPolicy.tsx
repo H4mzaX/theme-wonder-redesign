@@ -6,10 +6,17 @@ import AnnouncementBar from "@/components/AnnouncementBar";
 import SearchDrawer from "@/components/SearchDrawer";
 import CartDrawer from "@/components/CartDrawer";
 import { ScrollReveal } from "@/hooks/useScrollAnimations";
+import { useSEO } from "@/hooks/useSEO";
 
 const RefundPolicy = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+
+  useSEO({
+    title: "Refund & Return Policy | VCASE",
+    description: "VCASE refund and return policy. Learn about our hassle-free returns, replacement guarantee, and refund process for phone cases and protection.",
+    canonical: "https://vcase.in/refund-policy",
+  });
 
   return (
     <div className="min-h-screen bg-background text-foreground">
