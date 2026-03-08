@@ -421,9 +421,9 @@ const ProductContentSections = ({ product }: { product: Product }) => {
       {/* 2. Large outlined-text marquee */}
       <OutlinedMarquee items={content.scrollVideoTexts.map(t => t.replace('.', ''))} />
 
-      {/* 3. Editorial text + Featured gallery (Concept Theme exact layout) */}
+      {/* 3. Editorial text + Featured gallery — Concept Theme exact layout */}
       <div id="pdp-features">
-        {/* Editorial text — full width above gallery on mobile, side by side on desktop */}
+        {/* Editorial text — full width on mobile, left column on desktop */}
         <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 pt-10 sm:pt-16 lg:pt-20 pb-6 sm:pb-8">
           <div className="grid grid-cols-1 lg:grid-cols-[4fr_8fr] gap-6 lg:gap-12 items-start">
             <div className="lg:sticky lg:top-[100px]">
@@ -439,67 +439,40 @@ const ProductContentSections = ({ product }: { product: Product }) => {
               </AnimateElement>
             </div>
 
-            {/* Desktop: 2-col asymmetric grid (2 stacked left + 1 tall right) */}
+            {/* Desktop: 2-col asymmetric grid */}
             <div className="hidden lg:grid grid-cols-[5fr_4fr] gap-4">
               {/* Left: 2 stacked cards */}
               <div className="flex flex-col gap-4">
                 {content.featuredCards.slice(0, 2).map((card, i) => (
                   <AnimateElement key={i} type="fade-up" delay={i * 0.1}>
-                    <div className="relative rounded-3xl overflow-hidden group aspect-[4/3] bg-secondary/20">
-                      <img src={card.image} alt={card.label} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
-                      <div className="absolute bottom-0 left-0 right-0 p-5 text-center">
-                        <p className="text-xs text-primary font-medium">{card.label}</p>
-                        <p className="text-lg font-bold text-foreground tracking-tight leading-tight mt-0.5">{card.subtitle}</p>
-                      </div>
-                    </div>
+                    <FeaturedCard card={card} aspectClass="aspect-[4/3]" isDark={false} />
                   </AnimateElement>
                 ))}
               </div>
               {/* Right: 1 tall card */}
               {content.featuredCards[2] && (
                 <AnimateElement type="fade-up" delay={0.15}>
-                  <div className="relative rounded-3xl overflow-hidden group h-full min-h-[500px] bg-foreground">
-                    <img src={content.featuredCards[2].image} alt={content.featuredCards[2].label} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
-                    <div className="absolute top-0 right-0 p-6 text-right max-w-[85%]">
-                      <p className="text-xs text-primary font-medium">{content.featuredCards[2].label}</p>
-                      <p className="text-xl lg:text-2xl font-bold text-background tracking-tight leading-tight mt-0.5">{content.featuredCards[2].subtitle}</p>
-                    </div>
-                  </div>
+                  <FeaturedCard card={content.featuredCards[2]} aspectClass="h-full min-h-[500px]" isDark={true} />
                 </AnimateElement>
               )}
             </div>
           </div>
         </section>
 
-        {/* Mobile: Full-width stacked cards — exact Concept Theme mobile layout */}
+        {/* Mobile: Full-width stacked cards */}
         <div className="lg:hidden px-4 sm:px-6 pb-6 flex flex-col gap-4">
-          {content.featuredCards.map((card, i) => (
+          {content.featuredCards.slice(0, 3).map((card, i) => (
             <AnimateElement key={i} type="fade-up" delay={i * 0.08}>
-              <div className="relative rounded-3xl overflow-hidden group bg-secondary/10">
-                <div className="aspect-[4/3]">
-                  <img src={card.image} alt={card.label} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
-                </div>
-                <div className="p-4 sm:p-5 text-center">
-                  <p className="text-[11px] sm:text-xs text-primary font-medium">{card.label}</p>
-                  <p className="text-base sm:text-lg font-bold text-foreground tracking-tight leading-tight mt-0.5">{card.subtitle}</p>
-                </div>
-              </div>
+              <FeaturedCard card={card} aspectClass="aspect-[4/3]" isDark={i === 2} />
             </AnimateElement>
           ))}
         </div>
 
-        {/* Desktop: Bottom wide card (4th) */}
+        {/* Bottom wide card (4th) — both mobile + desktop */}
         {content.featuredCards[3] && (
-          <div className="hidden lg:block max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 pb-10">
+          <div className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 pb-8 sm:pb-10">
             <AnimateElement type="fade-up" delay={0.2}>
-              <div className="relative rounded-3xl overflow-hidden group aspect-[21/9]">
-                <img src={content.featuredCards[3].image} alt={content.featuredCards[3].label} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
-                <div className="absolute inset-0 bg-gradient-to-r from-foreground/40 to-transparent" />
-                <div className="absolute bottom-0 left-0 p-8">
-                  <p className="text-xs text-primary font-medium">{content.featuredCards[3].label}</p>
-                  <p className="text-2xl lg:text-3xl font-bold text-background tracking-tight leading-tight mt-1">{content.featuredCards[3].subtitle}</p>
-                </div>
-              </div>
+              <FeaturedCard card={content.featuredCards[3]} aspectClass="aspect-[16/9] sm:aspect-[21/9]" isDark={true} />
             </AnimateElement>
           </div>
         )}
