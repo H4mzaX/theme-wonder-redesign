@@ -545,7 +545,7 @@ const FeaturedCard = ({ card, aspectClass, isDark }: {
    ══════════════════════════════════════════ */
 const ProductContentSections = ({ product }: { product: Product }) => {
   const seriesSlug = product.seriesSlug as string;
-  const content = seriesContentMap[seriesSlug];
+  const content = getSeriesContent(seriesSlug, product.device);
 
   if (!content) return null;
 
