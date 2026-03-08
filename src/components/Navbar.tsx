@@ -76,7 +76,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
   return (
     <>
       <motion.nav
-        className={`section-padding w-full py-3.5 sm:py-4 sticky top-0 z-50 overflow-visible transition-all duration-300 will-change-transform ${
+        className={`section-padding w-full py-5 sm:py-6 lg:py-5 sticky top-0 z-50 overflow-visible transition-all duration-300 will-change-transform ${
           isTransparent ? "bg-transparent text-background" : "bg-background"
         }`}
         initial={{ y: 0 }}
@@ -86,7 +86,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
         <div className="flex items-center justify-between">
           {/* Mobile hamburger */}
           <button
-            className="lg:hidden w-10 h-10 flex items-center justify-center -ml-2 rounded-full hover:bg-muted active:scale-95 transition-all"
+            className="lg:hidden w-11 h-11 flex items-center justify-center -ml-2 rounded-full hover:bg-muted active:scale-95 transition-all"
             onClick={() => setMobileOpen(true)}
           >
             <MenuIcon className="w-6 h-6" />
@@ -97,7 +97,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
             <motion.img
               src={logoFull}
               alt="VCASE"
-              className="h-6 sm:h-7 lg:h-8 w-auto"
+              className="h-7 sm:h-8 lg:h-9 w-auto"
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
             />
@@ -147,15 +147,15 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
           </div>
 
           {/* Right icons */}
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-6">
             <motion.button className="hover:text-accent transition-colors" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} onClick={onSearchOpen}>
-              <SearchIcon className="w-5 h-5" />
+              <SearchIcon className="w-[22px] h-[22px]" />
             </motion.button>
             <motion.button className="hidden sm:block hover:text-accent transition-colors" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-              <UserIcon className="w-5 h-5" />
+              <UserIcon className="w-[22px] h-[22px]" />
             </motion.button>
             <motion.button className="hover:text-accent transition-colors relative" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} onClick={onCartOpen}>
-              <CartIcon className="w-5 h-5" />
+              <CartIcon className="w-[22px] h-[22px]" />
               {totalItems > 0 && (
                 <span className="absolute -top-1.5 -right-1.5 bg-accent text-accent-foreground text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
                   {totalItems}

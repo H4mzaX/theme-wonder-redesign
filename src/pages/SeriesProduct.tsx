@@ -291,11 +291,13 @@ const SeriesProduct = () => {
   const otherDeviceGroups = deviceSeries.filter((g) => g.slug !== deviceSlug);
 
   return (
-    <div className="min-h-screen flex flex-col bg-background overflow-x-clip">
+    <div className="min-h-screen flex flex-col bg-announcement overflow-x-clip">
 
       <AnnouncementBar />
+      <div className="bg-background rounded-t-[2rem] sm:rounded-t-[2.5rem] lg:rounded-t-[3rem] overflow-x-clip">
       <Navbar onSearchOpen={() => setSearchOpen(true)} onCartOpen={() => setCartOpen(true)} />
       <SearchDrawer open={searchOpen} onClose={() => setSearchOpen(false)} />
+      <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
       <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
 
       {/* ═══ BREADCRUMB ═══ */}
@@ -804,6 +806,7 @@ const SeriesProduct = () => {
         onSearchOpen={() => setSearchOpen(true)}
         onCartOpen={() => setCartOpen(true)}
       />
+      </div>
     </div>
   );
 };
