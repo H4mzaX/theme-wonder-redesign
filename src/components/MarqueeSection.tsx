@@ -55,7 +55,7 @@ const MarqueeSection = () => {
       <section
         style={{
           overflow: "hidden",
-          padding: "1.25rem 0",
+          padding: "0.75rem 0",
           background: "#ffffff",
           userSelect: "none",
         }}
