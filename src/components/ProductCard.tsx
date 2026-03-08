@@ -6,28 +6,22 @@ import { toast } from "@/hooks/use-toast";
 import type { Product } from "@/data/products";
 
 const categorySpecs: Record<string, { icon: React.ElementType; label: string; value: string }[]> = {
-  "MagSafe Cases": [
+  Cases: [
     { icon: Gauge, label: "MagSafe", value: "38T" },
     { icon: Ruler, label: "Thickness", value: "1.2mm" },
     { icon: Weight, label: "Weight", value: "32g" },
   ],
-  "Silicone Cases": [
-    { icon: Layers, label: "Material", value: "Silicone" },
-    { icon: Ruler, label: "Thickness", value: "1.5mm" },
-    { icon: Weight, label: "Weight", value: "28g" },
+  "Screen Protection": [
+    { icon: Shield, label: "Hardness", value: "9H" },
+    { icon: Layers, label: "Coating", value: "Oleophobic" },
+    { icon: Ruler, label: "Thickness", value: "0.33mm" },
   ],
-  "Leather Cases": [
-    { icon: Layers, label: "Material", value: "Leather" },
-    { icon: Ruler, label: "Thickness", value: "1.8mm" },
-    { icon: Weight, label: "Weight", value: "42g" },
+  "Camera Protection": [
+    { icon: Shield, label: "Hardness", value: "9H" },
+    { icon: Layers, label: "Profile", value: "0.3mm" },
+    { icon: Ruler, label: "Fit", value: "Precision" },
   ],
-  "Clear Cases": [
-    { icon: Layers, label: "Material", value: "PC+TPU" },
-    { icon: Ruler, label: "Thickness", value: "1.2mm" },
-    { icon: Shield, label: "IP Rating", value: "IP54" },
-  ],
-  "Black Cases": [
-    { icon: Layers, label: "Finish", value: "Matte" },
+};
     { icon: Ruler, label: "Thickness", value: "1.4mm" },
     { icon: Weight, label: "Weight", value: "30g" },
   ],
