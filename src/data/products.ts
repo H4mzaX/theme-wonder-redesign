@@ -328,8 +328,13 @@ export function getProductUrl(product: Product): string {
   const group = deviceSeries.find((g) =>
     g.models.some((m) => m.name === product.device)
   );
+
   if (!group) return `/${product.seriesSlug}`;
-  return `/${product.seriesSlug}/${group.slug}`;
+
+  const model = group.models.find((m) => m.name === product.device);
+  if (!model) return `/${product.seriesSlug}/${group.slug}`;
+
+  return `/${product.seriesSlug}/${group.slug}?model=${encodeURIComponent(model.slug)}`;
 }
 
 export function getProductUrlById(productId: string): string {
