@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, Navigate } from "react-router-dom";
 import {
   Star, ChevronLeft, ChevronRight, Shield, Zap, Magnet, CheckCircle,
   Package, Truck, Percent, Minus, Plus,
@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
-import { allProducts, colorImages, iphone17ProGalleryImages, iphone17GalleryImages, iphone16MagsafeGalleryImages, siliconeGalleryImages, type Product } from "@/data/products";
+import { allProducts, colorImages, iphone17ProGalleryImages, iphone17GalleryImages, iphone16MagsafeGalleryImages, siliconeGalleryImages, getProductUrl, getProductUrlById, type Product } from "@/data/products";
 import softmagCloseup from "@/assets/softmag-closeup.webp";
 import softmagLifestyle from "@/assets/softmag-lifestyle.webp";
 import softmagFloating from "@/assets/softmag-floating.webp";
@@ -151,6 +151,11 @@ const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const product = allProducts.find((p) => p.id === id);
 
+  // Redirect old /product/:id URLs to canonical /:seriesSlug/:deviceGroupSlug
+  if (product) {
+    return <Navigate to={getProductUrl(product)} replace />;
+  }
+
   useSEO({
     title: product ? `${product.name} for ${product.device} | VCASE` : "Product | VCASE",
     description: product ? `Buy VCASE ${product.name} for ${product.device}. ${product.price} with free shipping.` : "Premium phone protection by VCASE.",
@@ -266,7 +271,7 @@ const ProductDetail = () => {
 
   const handleModelChange = (device: string) => {
     const targetProduct = allProducts.find((p) => p.name === product.name && p.device === device);
-    if (targetProduct) window.location.href = `/product/${targetProduct.id}`;
+    if (targetProduct) window.location.href = getProductUrl(targetProduct);
   };
 
   return (
