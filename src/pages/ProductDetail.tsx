@@ -8,6 +8,7 @@ import {
   ShieldCheck, Waves, CircleDot, ScanLine, BadgeCheck, Wallet, IndianRupee, Banknote
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import useEmblaCarousel from "embla-carousel-react";
 import { allProducts, colorImages, iphone17ProGalleryImages, iphone17GalleryImages, iphone16MagsafeGalleryImages, siliconeGalleryImages, type Product } from "@/data/products";
 import { useSEO } from "@/hooks/useSEO";
 import { useCart } from "@/context/CartContext";
@@ -19,6 +20,7 @@ import SearchDrawer from "@/components/SearchDrawer";
 import CartDrawer from "@/components/CartDrawer";
 import ProductCard from "@/components/ProductCard";
 import { ProductLightbox } from "@/components/ProductLightbox";
+import ProductContentSections from "@/components/ProductContentSections";
 
 const colorHex: Record<string, string> = {
   Clear: "#e5e5e5",
@@ -153,6 +155,63 @@ const faqItems = [
 ];
 
 const warrantyContent = "All VCASE products come with a 6-month warranty against manufacturing defects. This covers issues such as peeling, discoloration (non-clear cases), and structural failure under normal use. Warranty does not cover physical damage from drops, scratches from everyday use, or natural patina development on leather cases.";
+
+/* ── Related Products Carousel ── */
+const RelatedProductsCarousel = ({ products }: { products: Product[] }) => {
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    align: "start",
+    slidesToScroll: 1,
+    containScroll: "trimSnaps",
+    dragFree: true,
+  });
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(true);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const onSelect = () => {
+      setCanPrev(emblaApi.canScrollPrev());
+      setCanNext(emblaApi.canScrollNext());
+    };
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+    onSelect();
+    return () => { emblaApi.off("select", onSelect); };
+  }, [emblaApi]);
+
+  return (
+    <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-8 sm:py-12 border-t border-border">
+      <div className="flex items-center justify-between mb-5 sm:mb-7">
+        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground tracking-tight">You may also like</h2>
+        <div className="flex gap-2">
+          <button
+            onClick={() => emblaApi?.scrollPrev()}
+            disabled={!canPrev}
+            className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-30"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <button
+            onClick={() => emblaApi?.scrollNext()}
+            disabled={!canNext}
+            className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-30"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+      <div ref={emblaRef} className="overflow-hidden">
+        <div className="flex gap-3 sm:gap-4">
+          {products.map((p) => (
+            <div key={p.id} className="flex-none w-[42vw] sm:w-[260px] lg:w-[280px]">
+              <ProductCard product={p} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -915,31 +974,12 @@ const ProductDetail = () => {
         </div>
       </section>
 
-      {/* ═══════ YOU MAY ALSO LIKE ═══════ */}
+      {/* ═══════ PREMIUM PRODUCT CONTENT SECTIONS ═══════ */}
+      <ProductContentSections product={product} />
+
+      {/* ═══════ YOU MAY ALSO LIKE — CAROUSEL ═══════ */}
       {relatedProducts.length > 0 && (
-        <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-6 sm:py-10 border-t border-border">
-          <div className="flex items-center justify-between mb-4 sm:mb-6">
-            <h2 className="text-lg sm:text-2xl font-bold text-foreground">You may also like</h2>
-            <div className="flex gap-2">
-              <button className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors">
-                <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              </button>
-              <button className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors">
-                <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              </button>
-            </div>
-          </div>
-          <div
-            className="flex gap-3 sm:gap-4 overflow-x-auto pb-4 snap-x snap-mandatory"
-            style={{ scrollbarWidth: "none" }}
-          >
-            {relatedProducts.map((p) => (
-              <div key={p.id} className="flex-none w-[42vw] sm:w-[260px] lg:w-[280px] snap-start">
-                <ProductCard product={p} />
-              </div>
-            ))}
-          </div>
-        </section>
+        <RelatedProductsCarousel products={relatedProducts} />
       )}
 
       {/* ═══════ STICKY FLOATING ADD TO CART + COUNTDOWN PILL ═══════ */}
