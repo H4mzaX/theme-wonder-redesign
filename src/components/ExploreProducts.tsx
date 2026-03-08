@@ -9,6 +9,7 @@ const seriesList: { slug: SeriesSlug; href: string }[] = [
   { slug: "clearmag", href: "/clearmag" },
   { slug: "clearmag-edge", href: "/clearmag-edge" },
   { slug: "softmag", href: "/softmag" },
+  { slug: "armor-edge", href: "/armor-edge" },
   { slug: "edgeguard", href: "/edgeguard" },
   { slug: "lensguard", href: "/lensguard" },
 ];

@@ -11,7 +11,7 @@
  *   SoftMag      → "Soft" light + "Mag" bold
  *   EdgeGuard    → "Edge" light + "Guard" bold
  *   LensGuard    → "Lens" light + "Guard" bold
- *   ArmorMag     → "Armor" light + "Mag" bold
+ *   Armor Edge   → "Armor" light + "Edge" bold
  */
 
 interface BrandNameProps {
@@ -25,7 +25,7 @@ const brandSplits: Record<string, [string, string]> = {
   ClearMag: ["Clear", "Mag"],
   "ClearMag Edge": ["Clear", "Mag Edge"],
   SoftMag: ["Soft", "Mag"],
-  ArmorMag: ["Armor", "Mag"],
+  "Armor Edge": ["Armor", "Edge"],
   EdgeGuard: ["Edge", "Guard"],
   LensGuard: ["Lens", "Guard"],
 };
