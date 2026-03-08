@@ -14,7 +14,6 @@ const OptimizedImage = ({ src, alt, className, eager = false, ...props }: Optimi
   const imgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
-    // If the image is already cached by the browser, mark loaded immediately
     if (imgRef.current?.complete && imgRef.current.naturalWidth > 0) {
       setLoaded(true);
     }
@@ -29,10 +28,11 @@ const OptimizedImage = ({ src, alt, className, eager = false, ...props }: Optimi
       decoding="async"
       onLoad={() => setLoaded(true)}
       className={cn(
-        "transition-opacity duration-500 ease-out",
+        "will-change-[opacity]",
         loaded ? "opacity-100" : "opacity-0",
         className
       )}
+      style={{ transition: "opacity 300ms cubic-bezier(0.25, 1, 0.5, 1)" }}
       {...props}
     />
   );

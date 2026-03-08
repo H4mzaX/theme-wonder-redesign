@@ -1,52 +1,64 @@
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef, type ReactNode } from "react";
 
+/**
+ * Concept Theme Animation System
+ * 
+ * Key principles from the Concept theme:
+ * 1. Fast, snappy reveals (0.6-0.8s max, not 1.2-1.5s)
+ * 2. Expo-out easing for that "premium deceleration" feel
+ * 3. Small travel distances (16-24px, not 40px) — subtle > dramatic
+ * 4. GPU-accelerated via will-change and transform3d
+ * 5. Tight viewport margins so animations trigger earlier
+ */
+
 const expoOut: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const conceptEase: [number, number, number, number] = [0.25, 1, 0.5, 1];
 
 const variants = {
   fade: {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 1.5, ease: expoOut } },
+    visible: { opacity: 1, transition: { duration: 0.6, ease: conceptEase } },
   },
   "fade-up": {
-    hidden: { opacity: 0, y: "2.5rem" },
-    visible: { opacity: 1, y: 0, transition: { duration: 1.2, ease: expoOut } },
+    hidden: { opacity: 0, y: 24 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: conceptEase } },
   },
   "fade-down": {
-    hidden: { opacity: 0, y: "-2rem" },
-    visible: { opacity: 1, y: 0, transition: { duration: 1.2, ease: expoOut } },
+    hidden: { opacity: 0, y: -16 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: conceptEase } },
   },
   "fade-left": {
-    hidden: { opacity: 0, x: "-3rem" },
-    visible: { opacity: 1, x: 0, transition: { duration: 1.2, ease: expoOut } },
+    hidden: { opacity: 0, x: -24 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: conceptEase } },
   },
   "fade-right": {
-    hidden: { opacity: 0, x: "3rem" },
-    visible: { opacity: 1, x: 0, transition: { duration: 1.2, ease: expoOut } },
+    hidden: { opacity: 0, x: 24 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: conceptEase } },
   },
   "reveal-up": {
-    hidden: { opacity: 0, y: "90%" },
-    visible: { opacity: 1, y: 0, transition: { duration: 1, ease: expoOut } },
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: expoOut } },
   },
   "zoom-out": {
-    hidden: { scale: 1.3, opacity: 0 },
-    visible: { scale: 1, opacity: 1, transition: { duration: 1.3, ease: expoOut } },
+    hidden: { scale: 1.12, opacity: 0 },
+    visible: { scale: 1, opacity: 1, transition: { duration: 0.7, ease: conceptEase } },
   },
   "zoom-in": {
-    hidden: { scale: 0.85, opacity: 0 },
-    visible: { scale: 1, opacity: 1, transition: { duration: 1, ease: expoOut } },
+    hidden: { scale: 0.92, opacity: 0 },
+    visible: { scale: 1, opacity: 1, transition: { duration: 0.6, ease: conceptEase } },
   },
   "clip-up": {
     hidden: { opacity: 0, clipPath: "inset(100% 0 0 0)" },
-    visible: { opacity: 1, clipPath: "inset(0% 0 0 0)", transition: { duration: 0.8, ease: expoOut } },
+    visible: { opacity: 1, clipPath: "inset(0% 0 0 0)", transition: { duration: 0.6, ease: expoOut } },
   },
   "clip-left": {
     hidden: { opacity: 0, clipPath: "inset(0 100% 0 0)" },
-    visible: { opacity: 1, clipPath: "inset(0 0% 0 0)", transition: { duration: 0.8, ease: expoOut } },
+    visible: { opacity: 1, clipPath: "inset(0 0% 0 0)", transition: { duration: 0.6, ease: expoOut } },
   },
   "blur-in": {
-    hidden: { opacity: 0, filter: "blur(12px)" },
-    visible: { opacity: 1, filter: "blur(0px)", transition: { duration: 1.2, ease: expoOut } },
+    hidden: { opacity: 0, filter: "blur(8px)" },
+    visible: { opacity: 1, filter: "blur(0px)", transition: { duration: 0.7, ease: conceptEase } },
   },
 };
 
@@ -68,7 +80,7 @@ const AnimateElement = ({
   delay = 0,
   className = "",
   as = "div",
-  viewport = "-60px",
+  viewport = "-40px",
 }: AnimateElementProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: viewport as any });
@@ -82,6 +94,7 @@ const AnimateElement = ({
       variants={variants[type]}
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
+      style={{ willChange: "transform, opacity" }}
       transition={{ delay }}
     >
       {children}
@@ -93,14 +106,14 @@ const AnimateElement = ({
 export const StaggerGroup = ({
   children,
   className = "",
-  staggerDelay = 0.08,
+  staggerDelay = 0.06,
 }: {
   children: ReactNode;
   className?: string;
   staggerDelay?: number;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-50px" });
+  const inView = useInView(ref, { once: true, margin: "-30px" });
 
   return (
     <motion.div
@@ -128,11 +141,11 @@ export const StaggerChild = ({
   <motion.div
     className={className}
     variants={{
-      hidden: { opacity: 0, y: "2rem" },
+      hidden: { opacity: 0, y: 20 },
       visible: {
         opacity: 1,
         y: 0,
-        transition: { duration: 0.7, ease: expoOut },
+        transition: { duration: 0.5, ease: conceptEase },
       },
     }}
   >
@@ -144,7 +157,7 @@ export const StaggerChild = ({
 export const ParallaxSection = ({
   children,
   className = "",
-  speed = 0.1,
+  speed = 0.08,
 }: {
   children: ReactNode;
   className?: string;
@@ -159,7 +172,7 @@ export const ParallaxSection = ({
 
   return (
     <div ref={ref} className={`overflow-hidden ${className}`}>
-      <motion.div style={{ y }}>{children}</motion.div>
+      <motion.div style={{ y, willChange: "transform" }}>{children}</motion.div>
     </div>
   );
 };
@@ -177,11 +190,11 @@ export const ScaleReveal = ({
     target: ref,
     offset: ["start end", "end start"],
   });
-  const scale = useTransform(scrollYProgress, [0, 0.5], [0.9, 1]);
-  const opacity = useTransform(scrollYProgress, [0, 0.35], [0.4, 1]);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [0.94, 1]);
+  const opacity = useTransform(scrollYProgress, [0, 0.3], [0.5, 1]);
 
   return (
-    <motion.div ref={ref} className={className} style={{ scale, opacity }}>
+    <motion.div ref={ref} className={className} style={{ scale, opacity, willChange: "transform, opacity" }}>
       {children}
     </motion.div>
   );

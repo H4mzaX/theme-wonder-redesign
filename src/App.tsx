@@ -23,17 +23,14 @@ const queryClient = new QueryClient();
 const pageVariants = {
   initial: {
     opacity: 0,
-    clipPath: "inset(0 0 100% 0)",
   },
   animate: {
     opacity: 1,
-    clipPath: "inset(0 0 0% 0)",
-    transition: { duration: 0.5, ease: premiumEase },
+    transition: { duration: 0.3, ease: [0.25, 1, 0.5, 1] },
   },
   exit: {
     opacity: 0,
-    clipPath: "inset(100% 0 0 0)",
-    transition: { duration: 0.3, ease: premiumEase },
+    transition: { duration: 0.15, ease: [0.25, 1, 0.5, 1] },
   },
 };
 
