@@ -188,43 +188,39 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                 {/* ── CASES MEGA ── */}
                 {activeMega === "Cases" && (
                   <div className="grid grid-cols-12 gap-10">
-                    <div className="col-span-5">
+                    <div className="col-span-7">
                       <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-4">Case Series</p>
                       <div className="flex flex-col">
                         {casesMenuItems.map((item, idx) => (
                           <motion.div
                             key={item.name}
-                            className="flex items-center justify-between py-3 border-b border-border/10 last:border-0 group/row"
+                            className="py-3 border-b border-border/10 last:border-0"
                             initial={{ opacity: 0, x: -8 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: idx * 0.03, duration: 0.2 }}
                           >
-                            <Link
-                              to={`/${item.slug}`}
-                              onClick={closeMega}
-                              className="flex items-center gap-3 hover:opacity-80 transition-opacity"
-                            >
-                              <img src={item.icon} alt={item.name} className="w-11 h-11 rounded-lg" />
-                              <div>
-                                <BrandName name={item.name} className="text-[15px] font-medium text-foreground" />
-                                {item.tag && (
-                                  <span className="ml-2 text-[9px] uppercase tracking-wider font-bold bg-accent/10 text-accent px-1.5 py-0.5 rounded">
-                                    {item.tag}
-                                  </span>
-                                )}
-                              </div>
-                            </Link>
-                            <div className="flex items-center gap-4 text-sm">
-                              {deviceSeries.map((group) => (
-                                <Link
-                                  key={group.slug}
-                                  to={`/${item.slug}/${group.slug}`}
-                                  onClick={closeMega}
-                                  className="text-muted-foreground hover:text-accent transition-colors font-medium"
-                                >
-                                  {group.name.replace(" Series", "")}
-                                </Link>
-                              ))}
+                            <div className="flex items-center gap-3 mb-2.5">
+                              <img src={item.icon} alt={item.name} className="w-9 h-9 rounded-lg" />
+                              <BrandName name={item.name} className="text-[15px] font-semibold text-foreground" />
+                              {item.tag && (
+                                <span className="text-[9px] uppercase tracking-wider font-bold bg-accent/10 text-accent px-1.5 py-0.5 rounded">
+                                  {item.tag}
+                                </span>
+                              )}
+                            </div>
+                            <div className="flex flex-wrap gap-x-4 gap-y-1.5 pl-12">
+                              {deviceSeries.flatMap((group) =>
+                                group.models.map((model) => (
+                                  <Link
+                                    key={model.slug}
+                                    to={`/${item.slug}/${group.slug}?model=${model.slug}`}
+                                    onClick={closeMega}
+                                    className="text-[13px] text-muted-foreground hover:text-accent transition-colors font-medium"
+                                  >
+                                    {model.name}
+                                  </Link>
+                                ))
+                              )}
                             </div>
                           </motion.div>
                         ))}
@@ -232,7 +228,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                     </div>
 
                     {/* Featured promo */}
-                    <div className="col-span-7">
+                    <div className="col-span-5">
                       <motion.div
                         className="bg-muted/50 rounded-xl p-6 h-full flex flex-col justify-center"
                         initial={{ opacity: 0, scale: 0.97 }}
@@ -240,12 +236,12 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                         transition={{ delay: 0.08, duration: 0.3 }}
                       >
                         <span className="text-[10px] uppercase tracking-[0.2em] text-accent font-bold mb-2">New Arrivals</span>
-                        <h3 className="text-2xl font-bold tracking-tight mb-2">iPhone 17 Series</h3>
+                        <h3 className="text-2xl font-bold tracking-tight mb-2">iPhone 17 Pro</h3>
                         <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
                           Discover our latest ClearMag, SoftMag & protection products designed for the all-new iPhone 17 lineup.
                         </p>
                         <Link
-                          to="/devices/iphone-17"
+                          to="/clearmag/iphone-17?model=iphone-17-pro"
                           onClick={closeMega}
                           className="inline-flex items-center gap-2 text-[13px] font-semibold uppercase tracking-wider bg-foreground text-background px-5 py-2.5 rounded-full hover:bg-foreground/90 transition-colors w-fit"
                         >
@@ -259,46 +255,44 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                 {/* ── PROTECTION MEGA ── */}
                 {activeMega === "Protection" && (
                   <div className="grid grid-cols-12 gap-10">
-                    <div className="col-span-5">
+                    <div className="col-span-7">
                       <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-4">Protection</p>
                       <div className="flex flex-col">
                         {protectionMenuItems.map((item, idx) => (
                           <motion.div
                             key={item.name}
-                            className="flex items-center justify-between py-3 border-b border-border/10 last:border-0"
+                            className="py-3 border-b border-border/10 last:border-0"
                             initial={{ opacity: 0, x: -8 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: idx * 0.03, duration: 0.2 }}
                           >
-                            <Link
-                              to={`/${item.slug}`}
-                              onClick={closeMega}
-                              className="flex items-center gap-3 hover:opacity-80 transition-opacity"
-                            >
-                              <img src={item.icon} alt={item.name} className="w-11 h-11 rounded-lg" />
+                            <div className="flex items-center gap-3 mb-2.5">
+                              <img src={item.icon} alt={item.name} className="w-9 h-9 rounded-lg" />
                               <div>
-                                <BrandName name={item.name} className="text-[15px] font-medium text-foreground" />
+                                <BrandName name={item.name} className="text-[15px] font-semibold text-foreground" />
                                 <p className="text-[11px] text-muted-foreground">{item.subtitle}</p>
                               </div>
-                            </Link>
-                            <div className="flex items-center gap-4 text-sm">
-                              {deviceSeries.map((group) => (
-                                <Link
-                                  key={group.slug}
-                                  to={`/${item.slug}/${group.slug}`}
-                                  onClick={closeMega}
-                                  className="text-muted-foreground hover:text-accent transition-colors font-medium"
-                                >
-                                  {group.name.replace(" Series", "")}
-                                </Link>
-                              ))}
+                            </div>
+                            <div className="flex flex-wrap gap-x-4 gap-y-1.5 pl-12">
+                              {deviceSeries.flatMap((group) =>
+                                group.models.map((model) => (
+                                  <Link
+                                    key={model.slug}
+                                    to={`/${item.slug}/${group.slug}?model=${model.slug}`}
+                                    onClick={closeMega}
+                                    className="text-[13px] text-muted-foreground hover:text-accent transition-colors font-medium"
+                                  >
+                                    {model.name}
+                                  </Link>
+                                ))
+                              )}
                             </div>
                           </motion.div>
                         ))}
                       </div>
                     </div>
 
-                    <div className="col-span-7">
+                    <div className="col-span-5">
                       <motion.div
                         className="bg-muted/50 rounded-xl p-6 h-full flex flex-col justify-center"
                         initial={{ opacity: 0, scale: 0.97 }}
@@ -325,18 +319,14 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: bi * 0.04, duration: 0.25 }}
                         >
-                          <Link
-                            to={`/devices/${group.slug}`}
-                            onClick={closeMega}
-                            className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-4 block hover:text-accent transition-colors"
-                          >
+                          <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-4">
                             {group.name}
-                          </Link>
+                          </p>
                           <div className="flex flex-col">
                             {group.models.map((model) => (
                               <Link
                                 key={model.slug}
-                                to={`/devices/${group.slug}`}
+                                to={`/clearmag/${group.slug}?model=${model.slug}`}
                                 onClick={closeMega}
                                 className="group"
                               >
@@ -483,16 +473,18 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                                     <ChevronLeft className="w-3 h-3" /> <BrandName name={casesMenuItems.find(i => i.slug === mobileDrilldown)?.name || ""} />
                                   </button>
                                 </p>
-                                {deviceSeries.map((group) => (
-                                  <Link
-                                    key={group.slug}
-                                    to={`/${mobileDrilldown}/${group.slug}`}
-                                    onClick={() => setMobileOpen(false)}
-                                    className="flex items-center gap-2 py-2 group"
-                                  >
-                                    <span className="text-[14px] font-medium text-foreground group-hover:text-accent transition-colors">{group.name}</span>
-                                  </Link>
-                                ))}
+                                {deviceSeries.flatMap((group) =>
+                                  group.models.map((model) => (
+                                    <Link
+                                      key={model.slug}
+                                      to={`/${mobileDrilldown}/${group.slug}?model=${model.slug}`}
+                                      onClick={() => setMobileOpen(false)}
+                                      className="flex items-center gap-2 py-2 group"
+                                    >
+                                      <span className="text-[14px] font-medium text-foreground group-hover:text-accent transition-colors">{model.name}</span>
+                                    </Link>
+                                  ))
+                                )}
                               </>
                             )}
                           </div>
@@ -544,16 +536,18 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                                     <ChevronLeft className="w-3 h-3" /> <BrandName name={protectionMenuItems.find(i => i.slug === mobileDrilldown)?.name || ""} />
                                   </button>
                                 </p>
-                                {deviceSeries.map((group) => (
-                                  <Link
-                                    key={group.slug}
-                                    to={`/${mobileDrilldown}/${group.slug}`}
-                                    onClick={() => setMobileOpen(false)}
-                                    className="flex items-center gap-2 py-2 group"
-                                  >
-                                    <span className="text-[14px] font-medium text-foreground group-hover:text-accent transition-colors">{group.name}</span>
-                                  </Link>
-                                ))}
+                                {deviceSeries.flatMap((group) =>
+                                  group.models.map((model) => (
+                                    <Link
+                                      key={model.slug}
+                                      to={`/${mobileDrilldown}/${group.slug}?model=${model.slug}`}
+                                      onClick={() => setMobileOpen(false)}
+                                      className="flex items-center gap-2 py-2 group"
+                                    >
+                                      <span className="text-[14px] font-medium text-foreground group-hover:text-accent transition-colors">{model.name}</span>
+                                    </Link>
+                                  ))
+                                )}
                               </>
                             )}
                           </div>
@@ -581,16 +575,18 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                       {mobileSubmenu === "Devices" && (
                         <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
                           <div className="pl-3 pb-3 flex flex-col gap-0.5">
-                            {deviceSeries.map((group) => (
-                              <Link
-                                key={group.slug}
-                                to={`/devices/${group.slug}`}
-                                onClick={() => setMobileOpen(false)}
-                                className="py-2 group"
-                              >
-                                <span className="text-[15px] font-medium text-foreground group-hover:text-accent transition-colors">{group.name}</span>
-                              </Link>
-                            ))}
+                            {deviceSeries.flatMap((group) =>
+                              group.models.map((model) => (
+                                <Link
+                                  key={model.slug}
+                                  to={`/clearmag/${group.slug}?model=${model.slug}`}
+                                  onClick={() => setMobileOpen(false)}
+                                  className="py-2 group"
+                                >
+                                  <span className="text-[15px] font-medium text-foreground group-hover:text-accent transition-colors">{model.name}</span>
+                                </Link>
+                              ))
+                            )}
                           </div>
                         </motion.div>
                       )}
