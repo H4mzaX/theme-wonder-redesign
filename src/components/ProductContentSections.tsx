@@ -255,7 +255,7 @@ const seriesContentMap: Record<string, SeriesContent> = {
    Sub-components
    ══════════════════════════════════════════ */
 
-/* ── Horizontal Scroll Marquee ── */
+/* ── Small caps marquee ── */
 const HorizontalMarquee = ({ items }: { items: string[] }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -284,6 +284,50 @@ const HorizontalMarquee = ({ items }: { items: string[] }) => {
           <span key={i} className="flex items-center gap-4 sm:gap-5 px-5 sm:px-7">
             <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-muted-foreground/50 font-semibold">{item}</span>
             <span className="w-1 h-1 rounded-full bg-muted-foreground/20" />
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+/* ── Large outlined-text marquee (Concept Theme signature) ── */
+const OutlinedMarquee = ({ items }: { items: string[] }) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    let raf: number;
+    let pos = 0;
+    const speed = 0.6;
+    const step = () => {
+      pos += speed;
+      if (pos >= el.scrollWidth / 2) pos = 0;
+      el.style.transform = `translateX(-${pos}px)`;
+      raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  const repeated = [...items, ...items, ...items];
+
+  return (
+    <div className="overflow-hidden py-8 sm:py-12 lg:py-16">
+      <div ref={scrollRef} className="flex whitespace-nowrap will-change-transform" style={{ display: "inline-flex" }}>
+        {repeated.map((item, i) => (
+          <span key={i} className="flex items-center gap-6 sm:gap-8 px-6 sm:px-8">
+            <span
+              className="text-[3rem] sm:text-[5rem] lg:text-[7rem] xl:text-[8rem] font-black tracking-tighter leading-none select-none"
+              style={{
+                WebkitTextStroke: "1.5px hsl(var(--foreground) / 0.15)",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              {item}
+            </span>
+            <span className="w-2 h-2 sm:w-3 sm:h-3 rounded-full border-2 border-foreground/15 flex-shrink-0" />
           </span>
         ))}
       </div>
