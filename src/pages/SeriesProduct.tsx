@@ -586,52 +586,37 @@ const SeriesProduct = () => {
               {/* Divider */}
               <div className="h-px bg-border/60 my-6" />
 
-              {/* ── Quantity + Add to Cart + Buy Now ── */}
+              {/* ── Add to Cart + Buy Now (full-width, no qty) ── */}
               <motion.div
-                className="space-y-3"
+                className="space-y-2.5"
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.3 }}
               >
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center border border-border rounded-xl overflow-hidden">
-                    <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="p-3 hover:bg-muted transition-colors">
-                      <Minus className="w-4 h-4" />
-                    </button>
-                    <span className="px-4 text-sm font-semibold min-w-[40px] text-center">{quantity}</span>
-                    <button onClick={() => setQuantity(quantity + 1)} className="p-3 hover:bg-muted transition-colors">
-                      <Plus className="w-4 h-4" />
-                    </button>
-                  </div>
-                  <motion.button
-                    onClick={handleAddToCart}
-                    className="flex-1 bg-foreground text-background py-3.5 rounded-xl text-sm font-semibold uppercase tracking-wider hover:bg-foreground/90 transition-colors"
-                    whileTap={{ scale: 0.97 }}
-                    whileHover={{ scale: 1.01 }}
-                  >
-                    Add to Cart — {currentProduct?.price}
-                  </motion.button>
-                </div>
+                <motion.button
+                  onClick={handleAddToCart}
+                  className="w-full bg-foreground text-background py-3.5 rounded-xl text-sm font-semibold uppercase tracking-wider hover:bg-foreground/90 transition-colors"
+                  whileTap={{ scale: 0.97 }}
+                >
+                  Add to Cart — {currentProduct?.price}
+                </motion.button>
 
-                {/* Buy Now */}
                 <motion.button
                   onClick={handleAddToCart}
                   className="w-full border-2 border-foreground text-foreground py-3.5 rounded-xl text-sm font-semibold uppercase tracking-wider hover:bg-foreground hover:text-background transition-colors flex items-center justify-center gap-2"
                   whileTap={{ scale: 0.97 }}
-                  whileHover={{ scale: 1.01 }}
                 >
                   <ShoppingBag className="w-4 h-4" />
                   Buy Now
                 </motion.button>
               </motion.div>
 
-
               {/* ── Secure Checkout — Minimal inline ── */}
               <motion.div
-                className="mt-5 flex items-center gap-3 flex-wrap"
+                className="mt-4 flex items-center gap-3 flex-wrap"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.58, duration: 0.3 }}
+                transition={{ delay: 0.55, duration: 0.3 }}
               >
                 <div className="flex items-center gap-1.5 text-muted-foreground">
                   <Lock className="w-3 h-3" />
@@ -644,39 +629,39 @@ const SeriesProduct = () => {
                 </div>
               </motion.div>
 
-              {/* ── Offers — Voucher-style coupon cards ── */}
+              {/* ── Available Offers — Casegear-style horizontal scroll cards ── */}
               <motion.div
-                className="mt-6 grid grid-cols-2 gap-2.5"
+                className="mt-6"
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.35 }}
               >
-                {[
-                  { icon: Percent, label: "5% OFF", sub: "On single product", accent: "from-primary/10 to-primary/5" },
-                  { icon: Percent, label: "10% OFF", sub: "On 2+ products", accent: "from-accent/20 to-accent/10" },
-                  { icon: Truck, label: "FREE SHIP", sub: "All prepaid orders", accent: "from-secondary/60 to-secondary/30" },
-                  { icon: Package, label: "EASY RETURN", sub: "7-day return policy", accent: "from-muted to-muted/40" },
-                ].map((offer, i) => (
-                  <motion.div
-                    key={i}
-                    className="relative overflow-hidden rounded-2xl border border-border/30 bg-gradient-to-br p-3.5 group"
-                    style={{
-                      backgroundImage: `linear-gradient(135deg, hsl(var(--muted) / 0.4), hsl(var(--background)))`,
-                    }}
-                    whileHover={{ scale: 1.02, y: -1 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                  >
-                    {/* Dashed left edge — voucher feel */}
-                    <div className="absolute left-0 top-2 bottom-2 w-px border-l border-dashed border-foreground/10" />
-                    <div className="flex flex-col gap-1.5">
-                      <div className="w-7 h-7 rounded-lg bg-foreground/[0.06] flex items-center justify-center">
-                        <offer.icon className="w-3.5 h-3.5 text-foreground" strokeWidth={1.8} />
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-semibold">Available Offers</p>
+                </div>
+                <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide -mx-1 px-1">
+                  {[
+                    { label: "GET", bold: "FLAT 5%", suffix: "OFF", sub: "On purchase of single product", color: "text-green-600" },
+                    { label: "GET", bold: "FLAT 10%", suffix: "OFF", sub: "On purchase of 2+ products", color: "text-green-600" },
+                    { label: "GET", bold: "FREE", suffix: "SHIPPING", sub: "On all prepaid orders", color: "text-primary" },
+                    { label: "EASY", bold: "7-DAY", suffix: "RETURN", sub: "Hassle-free return policy", color: "text-primary" },
+                  ].map((offer, i) => (
+                    <div
+                      key={i}
+                      className="flex-shrink-0 w-[200px] rounded-2xl border border-border/30 bg-muted/20 p-4 flex items-start gap-3"
+                    >
+                      <div className="w-10 h-10 rounded-full bg-foreground/[0.06] flex items-center justify-center flex-shrink-0">
+                        <Percent className="w-4 h-4 text-foreground" strokeWidth={1.8} />
                       </div>
-                      <span className="text-[11px] font-bold text-foreground tracking-wide">{offer.label}</span>
-                      <span className="text-[10px] text-muted-foreground leading-tight">{offer.sub}</span>
+                      <div className="flex flex-col">
+                        <span className="text-[12px] font-semibold text-foreground leading-tight">
+                          {offer.label} <span className={`font-bold ${offer.color}`}>{offer.bold}</span> {offer.suffix}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground mt-1 leading-snug">{offer.sub}</span>
+                      </div>
                     </div>
-                  </motion.div>
-                ))}
+                  ))}
+                </div>
               </motion.div>
 
               {/* ── Product Highlights — Concept theme editorial cards ── */}
