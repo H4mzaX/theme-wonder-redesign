@@ -21,6 +21,7 @@ import CartDrawer from "@/components/CartDrawer";
 import ProductCard from "@/components/ProductCard";
 import { ProductLightbox } from "@/components/ProductLightbox";
 import ProductContentSections from "@/components/ProductContentSections";
+import FloatingNavPill from "@/components/FloatingNavPill";
 
 const colorHex: Record<string, string> = {
   Clear: "#e5e5e5",
