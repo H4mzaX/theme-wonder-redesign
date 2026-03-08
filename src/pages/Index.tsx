@@ -61,7 +61,7 @@ const Index = () => {
     <div className="min-h-screen bg-announcement overflow-x-clip">
       <LoadingBar />
       <AnnouncementBar />
-      <div className="bg-background rounded-t-[2rem] sm:rounded-t-[2.5rem] lg:rounded-t-[3rem] overflow-x-clip">
+      <div className="bg-background rounded-t-[1.75rem] sm:rounded-t-[1.25rem] lg:rounded-t-[0.625rem] overflow-x-clip">
       <Navbar onSearchOpen={() => setSearchOpen(true)} onCartOpen={() => setCartOpen(true)} />
       <FloatingSidebar />
       <SearchDrawer open={searchOpen} onClose={() => setSearchOpen(false)} />
@@ -125,7 +125,7 @@ const Index = () => {
       </main>
       {/* Footer with floating rounded overlap */}
       <div className="bg-foreground relative pt-12 sm:pt-14">
-        <div className="absolute top-0 left-0 right-0 h-10 bg-background rounded-b-[2.5rem] sm:rounded-b-[3rem] z-10" />
+        <div className="absolute top-0 left-0 right-0 h-10 bg-background rounded-b-[1.75rem] sm:rounded-b-[2rem] z-10" />
         <LazySection><Footer /></LazySection>
       </div>
       </div>
