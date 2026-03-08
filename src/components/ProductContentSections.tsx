@@ -12,6 +12,11 @@ import FeaturedImageGrid from "@/components/FeaturedImageGrid";
 import ImageTextBlock from "@/components/ImageTextBlock";
 import heroVideo from "@/assets/hero-video.mp4";
 
+import softmagCloseup from "@/assets/softmag-closeup.png";
+import softmagLifestyle from "@/assets/softmag-lifestyle.png";
+import softmagFloating from "@/assets/softmag-floating.png";
+import softmagCamera from "@/assets/softmag-camera.png";
+
 const expoOut: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 /* ══════════════════════════════════════════
@@ -123,14 +128,14 @@ const seriesContentMap: Record<string, SeriesContent> = {
     editorialHeadline: "Designed for Comfort.",
     editorialBody: "Buttery-soft liquid silicone exterior meets a cushioning microfiber interior. Four bold colorways crafted with fade-resistant pigments ensure your case looks as good months from now as it does today.",
     featuredCards: [
-      { image: "/icons/softmag.webp", label: "Liquid Silicone", subtitle: "Buttery-Soft Exterior", textPosition: "bottom-center" },
-      { image: "/icons/softmag.webp", label: "Microfiber Lining", subtitle: "Scratch-Free Interior", textPosition: "top-left" },
-      { image: "/icons/softmag.webp", label: "4 Bold Colors", subtitle: "Fade-Resistant Pigments", textPosition: "top-right" },
-      { image: "/icons/softmag.webp", label: "MagSafe", subtitle: "Integrated Magnets", textPosition: "center" },
+      { image: softmagFloating, label: "Liquid Silicone", subtitle: "Buttery-Soft Exterior", textPosition: "bottom-center" },
+      { image: softmagCloseup, label: "Precision Detail", subtitle: "MagSafe Ring & Button Cutouts", textPosition: "top-left" },
+      { image: softmagCamera, label: "Camera Guard", subtitle: "Raised Lens Protection", textPosition: "top-right" },
+      { image: softmagLifestyle, label: "Adventure Ready", subtitle: "Built for Every Journey", textPosition: "center" },
     ],
     imageTextBlocks: [
       {
-        image: "/icons/softmag.webp",
+        image: softmagCloseup,
         headline: "Silicone Craftsmanship.",
         body: "Each SoftMag case is precision-molded from medical-grade liquid silicone rubber, delivering a buttery-soft feel that resists stains, oils, and everyday wear.",
         highlights: ["Stain-resistant surface", "Washable material", "Fade-resistant color"],
@@ -409,29 +414,29 @@ const FeaturedCard = ({ card, aspectClass, isDark }: {
     "bottom-center": "absolute bottom-0 left-0 right-0 p-4 sm:p-5 text-center",
     "top-left": "absolute top-0 left-0 p-4 sm:p-5 text-left",
     "top-right": "absolute top-0 right-0 p-4 sm:p-6 text-right max-w-[85%]",
-    "center": "absolute inset-0 flex flex-col items-center justify-center text-center px-6",
+    "center": "absolute bottom-0 left-0 right-0 p-4 sm:p-6 text-center",
   }[pos];
 
-  const textColor = isDark || pos === "top-right" || pos === "center"
-    ? "text-background"
+  const textColor = isDark
+    ? "text-white"
     : "text-foreground";
 
-  const labelColor = isDark || pos === "top-right" || pos === "center"
-    ? "text-background/60"
-    : "text-primary";
+  const labelColor = isDark
+    ? "text-white/60"
+    : "text-muted-foreground";
 
   return (
-    <div className={`relative rounded-2xl sm:rounded-3xl overflow-hidden group ${aspectClass} ${isDark ? "bg-foreground" : "bg-secondary/10"}`}>
+    <div className={`relative rounded-2xl sm:rounded-3xl overflow-hidden group ${aspectClass} bg-white`}>
       <img
         src={card.image}
         alt={card.label}
         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         loading="lazy"
       />
-      {isDark && <div className="absolute inset-0 bg-foreground/20" />}
+      {isDark && <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />}
       <div className={textPositionClass}>
-        <p className={`text-[11px] sm:text-xs font-medium ${labelColor}`}>{card.label}</p>
-        <p className={`text-sm sm:text-lg lg:text-xl font-bold tracking-tight leading-tight mt-0.5 ${textColor}`}>
+        <p className={`text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.15em] ${labelColor}`}>{card.label}</p>
+        <p className={`text-sm sm:text-base lg:text-lg font-bold tracking-tight leading-tight mt-0.5 ${textColor}`}>
           {card.subtitle}
         </p>
       </div>
