@@ -14,8 +14,9 @@ import softmagCloseup from "@/assets/softmag-closeup.png";
 import softmagLifestyle from "@/assets/softmag-lifestyle.png";
 import softmagFloating from "@/assets/softmag-floating.png";
 import softmagCamera from "@/assets/softmag-camera.png";
+import softmagHero from "@/assets/softmag-hero.png";
 
-const softmagGalleryImages = [softmagFloating, softmagCamera, softmagCloseup, softmagLifestyle];
+const softmagGalleryImages = [softmagHero, softmagFloating, softmagCamera, softmagCloseup, softmagLifestyle];
 import { useSEO } from "@/hooks/useSEO";
 import { useCart } from "@/context/CartContext";
 import { toast } from "@/hooks/use-toast";
@@ -283,14 +284,14 @@ const ProductDetail = () => {
                     onClick={() => setCurrentImg(i)}
                     className={`w-[68px] h-[68px] rounded-xl overflow-hidden transition-all flex-shrink-0 ${i === currentImg ? "border-[2.5px] border-foreground" : "border border-border hover:border-foreground/40"}`}
                   >
-                    <img src={img} alt="" className="w-full h-full object-contain bg-secondary/30 p-1" />
+                    <img src={img} alt="" className="w-full h-full object-contain p-1" />
                   </button>
                 ))}
               </div>
 
               {/* Main image — swipeable */}
               <div
-                className="relative flex-1 aspect-[4/5] lg:aspect-square bg-secondary/30 rounded-2xl overflow-hidden touch-pan-y"
+                className="relative flex-1 aspect-[4/5] lg:aspect-square rounded-2xl sm:rounded-3xl overflow-hidden touch-pan-y"
                 onTouchStart={(e) => {
                   const touch = e.touches[0];
                   (e.currentTarget as any)._swipeStartX = touch.clientX;
@@ -374,7 +375,7 @@ const ProductDetail = () => {
                   onClick={() => setCurrentImg(i)}
                   className={`flex-shrink-0 w-[62px] h-[62px] rounded-xl overflow-hidden transition-all ${i === currentImg ? "border-[2.5px] border-foreground" : "border border-border/60 hover:border-foreground/40"}`}
                 >
-                  <img src={img} alt="" className="w-full h-full object-contain bg-secondary/30 p-1" />
+                  <img src={img} alt="" className="w-full h-full object-contain p-1" />
                 </button>
               ))}
             </div>
