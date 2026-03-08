@@ -298,7 +298,6 @@ const SeriesProduct = () => {
       <Navbar onSearchOpen={() => setSearchOpen(true)} onCartOpen={() => setCartOpen(true)} />
       <SearchDrawer open={searchOpen} onClose={() => setSearchOpen(false)} />
       <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
-      <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
 
       {/* ═══ BREADCRUMB ═══ */}
       <div className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10">
