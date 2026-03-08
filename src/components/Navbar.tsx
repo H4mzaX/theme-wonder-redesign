@@ -76,7 +76,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
   return (
     <>
       <motion.nav
-        className={`section-padding w-full py-4 sm:py-5 lg:py-6 sticky top-0 z-50 overflow-visible transition-all duration-300 will-change-transform ${
+        className={`section-padding w-full py-5 sm:py-5 lg:py-6 sticky top-0 z-50 overflow-visible transition-all duration-300 will-change-transform ${
           isTransparent ? "bg-transparent text-background" : "bg-background"
         }`}
         initial={{ y: 0 }}
@@ -97,7 +97,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
             <motion.img
               src={logoFull}
               alt="VCASE"
-              className="h-7 sm:h-8 lg:h-9 w-auto"
+              className="h-8 sm:h-9 lg:h-10 w-auto"
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
             />
