@@ -50,10 +50,10 @@ const seriesContentMap: Record<string, SeriesContent> = {
     editorialHeadline: "Engineered for Every Detail.",
     editorialBody: "Precision-aligned N52 magnets deliver 38T of magnetic force for instant snap-on MagSafe charging. The nano oleophobic coating resists UV-induced yellowing, keeping your case crystal clear for months.",
     featuredCards: [
-      { image: "/icons/clearmag.webp", label: "Transparent Protection", subtitle: "Anti-Yellow Nano Coating" },
-      { image: "/icons/clearmag-edge.webp", label: "Magnetic Precision", subtitle: "38 N52 MagSafe Magnets" },
-      { image: "/icons/clearmag.webp", label: "Ultra Slim", subtitle: "1.2mm Polycarbonate Shell" },
-      { image: "/icons/clearmag-edge.webp", label: "Military Grade", subtitle: "14.8ft Drop Protection" },
+      { image: "/icons/clearmag.webp", label: "Transparent Protection", subtitle: "Anti-Yellow Nano Coating", textPosition: "bottom-center" },
+      { image: "/icons/clearmag-edge.webp", label: "Magnetic Precision", subtitle: "38 N52 MagSafe Magnets", textPosition: "top-left" },
+      { image: "/icons/clearmag.webp", label: "Ultra Slim", subtitle: "1.2mm Polycarbonate Shell", textPosition: "top-right" },
+      { image: "/icons/clearmag-edge.webp", label: "Military Grade", subtitle: "14.8ft Drop Protection", textPosition: "center" },
     ],
     imageTextBlocks: [
       {
