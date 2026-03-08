@@ -323,6 +323,24 @@ export function getDeviceProducts(deviceGroupSlug: string): Product[] {
   return allProducts.filter((p) => modelNames.includes(p.device));
 }
 
+// ── Helper: get canonical URL for a product ──
+export function getProductUrl(product: Product): string {
+  // Find which device group this product belongs to
+  const group = deviceSeries.find((g) =>
+    g.models.some((m) => m.name === product.device)
+  );
+  if (!group) return `/product/${product.id}`;
+  const model = group.models.find((m) => m.name === product.device);
+  return `/${product.seriesSlug}/${group.slug}${model ? `?model=${model.slug}` : ""}`;
+}
+
+// ── Helper: get canonical URL from product ID ──
+export function getProductUrlById(productId: string): string | null {
+  const product = allProducts.find((p) => p.id === productId);
+  if (!product) return null;
+  return getProductUrl(product);
+}
+
 // ── Grouped for homepage tabs ──
 export const exploreLineupTabs: Record<string, Product[]> = {
   ClearMag: allProducts.filter((p) => p.seriesSlug === "clearmag").slice(0, 4),
