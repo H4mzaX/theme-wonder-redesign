@@ -8,8 +8,7 @@ interface FloatingNavPillProps {
 
 /**
  * Concept Theme style floating pill navigation.
- * Appears after scrolling past the product info section.
- * Contains anchor links to page sections + scroll-to-top.
+ * Sits below the navbar as a sticky bar when scrolling past product info.
  */
 const FloatingNavPill = ({ sections }: FloatingNavPillProps) => {
   const [visible, setVisible] = useState(false);
@@ -19,7 +18,6 @@ const FloatingNavPill = ({ sections }: FloatingNavPillProps) => {
     const handleScroll = () => {
       setVisible(window.scrollY > 600);
 
-      // Determine active section
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i].id);
         if (el) {
@@ -40,7 +38,9 @@ const FloatingNavPill = ({ sections }: FloatingNavPillProps) => {
   const scrollTo = useCallback((id: string) => {
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      const offset = 80;
+      const top = el.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: "smooth" });
     }
   }, []);
 
@@ -48,34 +48,36 @@ const FloatingNavPill = ({ sections }: FloatingNavPillProps) => {
     <AnimatePresence>
       {visible && (
         <motion.div
-          initial={{ y: -40, opacity: 0 }}
+          initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -40, opacity: 0 }}
+          exit={{ y: -20, opacity: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
-          className="fixed top-4 left-1/2 -translate-x-1/2 z-[60] flex items-center gap-1 bg-background/95 backdrop-blur-md border border-border/50 rounded-full px-1.5 py-1.5 shadow-lg shadow-foreground/5"
+          className="fixed top-[60px] sm:top-[64px] left-4 right-4 sm:left-auto sm:right-auto sm:left-1/2 sm:-translate-x-1/2 z-[55]"
         >
-          {/* Scroll to top */}
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-secondary transition-colors"
-          >
-            <ArrowUp className="w-4 h-4 text-foreground" />
-          </button>
-
-          {/* Section links */}
-          {sections.map((section) => (
+          <div className="flex items-center gap-0.5 bg-background border border-border/60 rounded-full px-1 py-1 shadow-md shadow-foreground/5 w-fit mx-auto">
+            {/* Scroll to top */}
             <button
-              key={section.id}
-              onClick={() => scrollTo(section.id)}
-              className={`px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-[12px] font-semibold transition-colors whitespace-nowrap ${
-                activeSection === section.id
-                  ? "bg-foreground text-background"
-                  : "text-foreground hover:bg-secondary"
-              }`}
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-secondary transition-colors flex-shrink-0"
             >
-              {section.label}
+              <ArrowUp className="w-3.5 h-3.5 text-foreground" />
             </button>
-          ))}
+
+            {/* Section links */}
+            {sections.map((section) => (
+              <button
+                key={section.id}
+                onClick={() => scrollTo(section.id)}
+                className={`px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-[12px] font-semibold transition-all whitespace-nowrap ${
+                  activeSection === section.id
+                    ? "bg-foreground text-background"
+                    : "text-foreground hover:bg-secondary"
+                }`}
+              >
+                {section.label}
+              </button>
+            ))}
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
