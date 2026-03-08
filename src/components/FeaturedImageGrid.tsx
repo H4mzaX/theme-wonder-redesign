@@ -31,7 +31,7 @@ const FeaturedImageGrid = ({ cards }: FeaturedImageGridProps) => {
         <div className="flex flex-col gap-3 sm:gap-4">
           {leftCards.map((card, i) => (
             <AnimateElement key={i} type="fade-up" delay={i * 0.1}>
-              <div className="relative rounded-2xl overflow-hidden bg-secondary/10 aspect-[16/10] group">
+              <div className="relative rounded-xl overflow-hidden bg-secondary/10 aspect-[16/10] group">
                 <img
                   src={card.image}
                   alt={card.label}
@@ -53,7 +53,7 @@ const FeaturedImageGrid = ({ cards }: FeaturedImageGridProps) => {
         {/* Right column: 1 tall card */}
         {tallCard && (
           <AnimateElement type="fade-up" delay={0.15}>
-            <div className="relative rounded-2xl overflow-hidden bg-foreground aspect-[16/10] lg:aspect-auto lg:h-full group">
+            <div className="relative rounded-xl overflow-hidden bg-foreground aspect-[16/10] lg:aspect-auto lg:h-full group">
               <img
                 src={tallCard.image}
                 alt={tallCard.label}
@@ -75,7 +75,7 @@ const FeaturedImageGrid = ({ cards }: FeaturedImageGridProps) => {
       {/* Bottom wide card (optional 4th card) */}
       {bottomCard && (
         <AnimateElement type="fade-up" delay={0.2}>
-          <div className="relative rounded-2xl overflow-hidden bg-secondary/10 aspect-[21/9] mt-3 sm:mt-4 group">
+          <div className="relative rounded-xl overflow-hidden bg-secondary/10 aspect-[21/9] mt-3 sm:mt-4 group">
             <img
               src={bottomCard.image}
               alt={bottomCard.label}
