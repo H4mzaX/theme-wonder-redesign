@@ -18,7 +18,7 @@ import softmagFloating from "@/assets/softmag-floating.webp";
 import softmagCamera from "@/assets/softmag-camera.webp";
 import softmagVideo from "@/assets/softmag-showcase.mp4";
 
-// ClearMag product images
+// ClearMag / ClearMag Edge — iPhone 17 Pro images
 import iphone17proMagsafeClear from "@/assets/iphone17pro-magsafe-clear.jpg";
 import iphone17proMagsafeAttach from "@/assets/iphone17pro-magsafe-attach.jpg";
 import iphone17proSlimDesign from "@/assets/iphone17pro-slim-design.jpg";
@@ -26,10 +26,19 @@ import iphone17proProtection from "@/assets/iphone17pro-protection.jpg";
 import iphone17proStrong from "@/assets/iphone17pro-strong.jpg";
 import iphone17proFingerprints from "@/assets/iphone17pro-fingerprints.jpg";
 
-// ClearMag Edge product images
+// iPhone 17 images
+import iphone17MagsafeClear from "@/assets/iphone17-magsafe-clear.jpg";
+import iphone17MagsafeAttach from "@/assets/iphone17-magsafe-attach.jpg";
+import iphone17SlimDesign from "@/assets/iphone17-slim-design.jpg";
+import iphone17Protection from "@/assets/iphone17-protection.jpg";
+import iphone17Strong from "@/assets/iphone17-strong.jpg";
+import iphone17Fingerprints from "@/assets/iphone17-fingerprints.jpg";
+
+// iPhone 16 images
 import iphone16MagsafeClear from "@/assets/iphone16-magsafe-clear.png";
 import iphone16MagsafeFeatures from "@/assets/iphone16-magsafe-features.png";
 import iphone16MagsafeLifestyle from "@/assets/iphone16-magsafe-lifestyle.jpg";
+import iphone16MagsafeGrid from "@/assets/iphone16-magsafe-grid.png";
 import iphone16MagsafeDetails from "@/assets/iphone16-magsafe-details.jpg";
 
 // Protection product images
@@ -77,80 +86,135 @@ interface SeriesContent {
   featureCards: { title: string; subtitle: string; icon: typeof Shield }[];
 }
 
-const seriesContentMap: Record<string, SeriesContent> = {
-  clearmag: {
-    scrollVideoSrc: heroVideo,
-    scrollVideoTexts: ["Crystal Clear.", "Anti-Yellow.", "MagSafe Ready.", "Drop Proof."],
-    editorialHeadline: "Engineered for Every Detail.",
-    editorialBody: "Precision-aligned N52 magnets deliver 38T of magnetic force for instant snap-on MagSafe charging. The nano oleophobic coating resists UV-induced yellowing, keeping your case crystal clear for months.",
-    featuredCards: [
-      { image: iphone17proMagsafeClear, label: "Transparent Protection", subtitle: "Anti-Yellow Nano Coating", textPosition: "bottom-center" },
-      { image: iphone17proMagsafeAttach, label: "Magnetic Precision", subtitle: "38 N52 MagSafe Magnets", textPosition: "top-left" },
-      { image: iphone17proSlimDesign, label: "Ultra Slim", subtitle: "1.2mm Polycarbonate Shell", textPosition: "top-right" },
-      { image: iphone17proStrong, label: "Military Grade", subtitle: "14.8ft Drop Protection", textPosition: "center" },
-    ],
-    imageTextBlocks: [
-      {
-        image: iphone17proProtection,
-        headline: "Transparent Protection Perfected.",
-        body: "Our anti-yellow nano coating technology ensures your case stays crystal clear, resisting UV-induced yellowing for months of pristine clarity. Show off your device's original design without compromise.",
-        highlights: ["Anti-yellow nano coating", "UV-resistant polycarbonate", "Oleophobic surface"],
-      },
-      {
-        image: iphone17proFingerprints,
-        headline: "Magnetic Precision Alignment.",
-        body: "38 precision-aligned N52 magnets deliver powerful magnetic force for instant snap-on MagSafe charging and accessory attachment. Perfect alignment, every single time.",
-        highlights: ["38T magnetic force", "Instant snap-on", "Perfect alignment"],
-        reverse: true,
-      },
-    ],
-    marqueeItems: ["Anti-Yellow Technology", "38 MagSafe Magnets", "14.8ft Drop Tested", "1.2mm Ultra Thin", "32g Featherlight"],
-    stats: [
-      { value: "14.8ft", label: "Drop Protection" },
-      { value: "38T", label: "Magnetic Force" },
-      { value: "1.2mm", label: "Ultra Thin" },
-      { value: "32g", label: "Featherlight" },
-    ],
-    featureCards: [
-      { title: "Anti-Yellow", subtitle: "Nano oleophobic coating", icon: Eye },
-      { title: "38 Magnets", subtitle: "N52 MagSafe alignment", icon: Magnet },
-      { title: "14.8ft Drop", subtitle: "Military-grade corners", icon: ShieldCheck },
-      { title: "1.2mm Slim", subtitle: "Ultra-thin polycarbonate", icon: Ruler },
-    ],
-  },
-  "clearmag-edge": {
-    scrollVideoSrc: heroVideo,
-    scrollVideoTexts: ["Frosted Edges.", "Crystal Core.", "Grip Enhanced.", "Drop Proof."],
-    editorialHeadline: "Where Grip Meets Clarity.",
-    editorialBody: "Matte-frosted side rails provide enhanced grip with sophisticated aesthetics, while the anti-yellow nano-coated back panel showcases your device's original design.",
-    featuredCards: [
-      { image: iphone16MagsafeClear, label: "Frosted Sophistication", subtitle: "Matte-Textured Side Rails", textPosition: "bottom-center" },
-      { image: iphone16MagsafeFeatures, label: "Crystal Back", subtitle: "Anti-Yellow Clear Panel", textPosition: "top-left" },
-      { image: iphone16MagsafeLifestyle, label: "Dual-Layer", subtitle: "TPU + PC Construction", textPosition: "top-right" },
-      { image: iphone16MagsafeDetails, label: "MagSafe", subtitle: "38T Magnetic Precision", textPosition: "center" },
-    ],
-    imageTextBlocks: [
-      {
-        image: iphone16MagsafeLifestyle,
-        headline: "Frosted Sophistication.",
-        body: "The matte-textured edges provide a premium feel and enhanced grip while the crystal-clear back panel lets your device's design shine through.",
-        highlights: ["Frosted polycarbonate edges", "Anti-yellow clear back", "Enhanced grip texture"],
-      },
-    ],
-    marqueeItems: ["Frosted Side Rails", "Crystal-Clear Back", "14.8ft Drop Tested", "38T MagSafe", "Dual-Layer Build"],
-    stats: [
-      { value: "14.8ft", label: "Drop Protection" },
-      { value: "38T", label: "MagSafe Force" },
-      { value: "1.3mm", label: "Slim Profile" },
-      { value: "34g", label: "Lightweight" },
-    ],
-    featureCards: [
-      { title: "Frosted Rails", subtitle: "Enhanced matte grip", icon: Layers },
-      { title: "Clear Back", subtitle: "Anti-yellow coating", icon: Eye },
-      { title: "Dual-Layer", subtitle: "TPU + PC construction", icon: ShieldCheck },
-      { title: "38 Magnets", subtitle: "MagSafe precision", icon: Magnet },
-    ],
-  },
+// Device-specific image sets for ClearMag series
+function getClearmagImages(device: string) {
+  if (device.includes("iPhone 17 Pro")) {
+    return {
+      main: iphone17proMagsafeClear, attach: iphone17proMagsafeAttach,
+      slim: iphone17proSlimDesign, protection: iphone17proProtection,
+      strong: iphone17proStrong, fingerprints: iphone17proFingerprints,
+    };
+  }
+  if (device.includes("iPhone 17")) {
+    return {
+      main: iphone17MagsafeClear, attach: iphone17MagsafeAttach,
+      slim: iphone17SlimDesign, protection: iphone17Protection,
+      strong: iphone17Strong, fingerprints: iphone17Fingerprints,
+    };
+  }
+  // iPhone 16 series and fallback
+  return {
+    main: iphone16MagsafeClear, attach: iphone16MagsafeLifestyle,
+    slim: iphone16MagsafeFeatures, protection: iphone16MagsafeGrid,
+    strong: iphone16MagsafeDetails, fingerprints: iphone16MagsafeLifestyle,
+  };
+}
+
+function getClearmagEdgeImages(device: string) {
+  if (device.includes("iPhone 17 Pro")) {
+    return {
+      main: iphone17proStrong, attach: iphone17proMagsafeClear,
+      lifestyle: iphone17proProtection, details: iphone17proFingerprints,
+    };
+  }
+  if (device.includes("iPhone 17")) {
+    return {
+      main: iphone17Strong, attach: iphone17MagsafeClear,
+      lifestyle: iphone17Protection, details: iphone17Fingerprints,
+    };
+  }
+  return {
+    main: iphone16MagsafeClear, attach: iphone16MagsafeFeatures,
+    lifestyle: iphone16MagsafeLifestyle, details: iphone16MagsafeDetails,
+  };
+}
+
+function getSeriesContent(seriesSlug: string, device: string): SeriesContent | null {
+  if (seriesSlug === "clearmag") {
+    const img = getClearmagImages(device);
+    return {
+      scrollVideoSrc: heroVideo,
+      scrollVideoTexts: ["Crystal Clear.", "Anti-Yellow.", "MagSafe Ready.", "Drop Proof."],
+      editorialHeadline: "Engineered for Every Detail.",
+      editorialBody: "Precision-aligned N52 magnets deliver 38T of magnetic force for instant snap-on MagSafe charging. The nano oleophobic coating resists UV-induced yellowing, keeping your case crystal clear for months.",
+      featuredCards: [
+        { image: img.main, label: "Transparent Protection", subtitle: "Anti-Yellow Nano Coating", textPosition: "bottom-center" },
+        { image: img.attach, label: "Magnetic Precision", subtitle: "38 N52 MagSafe Magnets", textPosition: "top-left" },
+        { image: img.slim, label: "Ultra Slim", subtitle: "1.2mm Polycarbonate Shell", textPosition: "top-right" },
+        { image: img.strong, label: "Military Grade", subtitle: "14.8ft Drop Protection", textPosition: "center" },
+      ],
+      imageTextBlocks: [
+        {
+          image: img.protection,
+          headline: "Transparent Protection Perfected.",
+          body: "Our anti-yellow nano coating technology ensures your case stays crystal clear, resisting UV-induced yellowing for months of pristine clarity. Show off your device's original design without compromise.",
+          highlights: ["Anti-yellow nano coating", "UV-resistant polycarbonate", "Oleophobic surface"],
+        },
+        {
+          image: img.fingerprints,
+          headline: "Magnetic Precision Alignment.",
+          body: "38 precision-aligned N52 magnets deliver powerful magnetic force for instant snap-on MagSafe charging and accessory attachment. Perfect alignment, every single time.",
+          highlights: ["38T magnetic force", "Instant snap-on", "Perfect alignment"],
+          reverse: true,
+        },
+      ],
+      marqueeItems: ["Anti-Yellow Technology", "38 MagSafe Magnets", "14.8ft Drop Tested", "1.2mm Ultra Thin", "32g Featherlight"],
+      stats: [
+        { value: "14.8ft", label: "Drop Protection" },
+        { value: "38T", label: "Magnetic Force" },
+        { value: "1.2mm", label: "Ultra Thin" },
+        { value: "32g", label: "Featherlight" },
+      ],
+      featureCards: [
+        { title: "Anti-Yellow", subtitle: "Nano oleophobic coating", icon: Eye },
+        { title: "38 Magnets", subtitle: "N52 MagSafe alignment", icon: Magnet },
+        { title: "14.8ft Drop", subtitle: "Military-grade corners", icon: ShieldCheck },
+        { title: "1.2mm Slim", subtitle: "Ultra-thin polycarbonate", icon: Ruler },
+      ],
+    };
+  }
+
+  if (seriesSlug === "clearmag-edge") {
+    const img = getClearmagEdgeImages(device);
+    return {
+      scrollVideoSrc: heroVideo,
+      scrollVideoTexts: ["Frosted Edges.", "Crystal Core.", "Grip Enhanced.", "Drop Proof."],
+      editorialHeadline: "Where Grip Meets Clarity.",
+      editorialBody: "Matte-frosted side rails provide enhanced grip with sophisticated aesthetics, while the anti-yellow nano-coated back panel showcases your device's original design.",
+      featuredCards: [
+        { image: img.main, label: "Frosted Sophistication", subtitle: "Matte-Textured Side Rails", textPosition: "bottom-center" },
+        { image: img.attach, label: "Crystal Back", subtitle: "Anti-Yellow Clear Panel", textPosition: "top-left" },
+        { image: img.lifestyle, label: "Dual-Layer", subtitle: "TPU + PC Construction", textPosition: "top-right" },
+        { image: img.details, label: "MagSafe", subtitle: "38T Magnetic Precision", textPosition: "center" },
+      ],
+      imageTextBlocks: [
+        {
+          image: img.lifestyle,
+          headline: "Frosted Sophistication.",
+          body: "The matte-textured edges provide a premium feel and enhanced grip while the crystal-clear back panel lets your device's design shine through.",
+          highlights: ["Frosted polycarbonate edges", "Anti-yellow clear back", "Enhanced grip texture"],
+        },
+      ],
+      marqueeItems: ["Frosted Side Rails", "Crystal-Clear Back", "14.8ft Drop Tested", "38T MagSafe", "Dual-Layer Build"],
+      stats: [
+        { value: "14.8ft", label: "Drop Protection" },
+        { value: "38T", label: "MagSafe Force" },
+        { value: "1.3mm", label: "Slim Profile" },
+        { value: "34g", label: "Lightweight" },
+      ],
+      featureCards: [
+        { title: "Frosted Rails", subtitle: "Enhanced matte grip", icon: Layers },
+        { title: "Clear Back", subtitle: "Anti-yellow coating", icon: Eye },
+        { title: "Dual-Layer", subtitle: "TPU + PC construction", icon: ShieldCheck },
+        { title: "38 Magnets", subtitle: "MagSafe precision", icon: Magnet },
+      ],
+    };
+  }
+
+  return staticSeriesContentMap[seriesSlug] || null;
+}
+
+const staticSeriesContentMap: Record<string, SeriesContent> = {
   softmag: {
     scrollVideoSrc: softmagVideo,
     scrollVideoTexts: ["Soft Touch.", "Bold Colors.", "MagSafe Ready.", "Stain Proof."],
@@ -485,7 +549,7 @@ const FeaturedCard = ({ card, aspectClass, isDark }: {
    ══════════════════════════════════════════ */
 const ProductContentSections = ({ product }: { product: Product }) => {
   const seriesSlug = product.seriesSlug as string;
-  const content = seriesContentMap[seriesSlug];
+  const content = getSeriesContent(seriesSlug, product.device);
 
   if (!content) return null;
 
