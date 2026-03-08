@@ -291,7 +291,7 @@ const SeriesProduct = () => {
   const otherDeviceGroups = deviceSeries.filter((g) => g.slug !== deviceSlug);
 
   return (
-    <div className="min-h-screen flex flex-col bg-background overflow-x-clip">
+    <div className="min-h-screen flex flex-col bg-announcement overflow-x-clip">
 
       <AnnouncementBar />
       <Navbar onSearchOpen={() => setSearchOpen(true)} onCartOpen={() => setCartOpen(true)} />

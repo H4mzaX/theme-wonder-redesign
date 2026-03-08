@@ -20,7 +20,7 @@ const ContactUs = () => {
   });
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-announcement text-foreground">
       <AnnouncementBar />
       <Navbar onSearchOpen={() => setSearchOpen(true)} onCartOpen={() => setCartOpen(true)} />
       <SearchDrawer open={searchOpen} onClose={() => setSearchOpen(false)} />
