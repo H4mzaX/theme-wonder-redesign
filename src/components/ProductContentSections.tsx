@@ -18,6 +18,15 @@ import softmagFloating from "@/assets/softmag-floating.webp";
 import softmagCamera from "@/assets/softmag-camera.webp";
 import softmagVideo from "@/assets/softmag-showcase.mp4";
 
+// Existing product images for other series
+import magsafeClearImg from "@/assets/case-magsafe-clear.jpg";
+import magsafeBlackImg from "@/assets/case-magsafe-black.jpg";
+import armoredgeImg from "@/assets/armoredge-orange.png";
+import edgeguardImg from "@/assets/edgeguard-screen-protector.jpg";
+import edgeguardHoverImg from "@/assets/edgeguard-screen-protector-hover.jpg";
+import lensguardImg from "@/assets/lensguard-camera-protector.jpg";
+import lensguardHoverImg from "@/assets/lensguard-camera-protector-hover.jpg";
+
 const expoOut: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 /* ══════════════════════════════════════════
