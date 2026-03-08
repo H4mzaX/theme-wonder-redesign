@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { seriesData, type SeriesSlug } from "@/data/products";
 import BrandName from "@/components/BrandName";
 
@@ -16,12 +16,14 @@ const seriesList: { slug: SeriesSlug; href: string }[] = [
 const ExploreProducts = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
   const updateScroll = () => {
     const el = scrollRef.current;
     if (!el) return;
     const maxScroll = el.scrollWidth - el.clientWidth;
+    setCanScrollLeft(el.scrollLeft > 10);
     setCanScrollRight(el.scrollLeft < maxScroll - 10);
     if (maxScroll > 0) {
       const progress = el.scrollLeft / maxScroll;
@@ -37,10 +39,10 @@ const ExploreProducts = () => {
     return () => el.removeEventListener("scroll", updateScroll);
   }, []);
 
-  const scrollNext = () => {
+  const scroll = (dir: "left" | "right") => {
     const el = scrollRef.current;
     if (!el) return;
-    el.scrollBy({ left: el.clientWidth * 0.7, behavior: "smooth" });
+    el.scrollBy({ left: dir === "left" ? -el.clientWidth * 0.7 : el.clientWidth * 0.7, behavior: "smooth" });
   };
 
   return (
@@ -96,10 +98,19 @@ const ExploreProducts = () => {
             })}
           </div>
 
-          {/* Scroll arrow */}
+          {/* Scroll arrows */}
+          {canScrollLeft && (
+            <button
+              onClick={() => scroll("left")}
+              className="hidden md:flex absolute left-2 lg:-left-2 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center rounded-full bg-background border border-border shadow-md hover:bg-muted transition-colors z-10"
+              aria-label="Scroll left"
+            >
+              <ChevronLeft className="w-5 h-5 text-foreground" />
+            </button>
+          )}
           {canScrollRight && (
             <button
-              onClick={scrollNext}
+              onClick={() => scroll("right")}
               className="hidden md:flex absolute right-2 lg:right-4 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center rounded-full bg-background border border-border shadow-md hover:bg-muted transition-colors z-10"
               aria-label="Scroll right"
             >
