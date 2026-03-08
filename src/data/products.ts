@@ -58,7 +58,7 @@ export interface Product {
 }
 
 // ── Series definitions ──
-export type SeriesSlug = "clearmag" | "clearmag-edge" | "softmag" | "armormag" | "edgeguard" | "lensguard";
+export type SeriesSlug = "clearmag" | "clearmag-edge" | "softmag" | "armor-edge" | "edgeguard" | "lensguard";
 
 export interface SeriesInfo {
   name: string;
