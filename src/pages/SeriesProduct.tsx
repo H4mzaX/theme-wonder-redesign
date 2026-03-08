@@ -19,6 +19,8 @@ import MobileBottomNav from "@/components/MobileBottomNav";
 import VideoTextOverlay from "@/components/VideoTextOverlay";
 import BrandName from "@/components/BrandName";
 import AnimateElement, { StaggerGroup, StaggerChild, ScaleReveal } from "@/components/AnimateElement";
+import ProductContentSections from "@/components/ProductContentSections";
+import FloatingNavPill from "@/components/FloatingNavPill";
 import { premiumEase } from "@/lib/motion";
 
 import heroVideo from "@/assets/hero-video.mp4";
