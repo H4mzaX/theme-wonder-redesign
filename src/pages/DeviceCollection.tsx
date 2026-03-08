@@ -4,6 +4,7 @@ import { Smartphone, ArrowRight, Shield, Camera } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { deviceSeries, seriesData, getDeviceProducts, type SeriesSlug } from "@/data/products";
 import { premiumEase } from "@/lib/motion";
+import { useSEO } from "@/hooks/useSEO";
 import Navbar from "@/components/Navbar";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Footer from "@/components/Footer";
