@@ -401,7 +401,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                   </div>
                 )}
 
-              </div>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
