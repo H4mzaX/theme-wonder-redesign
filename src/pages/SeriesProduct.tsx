@@ -74,7 +74,11 @@ const SeriesProduct = () => {
 
   const seriesName = series?.name || seriesSlug || "";
 
-  const currentDeviceName = currentProduct?.device || deviceGroup?.models[0]?.name || deviceSlug || "";
+  // Derive device name from model param or first model
+  const resolvedModelName = modelParam && deviceGroup
+    ? deviceGroup.models.find((m) => m.slug === modelParam)?.name
+    : undefined;
+  const currentDeviceName = resolvedModelName || deviceGroup?.models[0]?.name || deviceSlug || "";
 
   useSEO({
     title: series && deviceGroup ? `${seriesName} for ${currentDeviceName} | VCASE` : "Product | VCASE",
