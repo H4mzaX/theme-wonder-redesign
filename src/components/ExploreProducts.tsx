@@ -34,7 +34,7 @@ const ExploreProducts = () => {
   }, []);
 
   return (
-    <section className="py-6 sm:py-8 lg:py-10">
+    <section className="py-4 sm:py-5 lg:py-6">
       <div className="max-w-[1400px] mx-auto">
         <h2 className="text-xl sm:text-3xl lg:text-4xl font-bold tracking-tight italic text-foreground text-center mb-4 sm:mb-5 lg:mb-7 px-4 sm:px-6 lg:px-10">
           Explore Products
