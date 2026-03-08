@@ -2,7 +2,7 @@ import { useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import {
   Shield, Magnet, Droplets, Zap, Layers, Ruler, Eye, ScanLine,
-  CircleDot, ShieldCheck, Waves, BadgeCheck
+  CircleDot, ShieldCheck, Waves, BadgeCheck, Zap as ZapIcon
 } from "lucide-react";
 import type { Product } from "@/data/products";
 import { seriesData, type SeriesSlug } from "@/data/products";
