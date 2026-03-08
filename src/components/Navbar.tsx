@@ -1,4 +1,5 @@
-import { Search, User, ShoppingBag, Menu, X, ChevronRight, ChevronLeft, ArrowRight } from "lucide-react";
+import { X, ChevronRight, ChevronLeft, ArrowRight } from "lucide-react";
+import { MenuIcon, SearchIcon, UserIcon, CartIcon } from "@/components/icons/PremiumIcons";
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -88,7 +89,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
             className="lg:hidden w-10 h-10 flex items-center justify-center -ml-2 rounded-full hover:bg-muted active:scale-95 transition-all"
             onClick={() => setMobileOpen(true)}
           >
-            <Menu className="w-6 h-6" strokeWidth={1.8} />
+            <MenuIcon className="w-6 h-6" />
           </button>
 
           {/* Logo */}
@@ -148,13 +149,13 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
           {/* Right icons */}
           <div className="flex items-center gap-5">
             <motion.button className="hover:text-accent transition-colors" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} onClick={onSearchOpen}>
-              <Search className="w-5 h-5" />
+              <SearchIcon className="w-5 h-5" />
             </motion.button>
             <motion.button className="hidden sm:block hover:text-accent transition-colors" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-              <User className="w-5 h-5" />
+              <UserIcon className="w-5 h-5" />
             </motion.button>
             <motion.button className="hover:text-accent transition-colors relative" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} onClick={onCartOpen}>
-              <ShoppingBag className="w-5 h-5" />
+              <CartIcon className="w-5 h-5" />
               {totalItems > 0 && (
                 <span className="absolute -top-1.5 -right-1.5 bg-accent text-accent-foreground text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
                   {totalItems}

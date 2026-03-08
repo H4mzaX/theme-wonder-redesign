@@ -1,4 +1,5 @@
-import { Home, Menu, Search, LayoutGrid, ShoppingCart, User } from "lucide-react";
+import { Home, LayoutGrid, User } from "lucide-react";
+import { MenuIcon, SearchIcon, CartIcon } from "@/components/icons/PremiumIcons";
 import { Link, useLocation } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
 
@@ -10,10 +11,10 @@ interface MobileBottomNavProps {
 
 const navItems = [
   { icon: Home, label: "Home", path: "/" },
-  { icon: Menu, label: "Menu", action: "menu" },
-  { icon: Search, label: "Search", action: "search" },
+  { icon: "menu" as const, label: "Menu", action: "menu" },
+  { icon: "search" as const, label: "Search", action: "search" },
   { icon: LayoutGrid, label: "Shop", path: "/collections/all" },
-  { icon: ShoppingCart, label: "Cart", action: "cart" },
+  { icon: "cart" as const, label: "Cart", action: "cart" },
   { icon: User, label: "Account", path: "#" },
 ];
 
@@ -26,7 +27,6 @@ const MobileBottomNav = ({ onMenuOpen, onSearchOpen, onCartOpen }: MobileBottomN
       <div className="flex items-center justify-around h-14">
         {navItems.map((item) => {
           const isActive = item.path ? location.pathname === item.path : false;
-          const Icon = item.icon;
 
           const handleClick = () => {
             if (item.action === "menu") onMenuOpen?.();
@@ -34,12 +34,18 @@ const MobileBottomNav = ({ onMenuOpen, onSearchOpen, onCartOpen }: MobileBottomN
             else if (item.action === "cart") onCartOpen?.();
           };
 
+          const renderIcon = () => {
+            const cls = `w-5 h-5 ${isActive ? "text-foreground" : "text-muted-foreground"}`;
+            if (item.icon === "menu") return <MenuIcon className={cls} />;
+            if (item.icon === "search") return <SearchIcon className={cls} />;
+            if (item.icon === "cart") return <CartIcon className={cls} />;
+            const Icon = item.icon;
+            return <Icon className={cls} strokeWidth={isActive ? 2.5 : 1.8} />;
+          };
+
           const content = (
             <div className="flex flex-col items-center gap-0.5 relative">
-              <Icon
-                className={`w-5 h-5 ${isActive ? "text-foreground" : "text-muted-foreground"}`}
-                strokeWidth={isActive ? 2.5 : 1.8}
-              />
+              {renderIcon()}
               {item.action === "cart" && totalItems > 0 && (
                 <span className="absolute -top-1 -right-2 w-4 h-4 rounded-full bg-foreground text-background text-[9px] font-bold flex items-center justify-center">
                   {totalItems}
