@@ -147,15 +147,43 @@ const SeriesProduct = () => {
   const currentProduct = products[selectedModel] || products[0];
   const isSoftmag = seriesSlug === "softmag";
 
-  // Build gallery images array — more images for a richer scroll
-  const galleryImages = currentProduct
-    ? [
-        currentProduct.image,
-        ...(currentProduct.hoverImage ? [currentProduct.hoverImage] : []),
-        currentProduct.image, // Repeat for scroll depth
-        ...(currentProduct.hoverImage ? [currentProduct.hoverImage] : []),
-      ]
-    : [];
+  // Build gallery images array — use device/series-specific galleries
+  const getGalleryImages = (): string[] => {
+    if (!currentProduct) return [];
+    const device = currentProduct.device;
+    const slug = currentProduct.seriesSlug;
+
+    // Device-specific ClearMag galleries
+    if (slug === "clearmag" || slug === "clearmag-edge") {
+      if (device === "iPhone 17 Pro" || device === "iPhone 17 Pro Max") return iphone17ProGalleryImages;
+      if (device === "iPhone 17" || device === "iPhone 17 Air") return iphone17GalleryImages;
+      if (device.includes("iPhone 16")) return iphone16MagsafeGalleryImages;
+    }
+    // SoftMag galleries
+    if (slug === "softmag") {
+      return [softmagHero, softmagFloating, softmagCamera, softmagCloseup, softmagLifestyle];
+    }
+    // Armor Edge galleries
+    if (slug === "armor-edge") {
+      return [armoredgeHeroImg, armoredgeCloseupImg, armoredgeRing, armoredgeLifestyle];
+    }
+    // EdgeGuard
+    if (slug === "edgeguard") {
+      return [edgeguardImg, edgeguardHoverImg, edgeguardImg, edgeguardHoverImg];
+    }
+    // LensGuard
+    if (slug === "lensguard") {
+      return [lensguardImg, lensguardHoverImg, lensguardImg, lensguardHoverImg];
+    }
+    // Fallback
+    return [
+      currentProduct.image,
+      ...(currentProduct.hoverImage ? [currentProduct.hoverImage] : []),
+      currentProduct.image,
+      ...(currentProduct.hoverImage ? [currentProduct.hoverImage] : []),
+    ];
+  };
+  const galleryImages = getGalleryImages();
 
   const handleAddToCart = () => {
     if (!currentProduct) return;
