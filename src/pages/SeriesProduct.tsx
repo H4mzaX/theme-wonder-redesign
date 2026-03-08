@@ -1,14 +1,9 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
-import {
-  Shield, Magnet, Zap, CheckCircle, ChevronDown,
-  Package, Truck, Percent, Smartphone, Waves, ShieldCheck, BadgeCheck, Star
-} from "lucide-react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { seriesData, deviceSeries, getSeriesProducts, allProducts, type SeriesSlug } from "@/data/products";
+import { useParams, Link, useSearchParams } from "react-router-dom";
+import { ChevronDown, Package, Truck, Percent, Smartphone, Waves, ShieldCheck, Magnet, BadgeCheck } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { seriesData, deviceSeries, getSeriesProducts, allProducts, type Product, type SeriesSlug } from "@/data/products";
 import { useSEO } from "@/hooks/useSEO";
-import { useCart } from "@/context/CartContext";
-import { toast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Footer from "@/components/Footer";
@@ -34,6 +29,7 @@ const faqItems = [
 
 const SeriesProduct = () => {
   const { seriesSlug, deviceSlug } = useParams<{ seriesSlug: string; deviceSlug: string }>();
+  const [searchParams] = useSearchParams();
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -41,18 +37,23 @@ const SeriesProduct = () => {
   const series = seriesData[seriesSlug as SeriesSlug];
   const deviceGroup = deviceSeries.find((g) => g.slug === deviceSlug);
 
-  const deviceName = deviceGroup?.name?.replace(" Series", "") || deviceSlug || "";
+  const selectedModelSlug = searchParams.get("model");
+  const selectedModelName = deviceGroup?.models.find((m) => m.slug === selectedModelSlug)?.name;
+  const listingLabel = selectedModelName || deviceGroup?.name || "";
+
   const seriesName = series?.name || seriesSlug || "";
 
   useSEO({
-    title: series && deviceGroup ? `${seriesName} for ${deviceGroup.name} | VCASE` : "Collection | VCASE",
-    description: series ? `Shop ${seriesName} ${series.type === "case" ? "cases" : "protectors"} for ${deviceGroup?.name}. Available for ${deviceGroup?.models.map(m => m.name).join(", ")}. ${series.description}` : "Premium phone protection by VCASE.",
+    title: series && deviceGroup ? `${seriesName} for ${listingLabel} | VCASE` : "Collection | VCASE",
+    description: series
+      ? `Shop ${seriesName} ${series.type === "case" ? "cases" : "protectors"} for ${listingLabel}. ${series.description}`
+      : "Premium phone protection by VCASE.",
     canonical: `https://vcase.in/${seriesSlug}/${deviceSlug}`,
     type: "product",
     jsonLd: series && deviceGroup ? {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
-      name: `${seriesName} for ${deviceGroup.name}`,
+      name: `${seriesName} for ${listingLabel}`,
       description: series.description,
       brand: { "@type": "Brand", name: "VCASE" },
     } : undefined,
@@ -60,7 +61,7 @@ const SeriesProduct = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [seriesSlug, deviceSlug]);
+  }, [seriesSlug, deviceSlug, selectedModelSlug]);
 
   if (!series || !deviceGroup) {
     return (
@@ -79,16 +80,18 @@ const SeriesProduct = () => {
   }
 
   const products = getSeriesProducts(seriesSlug!, deviceSlug!);
+  const displayedProducts = selectedModelName
+    ? products.filter((p) => p.device === selectedModelName)
+    : products;
   const otherDeviceGroups = deviceSeries.filter((g) => g.slug !== deviceSlug);
 
   // Related products from different series for same devices
   const relatedProducts = allProducts
-    .filter((p) => deviceGroup.models.some(m => m.name === p.device) && p.seriesSlug !== seriesSlug)
+    .filter((p) => deviceGroup.models.some((m) => m.name === p.device) && p.seriesSlug !== seriesSlug)
     .reduce((acc, p) => {
-      // One per series
-      if (!acc.find(a => a.seriesSlug === p.seriesSlug)) acc.push(p);
+      if (!acc.find((a) => a.seriesSlug === p.seriesSlug)) acc.push(p);
       return acc;
-    }, [] as typeof allProducts)
+    }, [] as Product[])
     .slice(0, 4);
 
   return (
