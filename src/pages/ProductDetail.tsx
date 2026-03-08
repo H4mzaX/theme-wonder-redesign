@@ -8,6 +8,7 @@ import {
   ShieldCheck, Waves, CircleDot, ScanLine, BadgeCheck, Wallet, IndianRupee, Banknote
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import useEmblaCarousel from "embla-carousel-react";
 import { allProducts, colorImages, iphone17ProGalleryImages, iphone17GalleryImages, iphone16MagsafeGalleryImages, siliconeGalleryImages, type Product } from "@/data/products";
 import { useSEO } from "@/hooks/useSEO";
 import { useCart } from "@/context/CartContext";
@@ -19,6 +20,7 @@ import SearchDrawer from "@/components/SearchDrawer";
 import CartDrawer from "@/components/CartDrawer";
 import ProductCard from "@/components/ProductCard";
 import { ProductLightbox } from "@/components/ProductLightbox";
+import ProductContentSections from "@/components/ProductContentSections";
 
 const colorHex: Record<string, string> = {
   Clear: "#e5e5e5",
