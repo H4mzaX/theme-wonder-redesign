@@ -21,11 +21,18 @@ import softmagVideo from "@/assets/softmag-showcase.mp4";
 // Existing product images for other series
 import magsafeClearImg from "@/assets/case-magsafe-clear.jpg";
 import magsafeBlackImg from "@/assets/case-magsafe-black.jpg";
-import armoredgeImg from "@/assets/armoredge-orange.png";
 import edgeguardImg from "@/assets/edgeguard-screen-protector.jpg";
 import edgeguardHoverImg from "@/assets/edgeguard-screen-protector-hover.jpg";
 import lensguardImg from "@/assets/lensguard-camera-protector.jpg";
 import lensguardHoverImg from "@/assets/lensguard-camera-protector-hover.jpg";
+
+// Armor Edge images
+import armoredgeMagnetic from "@/assets/armoredge-magnetic.webp";
+import armoredgeCamera from "@/assets/armoredge-camera.webp";
+import armoredgeProtection from "@/assets/armoredge-protection.webp";
+import armoredgeImpact from "@/assets/armoredge-impact.webp";
+import armoredgeFeatures from "@/assets/armoredge-features.webp";
+import armoredgeLifestyle from "@/assets/armoredge-lifestyle.webp";
 
 const expoOut: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -171,17 +178,24 @@ const seriesContentMap: Record<string, SeriesContent> = {
     editorialHeadline: "Built for the Fearless.",
     editorialBody: "Precision-engineered sliding camera cover protects from scratches and dust. The 360° rotatable metal ring doubles as a kickstand for hands-free viewing in any orientation.",
     featuredCards: [
-      { image: armoredgeImg, label: "Camera Slider", subtitle: "Lens Scratch Protection", textPosition: "bottom-center" },
-      { image: armoredgeImg, label: "Ring Stand", subtitle: "360° Rotatable Metal", textPosition: "top-left" },
-      { image: armoredgeImg, label: "Military Grade", subtitle: "16ft Drop Protection", textPosition: "top-right" },
-      { image: armoredgeImg, label: "360° Bezels", subtitle: "Full Edge Protection", textPosition: "center" },
+      { image: armoredgeCamera, label: "Camera Slider", subtitle: "Lens Scratch Protection", textPosition: "bottom-center" },
+      { image: armoredgeMagnetic, label: "Magnetic Lock", subtitle: "MagSafe Compatible Ring", textPosition: "top-left" },
+      { image: armoredgeImpact, label: "Military Grade", subtitle: "16ft Drop Protection", textPosition: "top-right" },
+      { image: armoredgeProtection, label: "Hybrid Build", subtitle: "Full Edge Protection", textPosition: "center" },
     ],
     imageTextBlocks: [
       {
-        image: armoredgeImg,
+        image: armoredgeFeatures,
         headline: "Tactical Engineering.",
         body: "Reinforced corners with dual-layer construction absorb and distribute impact forces. The integrated metal ring stand rotates 360° for landscape or portrait hands-free viewing.",
         highlights: ["Sliding camera cover", "360° metal kickstand", "Reinforced corners"],
+      },
+      {
+        image: armoredgeLifestyle,
+        headline: "Built to Survive.",
+        body: "Military-grade shock absorption meets cinematic design. Tested at 16ft drops with reinforced corners and a shock-absorbing TPU frame that keeps your phone intact.",
+        highlights: ["16ft drop tested", "Shock-absorbing frame", "Reinforced corners"],
+        reverse: true,
       },
     ],
     marqueeItems: ["Camera Slider", "Metal Ring Stand", "16ft Drop Tested", "360° Bezels", "Dual-Layer Armor"],
