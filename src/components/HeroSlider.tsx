@@ -84,8 +84,8 @@ const HeroSlider = () => {
           className="relative overflow-hidden rounded-[0.85rem] sm:rounded-[1rem] lg:rounded-[1.15rem] cursor-pointer"
           onClick={handleClick}
         >
-          <div className="relative aspect-[16/10] sm:aspect-[21/9]">
-            {/* Crossfade images */}
+          {/* Desktop: 16:9 landscape */}
+          <div className="relative hidden sm:block aspect-[16/9]">
             <AnimatePresence initial={false}>
               <motion.img
                 key={current}
