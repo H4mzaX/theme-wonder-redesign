@@ -12,10 +12,10 @@ import FeaturedImageGrid from "@/components/FeaturedImageGrid";
 import ImageTextBlock from "@/components/ImageTextBlock";
 import heroVideo from "@/assets/hero-video.mp4";
 
-import softmagCloseup from "@/assets/softmag-closeup.png";
-import softmagLifestyle from "@/assets/softmag-lifestyle.png";
-import softmagFloating from "@/assets/softmag-floating.png";
-import softmagCamera from "@/assets/softmag-camera.png";
+import softmagCloseup from "@/assets/softmag-closeup.webp";
+import softmagLifestyle from "@/assets/softmag-lifestyle.webp";
+import softmagFloating from "@/assets/softmag-floating.webp";
+import softmagCamera from "@/assets/softmag-camera.webp";
 import softmagVideo from "@/assets/softmag-showcase.mp4";
 
 const expoOut: [number, number, number, number] = [0.16, 1, 0.3, 1];

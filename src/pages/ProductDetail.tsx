@@ -10,11 +10,11 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import { allProducts, colorImages, iphone17ProGalleryImages, iphone17GalleryImages, iphone16MagsafeGalleryImages, siliconeGalleryImages, type Product } from "@/data/products";
-import softmagCloseup from "@/assets/softmag-closeup.png";
-import softmagLifestyle from "@/assets/softmag-lifestyle.png";
-import softmagFloating from "@/assets/softmag-floating.png";
-import softmagCamera from "@/assets/softmag-camera.png";
-import softmagHero from "@/assets/softmag-hero.png";
+import softmagCloseup from "@/assets/softmag-closeup.webp";
+import softmagLifestyle from "@/assets/softmag-lifestyle.webp";
+import softmagFloating from "@/assets/softmag-floating.webp";
+import softmagCamera from "@/assets/softmag-camera.webp";
+import softmagHero from "@/assets/softmag-hero.webp";
 
 const softmagGalleryImages = [softmagHero, softmagFloating, softmagCamera, softmagCloseup, softmagLifestyle];
 import { useSEO } from "@/hooks/useSEO";
