@@ -9,12 +9,13 @@ import { premiumEase } from "@/lib/motion";
 import Index from "./pages/Index";
 import ProductDetail from "./pages/ProductDetail";
 import Collection from "./pages/Collection";
+import SeriesProduct from "./pages/SeriesProduct";
+import DeviceCollection from "./pages/DeviceCollection";
 import ContactUs from "./pages/ContactUs";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import RefundPolicy from "./pages/RefundPolicy";
 import NotFound from "./pages/NotFound";
 import WhatsAppButton from "./components/WhatsAppButton";
-
 
 const queryClient = new QueryClient();
 
@@ -52,6 +53,13 @@ const AnimatedRoutes = () => {
           <Route path="/" element={<Index />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/collections/:slug" element={<Collection />} />
+          
+          {/* Series product pages */}
+          <Route path="/:seriesSlug/:deviceSlug" element={<SeriesProduct />} />
+          
+          {/* Device collection pages */}
+          <Route path="/devices/:deviceSlug" element={<DeviceCollection />} />
+          
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/terms" element={<TermsAndConditions />} />
           <Route path="/refund-policy" element={<RefundPolicy />} />
@@ -69,7 +77,6 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          
           <AnimatedRoutes />
           <WhatsAppButton />
         </BrowserRouter>

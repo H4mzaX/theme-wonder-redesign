@@ -13,7 +13,6 @@ import siliconeLifestyleClearImg from "@/assets/silicone-lifestyle-clear.jpg";
 import leatherBrownImg from "@/assets/case-leather-brown.jpg";
 import leatherBlackImg from "@/assets/case-leather-black.jpg";
 
-// iPhone 17 Pro specific images (these need to be re-uploaded — currently same as iPhone 17)
 import iphone17proMagsafeClearImg from "@/assets/iphone17pro-magsafe-clear.jpg";
 import iphone17proSlimImg from "@/assets/iphone17pro-slim-design.jpg";
 import iphone17proProtectionImg from "@/assets/iphone17pro-protection.jpg";
@@ -21,7 +20,6 @@ import iphone17proStrongImg from "@/assets/iphone17pro-strong.jpg";
 import iphone17proMagsafeAttachImg from "@/assets/iphone17pro-magsafe-attach.jpg";
 import iphone17proFingerprintsImg from "@/assets/iphone17pro-fingerprints.jpg";
 
-// iPhone 17 specific images
 import iphone17MagsafeClearImg from "@/assets/iphone17-magsafe-clear.jpg";
 import iphone17SlimImg from "@/assets/iphone17-slim-design.jpg";
 import iphone17ProtectionImg from "@/assets/iphone17-protection.jpg";
@@ -29,30 +27,11 @@ import iphone17StrongImg from "@/assets/iphone17-strong.jpg";
 import iphone17MagsafeAttachImg from "@/assets/iphone17-magsafe-attach.jpg";
 import iphone17FingerprintsImg from "@/assets/iphone17-fingerprints.jpg";
 
-// iPhone 16 MagSafe specific images
 import iphone16MagsafeLifestyleImg from "@/assets/iphone16-magsafe-lifestyle.jpg";
 import iphone16MagsafeClearImg from "@/assets/iphone16-magsafe-clear.png";
 import iphone16MagsafeFeaturesImg from "@/assets/iphone16-magsafe-features.png";
 import iphone16MagsafeGridImg from "@/assets/iphone16-magsafe-grid.png";
 import iphone16MagsafeDetailsImg from "@/assets/iphone16-magsafe-details.jpg";
-
-// Samsung device-specific images
-import samsungSiliconeBlueImg from "@/assets/samsung-silicone-blue.jpg";
-import samsungClearCaseImg from "@/assets/samsung-clear-case.jpg";
-import samsungMatteBlackImg from "@/assets/samsung-matte-black.jpg";
-import samsungLeatherBrownImg from "@/assets/samsung-leather-brown.jpg";
-
-// OnePlus device-specific images
-import oneplusSiliconeBlueImg from "@/assets/oneplus-silicone-blue.jpg";
-import oneplusClearCaseImg from "@/assets/oneplus-clear-case.jpg";
-import oneplusMatteBlackImg from "@/assets/oneplus-matte-black.jpg";
-import oneplusLeatherBrownImg from "@/assets/oneplus-leather-brown.jpg";
-
-// iQOO device-specific images
-import iqooSiliconeBlueImg from "@/assets/iqoo-silicone-blue.jpg";
-import iqooClearCaseImg from "@/assets/iqoo-clear-case.jpg";
-import iqooMatteBlackImg from "@/assets/iqoo-matte-black.jpg";
-import iqooLeatherBrownImg from "@/assets/iqoo-leather-brown.jpg";
 
 export interface Product {
   id: string;
@@ -70,238 +49,324 @@ export interface Product {
   brand: string;
   category: string;
   device: string;
+  series: string;
+  seriesSlug: string;
 }
 
-// ── iPhone Products ──
+// ── Series definitions ──
+export type SeriesSlug = "clearmag" | "clearmag-edge" | "softmag" | "armormag" | "edgeguard" | "lensguard";
 
-const iphoneDevices = [
-  "iPhone 15", "iPhone 15 Pro",
-  "iPhone 16", "iPhone 16 Pro",
-  "iPhone 17", "iPhone 17 Pro",
+export interface SeriesInfo {
+  name: string;
+  slug: SeriesSlug;
+  category: "cases" | "protection";
+  type: "case" | "screen" | "camera";
+  description: string;
+  tagline: string;
+  icon: string; // path to icon in /public/icons/
+  features: string[];
+  material: string;
+  comingSoon?: boolean;
+}
+
+export const seriesData: Record<SeriesSlug, SeriesInfo> = {
+  clearmag: {
+    name: "ClearMag",
+    slug: "clearmag",
+    category: "cases",
+    type: "case",
+    description: "Crystal-clear MagSafe case with anti-yellow technology and shock-absorbing corners.",
+    tagline: "See-through protection, magnetically perfect.",
+    icon: "/icons/clearmag.webp",
+    features: [
+      "MagSafe alignment with 38 built-in magnets",
+      "Anti-yellow nano-coated polycarbonate",
+      "Shock-absorbing TPU corners",
+      "Raised bezels for screen & camera protection",
+    ],
+    material: "Polycarbonate + TPU construction",
+  },
+  "clearmag-edge": {
+    name: "ClearMag Edge",
+    slug: "clearmag-edge",
+    category: "cases",
+    type: "case",
+    description: "Premium MagSafe case with frosted edges and enhanced drop protection.",
+    tagline: "Frosted edges, crystal clarity.",
+    icon: "/icons/clearmag-edge.webp",
+    features: [
+      "MagSafe alignment with 38 built-in magnets",
+      "Frosted polycarbonate back panel",
+      "14.8ft drop protection tested",
+      "Enhanced grip frosted side rails",
+    ],
+    material: "Frosted Polycarbonate + TPU construction",
+  },
+  softmag: {
+    name: "SoftMag",
+    slug: "softmag",
+    category: "cases",
+    type: "case",
+    description: "Liquid silicone MagSafe case with soft-touch finish in multiple colors.",
+    tagline: "Soft touch, bold colors.",
+    icon: "/icons/softmag.webp",
+    features: [
+      "MagSafe compatible magnets",
+      "Liquid silicone rubber exterior",
+      "Soft microfiber interior lining",
+      "Washable and stain-resistant surface",
+    ],
+    material: "Liquid Silicone + Microfiber construction",
+  },
+  armormag: {
+    name: "ArmorMag",
+    slug: "armormag",
+    category: "cases",
+    type: "case",
+    description: "Heavy-duty MagSafe armor case with military-grade protection.",
+    tagline: "Maximum protection, magnetic power.",
+    icon: "/icons/clearmag.webp",
+    features: [
+      "MagSafe compatible",
+      "Military-grade drop protection",
+      "Reinforced corner bumpers",
+      "Textured grip sides",
+    ],
+    material: "Polycarbonate + TPU + Metal construction",
+    comingSoon: true,
+  },
+  edgeguard: {
+    name: "EdgeGuard",
+    slug: "edgeguard",
+    category: "protection",
+    type: "screen",
+    description: "Edge-to-edge tempered glass screen protector with installation kit.",
+    tagline: "Full coverage, zero compromise.",
+    icon: "/icons/edgeguard.webp",
+    features: [
+      "9H hardness tempered glass",
+      "Edge-to-edge full coverage",
+      "Oleophobic anti-fingerprint coating",
+      "Easy-align installation frame included",
+    ],
+    material: "Tempered Glass + Oleophobic Coating",
+  },
+  lensguard: {
+    name: "LensGuard",
+    slug: "lensguard",
+    category: "protection",
+    type: "camera",
+    description: "Precision camera lens protector with sapphire-grade hardness.",
+    tagline: "Crystal clear lens protection.",
+    icon: "/icons/lensguard.webp",
+    features: [
+      "Sapphire-grade 9H hardness",
+      "Anti-reflective coating",
+      "Precision cut for each camera module",
+      "Ultra-thin 0.3mm profile",
+    ],
+    material: "Sapphire-grade Tempered Glass",
+  },
+};
+
+// ── Device definitions ──
+export interface DeviceModel {
+  name: string;
+  slug: string;
+}
+
+export interface DeviceSeries {
+  name: string;
+  slug: string;
+  models: DeviceModel[];
+}
+
+export const deviceSeries: DeviceSeries[] = [
+  {
+    name: "iPhone 16 Series",
+    slug: "iphone-16",
+    models: [
+      { name: "iPhone 16", slug: "iphone-16" },
+      { name: "iPhone 16 Pro", slug: "iphone-16-pro" },
+      { name: "iPhone 16e", slug: "iphone-16e" },
+    ],
+  },
+  {
+    name: "iPhone 17 Series",
+    slug: "iphone-17",
+    models: [
+      { name: "iPhone 17", slug: "iphone-17" },
+      { name: "iPhone 17 Pro", slug: "iphone-17-pro" },
+      { name: "iPhone 17 Pro Max", slug: "iphone-17-pro-max" },
+      { name: "iPhone 17 Air", slug: "iphone-17-air" },
+    ],
+  },
 ];
 
-const samsungDevices = [
-  "Samsung S25", "Samsung S25 Ultra",
-  "Samsung S26", "Samsung S26 Ultra",
+// All device model names for product generation
+const allDeviceModels = deviceSeries.flatMap((s) => s.models.map((m) => m.name));
+
+// Series product definitions
+interface SeriesProductDef {
+  seriesSlug: SeriesSlug;
+  image: string;
+  hoverImage?: string;
+  colors: string[];
+  basePrice: number;
+  originalPrice: number;
+  discount: string;
+  rating: number;
+  reviewBase: number;
+}
+
+const seriesProductDefs: SeriesProductDef[] = [
+  { seriesSlug: "clearmag", image: magsafeClearImg, hoverImage: magsafeBlackImg, colors: ["Clear"], basePrice: 1499, originalPrice: 2499, discount: "Save 40%", rating: 5, reviewBase: 120 },
+  { seriesSlug: "clearmag-edge", image: magsafeBlackImg, hoverImage: magsafeClearImg, colors: ["Jet Black"], basePrice: 1699, originalPrice: 2999, discount: "Save 43%", rating: 5, reviewBase: 95 },
+  { seriesSlug: "softmag", image: siliconeBlackNewImg, hoverImage: siliconeMintImg, colors: ["Black", "Stone", "Navy", "Orange"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 200 },
+  { seriesSlug: "edgeguard", image: leatherBrownImg, hoverImage: leatherBlackImg, colors: ["Clear"], basePrice: 699, originalPrice: 1299, discount: "Save 46%", rating: 5, reviewBase: 180 },
+  { seriesSlug: "lensguard", image: iphone16MagsafeClearImg, hoverImage: iphone16MagsafeDetailsImg, colors: ["Clear"], basePrice: 499, originalPrice: 999, discount: "Save 50%", rating: 5, reviewBase: 150 },
 ];
 
-const oneplusDevices = [
-  "OnePlus 13", "OnePlus 13R",
-  "OnePlus 14", "OnePlus 14R",
-  "OnePlus 15", "OnePlus 15R",
-];
-
-const iqooDevices = ["iQOO 15R"];
-
-function generateProducts(
-  devices: string[],
-  caseTypes: Array<{
-    type: string;
-    category: string;
-    image: string;
-    hoverImage?: string;
-    colors: string[];
-    basePrice: number;
-    originalPrice: number;
-    discount: string;
-    rating: number;
-    reviewBase: number;
-  }>
-): Product[] {
+function generateProducts(devices: string[], defs: SeriesProductDef[]): Product[] {
   const products: Product[] = [];
   for (const device of devices) {
-    for (const ct of caseTypes) {
-      const id = `${device.replace(/\s+/g, "-").toLowerCase()}-${ct.type.replace(/\s+/g, "-").toLowerCase()}`;
+    for (const def of defs) {
+      const series = seriesData[def.seriesSlug];
+      const id = `${device.replace(/\s+/g, "-").toLowerCase()}-${def.seriesSlug}`;
       products.push({
         id,
-        name: ct.type,
+        name: series.name,
         subtitle: `For ${device}`,
-        price: `₹${ct.basePrice.toLocaleString("en-IN")}`,
-        originalPrice: `₹${ct.originalPrice.toLocaleString("en-IN")}`,
-        discount: ct.discount,
-        rating: ct.rating,
-        reviews: ct.reviewBase + Math.floor(Math.random() * 200),
-        image: ct.image,
-        hoverImage: ct.hoverImage,
-        colors: ct.colors,
+        price: `₹${def.basePrice.toLocaleString("en-IN")}`,
+        originalPrice: `₹${def.originalPrice.toLocaleString("en-IN")}`,
+        discount: def.discount,
+        rating: def.rating,
+        reviews: def.reviewBase + Math.floor(Math.random() * 200),
+        image: def.image,
+        hoverImage: def.hoverImage,
+        colors: def.colors,
         brand: "VCASE",
-        category: ct.category,
+        category: series.category === "cases" ? "Cases" : series.type === "screen" ? "Screen Protection" : "Camera Protection",
         device,
+        series: series.name,
+        seriesSlug: def.seriesSlug,
       });
     }
   }
   return products;
 }
 
-const caseTypes = [
-  { type: "MagSafe Clear Case", category: "MagSafe Cases", image: magsafeClearImg, hoverImage: magsafeBlackImg, colors: ["Clear"], basePrice: 1499, originalPrice: 2499, discount: "Save 40%", rating: 5, reviewBase: 120 },
-  { type: "MagSafe Pro Case", category: "MagSafe Cases", image: magsafeBlackImg, hoverImage: magsafeClearImg, colors: ["Jet Black"], basePrice: 1699, originalPrice: 2999, discount: "Save 43%", rating: 5, reviewBase: 95 },
-  { type: "Silicone Case", category: "Silicone Cases", image: siliconeBlackNewImg, hoverImage: siliconeMintImg, colors: ["Black", "Blue", "Pink", "Green"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 200 },
-  { type: "Leather Case", category: "Leather Cases", image: leatherBrownImg, hoverImage: leatherBlackImg, colors: ["Saddle Brown", "Black"], basePrice: 1999, originalPrice: 3499, discount: "Save 43%", rating: 5, reviewBase: 80 },
-];
+export const allProducts = generateProducts(allDeviceModels, seriesProductDefs);
 
-// Samsung-specific case types
-const samsungCaseTypes = [
-  { type: "Silicone Case", category: "Silicone Cases", image: samsungSiliconeBlueImg, hoverImage: samsungMatteBlackImg, colors: ["Black", "Blue", "Pink", "Green"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 150 },
-  { type: "Leather Case", category: "Leather Cases", image: samsungLeatherBrownImg, hoverImage: samsungMatteBlackImg, colors: ["Saddle Brown", "Black"], basePrice: 1999, originalPrice: 3499, discount: "Save 43%", rating: 5, reviewBase: 60 },
-  { type: "Clear Case", category: "Clear Cases", image: samsungClearCaseImg, hoverImage: samsungSiliconeBlueImg, colors: ["Clear"], basePrice: 1199, originalPrice: 1999, discount: "Save 40%", rating: 5, reviewBase: 100 },
-  { type: "Matte Black Case", category: "Black Cases", image: samsungMatteBlackImg, hoverImage: samsungClearCaseImg, colors: ["Matte Black"], basePrice: 1399, originalPrice: 2499, discount: "Save 44%", rating: 5, reviewBase: 110 },
-];
-
-// OnePlus-specific case types
-const oneplusCaseTypes = [
-  { type: "Silicone Case", category: "Silicone Cases", image: oneplusSiliconeBlueImg, hoverImage: oneplusMatteBlackImg, colors: ["Black", "Blue", "Pink", "Green"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 150 },
-  { type: "Leather Case", category: "Leather Cases", image: oneplusLeatherBrownImg, hoverImage: oneplusMatteBlackImg, colors: ["Saddle Brown", "Black"], basePrice: 1999, originalPrice: 3499, discount: "Save 43%", rating: 5, reviewBase: 60 },
-  { type: "Clear Case", category: "Clear Cases", image: oneplusClearCaseImg, hoverImage: oneplusSiliconeBlueImg, colors: ["Clear"], basePrice: 1199, originalPrice: 1999, discount: "Save 40%", rating: 5, reviewBase: 100 },
-  { type: "Matte Black Case", category: "Black Cases", image: oneplusMatteBlackImg, hoverImage: oneplusClearCaseImg, colors: ["Matte Black"], basePrice: 1399, originalPrice: 2499, discount: "Save 44%", rating: 5, reviewBase: 110 },
-];
-
-// iQOO-specific case types
-const iqooCaseTypes = [
-  { type: "Silicone Case", category: "Silicone Cases", image: iqooSiliconeBlueImg, hoverImage: iqooMatteBlackImg, colors: ["Black", "Blue", "Pink", "Green"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 150 },
-  { type: "Leather Case", category: "Leather Cases", image: iqooLeatherBrownImg, hoverImage: iqooMatteBlackImg, colors: ["Saddle Brown", "Black"], basePrice: 1999, originalPrice: 3499, discount: "Save 43%", rating: 5, reviewBase: 60 },
-  { type: "Clear Case", category: "Clear Cases", image: iqooClearCaseImg, hoverImage: iqooSiliconeBlueImg, colors: ["Clear"], basePrice: 1199, originalPrice: 1999, discount: "Save 40%", rating: 5, reviewBase: 100 },
-  { type: "Matte Black Case", category: "Black Cases", image: iqooMatteBlackImg, hoverImage: iqooClearCaseImg, colors: ["Matte Black"], basePrice: 1399, originalPrice: 2499, discount: "Save 44%", rating: 5, reviewBase: 110 },
-];
-
-export const iphoneProducts = generateProducts(iphoneDevices, caseTypes);
-
-// Override ALL iPhone 17 Pro product images with real product shots
-iphoneProducts.forEach(p => {
+// Override images for specific devices
+allProducts.forEach((p) => {
   if (p.device === "iPhone 17 Pro") {
-    if (p.category === "MagSafe Cases" && p.name.includes("Clear")) {
+    if (p.seriesSlug === "clearmag") {
       p.image = iphone17proMagsafeClearImg;
       p.hoverImage = iphone17proMagsafeAttachImg;
-    } else if (p.category === "MagSafe Cases" && p.name.includes("Pro")) {
+    } else if (p.seriesSlug === "clearmag-edge") {
       p.image = iphone17proStrongImg;
       p.hoverImage = iphone17proMagsafeClearImg;
-    } else if (p.category === "Silicone Cases") {
+    } else if (p.seriesSlug === "softmag") {
       p.image = iphone17proProtectionImg;
       p.hoverImage = iphone17proFingerprintsImg;
-    } else if (p.category === "Leather Cases") {
-      p.image = iphone17proSlimImg;
-      p.hoverImage = iphone17proMagsafeAttachImg;
     }
   }
-});
-
-// Override iPhone 17 product images with new clear case shots
-iphoneProducts.forEach(p => {
   if (p.device === "iPhone 17") {
-    if (p.category === "MagSafe Cases" && p.name.includes("Clear")) {
+    if (p.seriesSlug === "clearmag") {
       p.image = iphone17MagsafeClearImg;
       p.hoverImage = iphone17MagsafeAttachImg;
-    } else if (p.category === "MagSafe Cases" && p.name.includes("Pro")) {
+    } else if (p.seriesSlug === "clearmag-edge") {
       p.image = iphone17StrongImg;
       p.hoverImage = iphone17MagsafeClearImg;
-    } else if (p.category === "Silicone Cases") {
+    } else if (p.seriesSlug === "softmag") {
       p.image = iphone17ProtectionImg;
       p.hoverImage = iphone17FingerprintsImg;
-    } else if (p.category === "Leather Cases") {
-      p.image = iphone17SlimImg;
-      p.hoverImage = iphone17MagsafeAttachImg;
     }
   }
-});
-
-// Override iPhone 16 MagSafe product images
-iphoneProducts.forEach(p => {
   if (p.device === "iPhone 16" || p.device === "iPhone 16 Pro") {
-    if (p.category === "MagSafe Cases" && p.name.includes("Clear")) {
+    if (p.seriesSlug === "clearmag") {
       p.image = iphone16MagsafeClearImg;
       p.hoverImage = iphone16MagsafeLifestyleImg;
-    } else if (p.category === "MagSafe Cases" && p.name.includes("Pro")) {
+    } else if (p.seriesSlug === "clearmag-edge") {
       p.image = iphone16MagsafeFeaturesImg;
       p.hoverImage = iphone16MagsafeClearImg;
     }
   }
 });
 
-// Deduplicate products — keep only unique id entries
-const deduplicateProducts = (products: Product[]): Product[] => {
-  const seen = new Set<string>();
-  return products.filter(p => {
-    if (seen.has(p.id)) return false;
-    seen.add(p.id);
-    return true;
-  });
-};
-export const samsungProducts = generateProducts(samsungDevices, samsungCaseTypes);
-export const oneplusProducts = generateProducts(oneplusDevices, oneplusCaseTypes);
-export const iqooProducts = generateProducts(iqooDevices, iqooCaseTypes);
+// Tags
+allProducts.filter((p) => p.device === "iPhone 17 Pro" && p.seriesSlug === "clearmag").forEach((p) => { p.tag = "New"; });
+allProducts.filter((p) => p.device === "iPhone 16 Pro" && p.seriesSlug === "softmag").forEach((p) => { p.tag = "Bestseller"; });
+allProducts.filter((p) => p.device === "iPhone 16" && p.seriesSlug === "edgeguard").forEach((p) => { p.tag = "Hot"; });
 
-// Selective tags — only a few standout products, not all
-// New — only iPhone 17 Pro Max MagSafe
-iphoneProducts.filter(p => p.device === "iPhone 17 Pro" && p.category === "MagSafe Cases").forEach(p => { p.tag = "New"; });
-// Bestseller — one top iPhone, one Samsung
-iphoneProducts.filter(p => p.device === "iPhone 16 Pro" && p.category === "Silicone Cases").forEach(p => { p.tag = "Bestseller"; });
-samsungProducts.filter(p => p.device === "Samsung S26 Ultra" && p.category === "Silicone Cases").forEach(p => { p.tag = "Bestseller"; });
-// Hot — one OnePlus
-oneplusProducts.filter(p => p.device === "OnePlus 15" && p.category === "Clear Cases").forEach(p => { p.tag = "Hot"; });
-// Sale — one leather
-iphoneProducts.filter(p => p.device === "iPhone 16 Pro" && p.category === "Leather Cases").forEach(p => { p.tag = "Sale"; });
+// ── Helper: get products for a series + device group ──
+export function getSeriesProducts(seriesSlug: string, deviceGroupSlug: string): Product[] {
+  const group = deviceSeries.find((g) => g.slug === deviceGroupSlug);
+  if (!group) return [];
+  const modelNames = group.models.map((m) => m.name);
+  return allProducts.filter((p) => p.seriesSlug === seriesSlug && modelNames.includes(p.device));
+}
 
-export const allProducts = deduplicateProducts([...iphoneProducts, ...samsungProducts, ...oneplusProducts, ...iqooProducts]);
+// ── Helper: get products for a device group ──
+export function getDeviceProducts(deviceGroupSlug: string): Product[] {
+  const group = deviceSeries.find((g) => g.slug === deviceGroupSlug);
+  if (!group) return [];
+  const modelNames = group.models.map((m) => m.name);
+  return allProducts.filter((p) => modelNames.includes(p.device));
+}
 
-// ── Grouped for tabs ──
-
+// ── Grouped for homepage tabs ──
 export const exploreLineupTabs: Record<string, Product[]> = {
-  "MagSafe Cases": allProducts.filter(p => p.category === "MagSafe Cases").slice(0, 4),
-  "Silicone Cases": allProducts.filter(p => p.category === "Silicone Cases").slice(0, 4),
-  "Leather Cases": allProducts.filter(p => p.category === "Leather Cases").slice(0, 4),
+  ClearMag: allProducts.filter((p) => p.seriesSlug === "clearmag").slice(0, 4),
+  "ClearMag Edge": allProducts.filter((p) => p.seriesSlug === "clearmag-edge").slice(0, 4),
+  SoftMag: allProducts.filter((p) => p.seriesSlug === "softmag").slice(0, 4),
 };
 
 export const bestSellerTabs: Record<string, Product[]> = {
-  "iPhone Cases": iphoneProducts.slice(0, 4),
-  "Samsung Cases": samsungProducts.slice(0, 4),
-  "OnePlus Cases": oneplusProducts.slice(0, 4),
-  "iQOO Cases": iqooProducts.slice(0, 4),
+  "iPhone 16": allProducts.filter((p) => p.device.includes("iPhone 16")).slice(0, 4),
+  "iPhone 17": allProducts.filter((p) => p.device.includes("iPhone 17")).slice(0, 4),
 };
 
-// New arrivals — latest iPhone 17 models
-export const newArrivalProducts = iphoneProducts
-  .filter(p => p.device.includes("17"))
-  .slice(0, 6);
+export const newArrivalProducts = allProducts.filter((p) => p.device.includes("17")).slice(0, 6);
 
-// Featured product
 export const featuredProduct = {
-  name: "Leather Case",
+  name: "ClearMag",
   subtitle: "For iPhone 17 Pro",
-  price: "₹1,999",
-  originalPrice: "₹3,499",
+  price: "₹1,499",
+  originalPrice: "₹2,499",
   rating: 5,
   reviews: 148,
-  image: leatherBrownImg,
+  image: iphone17proMagsafeClearImg,
   colors: [
-    { name: "Saddle Brown", class: "bg-amber-700", active: true },
-    { name: "Black", class: "bg-foreground", active: false },
-    { name: "Forest Green", class: "bg-green-900", active: false },
-    { name: "Navy", class: "bg-blue-900", active: false },
+    { name: "Clear", class: "bg-gray-200", active: true },
+    { name: "Jet Black", class: "bg-foreground", active: false },
   ],
   specs: [
-    { label: "Material", value: "Leather" },
-    { label: "Weight", value: "42g" },
-    { label: "Drop Protection", value: "6ft" },
+    { label: "Material", value: "Polycarbonate + TPU" },
+    { label: "Weight", value: "32g" },
+    { label: "Drop Protection", value: "14.8ft" },
     { label: "MagSafe", value: "Yes" },
     { label: "Wireless Charging", value: "Compatible" },
     { label: "Compatibility", value: "iPhone 17 Pro & more" },
   ],
 };
 
-// Color variant images for reference
 export const colorImages: Record<string, string> = {
-  "Black": siliconeBlackNewImg,
-  "Blue": siliconeBluImg,
-  "Pink": siliconePinkImg,
-  "Green": siliconeMintImg,
-  "Saddle Brown": leatherBrownImg,
-  "Leather Black": leatherBlackImg,
-  "Clear": magsafeClearImg,
+  Black: siliconeBlackNewImg,
+  Blue: siliconeBluImg,
+  Pink: siliconePinkImg,
+  Green: siliconeMintImg,
+  Stone: leatherBrownImg,
+  Navy: siliconeLifestyleNavyImg,
+  Orange: siliconePinkImg,
+  Clear: magsafeClearImg,
   "Jet Black": magsafeBlackImg,
   "Matte Black": magsafeBlackImg,
+  "Saddle Brown": leatherBrownImg,
+  "Leather Black": leatherBlackImg,
 };
 
-// iPhone 17 Pro gallery images for product detail page
 export const iphone17ProGalleryImages = [
   iphone17proMagsafeClearImg,
   iphone17proMagsafeAttachImg,
@@ -311,7 +376,6 @@ export const iphone17ProGalleryImages = [
   iphone17proFingerprintsImg,
 ];
 
-// iPhone 17 gallery images for product detail page
 export const iphone17GalleryImages = [
   iphone17MagsafeClearImg,
   iphone17MagsafeAttachImg,
@@ -321,7 +385,6 @@ export const iphone17GalleryImages = [
   iphone17FingerprintsImg,
 ];
 
-// iPhone 16 MagSafe gallery images for product detail page
 export const iphone16MagsafeGalleryImages = [
   iphone16MagsafeClearImg,
   iphone16MagsafeLifestyleImg,
@@ -330,7 +393,6 @@ export const iphone16MagsafeGalleryImages = [
   iphone16MagsafeDetailsImg,
 ];
 
-// Silicone gallery images for product detail
 export const siliconeGalleryImages = [
   siliconeBlackNewImg,
   siliconeMintImg,
@@ -338,4 +400,12 @@ export const siliconeGalleryImages = [
   siliconeLifestyleGreenImg,
   siliconeLifestyleNavyImg,
   siliconeLifestyleClearImg,
+];
+
+// SoftMag color options
+export const softmagColors = [
+  { name: "Black", hex: "#1a1a1a", image: siliconeBlackNewImg },
+  { name: "Stone", hex: "#a39382", image: leatherBrownImg },
+  { name: "Navy", hex: "#1e3a5f", image: siliconeLifestyleNavyImg },
+  { name: "Orange", hex: "#e8632b", image: siliconePinkImg },
 ];
