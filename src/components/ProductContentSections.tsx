@@ -105,7 +105,7 @@ const seriesContentMap: Record<string, SeriesContent> = {
     editorialHeadline: "Where Grip Meets Clarity.",
     editorialBody: "Matte-frosted side rails provide enhanced grip with sophisticated aesthetics, while the anti-yellow nano-coated back panel showcases your device's original design.",
     featuredCards: [
-      { image: "/icons/clearmag-edge.webp", label: "Frosted Sophistication", subtitle: "Matte-Textured Side Rails", textPosition: "bottom-center" },
+      { image: magsafeClearImg, label: "Frosted Sophistication", subtitle: "Matte-Textured Side Rails", textPosition: "bottom-center" },
       { image: magsafeBlackImg, label: "Crystal Back", subtitle: "Anti-Yellow Clear Panel", textPosition: "top-left" },
       { image: magsafeClearImg, label: "Dual-Layer", subtitle: "TPU + PC Construction", textPosition: "top-right" },
       { image: magsafeBlackImg, label: "MagSafe", subtitle: "38T Magnetic Precision", textPosition: "center" },
