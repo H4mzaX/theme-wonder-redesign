@@ -156,6 +156,63 @@ const faqItems = [
 
 const warrantyContent = "All VCASE products come with a 6-month warranty against manufacturing defects. This covers issues such as peeling, discoloration (non-clear cases), and structural failure under normal use. Warranty does not cover physical damage from drops, scratches from everyday use, or natural patina development on leather cases.";
 
+/* ── Related Products Carousel ── */
+const RelatedProductsCarousel = ({ products }: { products: Product[] }) => {
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    align: "start",
+    slidesToScroll: 1,
+    containScroll: "trimSnaps",
+    dragFree: true,
+  });
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(true);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const onSelect = () => {
+      setCanPrev(emblaApi.canScrollPrev());
+      setCanNext(emblaApi.canScrollNext());
+    };
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+    onSelect();
+    return () => { emblaApi.off("select", onSelect); };
+  }, [emblaApi]);
+
+  return (
+    <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-8 sm:py-12 border-t border-border">
+      <div className="flex items-center justify-between mb-5 sm:mb-7">
+        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground tracking-tight">You may also like</h2>
+        <div className="flex gap-2">
+          <button
+            onClick={() => emblaApi?.scrollPrev()}
+            disabled={!canPrev}
+            className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-30"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <button
+            onClick={() => emblaApi?.scrollNext()}
+            disabled={!canNext}
+            className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-30"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+      <div ref={emblaRef} className="overflow-hidden">
+        <div className="flex gap-3 sm:gap-4">
+          {products.map((p) => (
+            <div key={p.id} className="flex-none w-[42vw] sm:w-[260px] lg:w-[280px]">
+              <ProductCard product={p} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const product = allProducts.find((p) => p.id === id);
