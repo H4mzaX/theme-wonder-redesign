@@ -292,8 +292,6 @@ const SeriesProduct = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background overflow-x-clip">
-      <title>{pageTitle}</title>
-      <meta name="description" content={metaDescription} />
 
       <AnnouncementBar />
       <Navbar onSearchOpen={() => setSearchOpen(true)} onCartOpen={() => setCartOpen(true)} />
