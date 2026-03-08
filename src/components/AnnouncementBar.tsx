@@ -14,12 +14,12 @@ const AnnouncementBar = () => {
   const [direction, setDirection] = useState(1);
 
   const next = useCallback(() => {
-    setDirection(1);
+    setDirection(Math.random() > 0.5 ? 1 : -1);
     setCurrent((prev) => (prev + 1) % messages.length);
   }, []);
 
   const prev = useCallback(() => {
-    setDirection(-1);
+    setDirection(Math.random() > 0.5 ? 1 : -1);
     setCurrent((prev) => (prev - 1 + messages.length) % messages.length);
   }, []);
 
@@ -53,14 +53,14 @@ const AnnouncementBar = () => {
           <button onClick={prev} className="hover:opacity-70 transition-opacity" aria-label="Previous announcement">
             <ChevronLeft className="w-4 h-4" />
           </button>
-          <div className="relative h-6 flex items-center justify-center overflow-hidden min-w-[440px]">
+        <div className="relative h-6 flex items-center justify-center overflow-hidden min-w-[440px]">
             <AnimatePresence mode="wait" custom={direction}>
               <motion.span
                 key={current}
                 custom={direction}
-                initial={{ opacity: 0, x: direction * 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: direction * -30 }}
+                initial={{ opacity: 0, y: direction * 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: direction * -20 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
                 className="text-[13px] font-medium tracking-wide whitespace-nowrap absolute"
               >
@@ -81,25 +81,25 @@ const AnnouncementBar = () => {
       </div>
 
       {/* Mobile: compact with arrows and message */}
-      <div className="lg:hidden flex items-center justify-center px-12 py-3.5 relative">
+      <div className="lg:hidden flex items-center justify-center px-10 py-3.5 relative">
         <button
           onClick={prev}
-          className="absolute left-4 hover:opacity-70 transition-opacity"
+          className="absolute left-3 hover:opacity-70 transition-opacity"
           aria-label="Previous announcement"
         >
-          <ChevronLeft className="w-4 h-4" />
+          <ChevronLeft className="w-3.5 h-3.5" />
         </button>
 
-        <div className="relative h-6 flex items-center justify-center overflow-hidden">
+        <div className="relative h-5 flex items-center justify-center overflow-hidden w-full">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.span
               key={current}
               custom={direction}
-              initial={{ opacity: 0, x: direction * 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: direction * -30 }}
+              initial={{ opacity: 0, y: direction * 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: direction * -16 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="text-[13px] font-medium tracking-wide whitespace-nowrap"
+              className="text-[11px] sm:text-[12px] font-medium tracking-wide whitespace-nowrap absolute"
             >
               {messages[current]}
             </motion.span>
@@ -108,10 +108,10 @@ const AnnouncementBar = () => {
 
         <button
           onClick={next}
-          className="absolute right-4 hover:opacity-70 transition-opacity"
+          className="absolute right-3 hover:opacity-70 transition-opacity"
           aria-label="Next announcement"
         >
-          <ChevronRight className="w-4 h-4" />
+          <ChevronRight className="w-3.5 h-3.5" />
         </button>
       </div>
     </div>
