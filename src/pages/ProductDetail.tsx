@@ -109,34 +109,34 @@ const defaultFeatures = [
 ];
 
 const productDescriptions: Record<string, { title: string; description: string; specs: { label: string; value: string }[] }> = {
-  "MagSafe Cases": {
-    title: "MagSafe Clear Case",
-    description: "Introducing the MagSafe Clear Case — a precision-engineered MagSafe case crafted to elevate your protection game. With 38T magnetic alignment, 14.8 feet of drop protection, and crystal-clear polycarbonate + TPU hybrid construction, it combines aesthetics with functionality. The soft bumper sides provide a comfortable grip, while innovative airbags at the corners absorb impact, safeguarding your phone from shocks and drops.",
+  Cases: {
+    title: "Premium Case",
+    description: "Precision-engineered case with MagSafe alignment, drop protection, and crystal-clear or soft-touch construction. Combines aesthetics with functionality for ultimate device protection.",
     specs: [
       { label: "Model", value: "" },
-      { label: "Material", value: "Built with Polycarbonate + TPU hybrid" },
+      { label: "Material", value: "Polycarbonate + TPU hybrid" },
       { label: "Weight", value: "32g" },
-      { label: "Compatibility", value: "Compatible with all MagSafe accessories & Wireless charging" },
+      { label: "Compatibility", value: "Compatible with MagSafe & Wireless charging" },
     ],
   },
-  "Silicone Cases": {
-    title: "Silicone Case",
-    description: "Introducing the Silicone Case — engineered for those who demand both style and substance. This premium case features liquid silicone rubber exterior with a soft microfiber lining that cradles your phone. With 10.4 feet of drop protection, innovative corner airbags, and a washable surface, it's the perfect blend of durability and elegance. The striking color options let you express your personality while keeping your device safe.",
+  "Screen Protection": {
+    title: "Screen Protector",
+    description: "Edge-to-edge tempered glass screen protector with 9H hardness and oleophobic coating. Includes easy-align installation frame for bubble-free application.",
     specs: [
       { label: "Model", value: "" },
-      { label: "Material", value: "Built with Liquid Silicone + Microfiber" },
-      { label: "Weight", value: "28g" },
-      { label: "Compatibility", value: "Compatible with all VCASE products & Wireless charging" },
+      { label: "Material", value: "Tempered Glass + Oleophobic Coating" },
+      { label: "Thickness", value: "0.33mm" },
+      { label: "Hardness", value: "9H" },
     ],
   },
-  "Leather Cases": {
-    title: "Leather Case",
-    description: "Introducing the Leather Case — handcrafted from genuine Italian full-grain leather. This luxurious case develops a beautiful natural patina over time, making it uniquely yours. With 6 feet of drop protection and MagSafe compatibility, it combines timeless elegance with modern functionality. The soft microfiber interior protects your device from scratches, while the slim profile ensures it fits comfortably in your pocket.",
+  "Camera Protection": {
+    title: "Camera Lens Protector",
+    description: "Sapphire-grade camera lens protector with anti-reflective coating. Precision cut for each camera module with ultra-thin 0.3mm profile.",
     specs: [
       { label: "Model", value: "" },
-      { label: "Material", value: "Genuine Italian Full-grain Leather" },
-      { label: "Weight", value: "42g" },
-      { label: "Compatibility", value: "Compatible with MagSafe accessories & Wireless charging" },
+      { label: "Material", value: "Sapphire-grade Tempered Glass" },
+      { label: "Thickness", value: "0.3mm" },
+      { label: "Hardness", value: "9H" },
     ],
   },
 };
