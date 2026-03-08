@@ -15,7 +15,7 @@ const casesMenuItems = [
   { name: "ClearMag", slug: "clearmag", icon: "/icons/clearmag.webp", tag: "Popular" },
   { name: "ClearMag Edge", slug: "clearmag-edge", icon: "/icons/clearmag-edge.webp" },
   { name: "SoftMag", slug: "softmag", icon: "/icons/softmag.webp", tag: "Bestseller" },
-  { name: "ArmorMag", slug: "armormag", icon: "/icons/clearmag.webp", comingSoon: true },
+  { name: "Armor Edge", slug: "armor-edge", icon: "/icons/armoredge.png", tag: "New" },
 ];
 
 const protectionMenuItems = [
@@ -187,22 +187,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                       <div className="flex flex-col">
                         {casesMenuItems.map((item, idx) => (
                           <div key={item.name} className="group">
-                            {item.comingSoon ? (
-                              <motion.div
-                                className="flex items-center justify-between py-3 border-b border-border/10 last:border-0 opacity-50"
-                                initial={{ opacity: 0, x: -8 }}
-                                animate={{ opacity: 0.5, x: 0 }}
-                                transition={{ delay: idx * 0.03, duration: 0.2 }}
-                              >
-                                <div className="flex items-center gap-3">
-                                  <img src={item.icon} alt={item.name} className="w-11 h-11 rounded-lg" />
-                                  <div>
-                                    <BrandName name={item.name} className="text-[15px] font-medium text-foreground" />
-                                    <p className="text-[11px] text-muted-foreground">Coming Soon</p>
-                                  </div>
-                                </div>
-                              </motion.div>
-                            ) : (
+                            {(
                               <motion.div
                                 className="flex items-center justify-between py-3 border-b border-border/10 last:border-0"
                                 initial={{ opacity: 0, x: -8 }}
@@ -466,15 +451,6 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                                   </button>
                                 </p>
                                 {casesMenuItems.map((item) => (
-                                  item.comingSoon ? (
-                                    <div key={item.name} className="flex items-center gap-3 py-2 opacity-50">
-                                      <img src={item.icon} alt={item.name} className="w-9 h-9 rounded-lg" />
-                                      <div>
-                                       <BrandName name={item.name} className="text-[15px] font-medium text-foreground" />
-                                        <p className="text-[10px] text-muted-foreground">Coming Soon</p>
-                                      </div>
-                                    </div>
-                                  ) : (
                                     <button
                                       key={item.name}
                                       onClick={() => setMobileDrilldown(item.slug)}
@@ -487,7 +463,6 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                                       </div>
                                       <ChevronRight className="w-4 h-4 text-muted-foreground" />
                                     </button>
-                                  )
                                 ))}
                               </>
                             ) : (
