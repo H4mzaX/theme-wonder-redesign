@@ -445,7 +445,7 @@ const SeriesProduct = () => {
           </div>
 
           {/* ── RIGHT: Sticky product info (Concept style) ── */}
-          <div className="lg:col-span-5 py-4 lg:py-0">
+          <div ref={productInfoRef} className="lg:col-span-5 py-4 lg:py-0">
             <div className="lg:sticky lg:top-[80px] lg:pb-10">
               {/* Brand label */}
               <motion.p
@@ -814,11 +814,12 @@ const SeriesProduct = () => {
       </div>
 
       {/* ── Mobile sticky floating Add to Cart + Buy Now ── */}
-      <motion.div
+      <div
         className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-background/95 backdrop-blur-lg border-t border-border/40 px-4 py-3 safe-area-inset-bottom"
-        initial={{ y: 100 }}
-        animate={{ y: 0 }}
-        transition={{ delay: 0.5, type: "spring", stiffness: 300, damping: 30 }}
+        style={{
+          transform: showStickyCart ? "translateY(0)" : "translateY(100%)",
+          transition: "transform 280ms cubic-bezier(0.25, 1, 0.5, 1)",
+        }}
       >
         <div className="flex items-center gap-2">
           <div className="flex-1 min-w-0">
@@ -840,7 +841,7 @@ const SeriesProduct = () => {
             Buy Now
           </motion.button>
         </div>
-      </motion.div>
+      </div>
 
       <MobileBottomNav
         onMenuOpen={() => {}}
