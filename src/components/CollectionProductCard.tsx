@@ -105,29 +105,42 @@ const CollectionProductCard = ({ product, large = false }: CollectionProductCard
   return (
     <Link
       to={`/product/${product.id}`}
-      className="group flex flex-col bg-background rounded-xl overflow-hidden border border-border/60"
+      className="group flex flex-col bg-background rounded-xl overflow-hidden border border-border/60 [perspective:1000px]"
     >
-      {/* Full-bleed image — no padding, no inner rounding */}
-      <div className={`relative overflow-hidden ${large ? "aspect-[3/4]" : "aspect-square"}`}>
+      {/* Flip container */}
+      <div className={`relative overflow-hidden [transform-style:preserve-3d] ${large ? "aspect-[3/4]" : "aspect-square"}`}>
         {/* Rating pill — top right */}
-        <div className="absolute top-3 right-3 z-10 flex items-center gap-1 bg-background/90 backdrop-blur-sm rounded-full px-2.5 py-1 shadow-sm">
+        <div className="absolute top-3 right-3 z-20 flex items-center gap-1 bg-background/90 backdrop-blur-sm rounded-full px-2.5 py-1 shadow-sm">
           <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
           <span className="text-[11px] font-bold leading-none text-foreground">{product.rating.toFixed(1)}</span>
         </div>
 
-        {/* Product image — full cover, no padding */}
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-          loading="lazy"
-          decoding="async"
-        />
+        {/* Front face */}
+        <div className="absolute inset-0 [backface-visibility:hidden] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:[transform:rotateY(180deg)]">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+
+        {/* Back face */}
+        <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:[transform:rotateY(0deg)]">
+          <img
+            src={product.hoverImage || product.image}
+            alt={`${product.name} - alternate view`}
+            className="w-full h-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
 
         {/* Cart button — bottom right */}
         <motion.button
           onClick={handleAddToCart}
-          className="absolute bottom-3 right-3 z-10 w-10 h-10 rounded-full bg-background/90 backdrop-blur-sm text-foreground flex items-center justify-center shadow-md border border-border/40"
+          className="absolute bottom-3 right-3 z-20 w-10 h-10 rounded-full bg-background/90 backdrop-blur-sm text-foreground flex items-center justify-center shadow-md border border-border/40"
           whileTap={{ scale: 0.9 }}
           transition={{ type: "spring", stiffness: 400, damping: 20 }}
         >
