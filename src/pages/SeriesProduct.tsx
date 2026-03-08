@@ -138,6 +138,11 @@ const SeriesProduct = () => {
     : undefined;
   const currentDeviceName = resolvedModelName || deviceGroup?.models[0]?.name || deviceSlug || "";
 
+  // Compute products early so SEO can reference currentProduct
+  const products = (series && deviceGroup) ? getSeriesProducts(seriesSlug!, deviceSlug!) : [];
+  const currentProduct = products[selectedModel] || products[0];
+  const isSoftmag = seriesSlug === "softmag";
+
   const keywords = seoKeywords[seriesSlug as string] || [];
   const faqItems = faqsByType[seriesSlug as string] || faqsByType.clearmag;
 
@@ -185,6 +190,25 @@ const SeriesProduct = () => {
     } : undefined,
   });
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [seriesSlug, deviceSlug]);
+
+  // Intersection observer for gallery scroll tracking
+  useEffect(() => {
+    const observers: IntersectionObserver[] = [];
+    imageRefs.current.forEach((ref, i) => {
+      if (!ref) return;
+      const observer = new IntersectionObserver(
+        ([entry]) => { if (entry.isIntersecting) setActiveGalleryImg(i); },
+        { threshold: 0.6 }
+      );
+      observer.observe(ref);
+      observers.push(observer);
+    });
+    return () => observers.forEach((o) => o.disconnect());
+  }, [seriesSlug, deviceSlug, selectedModel, selectedColor]);
+
   if (!series || !deviceGroup) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -200,10 +224,6 @@ const SeriesProduct = () => {
       </div>
     );
   }
-
-  const products = getSeriesProducts(seriesSlug!, deviceSlug!);
-  const currentProduct = products[selectedModel] || products[0];
-  const isSoftmag = seriesSlug === "softmag";
 
   // Build gallery images array — use device/series-specific galleries
   const getGalleryImages = (): string[] => {
