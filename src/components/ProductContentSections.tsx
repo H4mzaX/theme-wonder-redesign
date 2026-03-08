@@ -124,14 +124,14 @@ const seriesContentMap: Record<string, SeriesContent> = {
     editorialHeadline: "Where Grip Meets Clarity.",
     editorialBody: "Matte-frosted side rails provide enhanced grip with sophisticated aesthetics, while the anti-yellow nano-coated back panel showcases your device's original design.",
     featuredCards: [
-      { image: magsafeClearImg, label: "Frosted Sophistication", subtitle: "Matte-Textured Side Rails", textPosition: "bottom-center" },
-      { image: magsafeBlackImg, label: "Crystal Back", subtitle: "Anti-Yellow Clear Panel", textPosition: "top-left" },
-      { image: magsafeClearImg, label: "Dual-Layer", subtitle: "TPU + PC Construction", textPosition: "top-right" },
-      { image: magsafeBlackImg, label: "MagSafe", subtitle: "38T Magnetic Precision", textPosition: "center" },
+      { image: iphone16MagsafeClear, label: "Frosted Sophistication", subtitle: "Matte-Textured Side Rails", textPosition: "bottom-center" },
+      { image: iphone16MagsafeFeatures, label: "Crystal Back", subtitle: "Anti-Yellow Clear Panel", textPosition: "top-left" },
+      { image: iphone16MagsafeLifestyle, label: "Dual-Layer", subtitle: "TPU + PC Construction", textPosition: "top-right" },
+      { image: iphone16MagsafeDetails, label: "MagSafe", subtitle: "38T Magnetic Precision", textPosition: "center" },
     ],
     imageTextBlocks: [
       {
-        image: magsafeClearImg,
+        image: iphone16MagsafeLifestyle,
         headline: "Frosted Sophistication.",
         body: "The matte-textured edges provide a premium feel and enhanced grip while the crystal-clear back panel lets your device's design shine through.",
         highlights: ["Frosted polycarbonate edges", "Anti-yellow clear back", "Enhanced grip texture"],
