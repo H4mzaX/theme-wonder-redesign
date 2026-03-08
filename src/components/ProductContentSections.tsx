@@ -397,6 +397,48 @@ const MaterialCard = ({ series }: { series: { material: string; features: string
   </section>
 );
 
+/* ── Featured Card — Concept Theme varied text positions ── */
+const FeaturedCard = ({ card, aspectClass, isDark }: {
+  card: SeriesContent["featuredCards"][0];
+  aspectClass: string;
+  isDark: boolean;
+}) => {
+  const pos = card.textPosition || "bottom-center";
+
+  const textPositionClass = {
+    "bottom-center": "absolute bottom-0 left-0 right-0 p-4 sm:p-5 text-center",
+    "top-left": "absolute top-0 left-0 p-4 sm:p-5 text-left",
+    "top-right": "absolute top-0 right-0 p-4 sm:p-6 text-right max-w-[85%]",
+    "center": "absolute inset-0 flex flex-col items-center justify-center text-center px-6",
+  }[pos];
+
+  const textColor = isDark || pos === "top-right" || pos === "center"
+    ? "text-background"
+    : "text-foreground";
+
+  const labelColor = isDark || pos === "top-right" || pos === "center"
+    ? "text-background/60"
+    : "text-primary";
+
+  return (
+    <div className={`relative rounded-2xl sm:rounded-3xl overflow-hidden group ${aspectClass} ${isDark ? "bg-foreground" : "bg-secondary/10"}`}>
+      <img
+        src={card.image}
+        alt={card.label}
+        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        loading="lazy"
+      />
+      {isDark && <div className="absolute inset-0 bg-foreground/20" />}
+      <div className={textPositionClass}>
+        <p className={`text-[11px] sm:text-xs font-medium ${labelColor}`}>{card.label}</p>
+        <p className={`text-sm sm:text-lg lg:text-xl font-bold tracking-tight leading-tight mt-0.5 ${textColor}`}>
+          {card.subtitle}
+        </p>
+      </div>
+    </div>
+  );
+};
+
 /* ══════════════════════════════════════════
    Main Component
    ══════════════════════════════════════════ */
