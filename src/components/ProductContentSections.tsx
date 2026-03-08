@@ -174,43 +174,47 @@ function getSeriesContent(seriesSlug: string, device: string): SeriesContent | n
     };
   }
 
+  if (seriesSlug === "clearmag-edge") {
+    const img = getClearmagEdgeImages(device);
+    return {
+      scrollVideoSrc: heroVideo,
+      scrollVideoTexts: ["Frosted Edges.", "Crystal Core.", "Grip Enhanced.", "Drop Proof."],
+      editorialHeadline: "Where Grip Meets Clarity.",
+      editorialBody: "Matte-frosted side rails provide enhanced grip with sophisticated aesthetics, while the anti-yellow nano-coated back panel showcases your device's original design.",
+      featuredCards: [
+        { image: img.main, label: "Frosted Sophistication", subtitle: "Matte-Textured Side Rails", textPosition: "bottom-center" },
+        { image: img.attach, label: "Crystal Back", subtitle: "Anti-Yellow Clear Panel", textPosition: "top-left" },
+        { image: img.lifestyle, label: "Dual-Layer", subtitle: "TPU + PC Construction", textPosition: "top-right" },
+        { image: img.details, label: "MagSafe", subtitle: "38T Magnetic Precision", textPosition: "center" },
+      ],
+      imageTextBlocks: [
+        {
+          image: img.lifestyle,
+          headline: "Frosted Sophistication.",
+          body: "The matte-textured edges provide a premium feel and enhanced grip while the crystal-clear back panel lets your device's design shine through.",
+          highlights: ["Frosted polycarbonate edges", "Anti-yellow clear back", "Enhanced grip texture"],
+        },
+      ],
+      marqueeItems: ["Frosted Side Rails", "Crystal-Clear Back", "14.8ft Drop Tested", "38T MagSafe", "Dual-Layer Build"],
+      stats: [
+        { value: "14.8ft", label: "Drop Protection" },
+        { value: "38T", label: "MagSafe Force" },
+        { value: "1.3mm", label: "Slim Profile" },
+        { value: "34g", label: "Lightweight" },
+      ],
+      featureCards: [
+        { title: "Frosted Rails", subtitle: "Enhanced matte grip", icon: Layers },
+        { title: "Clear Back", subtitle: "Anti-yellow coating", icon: Eye },
+        { title: "Dual-Layer", subtitle: "TPU + PC construction", icon: ShieldCheck },
+        { title: "38 Magnets", subtitle: "MagSafe precision", icon: Magnet },
+      ],
+    };
+  }
+
   return staticSeriesContentMap[seriesSlug] || null;
 }
 
 const staticSeriesContentMap: Record<string, SeriesContent> = {
-  "clearmag-edge": {
-    scrollVideoSrc: heroVideo,
-    scrollVideoTexts: ["Frosted Edges.", "Crystal Core.", "Grip Enhanced.", "Drop Proof."],
-    editorialHeadline: "Where Grip Meets Clarity.",
-    editorialBody: "Matte-frosted side rails provide enhanced grip with sophisticated aesthetics, while the anti-yellow nano-coated back panel showcases your device's original design.",
-    featuredCards: [
-      { image: iphone16MagsafeClear, label: "Frosted Sophistication", subtitle: "Matte-Textured Side Rails", textPosition: "bottom-center" },
-      { image: iphone16MagsafeFeatures, label: "Crystal Back", subtitle: "Anti-Yellow Clear Panel", textPosition: "top-left" },
-      { image: iphone16MagsafeLifestyle, label: "Dual-Layer", subtitle: "TPU + PC Construction", textPosition: "top-right" },
-      { image: iphone16MagsafeDetails, label: "MagSafe", subtitle: "38T Magnetic Precision", textPosition: "center" },
-    ],
-    imageTextBlocks: [
-      {
-        image: iphone16MagsafeLifestyle,
-        headline: "Frosted Sophistication.",
-        body: "The matte-textured edges provide a premium feel and enhanced grip while the crystal-clear back panel lets your device's design shine through.",
-        highlights: ["Frosted polycarbonate edges", "Anti-yellow clear back", "Enhanced grip texture"],
-      },
-    ],
-    marqueeItems: ["Frosted Side Rails", "Crystal-Clear Back", "14.8ft Drop Tested", "38T MagSafe", "Dual-Layer Build"],
-    stats: [
-      { value: "14.8ft", label: "Drop Protection" },
-      { value: "38T", label: "MagSafe Force" },
-      { value: "1.3mm", label: "Slim Profile" },
-      { value: "34g", label: "Lightweight" },
-    ],
-    featureCards: [
-      { title: "Frosted Rails", subtitle: "Enhanced matte grip", icon: Layers },
-      { title: "Clear Back", subtitle: "Anti-yellow coating", icon: Eye },
-      { title: "Dual-Layer", subtitle: "TPU + PC construction", icon: ShieldCheck },
-      { title: "38 Magnets", subtitle: "MagSafe precision", icon: Magnet },
-    ],
-  },
   softmag: {
     scrollVideoSrc: softmagVideo,
     scrollVideoTexts: ["Soft Touch.", "Bold Colors.", "MagSafe Ready.", "Stain Proof."],
