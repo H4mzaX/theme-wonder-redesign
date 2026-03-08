@@ -45,7 +45,7 @@ interface SeriesContent {
 
 const seriesContentMap: Record<string, SeriesContent> = {
   clearmag: {
-    scrollVideoSrc: "/assets/hero-video.mp4",
+    scrollVideoSrc: heroVideo,
     scrollVideoTexts: ["Crystal Clear.", "Anti-Yellow.", "MagSafe Ready.", "Drop Proof."],
     editorialHeadline: "Engineered for Every Detail.",
     editorialBody: "Precision-aligned N52 magnets deliver 38T of magnetic force for instant snap-on MagSafe charging. The nano oleophobic coating resists UV-induced yellowing, keeping your case crystal clear for months.",
@@ -85,7 +85,7 @@ const seriesContentMap: Record<string, SeriesContent> = {
     ],
   },
   "clearmag-edge": {
-    scrollVideoSrc: "/assets/hero-video.mp4",
+    scrollVideoSrc: heroVideo,
     scrollVideoTexts: ["Frosted Edges.", "Crystal Core.", "Grip Enhanced.", "Drop Proof."],
     editorialHeadline: "Where Grip Meets Clarity.",
     editorialBody: "Matte-frosted side rails provide enhanced grip with sophisticated aesthetics, while the anti-yellow nano-coated back panel showcases your device's original design.",
@@ -118,7 +118,7 @@ const seriesContentMap: Record<string, SeriesContent> = {
     ],
   },
   softmag: {
-    scrollVideoSrc: "/assets/hero-video.mp4",
+    scrollVideoSrc: heroVideo,
     scrollVideoTexts: ["Soft Touch.", "Bold Colors.", "MagSafe Ready.", "Stain Proof."],
     editorialHeadline: "Designed for Comfort.",
     editorialBody: "Buttery-soft liquid silicone exterior meets a cushioning microfiber interior. Four bold colorways crafted with fade-resistant pigments ensure your case looks as good months from now as it does today.",
@@ -151,7 +151,7 @@ const seriesContentMap: Record<string, SeriesContent> = {
     ],
   },
   "armor-edge": {
-    scrollVideoSrc: "/assets/hero-video.mp4",
+    scrollVideoSrc: heroVideo,
     scrollVideoTexts: ["Stand Bold.", "Camera Slider.", "Ring Stand.", "16ft Drop Proof."],
     editorialHeadline: "Built for the Fearless.",
     editorialBody: "Precision-engineered sliding camera cover protects from scratches and dust. The 360° rotatable metal ring doubles as a kickstand for hands-free viewing in any orientation.",
@@ -184,7 +184,7 @@ const seriesContentMap: Record<string, SeriesContent> = {
     ],
   },
   edgeguard: {
-    scrollVideoSrc: "/assets/hero-video.mp4",
+    scrollVideoSrc: heroVideo,
     scrollVideoTexts: ["Full Coverage.", "9H Hardness.", "Anti-Fingerprint.", "Zero Bubbles."],
     editorialHeadline: "Screen Protection Perfected.",
     editorialBody: "Edge-to-edge 9H tempered glass with oleophobic coating covers every millimeter of your screen. The included easy-align frame ensures bubble-free application in under 60 seconds.",
@@ -217,7 +217,7 @@ const seriesContentMap: Record<string, SeriesContent> = {
     ],
   },
   lensguard: {
-    scrollVideoSrc: "/assets/hero-video.mp4",
+    scrollVideoSrc: heroVideo,
     scrollVideoTexts: ["Crystal Lens.", "Sapphire Grade.", "Anti-Reflective.", "Perfect Shots."],
     editorialHeadline: "Lens Protection Reimagined.",
     editorialBody: "Sapphire-grade 9H hardness protects each lens module while the anti-reflective coating eliminates lens flare for crisp, professional-quality photos every time.",
