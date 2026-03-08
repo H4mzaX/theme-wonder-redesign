@@ -97,7 +97,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
             <motion.img
               src={logoFull}
               alt="VCASE"
-              className="h-7 sm:h-8 lg:h-9 w-auto"
+              className="h-8 sm:h-9 lg:h-10 w-auto"
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
             />
