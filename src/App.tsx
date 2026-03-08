@@ -11,6 +11,7 @@ import ProductDetail from "./pages/ProductDetail";
 import Collection from "./pages/Collection";
 import SeriesProduct from "./pages/SeriesProduct";
 import DeviceCollection from "./pages/DeviceCollection";
+import SeriesLanding from "./pages/SeriesLanding";
 import ContactUs from "./pages/ContactUs";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import RefundPolicy from "./pages/RefundPolicy";
