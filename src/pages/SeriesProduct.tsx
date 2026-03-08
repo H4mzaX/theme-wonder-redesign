@@ -626,50 +626,60 @@ const SeriesProduct = () => {
               </motion.div>
 
 
-              {/* ── Payment Trust Badges ── */}
+              {/* ── Secure Checkout — Minimal inline ── */}
               <motion.div
-                className="mt-5 border border-border/40 rounded-xl p-4"
+                className="mt-5 flex items-center gap-3 flex-wrap"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.58, duration: 0.3 }}
               >
-                <div className="flex items-center gap-2 mb-3">
-                  <Lock className="w-3.5 h-3.5 text-muted-foreground" />
-                  <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold">Secure Checkout</span>
+                <div className="flex items-center gap-1.5 text-muted-foreground">
+                  <Lock className="w-3 h-3" />
+                  <span className="text-[10px] uppercase tracking-[0.12em] font-semibold">Secure Checkout</span>
                 </div>
-                <div className="flex items-center gap-2 flex-wrap">
+                <div className="flex items-center gap-1.5 flex-wrap">
                   {["UPI", "Visa", "Mastercard", "RuPay", "COD"].map((method) => (
-                    <div key={method} className="flex items-center gap-1.5 bg-muted/50 rounded-lg px-2.5 py-1.5">
-                      <CreditCard className="w-3 h-3 text-muted-foreground" />
-                      <span className="text-[10px] font-semibold text-foreground">{method}</span>
-                    </div>
+                    <span key={method} className="text-[10px] font-medium text-muted-foreground bg-muted/60 rounded-md px-2 py-1">{method}</span>
                   ))}
                 </div>
               </motion.div>
 
-              {/* ── Offers strip ── */}
+              {/* ── Offers — Voucher-style coupon cards ── */}
               <motion.div
-                className="mt-5 space-y-2.5"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.6, duration: 0.3 }}
+                className="mt-6 grid grid-cols-2 gap-2.5"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 0.35 }}
               >
                 {[
-                  { icon: Percent, text: "Flat 5% off on single product" },
-                  { icon: Percent, text: "Flat 10% off on 2+ products" },
-                  { icon: Truck, text: "Free shipping on all prepaid orders" },
-                  { icon: Package, text: "Easy 7-day return policy" },
+                  { icon: Percent, label: "5% OFF", sub: "On single product", accent: "from-primary/10 to-primary/5" },
+                  { icon: Percent, label: "10% OFF", sub: "On 2+ products", accent: "from-accent/20 to-accent/10" },
+                  { icon: Truck, label: "FREE SHIP", sub: "All prepaid orders", accent: "from-secondary/60 to-secondary/30" },
+                  { icon: Package, label: "EASY RETURN", sub: "7-day return policy", accent: "from-muted to-muted/40" },
                 ].map((offer, i) => (
-                  <div key={i} className="flex items-center gap-3 text-sm text-muted-foreground">
-                    <div className="w-8 h-8 rounded-lg bg-muted/60 flex items-center justify-center flex-shrink-0">
-                      <offer.icon className="w-4 h-4 text-foreground" />
+                  <motion.div
+                    key={i}
+                    className="relative overflow-hidden rounded-2xl border border-border/30 bg-gradient-to-br p-3.5 group"
+                    style={{
+                      backgroundImage: `linear-gradient(135deg, hsl(var(--muted) / 0.4), hsl(var(--background)))`,
+                    }}
+                    whileHover={{ scale: 1.02, y: -1 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                  >
+                    {/* Dashed left edge — voucher feel */}
+                    <div className="absolute left-0 top-2 bottom-2 w-px border-l border-dashed border-foreground/10" />
+                    <div className="flex flex-col gap-1.5">
+                      <div className="w-7 h-7 rounded-lg bg-foreground/[0.06] flex items-center justify-center">
+                        <offer.icon className="w-3.5 h-3.5 text-foreground" strokeWidth={1.8} />
+                      </div>
+                      <span className="text-[11px] font-bold text-foreground tracking-wide">{offer.label}</span>
+                      <span className="text-[10px] text-muted-foreground leading-tight">{offer.sub}</span>
                     </div>
-                    <span>{offer.text}</span>
-                  </div>
+                  </motion.div>
                 ))}
               </motion.div>
 
-              {/* ── Product Highlights ── */}
+              {/* ── Product Highlights — Concept theme editorial cards ── */}
               <motion.div
                 className="mt-8"
                 initial={{ opacity: 0, y: 10 }}
@@ -679,14 +689,25 @@ const SeriesProduct = () => {
                 <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-4">
                   Product Highlights
                 </p>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-2.5">
                   {series.features.map((feature, i) => {
                     const Icon = featureIcons[i % featureIcons.length];
                     return (
-                      <div key={i} className="flex items-start gap-2.5 p-3 rounded-xl bg-muted/40 border border-border/20">
-                        <Icon className="w-5 h-5 text-foreground mt-0.5 flex-shrink-0" strokeWidth={1.5} />
-                        <span className="text-xs text-foreground leading-snug">{feature}</span>
-                      </div>
+                      <motion.div
+                        key={i}
+                        className="relative p-4 rounded-2xl border border-border/20 bg-gradient-to-b from-muted/30 to-background group overflow-hidden"
+                        whileHover={{ y: -2 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                      >
+                        {/* Subtle glow */}
+                        <div className="absolute -top-6 -right-6 w-16 h-16 rounded-full bg-foreground/[0.03] blur-xl group-hover:bg-foreground/[0.06] transition-colors duration-500" />
+                        <div className="relative z-10 flex flex-col gap-2.5">
+                          <div className="w-9 h-9 rounded-xl bg-foreground/[0.06] flex items-center justify-center">
+                            <Icon className="w-4 h-4 text-foreground" strokeWidth={1.5} />
+                          </div>
+                          <span className="text-[12px] font-medium text-foreground leading-snug">{feature}</span>
+                        </div>
+                      </motion.div>
                     );
                   })}
                 </div>
