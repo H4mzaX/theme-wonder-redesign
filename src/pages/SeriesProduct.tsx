@@ -337,7 +337,7 @@ const SeriesProduct = () => {
             {/* Mobile: instant-swap swipeable gallery with dots */}
             <div className="lg:hidden">
               <div
-                className="relative overflow-hidden rounded-xl mx-0 bg-secondary/20"
+                className="relative overflow-hidden rounded-2xl mx-1 bg-secondary/20"
                 onTouchStart={(e) => {
                   const touch = e.touches[0];
                   const el = e.currentTarget as any;
