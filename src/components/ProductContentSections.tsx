@@ -113,7 +113,7 @@ function getClearmagImages(device: string) {
 function getClearmagEdgeImages(device: string) {
   if (device.includes("iPhone 17 Pro")) {
     return {
-      main: iphone17proStrongImg(), attach: iphone17proMagsafeClear,
+      main: iphone17proStrong, attach: iphone17proMagsafeClear,
       lifestyle: iphone17proProtection, details: iphone17proFingerprints,
     };
   }
