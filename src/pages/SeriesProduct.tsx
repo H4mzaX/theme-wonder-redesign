@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useSearchParams } from "react-router-dom";
 import {
   Shield, Magnet, Zap, CheckCircle, ChevronDown, ChevronLeft, ChevronRight,
   Minus, Plus, Package, Truck, Percent, Smartphone, Waves, ShieldCheck, BadgeCheck, Star, Heart, Share2
