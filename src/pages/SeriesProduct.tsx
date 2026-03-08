@@ -278,19 +278,17 @@ const SeriesProduct = () => {
 
   const handleAddToCart = () => {
     if (!currentProduct) return;
-    for (let i = 0; i < quantity; i++) {
-      addToCart({
-        id: currentProduct.id,
-        name: currentProduct.name,
-        subtitle: currentProduct.subtitle,
-        price: currentProduct.price,
-        originalPrice: currentProduct.originalPrice,
-        image: currentProduct.image,
-        color: isSoftmag ? softmagColors[selectedColor]?.name || "Default" : "Default",
-        device: currentProduct.device,
-      });
-    }
-    toast({ title: "Added to cart!", description: `${series.name} × ${quantity}` });
+    addToCart({
+      id: currentProduct.id,
+      name: currentProduct.name,
+      subtitle: currentProduct.subtitle,
+      price: currentProduct.price,
+      originalPrice: currentProduct.originalPrice,
+      image: currentProduct.image,
+      color: isSoftmag ? softmagColors[selectedColor]?.name || "Default" : "Default",
+      device: currentProduct.device,
+    });
+    toast({ title: "Added to cart!", description: `${series.name} added` });
     setCartOpen(true);
   };
 
