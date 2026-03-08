@@ -29,7 +29,7 @@ const SeriesLanding = () => {
   return (
     <div className="min-h-screen bg-announcement">
       <AnnouncementBar />
-      <div className="bg-background rounded-t-[1.5rem] sm:rounded-t-[2rem] lg:rounded-t-[2.25rem] overflow-hidden">
+      <div className="bg-background rounded-t-[1.5rem] sm:rounded-t-[2rem] lg:rounded-t-[2.25rem] overflow-x-clip">
         <Navbar onSearchOpen={() => setSearchOpen(true)} onCartOpen={() => setCartOpen(true)} />
         <SearchDrawer open={searchOpen} onClose={() => setSearchOpen(false)} />
         <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
