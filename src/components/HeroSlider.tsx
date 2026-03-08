@@ -84,7 +84,7 @@ const HeroSlider = () => {
           className="relative overflow-hidden rounded-[0.85rem] sm:rounded-[1rem] lg:rounded-[1.15rem] cursor-pointer"
           onClick={handleClick}
         >
-          <div className="relative aspect-[5/8] sm:aspect-[21/9]">
+          <div className="relative aspect-[16/10] sm:aspect-[21/9]">
             {/* Crossfade images */}
             <AnimatePresence initial={false}>
               <motion.img
@@ -94,7 +94,7 @@ const HeroSlider = () => {
                 loading="eager"
                 decoding="sync"
                 fetchPriority="high"
-                className="absolute inset-0 w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-cover object-center"
                 initial={{ opacity: 0, scale: 1.05 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
