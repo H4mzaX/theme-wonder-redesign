@@ -270,20 +270,24 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: idx * 0.03, duration: 0.2 }}
                           >
-                            <div className="flex items-center gap-3">
+                            <Link
+                              to={`/${item.slug}`}
+                              onClick={closeMega}
+                              className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+                            >
                               <img src={item.icon} alt={item.name} className="w-11 h-11 rounded-lg" />
                               <div>
                                 <BrandName name={item.name} className="text-[15px] font-medium text-foreground" />
                                 <p className="text-[11px] text-muted-foreground">{item.subtitle}</p>
                               </div>
-                            </div>
+                            </Link>
                             <div className="flex items-center gap-4 text-sm">
                               {deviceSeries.map((group) => (
                                 <Link
                                   key={group.slug}
                                   to={`/${item.slug}/${group.slug}`}
                                   onClick={closeMega}
-                                  className="text-muted-foreground hover:text-accent transition-colors"
+                                  className="text-muted-foreground hover:text-accent transition-colors font-medium"
                                 >
                                   {group.name.replace(" Series", "")}
                                 </Link>
