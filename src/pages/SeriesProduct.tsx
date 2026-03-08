@@ -5,7 +5,20 @@ import {
   Minus, Plus, Package, Truck, Percent, Smartphone, Waves, ShieldCheck, BadgeCheck, Star, Heart, Share2
 } from "lucide-react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { seriesData, deviceSeries, getSeriesProducts, softmagColors, allProducts, type SeriesSlug } from "@/data/products";
+import { seriesData, deviceSeries, getSeriesProducts, softmagColors, allProducts, type SeriesSlug, iphone17ProGalleryImages, iphone17GalleryImages, iphone16MagsafeGalleryImages, siliconeGalleryImages } from "@/data/products";
+import softmagHero from "@/assets/softmag-hero.webp";
+import softmagFloating from "@/assets/softmag-floating.webp";
+import softmagCamera from "@/assets/softmag-camera.webp";
+import softmagCloseup from "@/assets/softmag-closeup.webp";
+import softmagLifestyle from "@/assets/softmag-lifestyle.webp";
+import armoredgeHeroImg from "@/assets/armoredge-hero.webp";
+import armoredgeCloseupImg from "@/assets/armoredge-closeup.webp";
+import armoredgeRing from "@/assets/armoredge-ring.webp";
+import armoredgeLifestyle from "@/assets/armoredge-lifestyle.webp";
+import edgeguardImg from "@/assets/edgeguard-screen-protector.jpg";
+import edgeguardHoverImg from "@/assets/edgeguard-screen-protector-hover.jpg";
+import lensguardImg from "@/assets/lensguard-camera-protector.jpg";
+import lensguardHoverImg from "@/assets/lensguard-camera-protector-hover.jpg";
 import { useSEO } from "@/hooks/useSEO";
 import { useCart } from "@/context/CartContext";
 import { toast } from "@/hooks/use-toast";
