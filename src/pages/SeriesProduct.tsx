@@ -74,15 +74,17 @@ const SeriesProduct = () => {
 
   const seriesName = series?.name || seriesSlug || "";
 
+  const currentDeviceName = currentProduct?.device || deviceGroup?.models[0]?.name || deviceSlug || "";
+
   useSEO({
-    title: series && deviceGroup ? `${seriesName} for ${deviceName} | VCASE` : "Product | VCASE",
-    description: series ? `Buy ${seriesName} ${series.type === "case" ? "case" : "protector"} for ${deviceName}. ${series.description} Free shipping on prepaid orders.` : "Premium phone protection by VCASE.",
+    title: series && deviceGroup ? `${seriesName} for ${currentDeviceName} | VCASE` : "Product | VCASE",
+    description: series ? `Buy ${seriesName} ${series.type === "case" ? "case" : "protector"} for ${currentDeviceName}. ${series.description} Free shipping on prepaid orders.` : "Premium phone protection by VCASE.",
     canonical: `https://vcase.in/${seriesSlug}/${deviceSlug}`,
     type: "product",
     jsonLd: series && deviceGroup ? {
       "@context": "https://schema.org",
       "@type": "Product",
-      name: `${seriesName} for ${deviceName}`,
+      name: `${seriesName} for ${currentDeviceName}`,
       description: series.description,
       brand: { "@type": "Brand", name: "VCASE" },
       offers: { "@type": "Offer", priceCurrency: "INR", availability: "https://schema.org/InStock" },
@@ -161,7 +163,7 @@ const SeriesProduct = () => {
     .slice(0, 4);
 
   const otherDeviceGroups = deviceSeries.filter((g) => g.slug !== deviceSlug);
-  const pageTitle = `${series.name} Case for ${deviceGroup.name} | VCASE`;
+  const pageTitle = `${series.name} for ${currentDeviceName} | VCASE`;
   const metaDescription = series.description;
 
   return (
@@ -186,7 +188,7 @@ const SeriesProduct = () => {
           <span>/</span>
           <span className="capitalize">{series.category}</span>
           <span>/</span>
-          <span className="text-foreground font-medium">{series.name} — {deviceGroup.name}</span>
+          <span className="text-foreground font-medium">{series.name} — {currentDeviceName}</span>
         </motion.nav>
       </div>
 
