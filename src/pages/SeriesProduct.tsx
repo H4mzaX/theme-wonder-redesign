@@ -30,7 +30,7 @@ import CartDrawer from "@/components/CartDrawer";
 import ProductCard from "@/components/ProductCard";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import BrandName from "@/components/BrandName";
-import AnimateElement, { StaggerChild, ScaleReveal } from "@/components/AnimateElement";
+import AnimateElement, { StaggerGroup, StaggerChild, ScaleReveal } from "@/components/AnimateElement";
 import ProductContentSections from "@/components/ProductContentSections";
 import FloatingNavPill from "@/components/FloatingNavPill";
 import { premiumEase } from "@/lib/motion";
