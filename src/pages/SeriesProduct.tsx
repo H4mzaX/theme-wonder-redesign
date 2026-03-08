@@ -465,29 +465,42 @@ const SeriesProduct = () => {
               {/* Divider */}
               <div className="h-px bg-border/60 my-6" />
 
-              {/* ── Quantity + Add to Cart ── */}
+              {/* ── Quantity + Add to Cart + Buy Now ── */}
               <motion.div
-                className="flex items-center gap-3"
+                className="space-y-3"
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.3 }}
               >
-                <div className="flex items-center border border-border rounded-xl overflow-hidden">
-                  <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="p-3 hover:bg-muted transition-colors">
-                    <Minus className="w-4 h-4" />
-                  </button>
-                  <span className="px-4 text-sm font-semibold min-w-[40px] text-center">{quantity}</span>
-                  <button onClick={() => setQuantity(quantity + 1)} className="p-3 hover:bg-muted transition-colors">
-                    <Plus className="w-4 h-4" />
-                  </button>
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center border border-border rounded-xl overflow-hidden">
+                    <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="p-3 hover:bg-muted transition-colors">
+                      <Minus className="w-4 h-4" />
+                    </button>
+                    <span className="px-4 text-sm font-semibold min-w-[40px] text-center">{quantity}</span>
+                    <button onClick={() => setQuantity(quantity + 1)} className="p-3 hover:bg-muted transition-colors">
+                      <Plus className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <motion.button
+                    onClick={handleAddToCart}
+                    className="flex-1 bg-foreground text-background py-3.5 rounded-xl text-sm font-semibold uppercase tracking-wider hover:bg-foreground/90 transition-colors"
+                    whileTap={{ scale: 0.97 }}
+                    whileHover={{ scale: 1.01 }}
+                  >
+                    Add to Cart — {currentProduct?.price}
+                  </motion.button>
                 </div>
+
+                {/* Buy Now */}
                 <motion.button
                   onClick={handleAddToCart}
-                  className="flex-1 bg-foreground text-background py-3.5 rounded-xl text-sm font-semibold uppercase tracking-wider hover:bg-foreground/90 transition-colors"
+                  className="w-full border-2 border-foreground text-foreground py-3.5 rounded-xl text-sm font-semibold uppercase tracking-wider hover:bg-foreground hover:text-background transition-colors flex items-center justify-center gap-2"
                   whileTap={{ scale: 0.97 }}
                   whileHover={{ scale: 1.01 }}
                 >
-                  Add to Cart — {currentProduct?.price}
+                  <ShoppingBag className="w-4 h-4" />
+                  Buy Now
                 </motion.button>
               </motion.div>
 
@@ -506,9 +519,30 @@ const SeriesProduct = () => {
                 </button>
               </motion.div>
 
+              {/* ── Payment Trust Badges ── */}
+              <motion.div
+                className="mt-5 border border-border/40 rounded-xl p-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.58, duration: 0.3 }}
+              >
+                <div className="flex items-center gap-2 mb-3">
+                  <Lock className="w-3.5 h-3.5 text-muted-foreground" />
+                  <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold">Secure Checkout</span>
+                </div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  {["UPI", "Visa", "Mastercard", "RuPay", "COD"].map((method) => (
+                    <div key={method} className="flex items-center gap-1.5 bg-muted/50 rounded-lg px-2.5 py-1.5">
+                      <CreditCard className="w-3 h-3 text-muted-foreground" />
+                      <span className="text-[10px] font-semibold text-foreground">{method}</span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
               {/* ── Offers strip ── */}
               <motion.div
-                className="mt-6 space-y-2.5"
+                className="mt-5 space-y-2.5"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6, duration: 0.3 }}
@@ -520,15 +554,15 @@ const SeriesProduct = () => {
                   { icon: Package, text: "Easy 7-day return policy" },
                 ].map((offer, i) => (
                   <div key={i} className="flex items-center gap-3 text-sm text-muted-foreground">
-                    <div className="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center flex-shrink-0">
-                      <offer.icon className="w-4 h-4 text-green-600" />
+                    <div className="w-8 h-8 rounded-lg bg-muted/60 flex items-center justify-center flex-shrink-0">
+                      <offer.icon className="w-4 h-4 text-foreground" />
                     </div>
                     <span>{offer.text}</span>
                   </div>
                 ))}
               </motion.div>
 
-              {/* ── Product Highlights (Concept style) ── */}
+              {/* ── Product Highlights ── */}
               <motion.div
                 className="mt-8"
                 initial={{ opacity: 0, y: 10 }}
@@ -567,58 +601,8 @@ const SeriesProduct = () => {
       {/* ═══ RICH PRODUCT CONTENT — ScrollVideo, Gallery, Editorial, Stats ═══ */}
       {currentProduct && <ProductContentSections product={currentProduct} />}
 
-      {/* ═══ VIDEO TEXT OVERLAY SECTION ═══ */}
-      <div className="mt-12 sm:mt-20">
-        <VideoTextOverlay
-          videoSrc={heroVideo}
-          title={`Experience\n${series.name}`}
-          subtitle="WATCH THE FILM"
-          description={`Discover the craftsmanship behind ${series.name} — engineered for protection, designed for elegance.`}
-        />
-      </div>
-
-      {/* ═══ COMPATIBILITY ═══ */}
-      <section className="section-padding py-12 sm:py-20 lg:py-24">
-        <div className="max-w-[800px] mx-auto text-center">
-          <AnimateElement type="fade-up">
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-foreground mb-8 tracking-tight">
-              Compatible Models
-            </h2>
-          </AnimateElement>
-          <StaggerGroup className="flex flex-wrap justify-center gap-3" staggerDelay={0.06}>
-            {deviceGroup.models.map((model) => (
-              <StaggerChild key={model.slug}>
-                <div className="flex items-center gap-2 bg-muted/50 border border-border/30 rounded-xl px-4 py-2.5">
-                  <Smartphone className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-sm font-medium text-foreground">{model.name}</span>
-                </div>
-              </StaggerChild>
-            ))}
-          </StaggerGroup>
-
-          {otherDeviceGroups.length > 0 && (
-            <AnimateElement type="fade" delay={0.3}>
-              <div className="mt-6">
-                <p className="text-sm text-muted-foreground mb-3">Also available for:</p>
-                <div className="flex flex-wrap justify-center gap-2">
-                    {otherDeviceGroups.map((group) => (
-                      <Link
-                        key={group.slug}
-                        to={`/${seriesSlug}/${group.slug}?model=${group.models[0]?.slug}`}
-                        className="text-sm font-medium text-accent hover:underline"
-                      >
-                        {group.name}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </AnimateElement>
-          )}
-        </div>
-      </section>
-
       {/* ═══ FAQ ═══ */}
-      <section className="section-padding py-12 sm:py-20 lg:py-24 bg-muted/30">
+      <section id="pdp-faqs" className="section-padding py-12 sm:py-20 lg:py-24 bg-muted/30">
         <div className="max-w-[700px] mx-auto">
           <AnimateElement type="fade-up">
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-foreground text-center mb-10 tracking-tight">
@@ -685,24 +669,31 @@ const SeriesProduct = () => {
         <Footer />
       </div>
 
-      {/* ── Mobile sticky Add to Cart ── */}
+      {/* ── Mobile sticky floating Add to Cart + Buy Now ── */}
       <motion.div
-        className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-background border-t border-border/40 px-4 py-3 safe-area-inset-bottom"
+        className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-background/95 backdrop-blur-lg border-t border-border/40 px-4 py-3 safe-area-inset-bottom"
         initial={{ y: 100 }}
         animate={{ y: 0 }}
         transition={{ delay: 0.5, type: "spring", stiffness: 300, damping: 30 }}
       >
-        <div className="flex items-center gap-3">
-          <div className="flex-1">
-            <p className="text-xs text-muted-foreground line-clamp-1">{series.name} — {currentProduct?.device}</p>
-            <p className="text-base font-bold text-foreground">{currentProduct?.price}</p>
+        <div className="flex items-center gap-2">
+          <div className="flex-1 min-w-0">
+            <p className="text-[10px] text-muted-foreground line-clamp-1">{series.name} — {currentProduct?.device}</p>
+            <p className="text-sm font-bold text-foreground">{currentProduct?.price}</p>
           </div>
           <motion.button
             onClick={handleAddToCart}
-            className="bg-foreground text-background px-6 py-3 rounded-xl text-sm font-semibold uppercase tracking-wider"
+            className="bg-foreground text-background px-4 py-2.5 rounded-xl text-[11px] font-semibold uppercase tracking-wider"
             whileTap={{ scale: 0.95 }}
           >
             Add to Cart
+          </motion.button>
+          <motion.button
+            onClick={handleAddToCart}
+            className="border border-foreground text-foreground px-4 py-2.5 rounded-xl text-[11px] font-semibold uppercase tracking-wider"
+            whileTap={{ scale: 0.95 }}
+          >
+            Buy Now
           </motion.button>
         </div>
       </motion.div>
