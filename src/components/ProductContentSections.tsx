@@ -11,6 +11,11 @@ import ScrollVideoReveal from "@/components/ScrollVideoReveal";
 import FeaturedImageGrid from "@/components/FeaturedImageGrid";
 import ImageTextBlock from "@/components/ImageTextBlock";
 import heroVideo from "@/assets/hero-video.mp4";
+import clearmagVideo from "@/assets/clearmag-showcase.mp4";
+import clearmagEdgeVideo from "@/assets/clearmag-edge-showcase.mp4";
+import armoredgeVideo from "@/assets/armoredge-showcase.mp4";
+import edgeguardVideo from "@/assets/edgeguard-showcase.mp4";
+import lensguardVideo from "@/assets/lensguard-showcase.mp4";
 
 import softmagCloseup from "@/assets/softmag-closeup.webp";
 import softmagLifestyle from "@/assets/softmag-lifestyle.webp";
@@ -133,8 +138,8 @@ function getSeriesContent(seriesSlug: string, device: string): SeriesContent | n
   if (seriesSlug === "clearmag") {
     const img = getClearmagImages(device);
     return {
-      scrollVideoSrc: heroVideo,
-      scrollVideoTexts: ["Crystal Clear.", "Anti-Yellow.", "MagSafe Ready.", "Drop Proof."],
+      scrollVideoSrc: clearmagVideo,
+      scrollVideoTexts: ["See Through\nthe Difference.", "Zero Yellowing.\nEver.", "Snap. Charge.\nRepeat.", "14.8ft Drops?\nNo Problem."],
       editorialHeadline: "Engineered for Every Detail.",
       editorialBody: "Precision-aligned N52 magnets deliver 38T of magnetic force for instant snap-on MagSafe charging. The nano oleophobic coating resists UV-induced yellowing, keeping your case crystal clear for months.",
       featuredCards: [
@@ -177,8 +182,8 @@ function getSeriesContent(seriesSlug: string, device: string): SeriesContent | n
   if (seriesSlug === "clearmag-edge") {
     const img = getClearmagEdgeImages(device);
     return {
-      scrollVideoSrc: heroVideo,
-      scrollVideoTexts: ["Frosted Edges.", "Crystal Core.", "Grip Enhanced.", "Drop Proof."],
+      scrollVideoSrc: clearmagEdgeVideo,
+      scrollVideoTexts: ["Frosted.\nRefined.", "Grip That\nHolds.", "Crystal Core.\nMatte Shell.", "Built to\nSurvive."],
       editorialHeadline: "Where Grip Meets Clarity.",
       editorialBody: "Matte-frosted side rails provide enhanced grip with sophisticated aesthetics, while the anti-yellow nano-coated back panel showcases your device's original design.",
       featuredCards: [
@@ -217,7 +222,7 @@ function getSeriesContent(seriesSlug: string, device: string): SeriesContent | n
 const staticSeriesContentMap: Record<string, SeriesContent> = {
   softmag: {
     scrollVideoSrc: softmagVideo,
-    scrollVideoTexts: ["Soft Touch.", "Bold Colors.", "MagSafe Ready.", "Stain Proof."],
+    scrollVideoTexts: ["Soft to Touch.\nBold in Color.", "Silicone That\nWon't Stain.", "Snap-On\nMagSafe.", "Fade-Proof.\nWashable."],
     editorialHeadline: "Designed for Comfort.",
     editorialBody: "Buttery-soft liquid silicone exterior meets a cushioning microfiber interior. Four bold colorways crafted with fade-resistant pigments ensure your case looks as good months from now as it does today.",
     featuredCards: [
@@ -249,8 +254,8 @@ const staticSeriesContentMap: Record<string, SeriesContent> = {
     ],
   },
   "armor-edge": {
-    scrollVideoSrc: heroVideo,
-    scrollVideoTexts: ["Stand Bold.", "Camera Slider.", "Ring Stand.", "16ft Drop Proof."],
+    scrollVideoSrc: armoredgeVideo,
+    scrollVideoTexts: ["Stand Bold.\nStand Out.", "Slide to\nProtect.", "Ring. Stand.\nConquer.", "16ft Drops?\nBring It."],
     editorialHeadline: "Built for the Fearless.",
     editorialBody: "Precision-engineered sliding camera cover protects from scratches and dust. The 360° rotatable metal ring doubles as a kickstand for hands-free viewing in any orientation.",
     featuredCards: [
@@ -289,8 +294,8 @@ const staticSeriesContentMap: Record<string, SeriesContent> = {
     ],
   },
   edgeguard: {
-    scrollVideoSrc: heroVideo,
-    scrollVideoTexts: ["Full Coverage.", "9H Hardness.", "Anti-Fingerprint.", "Zero Bubbles."],
+    scrollVideoSrc: edgeguardVideo,
+    scrollVideoTexts: ["Edge to Edge.\nProtection.", "9H Hardness.\nUnbreakable.", "Fingerprint?\nWhat Fingerprint?", "60 Seconds.\nZero Bubbles."],
     editorialHeadline: "Screen Protection Perfected.",
     editorialBody: "Edge-to-edge 9H tempered glass with oleophobic coating covers every millimeter of your screen. The included easy-align frame ensures bubble-free application in under 60 seconds.",
     featuredCards: [
@@ -322,8 +327,8 @@ const staticSeriesContentMap: Record<string, SeriesContent> = {
     ],
   },
   lensguard: {
-    scrollVideoSrc: heroVideo,
-    scrollVideoTexts: ["Crystal Lens.", "Sapphire Grade.", "Anti-Reflective.", "Perfect Shots."],
+    scrollVideoSrc: lensguardVideo,
+    scrollVideoTexts: ["Your Lens.\nPerfected.", "Sapphire Strong.\nCrystal Clear.", "No Flare.\nNo Glare.", "Invisible Shield.\nVisible Quality."],
     editorialHeadline: "Lens Protection Reimagined.",
     editorialBody: "Sapphire-grade 9H hardness protects each lens module while the anti-reflective coating eliminates lens flare for crisp, professional-quality photos every time.",
     featuredCards: [
