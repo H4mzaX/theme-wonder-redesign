@@ -214,17 +214,19 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                                 )}
                               </div>
                             </Link>
-                            <div className="flex items-center gap-4 text-sm">
-                              {deviceSeries.map((group) => (
-                                <Link
-                                  key={group.slug}
-                                  to={`/${item.slug}/${group.slug}`}
-                                  onClick={closeMega}
-                                  className="text-muted-foreground hover:text-accent transition-colors font-medium"
-                                >
-                                  {group.name.replace(" Series", "")}
-                                </Link>
-                              ))}
+                            <div className="flex items-center gap-4 text-sm flex-wrap">
+                              {deviceSeries.flatMap((group) =>
+                                group.models.map((model) => (
+                                  <Link
+                                    key={model.slug}
+                                    to={`/${item.slug}/${group.slug}?model=${encodeURIComponent(model.slug)}`}
+                                    onClick={closeMega}
+                                    className="text-muted-foreground hover:text-accent transition-colors font-medium"
+                                  >
+                                    {model.name}
+                                  </Link>
+                                ))
+                              )}
                             </div>
                           </motion.div>
                         ))}
@@ -281,17 +283,19 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                                 <p className="text-[11px] text-muted-foreground">{item.subtitle}</p>
                               </div>
                             </Link>
-                            <div className="flex items-center gap-4 text-sm">
-                              {deviceSeries.map((group) => (
-                                <Link
-                                  key={group.slug}
-                                  to={`/${item.slug}/${group.slug}`}
-                                  onClick={closeMega}
-                                  className="text-muted-foreground hover:text-accent transition-colors font-medium"
-                                >
-                                  {group.name.replace(" Series", "")}
-                                </Link>
-                              ))}
+                            <div className="flex items-center gap-4 text-sm flex-wrap">
+                              {deviceSeries.flatMap((group) =>
+                                group.models.map((model) => (
+                                  <Link
+                                    key={model.slug}
+                                    to={`/${item.slug}/${group.slug}?model=${encodeURIComponent(model.slug)}`}
+                                    onClick={closeMega}
+                                    className="text-muted-foreground hover:text-accent transition-colors font-medium"
+                                  >
+                                    {model.name}
+                                  </Link>
+                                ))
+                              )}
                             </div>
                           </motion.div>
                         ))}
@@ -483,16 +487,18 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                                     <ChevronLeft className="w-3 h-3" /> <BrandName name={casesMenuItems.find(i => i.slug === mobileDrilldown)?.name || ""} />
                                   </button>
                                 </p>
-                                {deviceSeries.map((group) => (
-                                  <Link
-                                    key={group.slug}
-                                    to={`/${mobileDrilldown}/${group.slug}`}
-                                    onClick={() => setMobileOpen(false)}
-                                    className="flex items-center gap-2 py-2 group"
-                                  >
-                                    <span className="text-[14px] font-medium text-foreground group-hover:text-accent transition-colors">{group.name}</span>
-                                  </Link>
-                                ))}
+                                {deviceSeries.flatMap((group) =>
+                                  group.models.map((model) => (
+                                    <Link
+                                      key={model.slug}
+                                      to={`/${mobileDrilldown}/${group.slug}?model=${encodeURIComponent(model.slug)}`}
+                                      onClick={() => setMobileOpen(false)}
+                                      className="flex items-center gap-2 py-2 group"
+                                    >
+                                      <span className="text-[14px] font-medium text-foreground group-hover:text-accent transition-colors">{model.name}</span>
+                                    </Link>
+                                  ))
+                                )}
                               </>
                             )}
                           </div>
@@ -544,16 +550,18 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                                     <ChevronLeft className="w-3 h-3" /> <BrandName name={protectionMenuItems.find(i => i.slug === mobileDrilldown)?.name || ""} />
                                   </button>
                                 </p>
-                                {deviceSeries.map((group) => (
-                                  <Link
-                                    key={group.slug}
-                                    to={`/${mobileDrilldown}/${group.slug}`}
-                                    onClick={() => setMobileOpen(false)}
-                                    className="flex items-center gap-2 py-2 group"
-                                  >
-                                    <span className="text-[14px] font-medium text-foreground group-hover:text-accent transition-colors">{group.name}</span>
-                                  </Link>
-                                ))}
+                                {deviceSeries.flatMap((group) =>
+                                  group.models.map((model) => (
+                                    <Link
+                                      key={model.slug}
+                                      to={`/${mobileDrilldown}/${group.slug}?model=${encodeURIComponent(model.slug)}`}
+                                      onClick={() => setMobileOpen(false)}
+                                      className="flex items-center gap-2 py-2 group"
+                                    >
+                                      <span className="text-[14px] font-medium text-foreground group-hover:text-accent transition-colors">{model.name}</span>
+                                    </Link>
+                                  ))
+                                )}
                               </>
                             )}
                           </div>
