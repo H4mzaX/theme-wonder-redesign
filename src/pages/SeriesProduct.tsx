@@ -19,6 +19,8 @@ import MobileBottomNav from "@/components/MobileBottomNav";
 import VideoTextOverlay from "@/components/VideoTextOverlay";
 import BrandName from "@/components/BrandName";
 import AnimateElement, { StaggerGroup, StaggerChild, ScaleReveal } from "@/components/AnimateElement";
+import ProductContentSections from "@/components/ProductContentSections";
+import FloatingNavPill from "@/components/FloatingNavPill";
 import { premiumEase } from "@/lib/motion";
 
 import heroVideo from "@/assets/hero-video.mp4";
@@ -486,6 +488,18 @@ const SeriesProduct = () => {
         </div>
       </section>
 
+      {/* ═══ FLOATING NAV PILL ═══ */}
+      <FloatingNavPill
+        sections={[
+          { id: "pdp-highlights", label: "Highlights" },
+          { id: "pdp-features", label: "Features" },
+          { id: "pdp-faqs", label: "FAQs" },
+        ]}
+      />
+
+      {/* ═══ RICH PRODUCT CONTENT — ScrollVideo, Gallery, Editorial, Stats ═══ */}
+      {currentProduct && <ProductContentSections product={currentProduct} />}
+
       {/* ═══ VIDEO TEXT OVERLAY SECTION ═══ */}
       <div className="mt-12 sm:mt-20">
         <VideoTextOverlay
@@ -495,30 +509,6 @@ const SeriesProduct = () => {
           description={`Discover the craftsmanship behind ${series.name} — engineered for protection, designed for elegance.`}
         />
       </div>
-
-      {/* ═══ MATERIAL SECTION ═══ */}
-      <ScaleReveal>
-        <section className="section-padding py-12 sm:py-20 lg:py-24 bg-muted/30">
-          <div className="max-w-[800px] mx-auto text-center">
-            <AnimateElement type="fade-up">
-              <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-foreground mb-4 tracking-tight">
-                Built to Last
-              </h2>
-            </AnimateElement>
-            <AnimateElement type="fade-up" delay={0.1}>
-              <p className="text-muted-foreground text-sm sm:text-base leading-relaxed mb-6">
-                {series.description}
-              </p>
-            </AnimateElement>
-            <AnimateElement type="zoom-in" delay={0.2}>
-              <div className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-5 py-2.5">
-                <Package className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm font-medium text-foreground">{series.material}</span>
-              </div>
-            </AnimateElement>
-          </div>
-        </section>
-      </ScaleReveal>
 
       {/* ═══ COMPATIBILITY ═══ */}
       <section className="section-padding py-12 sm:py-20 lg:py-24">
