@@ -281,13 +281,14 @@ const SeriesProduct = () => {
     setCartOpen(true);
   };
 
-  const relatedProducts = allProducts
-    .filter((p) => p.device === currentProduct?.device && p.seriesSlug !== seriesSlug)
-    .slice(0, 4);
+  // Related products: same device different series + same series different devices
+  const sameDeviceOtherSeries = allProducts.filter((p) => p.device === currentProduct?.device && p.seriesSlug !== seriesSlug);
+  const sameSeriesOtherDevices = allProducts.filter((p) => p.seriesSlug === seriesSlug && p.device !== currentProduct?.device);
+  const relatedProducts = [...sameDeviceOtherSeries, ...sameSeriesOtherDevices]
+    .filter((p, i, arr) => arr.findIndex((x) => x.id === p.id) === i)
+    .slice(0, 8);
 
   const otherDeviceGroups = deviceSeries.filter((g) => g.slug !== deviceSlug);
-  const pageTitle = `${series.name} for ${currentDeviceName} | VCASE`;
-  const metaDescription = series.description;
 
   return (
     <div className="min-h-screen flex flex-col bg-background overflow-x-clip">
