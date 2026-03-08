@@ -102,8 +102,10 @@ const SeriesProduct = () => {
   const [quantity, setQuantity] = useState(1);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [activeGalleryImg, setActiveGalleryImg] = useState(0);
+  const [showStickyCart, setShowStickyCart] = useState(false);
   const { addToCart } = useCart();
   const galleryRef = useRef<HTMLDivElement>(null);
+  const productInfoRef = useRef<HTMLDivElement>(null);
   const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const series = seriesData[seriesSlug as SeriesSlug];
