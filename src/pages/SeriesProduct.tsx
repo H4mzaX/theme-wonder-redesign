@@ -299,8 +299,8 @@ const SeriesProduct = () => {
       <SearchDrawer open={searchOpen} onClose={() => setSearchOpen(false)} />
       <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
 
-      {/* ═══ BREADCRUMB ═══ */}
-      <div className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10">
+      {/* ═══ BREADCRUMB — desktop only ═══ */}
+      <div className="hidden lg:block max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10">
         <motion.nav
           className="flex items-center gap-2 text-muted-foreground text-xs sm:text-sm py-4"
           initial={{ opacity: 0 }}
