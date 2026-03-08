@@ -84,8 +84,8 @@ const HeroSlider = () => {
           className="relative overflow-hidden rounded-[0.85rem] sm:rounded-[1rem] lg:rounded-[1.15rem] cursor-pointer"
           onClick={handleClick}
         >
-          <div className="relative aspect-[16/10] sm:aspect-[21/9]">
-            {/* Crossfade images */}
+          {/* Desktop: 16:9 landscape */}
+          <div className="relative hidden sm:block aspect-[16/9]">
             <AnimatePresence initial={false}>
               <motion.img
                 key={current}
@@ -105,16 +105,16 @@ const HeroSlider = () => {
               />
             </AnimatePresence>
 
-            {/* Subtle bottom gradient for button visibility */}
-            <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 via-transparent to-transparent sm:from-foreground/15 pointer-events-none" />
+            {/* Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-foreground/15 via-transparent to-transparent pointer-events-none" />
 
-            {/* Shop Now CTA */}
-            <div className="absolute inset-0 flex items-end justify-start px-5 sm:px-10 lg:px-16 pb-14 sm:pb-10 z-10 pointer-events-none">
+            {/* CTA */}
+            <div className="absolute inset-0 flex items-end justify-start px-10 lg:px-16 pb-10 z-10 pointer-events-none">
               <AnimatePresence mode="wait">
                 <motion.a
                   key={current}
                   href={slide.href}
-                  className="pointer-events-auto inline-block bg-background text-foreground sm:bg-foreground sm:text-background px-7 py-3 sm:px-8 sm:py-3.5 text-xs sm:text-sm font-medium tracking-wider rounded-full border border-background sm:border-foreground hover:bg-transparent hover:text-background sm:hover:text-foreground transition-colors duration-300"
+                  className="pointer-events-auto inline-block bg-foreground text-background px-8 py-3.5 text-sm font-medium tracking-wider rounded-full border border-foreground hover:bg-transparent hover:text-foreground transition-colors duration-300"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
@@ -126,19 +126,83 @@ const HeroSlider = () => {
             </div>
 
             {/* Dots */}
-            <div className="absolute bottom-0 left-0 right-0 sm:left-auto sm:right-0 z-20 pb-4 sm:pb-6 px-5 sm:px-10 lg:px-16 flex items-center justify-start sm:justify-end gap-4">
+            <div className="absolute bottom-0 right-0 z-20 pb-6 px-10 lg:px-16 flex items-center justify-end gap-4">
               <div className="flex items-center gap-2">
                 {slides.map((_, i) => (
                   <button
                     key={i}
                     onClick={(e) => { e.stopPropagation(); goTo(i); }}
-                    className="relative h-1.5 sm:h-2 rounded-full overflow-hidden transition-all duration-300"
+                    className="relative h-2 rounded-full overflow-hidden transition-all duration-300"
                     style={{ width: i === current ? 28 : 8 }}
                   >
-                    <span className="absolute inset-0 bg-background/40 sm:bg-foreground/30 rounded-full" />
+                    <span className="absolute inset-0 bg-foreground/30 rounded-full" />
                     {i === current && (
                       <motion.span
-                        className="absolute inset-0 bg-background sm:bg-foreground rounded-full origin-left"
+                        className="absolute inset-0 bg-foreground rounded-full origin-left"
+                        style={{ scaleX: progress }}
+                      />
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile: 4:5 portrait crop */}
+          <div className="relative sm:hidden aspect-[4/5]">
+            <AnimatePresence initial={false}>
+              <motion.img
+                key={current}
+                src={slide.image}
+                alt="VCASE premium phone case"
+                loading="eager"
+                decoding="sync"
+                fetchPriority="high"
+                className="absolute inset-0 w-full h-full object-cover object-center"
+                initial={{ opacity: 0, scale: 1.05 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{
+                  opacity: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+                  scale: { duration: 5, ease: [0.16, 1, 0.3, 1] },
+                }}
+              />
+            </AnimatePresence>
+
+            {/* Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 via-transparent to-transparent pointer-events-none" />
+
+            {/* CTA */}
+            <div className="absolute inset-0 flex items-end justify-start px-5 pb-14 z-10 pointer-events-none">
+              <AnimatePresence mode="wait">
+                <motion.a
+                  key={current}
+                  href={slide.href}
+                  className="pointer-events-auto inline-block bg-background text-foreground px-7 py-3 text-xs font-medium tracking-wider rounded-full border border-background hover:bg-transparent hover:text-background transition-colors duration-300"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+                >
+                  {slide.cta}
+                </motion.a>
+              </AnimatePresence>
+            </div>
+
+            {/* Dots */}
+            <div className="absolute bottom-0 left-0 right-0 z-20 pb-4 px-5 flex items-center justify-start gap-4">
+              <div className="flex items-center gap-2">
+                {slides.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={(e) => { e.stopPropagation(); goTo(i); }}
+                    className="relative h-1.5 rounded-full overflow-hidden transition-all duration-300"
+                    style={{ width: i === current ? 28 : 8 }}
+                  >
+                    <span className="absolute inset-0 bg-background/40 rounded-full" />
+                    {i === current && (
+                      <motion.span
+                        className="absolute inset-0 bg-background rounded-full origin-left"
                         style={{ scaleX: progress }}
                       />
                     )}
