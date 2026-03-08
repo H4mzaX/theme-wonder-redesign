@@ -2,250 +2,251 @@ import { useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import {
   Shield, Magnet, Droplets, Zap, Layers, Ruler, Eye, ScanLine,
-  CircleDot, ShieldCheck, Waves, BadgeCheck, ChevronRight
+  CircleDot, ShieldCheck, Waves, BadgeCheck
 } from "lucide-react";
 import type { Product } from "@/data/products";
 import { seriesData, type SeriesSlug } from "@/data/products";
 import AnimateElement from "@/components/AnimateElement";
+import ScrollVideoReveal from "@/components/ScrollVideoReveal";
+import FeaturedImageGrid from "@/components/FeaturedImageGrid";
+import ImageTextBlock from "@/components/ImageTextBlock";
+import heroVideo from "@/assets/hero-video.mp4";
 
 const expoOut: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 /* ══════════════════════════════════════════
    Series content definitions
    ══════════════════════════════════════════ */
-interface FeatureCard {
-  title: string;
-  description: string;
-  icon: typeof Shield;
-}
-
-interface EditorialBlock {
-  headline: string;
-  body: string;
-  bullets?: string[];
-  imagePosition: "left" | "right";
-  imageSrc: string;
-  imageAlt: string;
-}
-
 interface SeriesContent {
-  heroOverlayLine1: string;
-  heroOverlayLine2: string;
-  heroImage: string;
-  marqueeItems: string[];
+  // Scroll-linked video section
+  scrollVideoSrc: string;
+  scrollVideoPoster?: string;
+  scrollVideoTexts: string[];
+  // Editorial headline below video
   editorialHeadline: string;
   editorialBody: string;
-  featureCards: { title: string; subtitle: string; icon: typeof Shield }[];
+  // Featured image grid (2x2 lifestyle cards)
+  featuredCards: { image: string; label: string; subtitle: string }[];
+  // Image + text editorial blocks
+  imageTextBlocks: {
+    image: string;
+    headline: string;
+    body: string;
+    highlights?: string[];
+    reverse?: boolean;
+  }[];
+  // Marquee items
+  marqueeItems: string[];
+  // Stats
   stats: { value: string; label: string }[];
-  editorialBlocks: EditorialBlock[];
-  closureImages: { src: string; alt: string; caption: string }[];
+  // Feature cards (icon grid)
+  featureCards: { title: string; subtitle: string; icon: typeof Shield }[];
 }
 
 const seriesContentMap: Record<string, SeriesContent> = {
   clearmag: {
-    heroOverlayLine1: "Crystal clear.",
-    heroOverlayLine2: "Magnetically perfect.",
-    heroImage: "/icons/clearmag.webp",
-    marqueeItems: ["Anti-Yellow Technology", "38 MagSafe Magnets", "14.8ft Drop Tested", "1.2mm Ultra Thin", "32g Featherlight"],
-    editorialHeadline: "Engineered for Every _Detail_.",
+    scrollVideoSrc: heroVideo,
+    scrollVideoTexts: ["Crystal Clear.", "Anti-Yellow.", "MagSafe Ready.", "Drop Proof."],
+    editorialHeadline: "Engineered for Every Detail.",
     editorialBody: "Precision-aligned N52 magnets deliver 38T of magnetic force for instant snap-on MagSafe charging. The nano oleophobic coating resists UV-induced yellowing, keeping your case crystal clear for months.",
-    featureCards: [
-      { title: "Anti-Yellow", subtitle: "Nano oleophobic coating", icon: Eye },
-      { title: "38 Magnets", subtitle: "N52 MagSafe alignment", icon: Magnet },
-      { title: "14.8ft Drop", subtitle: "Military-grade corners", icon: ShieldCheck },
-      { title: "1.2mm Slim", subtitle: "Ultra-thin polycarbonate", icon: Ruler },
+    featuredCards: [
+      { image: "/icons/clearmag.webp", label: "Transparent Protection", subtitle: "Anti-Yellow Nano Coating" },
+      { image: "/icons/clearmag-edge.webp", label: "Magnetic Precision", subtitle: "38 N52 MagSafe Magnets" },
+      { image: "/icons/clearmag.webp", label: "Ultra Slim", subtitle: "1.2mm Polycarbonate Shell" },
+      { image: "/icons/clearmag-edge.webp", label: "Military Grade", subtitle: "14.8ft Drop Protection" },
     ],
+    imageTextBlocks: [
+      {
+        image: "/icons/clearmag.webp",
+        headline: "Transparent Protection Perfected.",
+        body: "Our anti-yellow nano coating technology ensures your case stays crystal clear, resisting UV-induced yellowing for months of pristine clarity. Show off your device's original design without compromise.",
+        highlights: ["Anti-yellow nano coating", "UV-resistant polycarbonate", "Oleophobic surface"],
+      },
+      {
+        image: "/icons/clearmag-edge.webp",
+        headline: "Magnetic Precision Alignment.",
+        body: "38 precision-aligned N52 magnets deliver powerful magnetic force for instant snap-on MagSafe charging and accessory attachment. Perfect alignment, every single time.",
+        highlights: ["38T magnetic force", "Instant snap-on", "Perfect alignment"],
+        reverse: true,
+      },
+    ],
+    marqueeItems: ["Anti-Yellow Technology", "38 MagSafe Magnets", "14.8ft Drop Tested", "1.2mm Ultra Thin", "32g Featherlight"],
     stats: [
       { value: "14.8ft", label: "Drop Protection" },
       { value: "38T", label: "Magnetic Force" },
       { value: "1.2mm", label: "Ultra Thin" },
       { value: "32g", label: "Featherlight" },
     ],
-    editorialBlocks: [
-      {
-        headline: "Transparent Protection",
-        body: "Our anti-yellow nano coating technology ensures your case stays crystal clear, resisting UV-induced yellowing for months of pristine clarity. Show off your device's original design without compromise.",
-        bullets: ["Anti-yellow nano coating", "UV-resistant polycarbonate", "Oleophobic surface treatment"],
-        imagePosition: "right",
-        imageSrc: "/icons/clearmag.webp",
-        imageAlt: "ClearMag transparent detail",
-      },
-      {
-        headline: "Magnetic Precision",
-        body: "38 precision-aligned N52 magnets deliver powerful magnetic force for instant snap-on MagSafe charging and accessory attachment. Perfect alignment, every time.",
-        imagePosition: "left",
-        imageSrc: "/icons/clearmag-edge.webp",
-        imageAlt: "ClearMag magnet alignment",
-      },
-    ],
-    closureImages: [
-      { src: "/icons/clearmag.webp", alt: "ClearMag close-up", caption: "Crystal-clear polycarbonate with nano coating" },
-      { src: "/icons/clearmag-edge.webp", alt: "ClearMag magnets", caption: "38 precision-aligned N52 magnets" },
+    featureCards: [
+      { title: "Anti-Yellow", subtitle: "Nano oleophobic coating", icon: Eye },
+      { title: "38 Magnets", subtitle: "N52 MagSafe alignment", icon: Magnet },
+      { title: "14.8ft Drop", subtitle: "Military-grade corners", icon: ShieldCheck },
+      { title: "1.2mm Slim", subtitle: "Ultra-thin polycarbonate", icon: Ruler },
     ],
   },
   "clearmag-edge": {
-    heroOverlayLine1: "Frosted edges.",
-    heroOverlayLine2: "Crystal core.",
-    heroImage: "/icons/clearmag-edge.webp",
-    marqueeItems: ["Frosted Side Rails", "Crystal-Clear Back", "14.8ft Drop Tested", "38T MagSafe", "Dual-Layer Build"],
-    editorialHeadline: "Where Grip Meets _Clarity_.",
+    scrollVideoSrc: heroVideo,
+    scrollVideoTexts: ["Frosted Edges.", "Crystal Core.", "Grip Enhanced.", "Drop Proof."],
+    editorialHeadline: "Where Grip Meets Clarity.",
     editorialBody: "Matte-frosted side rails provide enhanced grip with sophisticated aesthetics, while the anti-yellow nano-coated back panel showcases your device's original design.",
-    featureCards: [
-      { title: "Frosted Rails", subtitle: "Enhanced matte grip", icon: Layers },
-      { title: "Clear Back", subtitle: "Anti-yellow coating", icon: Eye },
-      { title: "Dual-Layer", subtitle: "TPU + PC construction", icon: ShieldCheck },
-      { title: "38 Magnets", subtitle: "MagSafe precision", icon: Magnet },
+    featuredCards: [
+      { image: "/icons/clearmag-edge.webp", label: "Frosted Sophistication", subtitle: "Matte-Textured Side Rails" },
+      { image: "/icons/clearmag.webp", label: "Crystal Back", subtitle: "Anti-Yellow Clear Panel" },
+      { image: "/icons/clearmag-edge.webp", label: "Dual-Layer", subtitle: "TPU + PC Construction" },
+      { image: "/icons/clearmag.webp", label: "MagSafe", subtitle: "38T Magnetic Precision" },
     ],
+    imageTextBlocks: [
+      {
+        image: "/icons/clearmag-edge.webp",
+        headline: "Frosted Sophistication.",
+        body: "The matte-textured edges provide a premium feel and enhanced grip while the crystal-clear back panel lets your device's design shine through.",
+        highlights: ["Frosted polycarbonate edges", "Anti-yellow clear back", "Enhanced grip texture"],
+      },
+    ],
+    marqueeItems: ["Frosted Side Rails", "Crystal-Clear Back", "14.8ft Drop Tested", "38T MagSafe", "Dual-Layer Build"],
     stats: [
       { value: "14.8ft", label: "Drop Protection" },
       { value: "38T", label: "MagSafe Force" },
       { value: "1.3mm", label: "Slim Profile" },
       { value: "34g", label: "Lightweight" },
     ],
-    editorialBlocks: [
-      {
-        headline: "Frosted Sophistication",
-        body: "The matte-textured edges provide a premium feel and enhanced grip while the crystal-clear back panel lets your device's design shine through.",
-        bullets: ["Frosted polycarbonate edges", "Anti-yellow clear back", "Enhanced grip texture"],
-        imagePosition: "right",
-        imageSrc: "/icons/clearmag-edge.webp",
-        imageAlt: "ClearMag Edge frosted detail",
-      },
-    ],
-    closureImages: [
-      { src: "/icons/clearmag-edge.webp", alt: "ClearMag Edge rails", caption: "Frosted matte rails with crystal-clear back" },
+    featureCards: [
+      { title: "Frosted Rails", subtitle: "Enhanced matte grip", icon: Layers },
+      { title: "Clear Back", subtitle: "Anti-yellow coating", icon: Eye },
+      { title: "Dual-Layer", subtitle: "TPU + PC construction", icon: ShieldCheck },
+      { title: "38 Magnets", subtitle: "MagSafe precision", icon: Magnet },
     ],
   },
   softmag: {
-    heroOverlayLine1: "Soft touch.",
-    heroOverlayLine2: "Bold statement.",
-    heroImage: "/icons/softmag.webp",
-    marqueeItems: ["Liquid Silicone", "Microfiber Interior", "4 Bold Colors", "MagSafe Compatible", "Stain Resistant"],
-    editorialHeadline: "Designed for _Comfort_.",
+    scrollVideoSrc: heroVideo,
+    scrollVideoTexts: ["Soft Touch.", "Bold Colors.", "MagSafe Ready.", "Stain Proof."],
+    editorialHeadline: "Designed for Comfort.",
     editorialBody: "Buttery-soft liquid silicone exterior meets a cushioning microfiber interior. Four bold colorways crafted with fade-resistant pigments ensure your case looks as good months from now as it does today.",
-    featureCards: [
-      { title: "Liquid Silicone", subtitle: "Soft-touch exterior", icon: Droplets },
-      { title: "Microfiber", subtitle: "Scratch-free interior", icon: Layers },
-      { title: "4 Colors", subtitle: "Fade-resistant pigments", icon: CircleDot },
-      { title: "MagSafe", subtitle: "Integrated magnets", icon: Magnet },
+    featuredCards: [
+      { image: "/icons/softmag.webp", label: "Liquid Silicone", subtitle: "Buttery-Soft Exterior" },
+      { image: "/icons/softmag.webp", label: "Microfiber Lining", subtitle: "Scratch-Free Interior" },
+      { image: "/icons/softmag.webp", label: "4 Bold Colors", subtitle: "Fade-Resistant Pigments" },
+      { image: "/icons/softmag.webp", label: "MagSafe", subtitle: "Integrated Magnets" },
     ],
+    imageTextBlocks: [
+      {
+        image: "/icons/softmag.webp",
+        headline: "Silicone Craftsmanship.",
+        body: "Each SoftMag case is precision-molded from medical-grade liquid silicone rubber, delivering a buttery-soft feel that resists stains, oils, and everyday wear.",
+        highlights: ["Stain-resistant surface", "Washable material", "Fade-resistant color"],
+      },
+    ],
+    marqueeItems: ["Liquid Silicone", "Microfiber Interior", "4 Bold Colors", "MagSafe Compatible", "Stain Resistant"],
     stats: [
       { value: "4", label: "Bold Colors" },
       { value: "38T", label: "MagSafe Force" },
       { value: "10ft", label: "Drop Tested" },
       { value: "36g", label: "Comfortable" },
     ],
-    editorialBlocks: [
-      {
-        headline: "Silicone Craftsmanship",
-        body: "Each SoftMag case is precision-molded from medical-grade liquid silicone rubber, delivering a buttery-soft feel that resists stains, oils, and everyday wear.",
-        bullets: ["Stain-resistant surface", "Washable material", "Fade-resistant color"],
-        imagePosition: "right",
-        imageSrc: "/icons/softmag.webp",
-        imageAlt: "SoftMag texture detail",
-      },
-    ],
-    closureImages: [
-      { src: "/icons/softmag.webp", alt: "SoftMag texture", caption: "Liquid silicone with microfiber lining" },
+    featureCards: [
+      { title: "Liquid Silicone", subtitle: "Soft-touch exterior", icon: Droplets },
+      { title: "Microfiber", subtitle: "Scratch-free interior", icon: Layers },
+      { title: "4 Colors", subtitle: "Fade-resistant pigments", icon: CircleDot },
+      { title: "MagSafe", subtitle: "Integrated magnets", icon: Magnet },
     ],
   },
   "armor-edge": {
-    heroOverlayLine1: "Stand bold.",
-    heroOverlayLine2: "Stay protected.",
-    heroImage: "/icons/armoredge.png",
-    marqueeItems: ["Camera Slider", "Metal Ring Stand", "16ft Drop Tested", "360° Bezels", "Dual-Layer Armor"],
-    editorialHeadline: "Built for the _Fearless_.",
+    scrollVideoSrc: heroVideo,
+    scrollVideoTexts: ["Stand Bold.", "Camera Slider.", "Ring Stand.", "16ft Drop Proof."],
+    editorialHeadline: "Built for the Fearless.",
     editorialBody: "Precision-engineered sliding camera cover protects from scratches and dust. The 360° rotatable metal ring doubles as a kickstand for hands-free viewing in any orientation.",
-    featureCards: [
-      { title: "Camera Slider", subtitle: "Lens scratch protection", icon: ScanLine },
-      { title: "Ring Stand", subtitle: "360° rotatable metal", icon: CircleDot },
-      { title: "16ft Drop", subtitle: "Military-grade armor", icon: ShieldCheck },
-      { title: "360° Bezels", subtitle: "Full edge protection", icon: Shield },
+    featuredCards: [
+      { image: "/icons/armoredge.png", label: "Camera Slider", subtitle: "Lens Scratch Protection" },
+      { image: "/icons/armoredge.png", label: "Ring Stand", subtitle: "360° Rotatable Metal" },
+      { image: "/icons/armoredge.png", label: "Military Grade", subtitle: "16ft Drop Protection" },
+      { image: "/icons/armoredge.png", label: "360° Bezels", subtitle: "Full Edge Protection" },
     ],
+    imageTextBlocks: [
+      {
+        image: "/icons/armoredge.png",
+        headline: "Tactical Engineering.",
+        body: "Reinforced corners with dual-layer construction absorb and distribute impact forces. The integrated metal ring stand rotates 360° for landscape or portrait hands-free viewing.",
+        highlights: ["Sliding camera cover", "360° metal kickstand", "Reinforced corners"],
+      },
+    ],
+    marqueeItems: ["Camera Slider", "Metal Ring Stand", "16ft Drop Tested", "360° Bezels", "Dual-Layer Armor"],
     stats: [
       { value: "16ft", label: "Drop Protection" },
       { value: "360°", label: "Ring Stand" },
       { value: "Slider", label: "Camera Cover" },
       { value: "42g", label: "Solid Build" },
     ],
-    editorialBlocks: [
-      {
-        headline: "Tactical Engineering",
-        body: "Reinforced corners with dual-layer construction absorb and distribute impact forces. The integrated metal ring stand rotates 360° for landscape or portrait hands-free viewing.",
-        bullets: ["Sliding camera cover", "360° metal kickstand", "Reinforced impact corners"],
-        imagePosition: "right",
-        imageSrc: "/icons/armoredge.png",
-        imageAlt: "Armor Edge detail",
-      },
-    ],
-    closureImages: [
-      { src: "/icons/armoredge.png", alt: "Armor Edge detail", caption: "Sliding camera cover with metal ring stand" },
+    featureCards: [
+      { title: "Camera Slider", subtitle: "Lens scratch protection", icon: ScanLine },
+      { title: "Ring Stand", subtitle: "360° rotatable metal", icon: CircleDot },
+      { title: "16ft Drop", subtitle: "Military-grade armor", icon: ShieldCheck },
+      { title: "360° Bezels", subtitle: "Full edge protection", icon: Shield },
     ],
   },
   edgeguard: {
-    heroOverlayLine1: "Full coverage.",
-    heroOverlayLine2: "Zero compromise.",
-    heroImage: "/icons/edgeguard.webp",
-    marqueeItems: ["9H Tempered Glass", "Edge-to-Edge", "Anti-Fingerprint", "Easy-Align Frame", "0.33mm Thin"],
-    editorialHeadline: "Screen Protection _Perfected_.",
-    editorialBody: "Edge-to-edge 9H tempered glass with oleophobic coating covers every millimeter of your screen with seamless adhesion. The included easy-align frame ensures bubble-free application in under 60 seconds.",
-    featureCards: [
-      { title: "9H Glass", subtitle: "Maximum hardness", icon: ShieldCheck },
-      { title: "Edge-to-Edge", subtitle: "100% screen coverage", icon: Ruler },
-      { title: "Anti-Fingerprint", subtitle: "Oleophobic coating", icon: Waves },
-      { title: "Easy-Align", subtitle: "60-second application", icon: Eye },
+    scrollVideoSrc: heroVideo,
+    scrollVideoTexts: ["Full Coverage.", "9H Hardness.", "Anti-Fingerprint.", "Zero Bubbles."],
+    editorialHeadline: "Screen Protection Perfected.",
+    editorialBody: "Edge-to-edge 9H tempered glass with oleophobic coating covers every millimeter of your screen. The included easy-align frame ensures bubble-free application in under 60 seconds.",
+    featuredCards: [
+      { image: "/icons/edgeguard.webp", label: "9H Glass", subtitle: "Maximum Hardness Rating" },
+      { image: "/icons/edgeguard.webp", label: "Edge-to-Edge", subtitle: "100% Screen Coverage" },
+      { image: "/icons/edgeguard.webp", label: "Anti-Fingerprint", subtitle: "Oleophobic Coating" },
+      { image: "/icons/edgeguard.webp", label: "Easy-Align", subtitle: "60-Second Application" },
     ],
+    imageTextBlocks: [
+      {
+        image: "/icons/edgeguard.webp",
+        headline: "Invisible Shield.",
+        body: "At just 0.33mm, our tempered glass is virtually invisible while delivering maximum 9H hardness protection. The oleophobic coating repels fingerprints for a consistently clean screen.",
+        highlights: ["Bubble-free install", "Case-friendly design", "Touch sensitivity preserved"],
+      },
+    ],
+    marqueeItems: ["9H Tempered Glass", "Edge-to-Edge", "Anti-Fingerprint", "Easy-Align Frame", "0.33mm Thin"],
     stats: [
       { value: "9H", label: "Hardness" },
       { value: "0.33mm", label: "Ultra Thin" },
       { value: "100%", label: "Coverage" },
       { value: "99.9%", label: "Transparency" },
     ],
-    editorialBlocks: [
-      {
-        headline: "Invisible Shield",
-        body: "At just 0.33mm, our tempered glass is virtually invisible while delivering maximum 9H hardness protection. The oleophobic coating repels fingerprints and oils for a consistently clean screen.",
-        bullets: ["Bubble-free installation", "Case-friendly design", "Touch sensitivity preserved"],
-        imagePosition: "right",
-        imageSrc: "/icons/edgeguard.webp",
-        imageAlt: "EdgeGuard glass detail",
-      },
-    ],
-    closureImages: [
-      { src: "/icons/edgeguard.webp", alt: "EdgeGuard glass", caption: "Edge-to-edge tempered glass protection" },
+    featureCards: [
+      { title: "9H Glass", subtitle: "Maximum hardness", icon: ShieldCheck },
+      { title: "Edge-to-Edge", subtitle: "100% screen coverage", icon: Ruler },
+      { title: "Anti-Fingerprint", subtitle: "Oleophobic coating", icon: Waves },
+      { title: "Easy-Align", subtitle: "60-second application", icon: Eye },
     ],
   },
   lensguard: {
-    heroOverlayLine1: "Crystal lens.",
-    heroOverlayLine2: "Perfect shots.",
-    heroImage: "/icons/lensguard.webp",
-    marqueeItems: ["Sapphire-Grade", "Anti-Reflective", "Precision Cut", "0.3mm Ultra Thin", "HD Clarity"],
-    editorialHeadline: "Lens Protection _Reimagined_.",
+    scrollVideoSrc: heroVideo,
+    scrollVideoTexts: ["Crystal Lens.", "Sapphire Grade.", "Anti-Reflective.", "Perfect Shots."],
+    editorialHeadline: "Lens Protection Reimagined.",
     editorialBody: "Sapphire-grade 9H hardness protects each lens module while the anti-reflective coating eliminates lens flare for crisp, professional-quality photos every time.",
-    featureCards: [
-      { title: "Sapphire-Grade", subtitle: "9H lens hardness", icon: ShieldCheck },
-      { title: "Anti-Reflective", subtitle: "No lens flare", icon: Eye },
-      { title: "Precision Fit", subtitle: "Laser-cut modules", icon: ScanLine },
-      { title: "0.3mm Thin", subtitle: "Nearly invisible", icon: Ruler },
+    featuredCards: [
+      { image: "/icons/lensguard.webp", label: "Sapphire-Grade", subtitle: "9H Lens Hardness" },
+      { image: "/icons/lensguard.webp", label: "Anti-Reflective", subtitle: "No Lens Flare" },
+      { image: "/icons/lensguard.webp", label: "Precision Fit", subtitle: "Laser-Cut Modules" },
+      { image: "/icons/lensguard.webp", label: "Ultra Thin", subtitle: "0.3mm Nearly Invisible" },
     ],
+    imageTextBlocks: [
+      {
+        image: "/icons/lensguard.webp",
+        headline: "Optical Excellence.",
+        body: "Each protector is laser-cut for precise camera module fit with zero interference to photo quality. The anti-reflective coating eliminates lens flare for consistently crisp images.",
+        highlights: ["Zero camera interference", "Precision module fit", "Professional photo quality"],
+      },
+    ],
+    marqueeItems: ["Sapphire-Grade", "Anti-Reflective", "Precision Cut", "0.3mm Ultra Thin", "HD Clarity"],
     stats: [
       { value: "9H", label: "Hardness" },
       { value: "0.3mm", label: "Ultra Thin" },
       { value: "AR", label: "Anti-Reflective" },
       { value: "HD", label: "Clarity" },
     ],
-    editorialBlocks: [
-      {
-        headline: "Optical Excellence",
-        body: "Each protector is laser-cut for precise camera module fit with zero interference to photo quality. The anti-reflective coating eliminates lens flare for consistently crisp images.",
-        bullets: ["Zero camera interference", "Precision module fit", "Professional photo quality"],
-        imagePosition: "right",
-        imageSrc: "/icons/lensguard.webp",
-        imageAlt: "LensGuard detail",
-      },
-    ],
-    closureImages: [
-      { src: "/icons/lensguard.webp", alt: "LensGuard detail", caption: "Sapphire-grade camera lens protection" },
+    featureCards: [
+      { title: "Sapphire-Grade", subtitle: "9H lens hardness", icon: ShieldCheck },
+      { title: "Anti-Reflective", subtitle: "No lens flare", icon: Eye },
+      { title: "Precision Fit", subtitle: "Laser-cut modules", icon: ScanLine },
+      { title: "0.3mm Thin", subtitle: "Nearly invisible", icon: Ruler },
     ],
   },
 };
@@ -277,12 +278,12 @@ const HorizontalMarquee = ({ items }: { items: string[] }) => {
   const repeated = [...items, ...items, ...items];
 
   return (
-    <div className="overflow-hidden border-y border-border/40 py-4 sm:py-5 my-6 sm:my-10">
+    <div className="overflow-hidden border-y border-border/30 py-5 sm:py-6">
       <div ref={scrollRef} className="flex whitespace-nowrap will-change-transform" style={{ display: "inline-flex" }}>
         {repeated.map((item, i) => (
-          <span key={i} className="flex items-center gap-3 sm:gap-4 px-4 sm:px-6">
-            <span className="text-[11px] sm:text-xs uppercase tracking-[0.25em] text-muted-foreground/60 font-semibold">{item}</span>
-            <span className="w-1 h-1 rounded-full bg-muted-foreground/30" />
+          <span key={i} className="flex items-center gap-4 sm:gap-5 px-5 sm:px-7">
+            <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-muted-foreground/50 font-semibold">{item}</span>
+            <span className="w-1 h-1 rounded-full bg-muted-foreground/20" />
           </span>
         ))}
       </div>
@@ -309,38 +310,13 @@ const StatBlock = ({ value, label, delay }: { value: string; label: string; dela
   );
 };
 
-/* ── Hero Overlay Section ── */
-const HeroOverlay = ({ line1, line2, image }: { line1: string; line2: string; image: string }) => (
-  <section className="relative w-full aspect-[16/9] sm:aspect-[21/9] bg-foreground overflow-hidden">
-    <img
-      src={image}
-      alt=""
-      className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-luminosity"
-      loading="lazy"
-    />
-    <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/40 to-transparent" />
-    <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-10 lg:p-16">
-      <AnimateElement type="fade-up">
-        <h2 className="text-background text-[2rem] sm:text-[3rem] lg:text-[4.5rem] font-black leading-[1] tracking-tighter">
-          {line1}
-        </h2>
-      </AnimateElement>
-      <AnimateElement type="fade-up" delay={0.1}>
-        <p className="text-background/60 text-sm sm:text-xl lg:text-2xl font-medium tracking-tight mt-1 sm:mt-2">
-          {line2}
-        </p>
-      </AnimateElement>
-    </div>
-  </section>
-);
-
-/* ── Feature Card Grid (2x2) ── */
+/* ── Feature Card Grid ── */
 const FeatureGrid = ({ cards }: { cards: SeriesContent["featureCards"] }) => (
   <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-6 sm:py-10">
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
       {cards.map((card, i) => (
         <AnimateElement key={card.title} type="fade-up" delay={i * 0.06}>
-          <div className="bg-secondary/30 rounded-xl p-4 sm:p-6 h-full flex flex-col">
+          <div className="bg-secondary/30 rounded-2xl p-4 sm:p-6 h-full flex flex-col">
             <card.icon className="w-5 h-5 sm:w-6 sm:h-6 text-foreground mb-3 sm:mb-4" strokeWidth={1.5} />
             <h3 className="text-sm sm:text-base font-bold text-foreground tracking-tight">{card.title}</h3>
             <p className="text-[11px] sm:text-xs text-muted-foreground mt-1 leading-relaxed">{card.subtitle}</p>
@@ -351,94 +327,9 @@ const FeatureGrid = ({ cards }: { cards: SeriesContent["featureCards"] }) => (
   </section>
 );
 
-/* ── Editorial Headline ── */
-const renderEditorialHeadline = (text: string) => {
-  // Convert _text_ to italic spans
-  const parts = text.split(/(_[^_]+_)/);
-  return parts.map((part, i) => {
-    if (part.startsWith("_") && part.endsWith("_")) {
-      return <em key={i} className="not-italic text-muted-foreground">{part.slice(1, -1)}</em>;
-    }
-    return <span key={i}>{part}</span>;
-  });
-};
-
-/* ── Editorial Split Section ── */
-const EditorialSplit = ({ block, index }: { block: EditorialBlock; index: number }) => {
-  const isRight = block.imagePosition === "right";
-
-  return (
-    <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-8 sm:py-14">
-      <div className={`grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-10 lg:gap-16 items-center ${isRight ? "" : "lg:[direction:rtl]"}`}>
-        {/* Text */}
-        <div className={isRight ? "" : "lg:[direction:ltr]"}>
-          <AnimateElement type="fade-up">
-            <h3 className="text-xl sm:text-2xl lg:text-[2.5rem] font-black text-foreground tracking-tighter leading-[1.1]">
-              {renderEditorialHeadline(block.headline)}
-            </h3>
-          </AnimateElement>
-          <AnimateElement type="fade-up" delay={0.1}>
-            <p className="text-sm sm:text-base text-muted-foreground mt-3 sm:mt-5 leading-relaxed max-w-lg">
-              {block.body}
-            </p>
-          </AnimateElement>
-          {block.bullets && (
-            <AnimateElement type="fade-up" delay={0.2}>
-              <ul className="mt-4 sm:mt-6 space-y-2">
-                {block.bullets.map((bullet) => (
-                  <li key={bullet} className="flex items-center gap-2.5 text-[12px] sm:text-sm text-foreground font-medium">
-                    <BadgeCheck className="w-4 h-4 text-muted-foreground flex-shrink-0" strokeWidth={1.5} />
-                    {bullet}
-                  </li>
-                ))}
-              </ul>
-            </AnimateElement>
-          )}
-        </div>
-
-        {/* Image */}
-        <div className={isRight ? "" : "lg:[direction:ltr]"}>
-          <AnimateElement type="fade-up" delay={0.15}>
-            <div className="relative rounded-2xl overflow-hidden bg-secondary/20 aspect-[4/3]">
-              <img
-                src={block.imageSrc}
-                alt={block.imageAlt}
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-          </AnimateElement>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-/* ── Close-up Gallery ── */
-const CloseUpGallery = ({ images }: { images: SeriesContent["closureImages"] }) => {
-  if (images.length === 0) return null;
-
-  return (
-    <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-4 sm:py-8">
-      <div className={`grid grid-cols-1 ${images.length > 1 ? "sm:grid-cols-2" : ""} gap-3 sm:gap-4`}>
-        {images.map((img, i) => (
-          <AnimateElement key={i} type="fade-up" delay={i * 0.1}>
-            <div className="relative rounded-2xl overflow-hidden bg-secondary/20 aspect-[16/10]">
-              <img src={img.src} alt={img.alt} className="w-full h-full object-cover" loading="lazy" />
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-foreground/80 to-transparent p-4 sm:p-6">
-                <p className="text-[11px] sm:text-sm text-background font-medium">{img.caption}</p>
-              </div>
-            </div>
-          </AnimateElement>
-        ))}
-      </div>
-    </section>
-  );
-};
-
 /* ── Material Card ── */
 const MaterialCard = ({ series }: { series: { material: string; features: string[] } }) => (
-  <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-4 sm:py-8">
+  <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-6 sm:py-10">
     <div className="bg-foreground text-background rounded-2xl p-5 sm:p-8 lg:p-10">
       <AnimateElement type="fade-up">
         <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-background/40 font-semibold">
@@ -475,25 +366,24 @@ const ProductContentSections = ({ product }: { product: Product }) => {
 
   return (
     <div className="w-full">
-      {/* 1. Full-width hero with text overlay */}
-      <HeroOverlay
-        line1={content.heroOverlayLine1}
-        line2={content.heroOverlayLine2}
-        image={content.heroImage}
+      {/* 1. Scroll-linked video with changing text — Concept Theme signature */}
+      <ScrollVideoReveal
+        videoSrc={content.scrollVideoSrc}
+        textItems={content.scrollVideoTexts}
       />
 
       {/* 2. Horizontal feature marquee */}
       <HorizontalMarquee items={content.marqueeItems} />
 
       {/* 3. Editorial headline + description */}
-      <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-6 sm:py-10">
+      <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-10 sm:py-16">
         <AnimateElement type="fade-up">
           <h2 className="text-[1.75rem] sm:text-[2.5rem] lg:text-[3.5rem] font-black text-foreground leading-[1.05] tracking-tighter">
-            {renderEditorialHeadline(content.editorialHeadline)}
+            {content.editorialHeadline}
           </h2>
         </AnimateElement>
         <AnimateElement type="fade-up" delay={0.1}>
-          <p className="text-sm sm:text-lg text-muted-foreground mt-3 sm:mt-4 max-w-2xl leading-relaxed">
+          <p className="text-sm sm:text-lg text-muted-foreground mt-3 sm:mt-5 max-w-2xl leading-relaxed">
             {content.editorialBody}
           </p>
         </AnimateElement>
@@ -508,16 +398,16 @@ const ProductContentSections = ({ product }: { product: Product }) => {
         </div>
       </section>
 
-      {/* 5. Feature card grid */}
+      {/* 5. Featured image grid (2x2 lifestyle cards) */}
+      <FeaturedImageGrid cards={content.featuredCards} />
+
+      {/* 6. Feature icon grid */}
       <FeatureGrid cards={content.featureCards} />
 
-      {/* 6. Editorial split sections (image + text) */}
-      {content.editorialBlocks.map((block, i) => (
-        <EditorialSplit key={i} block={block} index={i} />
+      {/* 7. Image + text editorial blocks (full-width split) */}
+      {content.imageTextBlocks.map((block, i) => (
+        <ImageTextBlock key={i} {...block} />
       ))}
-
-      {/* 7. Close-up gallery */}
-      <CloseUpGallery images={content.closureImages} />
 
       {/* 8. Material card */}
       {series && <MaterialCard series={series} />}
