@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { CartProvider } from "@/context/CartContext";
-import { premiumEase } from "@/lib/motion";
+
 import Index from "./pages/Index";
 import ProductDetail from "./pages/ProductDetail";
 import Collection from "./pages/Collection";
@@ -20,20 +20,19 @@ import WhatsAppButton from "./components/WhatsAppButton";
 
 const queryClient = new QueryClient();
 
+const conceptEase: [number, number, number, number] = [0.25, 1, 0.5, 1];
+
 const pageVariants = {
   initial: {
     opacity: 0,
-    clipPath: "inset(0 0 100% 0)",
   },
   animate: {
     opacity: 1,
-    clipPath: "inset(0 0 0% 0)",
-    transition: { duration: 0.5, ease: premiumEase },
+    transition: { duration: 0.3, ease: conceptEase },
   },
   exit: {
     opacity: 0,
-    clipPath: "inset(100% 0 0 0)",
-    transition: { duration: 0.3, ease: premiumEase },
+    transition: { duration: 0.15, ease: conceptEase },
   },
 };
 
