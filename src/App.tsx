@@ -20,17 +20,19 @@ import WhatsAppButton from "./components/WhatsAppButton";
 
 const queryClient = new QueryClient();
 
+const conceptEase: [number, number, number, number] = [0.25, 1, 0.5, 1];
+
 const pageVariants = {
   initial: {
     opacity: 0,
   },
   animate: {
     opacity: 1,
-    transition: { duration: 0.3, ease: [0.25, 1, 0.5, 1] },
+    transition: { duration: 0.3, ease: conceptEase },
   },
   exit: {
     opacity: 0,
-    transition: { duration: 0.15, ease: [0.25, 1, 0.5, 1] },
+    transition: { duration: 0.15, ease: conceptEase },
   },
 };
 
