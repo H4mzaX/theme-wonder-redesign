@@ -255,7 +255,7 @@ const seriesContentMap: Record<string, SeriesContent> = {
    Sub-components
    ══════════════════════════════════════════ */
 
-/* ── Horizontal Scroll Marquee ── */
+/* ── Small caps marquee ── */
 const HorizontalMarquee = ({ items }: { items: string[] }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -284,6 +284,50 @@ const HorizontalMarquee = ({ items }: { items: string[] }) => {
           <span key={i} className="flex items-center gap-4 sm:gap-5 px-5 sm:px-7">
             <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-muted-foreground/50 font-semibold">{item}</span>
             <span className="w-1 h-1 rounded-full bg-muted-foreground/20" />
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+/* ── Large outlined-text marquee (Concept Theme signature) ── */
+const OutlinedMarquee = ({ items }: { items: string[] }) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    let raf: number;
+    let pos = 0;
+    const speed = 0.6;
+    const step = () => {
+      pos += speed;
+      if (pos >= el.scrollWidth / 2) pos = 0;
+      el.style.transform = `translateX(-${pos}px)`;
+      raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  const repeated = [...items, ...items, ...items];
+
+  return (
+    <div className="overflow-hidden py-8 sm:py-12 lg:py-16">
+      <div ref={scrollRef} className="flex whitespace-nowrap will-change-transform" style={{ display: "inline-flex" }}>
+        {repeated.map((item, i) => (
+          <span key={i} className="flex items-center gap-6 sm:gap-8 px-6 sm:px-8">
+            <span
+              className="text-[3rem] sm:text-[5rem] lg:text-[7rem] xl:text-[8rem] font-black tracking-tighter leading-none select-none"
+              style={{
+                WebkitTextStroke: "1.5px hsl(var(--foreground) / 0.15)",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              {item}
+            </span>
+            <span className="w-2 h-2 sm:w-3 sm:h-3 rounded-full border-2 border-foreground/15 flex-shrink-0" />
           </span>
         ))}
       </div>
@@ -372,8 +416,8 @@ const ProductContentSections = ({ product }: { product: Product }) => {
         textItems={content.scrollVideoTexts}
       />
 
-      {/* 2. Horizontal feature marquee */}
-      <HorizontalMarquee items={content.marqueeItems} />
+      {/* 2. Large outlined-text marquee (Concept Theme signature) */}
+      <OutlinedMarquee items={content.scrollVideoTexts.map(t => t.replace('.', ''))} />
 
       {/* 3. Concept Theme layout: Editorial text LEFT + Featured grid RIGHT */}
       <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-10 sm:py-16 lg:py-20">
@@ -392,22 +436,23 @@ const ProductContentSections = ({ product }: { product: Product }) => {
             </AnimateElement>
           </div>
 
-          {/* Right: Featured image grid (asymmetric) */}
+          {/* Right: Featured image grid — Concept Theme style with rounded corners & centered text */}
           <div className="grid grid-cols-2 gap-3 sm:gap-4">
             {content.featuredCards.map((card, i) => (
               <AnimateElement key={i} type="fade-up" delay={i * 0.08}>
-                <div className={`relative rounded-2xl overflow-hidden group ${
-                  i === 2 ? "col-span-2 aspect-[21/9]" : "aspect-[4/5]"
-                } ${i === 3 ? "col-span-2 aspect-[21/9]" : ""}`}>
+                <div className={`relative rounded-3xl overflow-hidden group ${
+                  i < 2 ? "aspect-square" : "aspect-[4/3]"
+                }`}>
                   <img
                     src={card.image}
                     alt={card.label}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-transparent to-transparent" />
-                  <div className={`absolute p-4 sm:p-5 ${i >= 2 ? "bottom-0 left-0" : "bottom-0 left-0 right-0"}`}>
-                    <p className="text-[10px] sm:text-[11px] text-background/50 font-medium">{card.label}</p>
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-foreground/40" />
+                  {/* Centered text overlay — Concept Theme style */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-end pb-5 sm:pb-7 px-4 text-center">
+                    <p className="text-[10px] sm:text-[11px] text-background/60 font-medium tracking-wide">{card.label}</p>
                     <p className="text-sm sm:text-base lg:text-lg font-bold text-background tracking-tight leading-tight mt-0.5">
                       {card.subtitle}
                     </p>
@@ -419,8 +464,11 @@ const ProductContentSections = ({ product }: { product: Product }) => {
         </div>
       </section>
 
-      {/* 4. Stats bar */}
-      <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 pb-8 sm:pb-12">
+      {/* 4. Small caps marquee */}
+      <HorizontalMarquee items={content.marqueeItems} />
+
+      {/* 5. Stats bar */}
+      <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-8 sm:py-12">
         <div className="grid grid-cols-4 gap-4 sm:gap-6 bg-secondary/30 rounded-2xl p-5 sm:p-8">
           {content.stats.map((stat, i) => (
             <StatBlock key={stat.label} value={stat.value} label={stat.label} delay={i * 0.08} />
@@ -428,15 +476,15 @@ const ProductContentSections = ({ product }: { product: Product }) => {
         </div>
       </section>
 
-      {/* 5. Feature icon grid */}
+      {/* 6. Feature icon grid */}
       <FeatureGrid cards={content.featureCards} />
 
-      {/* 6. Image + text editorial blocks (Concept Theme "Compact Power" style) */}
+      {/* 7. Image + text editorial blocks */}
       {content.imageTextBlocks.map((block, i) => (
         <ImageTextBlock key={i} {...block} />
       ))}
 
-      {/* 7. Material card */}
+      {/* 8. Material card */}
       {series && <MaterialCard series={series} />}
     </div>
   );
