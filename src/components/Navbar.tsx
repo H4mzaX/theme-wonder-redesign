@@ -1,4 +1,4 @@
-import { Search, User, ShoppingBag, Menu, X, ChevronRight, ChevronLeft, ArrowRight } from "lucide-react";
+import { X, ChevronRight, ChevronLeft, ArrowRight } from "lucide-react";
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
