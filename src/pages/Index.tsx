@@ -61,7 +61,7 @@ const Index = () => {
     <div className="min-h-screen bg-announcement overflow-x-clip">
       <LoadingBar />
       <AnnouncementBar />
-      <div className="bg-background mx-2 sm:mx-3 lg:mx-0 rounded-t-[1.75rem] sm:rounded-t-[1.25rem] lg:rounded-t-[0.625rem] overflow-x-clip">
+      <div className="bg-background rounded-t-[1.5rem] sm:rounded-t-[1.25rem] lg:rounded-t-[0.625rem] overflow-x-clip">
       <Navbar onSearchOpen={() => setSearchOpen(true)} onCartOpen={() => setCartOpen(true)} />
       <FloatingSidebar />
       <SearchDrawer open={searchOpen} onClose={() => setSearchOpen(false)} />
