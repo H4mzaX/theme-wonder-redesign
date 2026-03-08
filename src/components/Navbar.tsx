@@ -76,7 +76,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
   return (
     <>
       <motion.nav
-        className={`section-padding w-full py-5 sm:py-5 lg:py-6 sticky top-0 z-50 overflow-visible transition-all duration-300 will-change-transform ${
+        className={`section-padding w-full py-5 sm:py-5 lg:py-6 sticky top-0 z-50 overflow-visible transition-all duration-300 will-change-transform rounded-t-[1.25rem] sm:rounded-t-[1rem] lg:rounded-t-[0.625rem] ${
           isTransparent ? "bg-transparent text-background" : "bg-background"
         }`}
         initial={{ y: 0 }}
