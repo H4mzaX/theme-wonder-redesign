@@ -16,12 +16,14 @@ const seriesList: { slug: SeriesSlug; href: string }[] = [
 const ExploreProducts = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
   const updateScroll = () => {
     const el = scrollRef.current;
     if (!el) return;
     const maxScroll = el.scrollWidth - el.clientWidth;
+    setCanScrollLeft(el.scrollLeft > 10);
     setCanScrollRight(el.scrollLeft < maxScroll - 10);
     if (maxScroll > 0) {
       const progress = el.scrollLeft / maxScroll;
