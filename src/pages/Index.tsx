@@ -38,8 +38,8 @@ const Index = () => {
   const [cartOpen, setCartOpen] = useState(false);
 
   useSEO({
-    title: "VCASE — Premium Phone Cases & Protection for iPhone",
-    description: "Shop premium MagSafe, silicone & clear cases for iPhone 16 & 17. Military-grade drop protection, screen guards & camera lens protectors. Free shipping on prepaid orders.",
+    title: "VCASE — Premium MagSafe Phone Cases & Screen Protectors India",
+    description: "India's best MagSafe clear cases, silicone cases, screen protectors & camera lens guards for iPhone 16 & 17 series. Anti-yellow technology, military-grade drop protection. Free shipping on prepaid orders.",
     canonical: "https://vcase.in/",
     jsonLd: {
       "@context": "https://schema.org",
@@ -47,7 +47,9 @@ const Index = () => {
       name: "VCASE",
       url: "https://vcase.in",
       logo: "https://vcase.in/favicon.png",
-      contactPoint: { "@type": "ContactPoint", email: "veecartretail@gmail.com", contactType: "customer service" },
+      description: "Premium phone cases and protection accessories for iPhone. MagSafe compatible clear cases, silicone cases, tempered glass screen protectors, and camera lens guards.",
+      sameAs: ["https://instagram.com/vcase.in"],
+      contactPoint: { "@type": "ContactPoint", email: "veecartretail@gmail.com", contactType: "customer service", areaServed: "IN" },
     },
   });
 
