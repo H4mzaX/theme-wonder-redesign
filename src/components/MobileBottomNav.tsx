@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Home, LayoutGrid, User } from "lucide-react";
 import { MenuIcon, SearchIcon, CartIcon } from "@/components/icons/PremiumIcons";
 import { Link, useLocation } from "react-router-dom";
@@ -21,9 +22,42 @@ const navItems = [
 const MobileBottomNav = ({ onMenuOpen, onSearchOpen, onCartOpen }: MobileBottomNavProps) => {
   const location = useLocation();
   const { totalItems } = useCart();
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    let lastY = window.scrollY;
+    let ticking = false;
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        // Show when scrolling up or near top, hide when scrolling down
+        if (y < 80) {
+          setVisible(true);
+        } else if (y < lastY - 8) {
+          setVisible(true);
+        } else if (y > lastY + 8) {
+          setVisible(false);
+        }
+        lastY = y;
+        ticking = false;
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border/50 sm:hidden safe-area-bottom">
+    <nav
+      className="fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border/50 sm:hidden safe-area-bottom"
+      style={{
+        transform: visible ? "translateY(0)" : "translateY(100%)",
+        transition: "transform 280ms cubic-bezier(0.25, 1, 0.5, 1)",
+      }}
+    >
       <div className="flex items-center justify-around h-14">
         {navItems.map((item) => {
           const isActive = item.path ? location.pathname === item.path : false;
