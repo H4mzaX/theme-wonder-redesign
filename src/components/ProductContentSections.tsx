@@ -90,10 +90,10 @@ const seriesContentMap: Record<string, SeriesContent> = {
     editorialHeadline: "Where Grip Meets Clarity.",
     editorialBody: "Matte-frosted side rails provide enhanced grip with sophisticated aesthetics, while the anti-yellow nano-coated back panel showcases your device's original design.",
     featuredCards: [
-      { image: "/icons/clearmag-edge.webp", label: "Frosted Sophistication", subtitle: "Matte-Textured Side Rails" },
-      { image: "/icons/clearmag.webp", label: "Crystal Back", subtitle: "Anti-Yellow Clear Panel" },
-      { image: "/icons/clearmag-edge.webp", label: "Dual-Layer", subtitle: "TPU + PC Construction" },
-      { image: "/icons/clearmag.webp", label: "MagSafe", subtitle: "38T Magnetic Precision" },
+      { image: "/icons/clearmag-edge.webp", label: "Frosted Sophistication", subtitle: "Matte-Textured Side Rails", textPosition: "bottom-center" },
+      { image: "/icons/clearmag.webp", label: "Crystal Back", subtitle: "Anti-Yellow Clear Panel", textPosition: "top-left" },
+      { image: "/icons/clearmag-edge.webp", label: "Dual-Layer", subtitle: "TPU + PC Construction", textPosition: "top-right" },
+      { image: "/icons/clearmag.webp", label: "MagSafe", subtitle: "38T Magnetic Precision", textPosition: "center" },
     ],
     imageTextBlocks: [
       {
@@ -123,10 +123,10 @@ const seriesContentMap: Record<string, SeriesContent> = {
     editorialHeadline: "Designed for Comfort.",
     editorialBody: "Buttery-soft liquid silicone exterior meets a cushioning microfiber interior. Four bold colorways crafted with fade-resistant pigments ensure your case looks as good months from now as it does today.",
     featuredCards: [
-      { image: "/icons/softmag.webp", label: "Liquid Silicone", subtitle: "Buttery-Soft Exterior" },
-      { image: "/icons/softmag.webp", label: "Microfiber Lining", subtitle: "Scratch-Free Interior" },
-      { image: "/icons/softmag.webp", label: "4 Bold Colors", subtitle: "Fade-Resistant Pigments" },
-      { image: "/icons/softmag.webp", label: "MagSafe", subtitle: "Integrated Magnets" },
+      { image: "/icons/softmag.webp", label: "Liquid Silicone", subtitle: "Buttery-Soft Exterior", textPosition: "bottom-center" },
+      { image: "/icons/softmag.webp", label: "Microfiber Lining", subtitle: "Scratch-Free Interior", textPosition: "top-left" },
+      { image: "/icons/softmag.webp", label: "4 Bold Colors", subtitle: "Fade-Resistant Pigments", textPosition: "top-right" },
+      { image: "/icons/softmag.webp", label: "MagSafe", subtitle: "Integrated Magnets", textPosition: "center" },
     ],
     imageTextBlocks: [
       {
@@ -156,10 +156,10 @@ const seriesContentMap: Record<string, SeriesContent> = {
     editorialHeadline: "Built for the Fearless.",
     editorialBody: "Precision-engineered sliding camera cover protects from scratches and dust. The 360° rotatable metal ring doubles as a kickstand for hands-free viewing in any orientation.",
     featuredCards: [
-      { image: "/icons/armoredge.png", label: "Camera Slider", subtitle: "Lens Scratch Protection" },
-      { image: "/icons/armoredge.png", label: "Ring Stand", subtitle: "360° Rotatable Metal" },
-      { image: "/icons/armoredge.png", label: "Military Grade", subtitle: "16ft Drop Protection" },
-      { image: "/icons/armoredge.png", label: "360° Bezels", subtitle: "Full Edge Protection" },
+      { image: "/icons/armoredge.png", label: "Camera Slider", subtitle: "Lens Scratch Protection", textPosition: "bottom-center" },
+      { image: "/icons/armoredge.png", label: "Ring Stand", subtitle: "360° Rotatable Metal", textPosition: "top-left" },
+      { image: "/icons/armoredge.png", label: "Military Grade", subtitle: "16ft Drop Protection", textPosition: "top-right" },
+      { image: "/icons/armoredge.png", label: "360° Bezels", subtitle: "Full Edge Protection", textPosition: "center" },
     ],
     imageTextBlocks: [
       {
@@ -189,10 +189,10 @@ const seriesContentMap: Record<string, SeriesContent> = {
     editorialHeadline: "Screen Protection Perfected.",
     editorialBody: "Edge-to-edge 9H tempered glass with oleophobic coating covers every millimeter of your screen. The included easy-align frame ensures bubble-free application in under 60 seconds.",
     featuredCards: [
-      { image: "/icons/edgeguard.webp", label: "9H Glass", subtitle: "Maximum Hardness Rating" },
-      { image: "/icons/edgeguard.webp", label: "Edge-to-Edge", subtitle: "100% Screen Coverage" },
-      { image: "/icons/edgeguard.webp", label: "Anti-Fingerprint", subtitle: "Oleophobic Coating" },
-      { image: "/icons/edgeguard.webp", label: "Easy-Align", subtitle: "60-Second Application" },
+      { image: "/icons/edgeguard.webp", label: "9H Glass", subtitle: "Maximum Hardness Rating", textPosition: "bottom-center" },
+      { image: "/icons/edgeguard.webp", label: "Edge-to-Edge", subtitle: "100% Screen Coverage", textPosition: "top-left" },
+      { image: "/icons/edgeguard.webp", label: "Anti-Fingerprint", subtitle: "Oleophobic Coating", textPosition: "top-right" },
+      { image: "/icons/edgeguard.webp", label: "Easy-Align", subtitle: "60-Second Application", textPosition: "center" },
     ],
     imageTextBlocks: [
       {
@@ -222,10 +222,10 @@ const seriesContentMap: Record<string, SeriesContent> = {
     editorialHeadline: "Lens Protection Reimagined.",
     editorialBody: "Sapphire-grade 9H hardness protects each lens module while the anti-reflective coating eliminates lens flare for crisp, professional-quality photos every time.",
     featuredCards: [
-      { image: "/icons/lensguard.webp", label: "Sapphire-Grade", subtitle: "9H Lens Hardness" },
-      { image: "/icons/lensguard.webp", label: "Anti-Reflective", subtitle: "No Lens Flare" },
-      { image: "/icons/lensguard.webp", label: "Precision Fit", subtitle: "Laser-Cut Modules" },
-      { image: "/icons/lensguard.webp", label: "Ultra Thin", subtitle: "0.3mm Nearly Invisible" },
+      { image: "/icons/lensguard.webp", label: "Sapphire-Grade", subtitle: "9H Lens Hardness", textPosition: "bottom-center" },
+      { image: "/icons/lensguard.webp", label: "Anti-Reflective", subtitle: "No Lens Flare", textPosition: "top-left" },
+      { image: "/icons/lensguard.webp", label: "Precision Fit", subtitle: "Laser-Cut Modules", textPosition: "top-right" },
+      { image: "/icons/lensguard.webp", label: "Ultra Thin", subtitle: "0.3mm Nearly Invisible", textPosition: "center" },
     ],
     imageTextBlocks: [
       {
