@@ -723,21 +723,58 @@ const SeriesProduct = () => {
         </div>
       </section>
 
-      {/* ═══ Related Products ═══ */}
+      {/* ═══ You May Also Like — Horizontal Carousel ═══ */}
       {relatedProducts.length > 0 && (
-        <section className="section-padding py-12 sm:py-20 lg:py-24">
-          <AnimateElement type="fade-up">
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-foreground mb-8 tracking-tight">
-              You May Also Like
-            </h2>
-          </AnimateElement>
-          <StaggerGroup className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5" staggerDelay={0.1}>
+        <section className="py-12 sm:py-20 lg:py-24 overflow-hidden">
+          <div className="section-padding">
+            <AnimateElement type="fade-up">
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-foreground tracking-tight">
+                  You May Also Like
+                </h2>
+                <div className="hidden sm:flex gap-2">
+                  <button
+                    onClick={() => {
+                      const el = document.getElementById("related-carousel");
+                      if (el) el.scrollBy({ left: -280, behavior: "smooth" });
+                    }}
+                    className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
+                    aria-label="Scroll left"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      const el = document.getElementById("related-carousel");
+                      if (el) el.scrollBy({ left: 280, behavior: "smooth" });
+                    }}
+                    className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
+                    aria-label="Scroll right"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </AnimateElement>
+          </div>
+          <div
+            id="related-carousel"
+            className="flex gap-4 sm:gap-5 overflow-x-auto snap-x snap-mandatory pb-4 px-4 sm:px-6 lg:px-10 scrollbar-hide"
+            style={{ scrollbarWidth: "none" }}
+          >
             {relatedProducts.map((product) => (
-              <StaggerChild key={product.id}>
+              <motion.div
+                key={product.id}
+                className="flex-none w-[200px] sm:w-[240px] lg:w-[280px] snap-start"
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.4 }}
+              >
                 <ProductCard product={product} />
-              </StaggerChild>
+              </motion.div>
             ))}
-          </StaggerGroup>
+          </div>
         </section>
       )}
 
