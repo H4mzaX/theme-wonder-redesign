@@ -18,9 +18,21 @@ import softmagFloating from "@/assets/softmag-floating.webp";
 import softmagCamera from "@/assets/softmag-camera.webp";
 import softmagVideo from "@/assets/softmag-showcase.mp4";
 
-// Existing product images for other series
-import magsafeClearImg from "@/assets/case-magsafe-clear.jpg";
-import magsafeBlackImg from "@/assets/case-magsafe-black.jpg";
+// ClearMag product images
+import iphone17proMagsafeClear from "@/assets/iphone17pro-magsafe-clear.jpg";
+import iphone17proMagsafeAttach from "@/assets/iphone17pro-magsafe-attach.jpg";
+import iphone17proSlimDesign from "@/assets/iphone17pro-slim-design.jpg";
+import iphone17proProtection from "@/assets/iphone17pro-protection.jpg";
+import iphone17proStrong from "@/assets/iphone17pro-strong.jpg";
+import iphone17proFingerprints from "@/assets/iphone17pro-fingerprints.jpg";
+
+// ClearMag Edge product images
+import iphone16MagsafeClear from "@/assets/iphone16-magsafe-clear.png";
+import iphone16MagsafeFeatures from "@/assets/iphone16-magsafe-features.png";
+import iphone16MagsafeLifestyle from "@/assets/iphone16-magsafe-lifestyle.jpg";
+import iphone16MagsafeDetails from "@/assets/iphone16-magsafe-details.jpg";
+
+// Protection product images
 import edgeguardImg from "@/assets/edgeguard-screen-protector.jpg";
 import edgeguardHoverImg from "@/assets/edgeguard-screen-protector-hover.jpg";
 import lensguardImg from "@/assets/lensguard-camera-protector.jpg";
