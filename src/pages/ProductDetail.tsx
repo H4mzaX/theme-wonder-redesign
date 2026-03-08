@@ -513,6 +513,13 @@ const ProductDetail = () => {
         </div>
       </section>
 
+      {/* ═══════ FLOATING SECTION NAV ═══════ */}
+      <FloatingNavPill sections={[
+        { id: "pdp-highlights", label: "Highlights" },
+        { id: "pdp-features", label: "Features" },
+        { id: "pdp-faqs", label: "FAQs" },
+      ]} />
+
       {/* ═══════ PREMIUM CONTENT SECTIONS ═══════ */}
       <ProductContentSections product={product} />
 
