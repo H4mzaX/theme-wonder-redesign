@@ -18,6 +18,15 @@ import softmagFloating from "@/assets/softmag-floating.webp";
 import softmagCamera from "@/assets/softmag-camera.webp";
 import softmagVideo from "@/assets/softmag-showcase.mp4";
 
+// Existing product images for other series
+import magsafeClearImg from "@/assets/case-magsafe-clear.jpg";
+import magsafeBlackImg from "@/assets/case-magsafe-black.jpg";
+import armoredgeImg from "@/assets/armoredge-orange.png";
+import edgeguardImg from "@/assets/edgeguard-screen-protector.jpg";
+import edgeguardHoverImg from "@/assets/edgeguard-screen-protector-hover.jpg";
+import lensguardImg from "@/assets/lensguard-camera-protector.jpg";
+import lensguardHoverImg from "@/assets/lensguard-camera-protector-hover.jpg";
+
 const expoOut: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 /* ══════════════════════════════════════════
@@ -56,20 +65,20 @@ const seriesContentMap: Record<string, SeriesContent> = {
     editorialHeadline: "Engineered for Every Detail.",
     editorialBody: "Precision-aligned N52 magnets deliver 38T of magnetic force for instant snap-on MagSafe charging. The nano oleophobic coating resists UV-induced yellowing, keeping your case crystal clear for months.",
     featuredCards: [
-      { image: "/icons/clearmag.webp", label: "Transparent Protection", subtitle: "Anti-Yellow Nano Coating", textPosition: "bottom-center" },
-      { image: "/icons/clearmag-edge.webp", label: "Magnetic Precision", subtitle: "38 N52 MagSafe Magnets", textPosition: "top-left" },
-      { image: "/icons/clearmag.webp", label: "Ultra Slim", subtitle: "1.2mm Polycarbonate Shell", textPosition: "top-right" },
-      { image: "/icons/clearmag-edge.webp", label: "Military Grade", subtitle: "14.8ft Drop Protection", textPosition: "center" },
+      { image: magsafeClearImg, label: "Transparent Protection", subtitle: "Anti-Yellow Nano Coating", textPosition: "bottom-center" },
+      { image: magsafeBlackImg, label: "Magnetic Precision", subtitle: "38 N52 MagSafe Magnets", textPosition: "top-left" },
+      { image: magsafeClearImg, label: "Ultra Slim", subtitle: "1.2mm Polycarbonate Shell", textPosition: "top-right" },
+      { image: magsafeBlackImg, label: "Military Grade", subtitle: "14.8ft Drop Protection", textPosition: "center" },
     ],
     imageTextBlocks: [
       {
-        image: "/icons/clearmag.webp",
+        image: magsafeClearImg,
         headline: "Transparent Protection Perfected.",
         body: "Our anti-yellow nano coating technology ensures your case stays crystal clear, resisting UV-induced yellowing for months of pristine clarity. Show off your device's original design without compromise.",
         highlights: ["Anti-yellow nano coating", "UV-resistant polycarbonate", "Oleophobic surface"],
       },
       {
-        image: "/icons/clearmag-edge.webp",
+        image: magsafeBlackImg,
         headline: "Magnetic Precision Alignment.",
         body: "38 precision-aligned N52 magnets deliver powerful magnetic force for instant snap-on MagSafe charging and accessory attachment. Perfect alignment, every single time.",
         highlights: ["38T magnetic force", "Instant snap-on", "Perfect alignment"],
@@ -96,14 +105,14 @@ const seriesContentMap: Record<string, SeriesContent> = {
     editorialHeadline: "Where Grip Meets Clarity.",
     editorialBody: "Matte-frosted side rails provide enhanced grip with sophisticated aesthetics, while the anti-yellow nano-coated back panel showcases your device's original design.",
     featuredCards: [
-      { image: "/icons/clearmag-edge.webp", label: "Frosted Sophistication", subtitle: "Matte-Textured Side Rails", textPosition: "bottom-center" },
-      { image: "/icons/clearmag.webp", label: "Crystal Back", subtitle: "Anti-Yellow Clear Panel", textPosition: "top-left" },
-      { image: "/icons/clearmag-edge.webp", label: "Dual-Layer", subtitle: "TPU + PC Construction", textPosition: "top-right" },
-      { image: "/icons/clearmag.webp", label: "MagSafe", subtitle: "38T Magnetic Precision", textPosition: "center" },
+      { image: magsafeClearImg, label: "Frosted Sophistication", subtitle: "Matte-Textured Side Rails", textPosition: "bottom-center" },
+      { image: magsafeBlackImg, label: "Crystal Back", subtitle: "Anti-Yellow Clear Panel", textPosition: "top-left" },
+      { image: magsafeClearImg, label: "Dual-Layer", subtitle: "TPU + PC Construction", textPosition: "top-right" },
+      { image: magsafeBlackImg, label: "MagSafe", subtitle: "38T Magnetic Precision", textPosition: "center" },
     ],
     imageTextBlocks: [
       {
-        image: "/icons/clearmag-edge.webp",
+        image: magsafeClearImg,
         headline: "Frosted Sophistication.",
         body: "The matte-textured edges provide a premium feel and enhanced grip while the crystal-clear back panel lets your device's design shine through.",
         highlights: ["Frosted polycarbonate edges", "Anti-yellow clear back", "Enhanced grip texture"],
@@ -162,14 +171,14 @@ const seriesContentMap: Record<string, SeriesContent> = {
     editorialHeadline: "Built for the Fearless.",
     editorialBody: "Precision-engineered sliding camera cover protects from scratches and dust. The 360° rotatable metal ring doubles as a kickstand for hands-free viewing in any orientation.",
     featuredCards: [
-      { image: "/icons/armoredge.png", label: "Camera Slider", subtitle: "Lens Scratch Protection", textPosition: "bottom-center" },
-      { image: "/icons/armoredge.png", label: "Ring Stand", subtitle: "360° Rotatable Metal", textPosition: "top-left" },
-      { image: "/icons/armoredge.png", label: "Military Grade", subtitle: "16ft Drop Protection", textPosition: "top-right" },
-      { image: "/icons/armoredge.png", label: "360° Bezels", subtitle: "Full Edge Protection", textPosition: "center" },
+      { image: armoredgeImg, label: "Camera Slider", subtitle: "Lens Scratch Protection", textPosition: "bottom-center" },
+      { image: armoredgeImg, label: "Ring Stand", subtitle: "360° Rotatable Metal", textPosition: "top-left" },
+      { image: armoredgeImg, label: "Military Grade", subtitle: "16ft Drop Protection", textPosition: "top-right" },
+      { image: armoredgeImg, label: "360° Bezels", subtitle: "Full Edge Protection", textPosition: "center" },
     ],
     imageTextBlocks: [
       {
-        image: "/icons/armoredge.png",
+        image: armoredgeImg,
         headline: "Tactical Engineering.",
         body: "Reinforced corners with dual-layer construction absorb and distribute impact forces. The integrated metal ring stand rotates 360° for landscape or portrait hands-free viewing.",
         highlights: ["Sliding camera cover", "360° metal kickstand", "Reinforced corners"],
@@ -195,14 +204,14 @@ const seriesContentMap: Record<string, SeriesContent> = {
     editorialHeadline: "Screen Protection Perfected.",
     editorialBody: "Edge-to-edge 9H tempered glass with oleophobic coating covers every millimeter of your screen. The included easy-align frame ensures bubble-free application in under 60 seconds.",
     featuredCards: [
-      { image: "/icons/edgeguard.webp", label: "9H Glass", subtitle: "Maximum Hardness Rating", textPosition: "bottom-center" },
-      { image: "/icons/edgeguard.webp", label: "Edge-to-Edge", subtitle: "100% Screen Coverage", textPosition: "top-left" },
-      { image: "/icons/edgeguard.webp", label: "Anti-Fingerprint", subtitle: "Oleophobic Coating", textPosition: "top-right" },
-      { image: "/icons/edgeguard.webp", label: "Easy-Align", subtitle: "60-Second Application", textPosition: "center" },
+      { image: edgeguardImg, label: "9H Glass", subtitle: "Maximum Hardness Rating", textPosition: "bottom-center" },
+      { image: edgeguardHoverImg, label: "Edge-to-Edge", subtitle: "100% Screen Coverage", textPosition: "top-left" },
+      { image: edgeguardImg, label: "Anti-Fingerprint", subtitle: "Oleophobic Coating", textPosition: "top-right" },
+      { image: edgeguardHoverImg, label: "Easy-Align", subtitle: "60-Second Application", textPosition: "center" },
     ],
     imageTextBlocks: [
       {
-        image: "/icons/edgeguard.webp",
+        image: edgeguardImg,
         headline: "Invisible Shield.",
         body: "At just 0.33mm, our tempered glass is virtually invisible while delivering maximum 9H hardness protection. The oleophobic coating repels fingerprints for a consistently clean screen.",
         highlights: ["Bubble-free install", "Case-friendly design", "Touch sensitivity preserved"],
@@ -228,14 +237,14 @@ const seriesContentMap: Record<string, SeriesContent> = {
     editorialHeadline: "Lens Protection Reimagined.",
     editorialBody: "Sapphire-grade 9H hardness protects each lens module while the anti-reflective coating eliminates lens flare for crisp, professional-quality photos every time.",
     featuredCards: [
-      { image: "/icons/lensguard.webp", label: "Sapphire-Grade", subtitle: "9H Lens Hardness", textPosition: "bottom-center" },
-      { image: "/icons/lensguard.webp", label: "Anti-Reflective", subtitle: "No Lens Flare", textPosition: "top-left" },
-      { image: "/icons/lensguard.webp", label: "Precision Fit", subtitle: "Laser-Cut Modules", textPosition: "top-right" },
-      { image: "/icons/lensguard.webp", label: "Ultra Thin", subtitle: "0.3mm Nearly Invisible", textPosition: "center" },
+      { image: lensguardImg, label: "Sapphire-Grade", subtitle: "9H Lens Hardness", textPosition: "bottom-center" },
+      { image: lensguardHoverImg, label: "Anti-Reflective", subtitle: "No Lens Flare", textPosition: "top-left" },
+      { image: lensguardImg, label: "Precision Fit", subtitle: "Laser-Cut Modules", textPosition: "top-right" },
+      { image: lensguardHoverImg, label: "Ultra Thin", subtitle: "0.3mm Nearly Invisible", textPosition: "center" },
     ],
     imageTextBlocks: [
       {
-        image: "/icons/lensguard.webp",
+        image: lensguardImg,
         headline: "Optical Excellence.",
         body: "Each protector is laser-cut for precise camera module fit with zero interference to photo quality. The anti-reflective coating eliminates lens flare for consistently crisp images.",
         highlights: ["Zero camera interference", "Precision module fit", "Professional photo quality"],
