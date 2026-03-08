@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useCart } from "@/context/CartContext";
 import { toast } from "@/hooks/use-toast";
-import type { Product } from "@/data/products";
+import { type Product, getProductUrl } from "@/data/products";
 import BrandName from "@/components/BrandName";
 
 const categorySpecs: Record<string, { icon: React.ElementType; label: string; value: string }[]> = {
@@ -63,7 +63,7 @@ const ProductCard = ({ product }: { product: Product; tag?: string }) => {
 
   return (
     <Link
-      to={`/product/${product.id}`}
+      to={getProductUrl(product)}
       className="group flex flex-col bg-background rounded-xl overflow-hidden border border-border/60 h-full"
     >
       {/* Image area with hover zones */}
