@@ -531,7 +531,7 @@ const FeaturedCard = ({ card, aspectClass, isDark }: {
     : "text-muted-foreground";
 
   return (
-    <div className={`relative rounded-2xl sm:rounded-3xl overflow-hidden group ${aspectClass} bg-white`}>
+    <div className={`relative rounded-xl sm:rounded-2xl overflow-hidden group ${aspectClass} bg-white`}>
       <img
         src={card.image}
         alt={card.label}
