@@ -16,7 +16,8 @@ import edgeguardImg from "@/assets/edgeguard-screen-protector.jpg";
 import edgeguardHoverImg from "@/assets/edgeguard-screen-protector-hover.jpg";
 import lensguardImg from "@/assets/lensguard-camera-protector.jpg";
 import lensguardHoverImg from "@/assets/lensguard-camera-protector-hover.jpg";
-import armoredgeImg from "@/assets/armoredge-orange.png";
+import armoredgeImg from "@/assets/armoredge-protection.webp";
+import armoredgeHoverImg from "@/assets/armoredge-features.webp";
 import softmagImg from "@/assets/softmag.webp";
 
 import iphone17proMagsafeClearImg from "@/assets/iphone17pro-magsafe-clear.jpg";
@@ -228,7 +229,7 @@ const seriesProductDefs: SeriesProductDef[] = [
   { seriesSlug: "clearmag", image: magsafeClearImg, hoverImage: magsafeBlackImg, colors: ["Clear"], basePrice: 1499, originalPrice: 2499, discount: "Save 40%", rating: 5, reviewBase: 120 },
   { seriesSlug: "clearmag-edge", image: magsafeBlackImg, hoverImage: magsafeClearImg, colors: ["Jet Black"], basePrice: 1699, originalPrice: 2999, discount: "Save 43%", rating: 5, reviewBase: 95 },
   { seriesSlug: "softmag", image: softmagImg, hoverImage: softmagImg, colors: ["Black", "Stone", "Navy", "Orange"], basePrice: 1299, originalPrice: 1999, discount: "Save 35%", rating: 5, reviewBase: 200 },
-  { seriesSlug: "armor-edge", image: armoredgeImg, hoverImage: armoredgeImg, colors: ["Orange", "Black"], basePrice: 1899, originalPrice: 2999, discount: "Save 37%", rating: 5, reviewBase: 85 },
+  { seriesSlug: "armor-edge", image: armoredgeImg, hoverImage: armoredgeHoverImg, colors: ["Orange", "Black"], basePrice: 1899, originalPrice: 2999, discount: "Save 37%", rating: 5, reviewBase: 85 },
   { seriesSlug: "edgeguard", image: edgeguardImg, hoverImage: edgeguardHoverImg, colors: ["Clear"], basePrice: 699, originalPrice: 1299, discount: "Save 46%", rating: 5, reviewBase: 180 },
   { seriesSlug: "lensguard", image: lensguardImg, hoverImage: lensguardHoverImg, colors: ["Clear"], basePrice: 499, originalPrice: 999, discount: "Save 50%", rating: 5, reviewBase: 150 },
 ];
