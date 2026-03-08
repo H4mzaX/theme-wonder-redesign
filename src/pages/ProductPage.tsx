@@ -221,7 +221,7 @@ const ProductPage = () => {
               <div className="flex items-baseline gap-3">
                 <span className="text-3xl font-bold text-foreground">{product.price}</span>
                 <span className="text-lg text-muted-foreground line-through">{product.originalPrice}</span>
-                <span className="text-sm font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
+                <span className="text-sm font-semibold text-accent bg-accent/10 px-2 py-0.5 rounded-full">
                   {product.discount}
                 </span>
               </div>
