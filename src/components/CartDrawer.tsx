@@ -305,7 +305,7 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
 
                   return (
                     <div key={`${item.id}-${item.color}`} className="flex gap-4">
-                      <Link to={`/${item.id.split('-').slice(-1)[0]}/${item.id.split('-').slice(0, -1).join('-').replace(/^(iphone-\d+).*/, '$1')}`} onClick={onClose} className="w-24 h-24 rounded-lg bg-muted flex-shrink-0 overflow-hidden">
+                      <Link to={`/product/${item.id}`} onClick={onClose} className="w-24 h-24 rounded-lg bg-muted flex-shrink-0 overflow-hidden">
                         <img src={item.image} alt={item.name} className="w-full h-full object-contain p-2" />
                       </Link>
                       <div className="flex-1 min-w-0">
