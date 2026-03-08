@@ -321,46 +321,57 @@ const SeriesProduct = () => {
 
           {/* ── LEFT: Vertically stacked scroll gallery (Concept style) ── */}
           <div ref={galleryRef} className="lg:col-span-7">
-            {/* Mobile: horizontal swipe gallery */}
+            {/* Mobile: swipeable gallery with dots */}
             <div className="lg:hidden">
-              <div className="relative aspect-[4/5] bg-secondary/20 rounded-2xl overflow-hidden mb-3">
-                <AnimatePresence mode="wait">
-                  <motion.img
-                    key={activeGalleryImg}
-                    src={galleryImages[activeGalleryImg] || currentProduct?.image}
-                    alt={`${series.name} for ${currentProduct?.device}`}
-                    className="w-full h-full object-contain p-6"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    draggable={false}
-                  />
-                </AnimatePresence>
-
-                {/* Series icon */}
-                <motion.div
-                  className="absolute top-4 left-4"
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.3, type: "spring", stiffness: 400, damping: 20 }}
-                >
-                  <img src={series.icon} alt={series.name} className="w-9 h-9 rounded-lg bg-background/80 p-1.5" />
-                </motion.div>
+              <div
+                className="relative overflow-hidden rounded-2xl mx-[-16px] sm:mx-0"
+                onTouchStart={(e) => {
+                  const touch = e.touches[0];
+                  (e.currentTarget as any)._touchStartX = touch.clientX;
+                }}
+                onTouchEnd={(e) => {
+                  const startX = (e.currentTarget as any)._touchStartX;
+                  const endX = e.changedTouches[0].clientX;
+                  const diff = startX - endX;
+                  if (Math.abs(diff) > 50) {
+                    if (diff > 0 && activeGalleryImg < galleryImages.length - 1) {
+                      setActiveGalleryImg(activeGalleryImg + 1);
+                    } else if (diff < 0 && activeGalleryImg > 0) {
+                      setActiveGalleryImg(activeGalleryImg - 1);
+                    }
+                  }
+                }}
+              >
+                <div className="aspect-[4/5] bg-secondary/30">
+                  <AnimatePresence mode="wait">
+                    <motion.img
+                      key={activeGalleryImg}
+                      src={galleryImages[activeGalleryImg] || currentProduct?.image}
+                      alt={`${series.name} for ${currentProduct?.device}`}
+                      className="w-full h-full object-contain p-8"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.25 }}
+                      draggable={false}
+                    />
+                  </AnimatePresence>
+                </div>
               </div>
 
-              {/* Thumbnail strip */}
-              <div className="flex gap-2 overflow-x-auto pb-2" style={{ scrollbarWidth: "none" }}>
-                {galleryImages.slice(0, 4).map((img, i) => (
+              {/* Pagination dots */}
+              <div className="flex items-center justify-center gap-2 py-4">
+                {galleryImages.slice(0, 6).map((_, i) => (
                   <button
                     key={i}
                     onClick={() => setActiveGalleryImg(i)}
-                    className={`flex-none w-16 h-16 rounded-xl overflow-hidden border-2 transition-all ${
-                      i === activeGalleryImg ? "border-foreground" : "border-border/40"
+                    className={`rounded-full transition-all duration-300 ${
+                      i === activeGalleryImg
+                        ? "w-2.5 h-2.5 bg-foreground"
+                        : "w-2 h-2 bg-foreground/25"
                     }`}
-                  >
-                    <img src={img} alt="" className="w-full h-full object-cover" />
-                  </button>
+                    aria-label={`View image ${i + 1}`}
+                  />
                 ))}
               </div>
             </div>
