@@ -16,6 +16,7 @@ import softmagCloseup from "@/assets/softmag-closeup.png";
 import softmagLifestyle from "@/assets/softmag-lifestyle.png";
 import softmagFloating from "@/assets/softmag-floating.png";
 import softmagCamera from "@/assets/softmag-camera.png";
+import softmagVideo from "@/assets/softmag-showcase.mp4";
 
 const expoOut: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
