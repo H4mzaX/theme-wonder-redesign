@@ -12,11 +12,14 @@ import MarqueeSection from "@/components/MarqueeSection";
 import FloatingSidebar from "@/components/FloatingSidebar";
 
 // Lazy-load below-fold sections for faster initial paint
+const WhyVCASE = lazy(() => import("@/components/WhyVCASE"));
 const NewArrivals = lazy(() => import("@/components/NewArrivals"));
 const ProductBanner = lazy(() => import("@/components/ProductBanner"));
+const CraftedSection = lazy(() => import("@/components/CraftedSection"));
 const PromoBanner = lazy(() => import("@/components/PromoBanner"));
 const ExploreLineup = lazy(() => import("@/components/ExploreLineup"));
 const WatchAndShop = lazy(() => import("@/components/WatchAndShop"));
+const TestimonialStrip = lazy(() => import("@/components/TestimonialStrip"));
 const AboutRewardsCards = lazy(() => import("@/components/AboutRewardsCards"));
 const FeaturedIn = lazy(() => import("@/components/FeaturedIn"));
 const TrustBadges = lazy(() => import("@/components/TrustBadges"));
@@ -24,7 +27,6 @@ const Footer = lazy(() => import("@/components/Footer"));
 
 import bannerProduct1 from "@/assets/banner-magsafe-orange-1.png";
 import bannerProduct2 from "@/assets/banner-product-2.jpg";
-import bannerWide1 from "@/assets/banner-wide-1.jpg";
 import bannerWide2 from "@/assets/banner-silicone-fan.jpg";
 
 const LazySection = ({ children }: { children: React.ReactNode }) => (
@@ -69,6 +71,8 @@ const Index = () => {
         <MarqueeSection />
         <ExploreProducts />
 
+        <LazySection><WhyVCASE /></LazySection>
+
         <LazySection>
           <ProductBanner
             image={bannerProduct1}
@@ -83,17 +87,7 @@ const Index = () => {
 
         <LazySection><NewArrivals /></LazySection>
 
-        <LazySection>
-          <ProductBanner
-            image={bannerWide1}
-            title="The Black Edition"
-            subtitle="Limited Drop"
-            cta="Shop Now"
-            href="/collections/black-cases"
-            layout="center"
-            theme="dark"
-          />
-        </LazySection>
+        <LazySection><CraftedSection /></LazySection>
 
         <LazySection><PromoBanner /></LazySection>
         <LazySection><ExploreLineup /></LazySection>
@@ -124,6 +118,7 @@ const Index = () => {
           />
         </LazySection>
 
+        <LazySection><TestimonialStrip /></LazySection>
         <LazySection><AboutRewardsCards /></LazySection>
         <LazySection><FeaturedIn /></LazySection>
         <LazySection><TrustBadges /></LazySection>
