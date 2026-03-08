@@ -806,6 +806,7 @@ const SeriesProduct = () => {
         onSearchOpen={() => setSearchOpen(true)}
         onCartOpen={() => setCartOpen(true)}
       />
+      </div>
     </div>
   );
 };

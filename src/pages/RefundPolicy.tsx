@@ -21,6 +21,7 @@ const RefundPolicy = () => {
   return (
     <div className="min-h-screen bg-announcement text-foreground">
       <AnnouncementBar />
+      <div className="bg-background rounded-t-[2rem] sm:rounded-t-[2.5rem] lg:rounded-t-[3rem] overflow-x-clip">
       <Navbar onSearchOpen={() => setSearchOpen(true)} onCartOpen={() => setCartOpen(true)} />
       <SearchDrawer open={searchOpen} onClose={() => setSearchOpen(false)} />
       <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
