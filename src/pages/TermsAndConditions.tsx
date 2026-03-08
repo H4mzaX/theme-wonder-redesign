@@ -85,6 +85,7 @@ const TermsAndConditions = () => {
       </main>
 
       <Footer />
+      </div>
       <MobileBottomNav />
     </div>
   );

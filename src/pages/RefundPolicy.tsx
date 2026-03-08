@@ -80,6 +80,7 @@ const RefundPolicy = () => {
       </main>
 
       <Footer />
+      </div>
       <MobileBottomNav />
     </div>
   );
