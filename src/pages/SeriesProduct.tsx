@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useParams, Link, useSearchParams } from "react-router-dom";
 import {
   Shield, Magnet, Zap, CheckCircle, ChevronDown, ChevronLeft, ChevronRight,
-  Plus, Package, Truck, Percent, Smartphone, Waves, ShieldCheck, BadgeCheck, Star, CreditCard, Lock, ShoppingBag
+  Package, Truck, Percent, Smartphone, Waves, ShieldCheck, BadgeCheck, Star, Lock, ShoppingBag
 } from "lucide-react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { seriesData, deviceSeries, getSeriesProducts, softmagColors, allProducts, type SeriesSlug, iphone17ProGalleryImages, iphone17GalleryImages, iphone16MagsafeGalleryImages, siliconeGalleryImages } from "@/data/products";
