@@ -51,6 +51,8 @@ const Index = () => {
     },
   });
 
+  usePrefetchRoutes();
+
   return (
     <div className="min-h-screen bg-announcement overflow-x-clip">
       <LoadingBar />
