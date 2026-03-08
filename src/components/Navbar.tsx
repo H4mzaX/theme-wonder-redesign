@@ -115,7 +115,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                   onMouseLeave={handleMouseLeave}
                 >
                   <motion.button
-                    className={`relative z-10 text-[13px] font-semibold uppercase tracking-[0.08em] flex items-center gap-1 px-4 py-2 rounded-full transition-colors duration-200 ${
+                    className={`relative z-10 text-sm font-semibold uppercase tracking-[0.06em] flex items-center gap-1 px-5 py-2.5 rounded-full transition-colors duration-200 ${
                       isActive ? "text-background" : isTransparent ? "text-background/90 hover:text-background" : "text-foreground hover:text-foreground"
                     }`}
                     initial={{ opacity: 0, y: -10 }}
@@ -138,7 +138,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
             {/* Sale link */}
             <Link
               to="/collections/all"
-              className={`text-[13px] font-semibold uppercase tracking-[0.08em] px-4 py-2 transition-colors duration-200 ${
+              className={`text-sm font-semibold uppercase tracking-[0.06em] px-5 py-2.5 transition-colors duration-200 ${
                 isTransparent ? "text-background/90 hover:text-background" : "text-foreground hover:text-accent"
               }`}
             >
@@ -147,15 +147,15 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
           </div>
 
           {/* Right icons */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-7">
             <motion.button className="hover:text-accent transition-colors" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} onClick={onSearchOpen}>
-              <SearchIcon className="w-[22px] h-[22px]" />
+              <SearchIcon className="w-6 h-6" />
             </motion.button>
             <motion.button className="hidden sm:block hover:text-accent transition-colors" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-              <UserIcon className="w-[22px] h-[22px]" />
+              <UserIcon className="w-6 h-6" />
             </motion.button>
             <motion.button className="hover:text-accent transition-colors relative" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} onClick={onCartOpen}>
-              <CartIcon className="w-[22px] h-[22px]" />
+              <CartIcon className="w-6 h-6" />
               {totalItems > 0 && (
                 <span className="absolute -top-1.5 -right-1.5 bg-accent text-accent-foreground text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
                   {totalItems}
