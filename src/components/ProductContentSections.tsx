@@ -25,8 +25,8 @@ interface SeriesContent {
   // Editorial headline below video
   editorialHeadline: string;
   editorialBody: string;
-  // Featured image grid (2x2 lifestyle cards)
-  featuredCards: { image: string; label: string; subtitle: string }[];
+  // Featured image grid cards — each has a text position to vary layout
+  featuredCards: { image: string; label: string; subtitle: string; textPosition?: "bottom-center" | "top-left" | "top-right" | "center" }[];
   // Image + text editorial blocks
   imageTextBlocks: {
     image: string;
@@ -50,10 +50,10 @@ const seriesContentMap: Record<string, SeriesContent> = {
     editorialHeadline: "Engineered for Every Detail.",
     editorialBody: "Precision-aligned N52 magnets deliver 38T of magnetic force for instant snap-on MagSafe charging. The nano oleophobic coating resists UV-induced yellowing, keeping your case crystal clear for months.",
     featuredCards: [
-      { image: "/icons/clearmag.webp", label: "Transparent Protection", subtitle: "Anti-Yellow Nano Coating" },
-      { image: "/icons/clearmag-edge.webp", label: "Magnetic Precision", subtitle: "38 N52 MagSafe Magnets" },
-      { image: "/icons/clearmag.webp", label: "Ultra Slim", subtitle: "1.2mm Polycarbonate Shell" },
-      { image: "/icons/clearmag-edge.webp", label: "Military Grade", subtitle: "14.8ft Drop Protection" },
+      { image: "/icons/clearmag.webp", label: "Transparent Protection", subtitle: "Anti-Yellow Nano Coating", textPosition: "bottom-center" },
+      { image: "/icons/clearmag-edge.webp", label: "Magnetic Precision", subtitle: "38 N52 MagSafe Magnets", textPosition: "top-left" },
+      { image: "/icons/clearmag.webp", label: "Ultra Slim", subtitle: "1.2mm Polycarbonate Shell", textPosition: "top-right" },
+      { image: "/icons/clearmag-edge.webp", label: "Military Grade", subtitle: "14.8ft Drop Protection", textPosition: "center" },
     ],
     imageTextBlocks: [
       {
@@ -90,10 +90,10 @@ const seriesContentMap: Record<string, SeriesContent> = {
     editorialHeadline: "Where Grip Meets Clarity.",
     editorialBody: "Matte-frosted side rails provide enhanced grip with sophisticated aesthetics, while the anti-yellow nano-coated back panel showcases your device's original design.",
     featuredCards: [
-      { image: "/icons/clearmag-edge.webp", label: "Frosted Sophistication", subtitle: "Matte-Textured Side Rails" },
-      { image: "/icons/clearmag.webp", label: "Crystal Back", subtitle: "Anti-Yellow Clear Panel" },
-      { image: "/icons/clearmag-edge.webp", label: "Dual-Layer", subtitle: "TPU + PC Construction" },
-      { image: "/icons/clearmag.webp", label: "MagSafe", subtitle: "38T Magnetic Precision" },
+      { image: "/icons/clearmag-edge.webp", label: "Frosted Sophistication", subtitle: "Matte-Textured Side Rails", textPosition: "bottom-center" },
+      { image: "/icons/clearmag.webp", label: "Crystal Back", subtitle: "Anti-Yellow Clear Panel", textPosition: "top-left" },
+      { image: "/icons/clearmag-edge.webp", label: "Dual-Layer", subtitle: "TPU + PC Construction", textPosition: "top-right" },
+      { image: "/icons/clearmag.webp", label: "MagSafe", subtitle: "38T Magnetic Precision", textPosition: "center" },
     ],
     imageTextBlocks: [
       {
@@ -123,10 +123,10 @@ const seriesContentMap: Record<string, SeriesContent> = {
     editorialHeadline: "Designed for Comfort.",
     editorialBody: "Buttery-soft liquid silicone exterior meets a cushioning microfiber interior. Four bold colorways crafted with fade-resistant pigments ensure your case looks as good months from now as it does today.",
     featuredCards: [
-      { image: "/icons/softmag.webp", label: "Liquid Silicone", subtitle: "Buttery-Soft Exterior" },
-      { image: "/icons/softmag.webp", label: "Microfiber Lining", subtitle: "Scratch-Free Interior" },
-      { image: "/icons/softmag.webp", label: "4 Bold Colors", subtitle: "Fade-Resistant Pigments" },
-      { image: "/icons/softmag.webp", label: "MagSafe", subtitle: "Integrated Magnets" },
+      { image: "/icons/softmag.webp", label: "Liquid Silicone", subtitle: "Buttery-Soft Exterior", textPosition: "bottom-center" },
+      { image: "/icons/softmag.webp", label: "Microfiber Lining", subtitle: "Scratch-Free Interior", textPosition: "top-left" },
+      { image: "/icons/softmag.webp", label: "4 Bold Colors", subtitle: "Fade-Resistant Pigments", textPosition: "top-right" },
+      { image: "/icons/softmag.webp", label: "MagSafe", subtitle: "Integrated Magnets", textPosition: "center" },
     ],
     imageTextBlocks: [
       {
@@ -156,10 +156,10 @@ const seriesContentMap: Record<string, SeriesContent> = {
     editorialHeadline: "Built for the Fearless.",
     editorialBody: "Precision-engineered sliding camera cover protects from scratches and dust. The 360° rotatable metal ring doubles as a kickstand for hands-free viewing in any orientation.",
     featuredCards: [
-      { image: "/icons/armoredge.png", label: "Camera Slider", subtitle: "Lens Scratch Protection" },
-      { image: "/icons/armoredge.png", label: "Ring Stand", subtitle: "360° Rotatable Metal" },
-      { image: "/icons/armoredge.png", label: "Military Grade", subtitle: "16ft Drop Protection" },
-      { image: "/icons/armoredge.png", label: "360° Bezels", subtitle: "Full Edge Protection" },
+      { image: "/icons/armoredge.png", label: "Camera Slider", subtitle: "Lens Scratch Protection", textPosition: "bottom-center" },
+      { image: "/icons/armoredge.png", label: "Ring Stand", subtitle: "360° Rotatable Metal", textPosition: "top-left" },
+      { image: "/icons/armoredge.png", label: "Military Grade", subtitle: "16ft Drop Protection", textPosition: "top-right" },
+      { image: "/icons/armoredge.png", label: "360° Bezels", subtitle: "Full Edge Protection", textPosition: "center" },
     ],
     imageTextBlocks: [
       {
@@ -189,10 +189,10 @@ const seriesContentMap: Record<string, SeriesContent> = {
     editorialHeadline: "Screen Protection Perfected.",
     editorialBody: "Edge-to-edge 9H tempered glass with oleophobic coating covers every millimeter of your screen. The included easy-align frame ensures bubble-free application in under 60 seconds.",
     featuredCards: [
-      { image: "/icons/edgeguard.webp", label: "9H Glass", subtitle: "Maximum Hardness Rating" },
-      { image: "/icons/edgeguard.webp", label: "Edge-to-Edge", subtitle: "100% Screen Coverage" },
-      { image: "/icons/edgeguard.webp", label: "Anti-Fingerprint", subtitle: "Oleophobic Coating" },
-      { image: "/icons/edgeguard.webp", label: "Easy-Align", subtitle: "60-Second Application" },
+      { image: "/icons/edgeguard.webp", label: "9H Glass", subtitle: "Maximum Hardness Rating", textPosition: "bottom-center" },
+      { image: "/icons/edgeguard.webp", label: "Edge-to-Edge", subtitle: "100% Screen Coverage", textPosition: "top-left" },
+      { image: "/icons/edgeguard.webp", label: "Anti-Fingerprint", subtitle: "Oleophobic Coating", textPosition: "top-right" },
+      { image: "/icons/edgeguard.webp", label: "Easy-Align", subtitle: "60-Second Application", textPosition: "center" },
     ],
     imageTextBlocks: [
       {
@@ -222,10 +222,10 @@ const seriesContentMap: Record<string, SeriesContent> = {
     editorialHeadline: "Lens Protection Reimagined.",
     editorialBody: "Sapphire-grade 9H hardness protects each lens module while the anti-reflective coating eliminates lens flare for crisp, professional-quality photos every time.",
     featuredCards: [
-      { image: "/icons/lensguard.webp", label: "Sapphire-Grade", subtitle: "9H Lens Hardness" },
-      { image: "/icons/lensguard.webp", label: "Anti-Reflective", subtitle: "No Lens Flare" },
-      { image: "/icons/lensguard.webp", label: "Precision Fit", subtitle: "Laser-Cut Modules" },
-      { image: "/icons/lensguard.webp", label: "Ultra Thin", subtitle: "0.3mm Nearly Invisible" },
+      { image: "/icons/lensguard.webp", label: "Sapphire-Grade", subtitle: "9H Lens Hardness", textPosition: "bottom-center" },
+      { image: "/icons/lensguard.webp", label: "Anti-Reflective", subtitle: "No Lens Flare", textPosition: "top-left" },
+      { image: "/icons/lensguard.webp", label: "Precision Fit", subtitle: "Laser-Cut Modules", textPosition: "top-right" },
+      { image: "/icons/lensguard.webp", label: "Ultra Thin", subtitle: "0.3mm Nearly Invisible", textPosition: "center" },
     ],
     imageTextBlocks: [
       {
@@ -397,6 +397,48 @@ const MaterialCard = ({ series }: { series: { material: string; features: string
   </section>
 );
 
+/* ── Featured Card — Concept Theme varied text positions ── */
+const FeaturedCard = ({ card, aspectClass, isDark }: {
+  card: SeriesContent["featuredCards"][0];
+  aspectClass: string;
+  isDark: boolean;
+}) => {
+  const pos = card.textPosition || "bottom-center";
+
+  const textPositionClass = {
+    "bottom-center": "absolute bottom-0 left-0 right-0 p-4 sm:p-5 text-center",
+    "top-left": "absolute top-0 left-0 p-4 sm:p-5 text-left",
+    "top-right": "absolute top-0 right-0 p-4 sm:p-6 text-right max-w-[85%]",
+    "center": "absolute inset-0 flex flex-col items-center justify-center text-center px-6",
+  }[pos];
+
+  const textColor = isDark || pos === "top-right" || pos === "center"
+    ? "text-background"
+    : "text-foreground";
+
+  const labelColor = isDark || pos === "top-right" || pos === "center"
+    ? "text-background/60"
+    : "text-primary";
+
+  return (
+    <div className={`relative rounded-2xl sm:rounded-3xl overflow-hidden group ${aspectClass} ${isDark ? "bg-foreground" : "bg-secondary/10"}`}>
+      <img
+        src={card.image}
+        alt={card.label}
+        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        loading="lazy"
+      />
+      {isDark && <div className="absolute inset-0 bg-foreground/20" />}
+      <div className={textPositionClass}>
+        <p className={`text-[11px] sm:text-xs font-medium ${labelColor}`}>{card.label}</p>
+        <p className={`text-sm sm:text-lg lg:text-xl font-bold tracking-tight leading-tight mt-0.5 ${textColor}`}>
+          {card.subtitle}
+        </p>
+      </div>
+    </div>
+  );
+};
+
 /* ══════════════════════════════════════════
    Main Component
    ══════════════════════════════════════════ */
@@ -421,9 +463,9 @@ const ProductContentSections = ({ product }: { product: Product }) => {
       {/* 2. Large outlined-text marquee */}
       <OutlinedMarquee items={content.scrollVideoTexts.map(t => t.replace('.', ''))} />
 
-      {/* 3. Editorial text + Featured gallery (Concept Theme exact layout) */}
+      {/* 3. Editorial text + Featured gallery — Concept Theme exact layout */}
       <div id="pdp-features">
-        {/* Editorial text — full width above gallery on mobile, side by side on desktop */}
+        {/* Editorial text — full width on mobile, left column on desktop */}
         <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 pt-10 sm:pt-16 lg:pt-20 pb-6 sm:pb-8">
           <div className="grid grid-cols-1 lg:grid-cols-[4fr_8fr] gap-6 lg:gap-12 items-start">
             <div className="lg:sticky lg:top-[100px]">
@@ -439,67 +481,40 @@ const ProductContentSections = ({ product }: { product: Product }) => {
               </AnimateElement>
             </div>
 
-            {/* Desktop: 2-col asymmetric grid (2 stacked left + 1 tall right) */}
+            {/* Desktop: 2-col asymmetric grid */}
             <div className="hidden lg:grid grid-cols-[5fr_4fr] gap-4">
               {/* Left: 2 stacked cards */}
               <div className="flex flex-col gap-4">
                 {content.featuredCards.slice(0, 2).map((card, i) => (
                   <AnimateElement key={i} type="fade-up" delay={i * 0.1}>
-                    <div className="relative rounded-3xl overflow-hidden group aspect-[4/3] bg-secondary/20">
-                      <img src={card.image} alt={card.label} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
-                      <div className="absolute bottom-0 left-0 right-0 p-5 text-center">
-                        <p className="text-xs text-primary font-medium">{card.label}</p>
-                        <p className="text-lg font-bold text-foreground tracking-tight leading-tight mt-0.5">{card.subtitle}</p>
-                      </div>
-                    </div>
+                    <FeaturedCard card={card} aspectClass="aspect-[4/3]" isDark={false} />
                   </AnimateElement>
                 ))}
               </div>
               {/* Right: 1 tall card */}
               {content.featuredCards[2] && (
                 <AnimateElement type="fade-up" delay={0.15}>
-                  <div className="relative rounded-3xl overflow-hidden group h-full min-h-[500px] bg-foreground">
-                    <img src={content.featuredCards[2].image} alt={content.featuredCards[2].label} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
-                    <div className="absolute top-0 right-0 p-6 text-right max-w-[85%]">
-                      <p className="text-xs text-primary font-medium">{content.featuredCards[2].label}</p>
-                      <p className="text-xl lg:text-2xl font-bold text-background tracking-tight leading-tight mt-0.5">{content.featuredCards[2].subtitle}</p>
-                    </div>
-                  </div>
+                  <FeaturedCard card={content.featuredCards[2]} aspectClass="h-full min-h-[500px]" isDark={true} />
                 </AnimateElement>
               )}
             </div>
           </div>
         </section>
 
-        {/* Mobile: Full-width stacked cards — exact Concept Theme mobile layout */}
+        {/* Mobile: Full-width stacked cards */}
         <div className="lg:hidden px-4 sm:px-6 pb-6 flex flex-col gap-4">
-          {content.featuredCards.map((card, i) => (
+          {content.featuredCards.slice(0, 3).map((card, i) => (
             <AnimateElement key={i} type="fade-up" delay={i * 0.08}>
-              <div className="relative rounded-3xl overflow-hidden group bg-secondary/10">
-                <div className="aspect-[4/3]">
-                  <img src={card.image} alt={card.label} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
-                </div>
-                <div className="p-4 sm:p-5 text-center">
-                  <p className="text-[11px] sm:text-xs text-primary font-medium">{card.label}</p>
-                  <p className="text-base sm:text-lg font-bold text-foreground tracking-tight leading-tight mt-0.5">{card.subtitle}</p>
-                </div>
-              </div>
+              <FeaturedCard card={card} aspectClass="aspect-[4/3]" isDark={i === 2} />
             </AnimateElement>
           ))}
         </div>
 
-        {/* Desktop: Bottom wide card (4th) */}
+        {/* Bottom wide card (4th) — both mobile + desktop */}
         {content.featuredCards[3] && (
-          <div className="hidden lg:block max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 pb-10">
+          <div className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 pb-8 sm:pb-10">
             <AnimateElement type="fade-up" delay={0.2}>
-              <div className="relative rounded-3xl overflow-hidden group aspect-[21/9]">
-                <img src={content.featuredCards[3].image} alt={content.featuredCards[3].label} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
-                <div className="absolute inset-0 bg-gradient-to-r from-foreground/40 to-transparent" />
-                <div className="absolute bottom-0 left-0 p-8">
-                  <p className="text-xs text-primary font-medium">{content.featuredCards[3].label}</p>
-                  <p className="text-2xl lg:text-3xl font-bold text-background tracking-tight leading-tight mt-1">{content.featuredCards[3].subtitle}</p>
-                </div>
-              </div>
+              <FeaturedCard card={content.featuredCards[3]} aspectClass="aspect-[16/9] sm:aspect-[21/9]" isDark={true} />
             </AnimateElement>
           </div>
         )}
