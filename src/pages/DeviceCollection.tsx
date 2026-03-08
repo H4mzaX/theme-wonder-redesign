@@ -12,6 +12,7 @@ import CartDrawer from "@/components/CartDrawer";
 import CollectionProductCard from "@/components/CollectionProductCard";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import AnimateElement, { StaggerGroup, StaggerChild } from "@/components/AnimateElement";
+import BrandName from "@/components/BrandName";
 
 import collectionHero from "@/assets/collection-hero-cases.jpg";
 import { useRef } from "react";
@@ -188,7 +189,7 @@ const DeviceCollection = () => {
                         <div className="flex items-center gap-3">
                           <img src={info.icon} alt={info.name} className="w-7 h-7 lg:w-9 lg:h-9 rounded-lg" />
                           <div>
-                            <h3 className="text-base sm:text-lg font-semibold text-foreground">{info.name}</h3>
+                            <BrandName name={info.name} as="h3" className="text-base sm:text-lg text-foreground" />
                             <p className="text-xs text-muted-foreground">{info.tagline}</p>
                           </div>
                         </div>
