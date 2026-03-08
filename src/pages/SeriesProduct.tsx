@@ -582,20 +582,6 @@ const SeriesProduct = () => {
                 </motion.button>
               </motion.div>
 
-              {/* Wishlist + Share */}
-              <motion.div
-                className="flex gap-3 mt-3"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.55, duration: 0.3 }}
-              >
-                <button className="flex-1 flex items-center justify-center gap-2 border border-border rounded-xl py-2.5 text-sm font-medium hover:bg-muted transition-colors">
-                  <Heart className="w-4 h-4" /> Wishlist
-                </button>
-                <button className="flex-1 flex items-center justify-center gap-2 border border-border rounded-xl py-2.5 text-sm font-medium hover:bg-muted transition-colors">
-                  <Share2 className="w-4 h-4" /> Share
-                </button>
-              </motion.div>
 
               {/* ── Payment Trust Badges ── */}
               <motion.div
