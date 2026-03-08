@@ -451,15 +451,6 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                                   </button>
                                 </p>
                                 {casesMenuItems.map((item) => (
-                                  item.comingSoon ? (
-                                    <div key={item.name} className="flex items-center gap-3 py-2 opacity-50">
-                                      <img src={item.icon} alt={item.name} className="w-9 h-9 rounded-lg" />
-                                      <div>
-                                       <BrandName name={item.name} className="text-[15px] font-medium text-foreground" />
-                                        <p className="text-[10px] text-muted-foreground">Coming Soon</p>
-                                      </div>
-                                    </div>
-                                  ) : (
                                     <button
                                       key={item.name}
                                       onClick={() => setMobileDrilldown(item.slug)}
@@ -472,7 +463,6 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                                       </div>
                                       <ChevronRight className="w-4 h-4 text-muted-foreground" />
                                     </button>
-                                  )
                                 ))}
                               </>
                             ) : (
