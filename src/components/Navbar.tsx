@@ -192,40 +192,41 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                       <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-4">Case Series</p>
                       <div className="flex flex-col">
                         {casesMenuItems.map((item, idx) => (
-                          <div key={item.name} className="group">
-                            {(
-                              <motion.div
-                                className="flex items-center justify-between py-3 border-b border-border/10 last:border-0"
-                                initial={{ opacity: 0, x: -8 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: idx * 0.03, duration: 0.2 }}
-                              >
-                                <div className="flex items-center gap-3">
-                                  <img src={item.icon} alt={item.name} className="w-11 h-11 rounded-lg" />
-                                  <div>
-                                    <BrandName name={item.name} className="text-[15px] font-medium text-foreground" />
-                                    {item.tag && (
-                                      <span className="ml-2 text-[9px] uppercase tracking-wider font-bold bg-accent/10 text-accent px-1.5 py-0.5 rounded">
-                                        {item.tag}
-                                      </span>
-                                    )}
-                                  </div>
-                                </div>
-                                <div className="flex items-center gap-4 text-sm">
-                                  {deviceSeries.map((group) => (
-                                    <Link
-                                      key={group.slug}
-                                      to={`/${item.slug}/${group.slug}`}
-                                      onClick={closeMega}
-                                      className="text-muted-foreground hover:text-accent transition-colors"
-                                    >
-                                      {group.name.replace(" Series", "")}
-                                    </Link>
-                                  ))}
-                                </div>
-                              </motion.div>
-                            )}
-                          </div>
+                          <motion.div
+                            key={item.name}
+                            className="flex items-center justify-between py-3 border-b border-border/10 last:border-0 group/row"
+                            initial={{ opacity: 0, x: -8 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: idx * 0.03, duration: 0.2 }}
+                          >
+                            <Link
+                              to={`/${item.slug}`}
+                              onClick={closeMega}
+                              className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+                            >
+                              <img src={item.icon} alt={item.name} className="w-11 h-11 rounded-lg" />
+                              <div>
+                                <BrandName name={item.name} className="text-[15px] font-medium text-foreground" />
+                                {item.tag && (
+                                  <span className="ml-2 text-[9px] uppercase tracking-wider font-bold bg-accent/10 text-accent px-1.5 py-0.5 rounded">
+                                    {item.tag}
+                                  </span>
+                                )}
+                              </div>
+                            </Link>
+                            <div className="flex items-center gap-4 text-sm">
+                              {deviceSeries.map((group) => (
+                                <Link
+                                  key={group.slug}
+                                  to={`/${item.slug}/${group.slug}`}
+                                  onClick={closeMega}
+                                  className="text-muted-foreground hover:text-accent transition-colors font-medium"
+                                >
+                                  {group.name.replace(" Series", "")}
+                                </Link>
+                              ))}
+                            </div>
+                          </motion.div>
                         ))}
                       </div>
                     </div>
