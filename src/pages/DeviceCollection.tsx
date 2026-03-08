@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Smartphone, ArrowRight, Shield, Camera } from "lucide-react";
-import { motion } from "framer-motion";
-import { deviceSeries, seriesData, getDeviceProducts, allProducts, type SeriesSlug } from "@/data/products";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { deviceSeries, seriesData, getDeviceProducts, type SeriesSlug } from "@/data/products";
 import { premiumEase } from "@/lib/motion";
 import Navbar from "@/components/Navbar";
 import AnnouncementBar from "@/components/AnnouncementBar";
@@ -11,8 +11,10 @@ import SearchDrawer from "@/components/SearchDrawer";
 import CartDrawer from "@/components/CartDrawer";
 import CollectionProductCard from "@/components/CollectionProductCard";
 import MobileBottomNav from "@/components/MobileBottomNav";
+import AnimateElement, { StaggerGroup, StaggerChild } from "@/components/AnimateElement";
 
 import collectionHero from "@/assets/collection-hero-cases.jpg";
+import { useRef } from "react";
 
 const sectionConfig = [
   {
@@ -36,6 +38,14 @@ const DeviceCollection = () => {
   const { deviceSlug } = useParams<{ deviceSlug: string }>();
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const heroRef = useRef<HTMLElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const heroScale = useTransform(scrollYProgress, [0, 1], [1.05, 1.2]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.3]);
 
   const deviceGroup = deviceSeries.find((g) => g.slug === deviceSlug);
 
@@ -72,14 +82,22 @@ const DeviceCollection = () => {
       <SearchDrawer open={searchOpen} onClose={() => setSearchOpen(false)} />
       <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
 
-      {/* ═══ Hero ═══ */}
+      {/* ═══ Hero with parallax ═══ */}
       <motion.section
+        ref={heroRef}
         className="relative -mt-[60px] h-[400px] sm:h-[450px] lg:h-[500px] overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
       >
-        <img src={collectionHero} alt={deviceGroup.name} className="w-full h-full object-cover" />
+        <motion.div className="absolute inset-0" style={{ opacity: heroOpacity }}>
+          <motion.img
+            src={collectionHero}
+            alt={deviceGroup.name}
+            className="w-full h-full object-cover"
+            style={{ scale: heroScale }}
+          />
+        </motion.div>
         <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/50 to-foreground/20" />
         <div className="absolute bottom-0 left-0 right-0 section-padding pb-16 sm:pb-20">
           <motion.div
@@ -100,9 +118,9 @@ const DeviceCollection = () => {
           </motion.p>
           <motion.h1
             className="text-3xl sm:text-5xl lg:text-6xl font-display font-bold text-background leading-[1.1] tracking-tight"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35, duration: 0.6, ease: premiumEase }}
+            initial={{ opacity: 0, clipPath: "inset(100% 0 0 0)" }}
+            animate={{ opacity: 1, clipPath: "inset(0% 0 0 0)" }}
+            transition={{ delay: 0.35, duration: 0.7, ease: premiumEase }}
           >
             {deviceGroup.name}
           </motion.h1>
@@ -117,7 +135,7 @@ const DeviceCollection = () => {
         </div>
       </motion.section>
 
-      {/* ═══ Content ═══ */}
+      {/* ═══ Content — floating panel ═══ */}
       <motion.div
         className="relative -mt-8 bg-background rounded-t-[2.5rem] sm:rounded-t-[3rem] z-10 shadow-[0_-8px_30px_rgba(0,0,0,0.12)]"
         initial={{ y: 40, opacity: 0 }}
@@ -136,12 +154,12 @@ const DeviceCollection = () => {
         </div>
 
         {/* Product count */}
-        <div className="section-padding pb-4">
+        <AnimateElement type="fade" delay={0.4} className="section-padding pb-4">
           <p className="text-sm text-muted-foreground">{allDeviceProducts.length} products</p>
-        </div>
+        </AnimateElement>
 
-        {/* Sections: Cases, Screen Protection, Camera Protection */}
-        {sectionConfig.map((section) => {
+        {/* Sections with staggered animations */}
+        {sectionConfig.map((section, sectionIdx) => {
           const sectionProducts = allDeviceProducts.filter((p) =>
             section.seriesSlugs.includes(p.seriesSlug as SeriesSlug)
           );
@@ -149,14 +167,15 @@ const DeviceCollection = () => {
 
           return (
             <section key={section.title} className="section-padding py-6 sm:py-8">
-              <div className="flex items-center gap-3 mb-6">
-                <section.icon className="w-5 h-5 text-foreground" strokeWidth={1.5} />
-                <h2 className="text-lg sm:text-xl lg:text-2xl font-display font-bold text-foreground">
-                  {section.title}
-                </h2>
-              </div>
+              <AnimateElement type="fade-left" delay={0.1}>
+                <div className="flex items-center gap-3 mb-6">
+                  <section.icon className="w-5 h-5 text-foreground" strokeWidth={1.5} />
+                  <h2 className="text-lg sm:text-xl lg:text-2xl font-display font-bold text-foreground">
+                    {section.title}
+                  </h2>
+                </div>
+              </AnimateElement>
 
-              {/* Sub-group by series */}
               {section.seriesSlugs.map((slug) => {
                 const seriesProducts = sectionProducts.filter((p) => p.seriesSlug === slug);
                 if (seriesProducts.length === 0) return null;
@@ -164,26 +183,30 @@ const DeviceCollection = () => {
 
                 return (
                   <div key={slug} className="mb-8">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-3">
-                        <img src={info.icon} alt={info.name} className="w-7 h-7 lg:w-9 lg:h-9 rounded-lg" />
-                        <div>
-                          <h3 className="text-base sm:text-lg font-semibold text-foreground">{info.name}</h3>
-                          <p className="text-xs text-muted-foreground">{info.tagline}</p>
+                    <AnimateElement type="fade-up" delay={0.1}>
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                          <img src={info.icon} alt={info.name} className="w-7 h-7 lg:w-9 lg:h-9 rounded-lg" />
+                          <div>
+                            <h3 className="text-base sm:text-lg font-semibold text-foreground">{info.name}</h3>
+                            <p className="text-xs text-muted-foreground">{info.tagline}</p>
+                          </div>
                         </div>
+                        <Link
+                          to={`/${slug}/${deviceSlug}`}
+                          className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-accent hover:underline"
+                        >
+                          View All <ArrowRight className="w-3.5 h-3.5" />
+                        </Link>
                       </div>
-                      <Link
-                        to={`/${slug}/${deviceSlug}`}
-                        className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-accent hover:underline"
-                      >
-                        View All <ArrowRight className="w-3.5 h-3.5" />
-                      </Link>
-                    </div>
-                    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+                    </AnimateElement>
+                    <StaggerGroup className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5" staggerDelay={0.08}>
                       {seriesProducts.slice(0, 4).map((product) => (
-                        <CollectionProductCard key={product.id} product={product} />
+                        <StaggerChild key={product.id}>
+                          <CollectionProductCard product={product} />
+                        </StaggerChild>
                       ))}
-                    </div>
+                    </StaggerGroup>
                   </div>
                 );
               })}
@@ -191,25 +214,28 @@ const DeviceCollection = () => {
           );
         })}
 
-        {/* ═══ Explore other devices ═══ */}
+        {/* Explore other devices */}
         <section className="section-padding py-8 sm:py-12 pb-20">
-          <h2 className="text-lg sm:text-xl font-display font-bold text-foreground mb-4">
-            Explore Other Devices
-          </h2>
-          <div className="flex flex-wrap gap-3">
+          <AnimateElement type="fade-up">
+            <h2 className="text-lg sm:text-xl font-display font-bold text-foreground mb-4">
+              Explore Other Devices
+            </h2>
+          </AnimateElement>
+          <StaggerGroup className="flex flex-wrap gap-3" staggerDelay={0.08}>
             {deviceSeries
               .filter((g) => g.slug !== deviceSlug)
               .map((group) => (
-                <Link
-                  key={group.slug}
-                  to={`/devices/${group.slug}`}
-                  className="inline-flex items-center gap-2 border border-border rounded-full px-5 py-2.5 text-sm font-medium hover:bg-muted transition-colors"
-                >
-                  <Smartphone className="w-4 h-4" />
-                  {group.name}
-                </Link>
+                <StaggerChild key={group.slug}>
+                  <Link
+                    to={`/devices/${group.slug}`}
+                    className="inline-flex items-center gap-2 border border-border rounded-full px-5 py-2.5 text-sm font-medium hover:bg-muted transition-colors"
+                  >
+                    <Smartphone className="w-4 h-4" />
+                    {group.name}
+                  </Link>
+                </StaggerChild>
               ))}
-          </div>
+          </StaggerGroup>
         </section>
       </motion.div>
 
