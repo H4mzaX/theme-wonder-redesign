@@ -86,7 +86,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
         <div className="flex items-center justify-between">
           {/* Mobile hamburger */}
           <button
-            className="lg:hidden w-10 h-10 flex items-center justify-center -ml-2 rounded-full hover:bg-muted active:scale-95 transition-all"
+            className="lg:hidden w-11 h-11 flex items-center justify-center -ml-2 rounded-full hover:bg-muted active:scale-95 transition-all"
             onClick={() => setMobileOpen(true)}
           >
             <MenuIcon className="w-6 h-6" />
