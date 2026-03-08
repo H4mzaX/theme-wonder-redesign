@@ -11,6 +11,11 @@ import ScrollVideoReveal from "@/components/ScrollVideoReveal";
 import FeaturedImageGrid from "@/components/FeaturedImageGrid";
 import ImageTextBlock from "@/components/ImageTextBlock";
 import heroVideo from "@/assets/hero-video.mp4";
+import clearmagVideo from "@/assets/clearmag-showcase.mp4";
+import clearmagEdgeVideo from "@/assets/clearmag-edge-showcase.mp4";
+import armoredgeVideo from "@/assets/armoredge-showcase.mp4";
+import edgeguardVideo from "@/assets/edgeguard-showcase.mp4";
+import lensguardVideo from "@/assets/lensguard-showcase.mp4";
 
 import softmagCloseup from "@/assets/softmag-closeup.webp";
 import softmagLifestyle from "@/assets/softmag-lifestyle.webp";
