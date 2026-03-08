@@ -67,25 +67,25 @@ const ExploreProducts = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ delay: i * 0.08, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                  className="flex-none w-[calc(50vw-22px)] sm:w-[44vw] md:w-[280px] lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-12px)] snap-start"
+                  className="flex-none w-[60vw] sm:w-[44vw] md:w-[320px] lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-12px)] snap-start"
                 >
                   <Link
                     to={href}
-                    className="group block rounded-2xl sm:rounded-3xl overflow-hidden bg-background border border-border/30 shadow-[0_2px_16px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] hover:border-border/60 transition-all duration-500"
+                    className="group block rounded-2xl overflow-hidden bg-background shadow-sm hover:shadow-xl transition-shadow duration-500"
                   >
-                    {/* Product image — zoomed in, clean bg */}
-                    <div className="aspect-square sm:aspect-[3/4] flex items-center justify-center p-4 sm:p-6 bg-muted/20">
+                    {/* Product image — standardized square */}
+                    <div className="aspect-square flex items-center justify-center bg-muted/15">
                       <img
                         src={series.icon}
                         alt={series.name}
-                        className="w-[85%] h-[85%] object-contain scale-110 group-hover:scale-[1.18] transition-transform duration-700 ease-out"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                         loading="lazy"
                         decoding="async"
                       />
                     </div>
 
                     {/* Series name with BrandName typography */}
-                    <div className="px-4 sm:px-5 py-4 sm:py-5 text-center">
+                    <div className="py-4 sm:py-5 text-center">
                       <BrandName
                         name={series.name}
                         as="p"
