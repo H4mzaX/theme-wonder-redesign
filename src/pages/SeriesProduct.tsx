@@ -36,9 +36,10 @@ const faqItems = [
 
 const SeriesProduct = () => {
   const { seriesSlug, deviceSlug } = useParams<{ seriesSlug: string; deviceSlug: string }>();
+  const [searchParams] = useSearchParams();
+  const modelParam = searchParams.get("model");
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
-  const [selectedModel, setSelectedModel] = useState(0);
   const [selectedColor, setSelectedColor] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -50,7 +51,27 @@ const SeriesProduct = () => {
   const series = seriesData[seriesSlug as SeriesSlug];
   const deviceGroup = deviceSeries.find((g) => g.slug === deviceSlug);
 
-  const deviceName = deviceGroup?.name?.replace(" Series", "") || deviceSlug || "";
+  // Resolve selected model from URL query param
+  const resolveModelIndex = () => {
+    if (!deviceGroup || !seriesSlug) return 0;
+    const products = getSeriesProducts(seriesSlug, deviceSlug!);
+    if (modelParam) {
+      const model = deviceGroup.models.find((m) => m.slug === modelParam);
+      if (model) {
+        const idx = products.findIndex((p) => p.device === model.name);
+        if (idx >= 0) return idx;
+      }
+    }
+    return 0;
+  };
+  const [selectedModel, setSelectedModel] = useState(resolveModelIndex);
+
+  // Update selected model when URL changes
+  useEffect(() => {
+    setSelectedModel(resolveModelIndex());
+    setActiveGalleryImg(0);
+  }, [modelParam, seriesSlug, deviceSlug]);
+
   const seriesName = series?.name || seriesSlug || "";
 
   useSEO({
