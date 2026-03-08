@@ -5,7 +5,7 @@ import { drawerSpring } from "@/lib/motion";
 import { useCart } from "@/context/CartContext";
 import { Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { bestSellerTabs, newArrivalProducts } from "@/data/products";
+import { bestSellerTabs, newArrivalProducts, getProductUrl, getProductUrlById } from "@/data/products";
 import collectionCases from "@/assets/collection-headphones.jpg";
 import collectionProtectors from "@/assets/collection-earphones.jpg";
 import collectionRugged from "@/assets/collection-speakers.jpg";
@@ -27,7 +27,7 @@ const topPicks = [
     price: p.price,
     originalPrice: p.originalPrice,
     image: p.image,
-    href: `/product/${p.id}`,
+    href: getProductUrl(p),
   })),
   ...newArrivalProducts.slice(0, 3).map((p) => ({
     id: p.id,
@@ -36,7 +36,7 @@ const topPicks = [
     price: p.price,
     originalPrice: p.originalPrice,
     image: p.image,
-    href: `/product/${p.id}`,
+    href: getProductUrl(p),
   })),
 ].slice(0, 6);
 
@@ -305,7 +305,7 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
 
                   return (
                     <div key={`${item.id}-${item.color}`} className="flex gap-4">
-                      <Link to={`/product/${item.id}`} onClick={onClose} className="w-24 h-24 rounded-lg bg-muted flex-shrink-0 overflow-hidden">
+                      <Link to={getProductUrlById(item.id)} onClick={onClose} className="w-24 h-24 rounded-lg bg-muted flex-shrink-0 overflow-hidden">
                         <img src={item.image} alt={item.name} className="w-full h-full object-contain p-2" />
                       </Link>
                       <div className="flex-1 min-w-0">
@@ -612,7 +612,7 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
                 {recentlyViewed.map((item) => (
                   <Link
                     key={item.id}
-                    to={`/product/${item.id}`}
+                    to={getProductUrlById(item.id)}
                     onClick={onClose}
                     className="flex gap-3 items-center p-2 rounded-lg hover:bg-muted transition-colors group"
                   >
