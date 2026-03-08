@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { motion, animate, useMotionValue } from "framer-motion";
+import { motion, animate, useMotionValue, AnimatePresence } from "framer-motion";
 import hero1 from "@/assets/hero-1.jpg";
 import hero2 from "@/assets/hero-2.jpg";
 import hero3 from "@/assets/hero-3-poster.jpg";
@@ -22,22 +22,22 @@ const slides: Slide[] = [
   {
     image: hero1,
     badge: "New Arrival",
-    title: "MAGSAFE\nTRANSPARENT",
-    subtitle: "Crystal clarity meets magnetic precision.",
+    title: "SNAP CLEAR.\nSNAP SECURE.",
+    subtitle: "MagSafe Transparent Protection Case",
     cta: "SHOP NOW",
   },
   {
     image: hero2,
-    badge: "Best Seller",
-    title: "BOLD PRO\nCASE",
-    subtitle: "Statement protection for the fearless.",
-    cta: "Shop All",
+    badge: "4 Colors",
+    title: "PICK YOUR\nEDGE.",
+    subtitle: "Sand Beige · Matte Black · Slate Blue · Burnt Orange",
+    cta: "Shop Colors",
   },
   {
     image: hero3,
-    badge: "Premium",
-    title: "LEATHER\nEDITION",
-    subtitle: "Luxury craftsmanship for your device.",
+    badge: "Armor Edge",
+    title: "ENGINEERED\nFOR IMPACT.",
+    subtitle: "Precision-crafted magnetic stand protection built for performance.",
     cta: "Shop Now",
   },
 ];
@@ -107,29 +107,76 @@ const HeroSlider = () => {
 
             {/* Content overlay */}
             <div className="absolute inset-0 flex items-end sm:items-center px-5 sm:px-10 lg:px-16 pb-20 sm:pb-10 pointer-events-none z-10">
-              <div className="pointer-events-auto w-full sm:max-w-xl">
-                {slide.badge && (
-                  <span className="inline-block bg-background text-foreground text-[10px] sm:text-xs font-medium px-3 py-1 sm:px-4 sm:py-1.5 rounded-full mb-3 sm:mb-4">
-                    {slide.badge}
-                  </span>
-                )}
-                {slide.title.split("\n").map((line, li) => (
-                  <div key={li}>
-                    <span className="block text-3xl sm:text-5xl lg:text-7xl font-display font-bold text-background sm:text-foreground leading-[1.05] tracking-tight">
-                      {line}
-                    </span>
-                  </div>
-                ))}
-                <p className="text-background/80 sm:text-foreground/70 text-sm sm:text-lg mt-3 mb-4 sm:mt-4 sm:mb-6">
-                  {slide.subtitle}
-                </p>
-                <a
-                  href="#"
-                  className="inline-block bg-background text-foreground sm:bg-foreground sm:text-background px-7 py-3 sm:px-8 sm:py-3.5 text-xs sm:text-sm font-medium tracking-wider rounded-full border border-background sm:border-foreground hover:bg-transparent hover:text-background sm:hover:text-foreground transition-colors duration-300"
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={current}
+                  className="pointer-events-auto w-full sm:max-w-xl"
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={{
+                    hidden: {},
+                    visible: { transition: { staggerChildren: 0.1, delayChildren: 0.15 } },
+                    exit: { transition: { staggerChildren: 0.04, staggerDirection: -1 } },
+                  }}
                 >
-                  {slide.cta}
-                </a>
-              </div>
+                  {slide.badge && (
+                    <motion.span
+                      className="inline-block bg-background text-foreground text-[10px] sm:text-xs font-medium px-3 py-1 sm:px-4 sm:py-1.5 rounded-full mb-3 sm:mb-4"
+                      variants={{
+                        hidden: { opacity: 0, y: 20, filter: "blur(4px)" },
+                        visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } },
+                        exit: { opacity: 0, y: -10, transition: { duration: 0.2 } },
+                      }}
+                    >
+                      {slide.badge}
+                    </motion.span>
+                  )}
+                  {slide.title.split("\n").map((line, li) => (
+                    <motion.div
+                      key={li}
+                      className="overflow-hidden"
+                      variants={{
+                        hidden: { opacity: 0 },
+                        visible: { opacity: 1 },
+                        exit: { opacity: 0 },
+                      }}
+                    >
+                      <motion.span
+                        className="block text-3xl sm:text-5xl lg:text-7xl font-display font-bold text-background sm:text-foreground leading-[1.05] tracking-tight"
+                        variants={{
+                          hidden: { y: "100%", opacity: 0 },
+                          visible: { y: 0, opacity: 1, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
+                          exit: { y: "-50%", opacity: 0, transition: { duration: 0.25 } },
+                        }}
+                      >
+                        {line}
+                      </motion.span>
+                    </motion.div>
+                  ))}
+                  <motion.p
+                    className="text-background/80 sm:text-foreground/70 text-sm sm:text-lg mt-3 mb-4 sm:mt-4 sm:mb-6"
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } },
+                      exit: { opacity: 0, transition: { duration: 0.2 } },
+                    }}
+                  >
+                    {slide.subtitle}
+                  </motion.p>
+                  <motion.a
+                    href="#"
+                    className="inline-block bg-background text-foreground sm:bg-foreground sm:text-background px-7 py-3 sm:px-8 sm:py-3.5 text-xs sm:text-sm font-medium tracking-wider rounded-full border border-background sm:border-foreground hover:bg-transparent hover:text-background sm:hover:text-foreground transition-colors duration-300"
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } },
+                      exit: { opacity: 0, transition: { duration: 0.2 } },
+                    }}
+                  >
+                    {slide.cta}
+                  </motion.a>
+                </motion.div>
+              </AnimatePresence>
             </div>
 
             {/* Dots */}
