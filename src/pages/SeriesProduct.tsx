@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useParams, Link, useSearchParams } from "react-router-dom";
 import {
   Shield, Magnet, Zap, CheckCircle, ChevronDown, ChevronLeft, ChevronRight,
-  Minus, Plus, Package, Truck, Percent, Smartphone, Waves, ShieldCheck, BadgeCheck, Star, Heart, Share2
+  Minus, Plus, Package, Truck, Percent, Smartphone, Waves, ShieldCheck, BadgeCheck, Star, Heart, Share2, CreditCard, Lock, ShoppingBag
 } from "lucide-react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { seriesData, deviceSeries, getSeriesProducts, softmagColors, allProducts, type SeriesSlug, iphone17ProGalleryImages, iphone17GalleryImages, iphone16MagsafeGalleryImages, siliconeGalleryImages } from "@/data/products";
@@ -29,14 +29,13 @@ import SearchDrawer from "@/components/SearchDrawer";
 import CartDrawer from "@/components/CartDrawer";
 import ProductCard from "@/components/ProductCard";
 import MobileBottomNav from "@/components/MobileBottomNav";
-import VideoTextOverlay from "@/components/VideoTextOverlay";
 import BrandName from "@/components/BrandName";
 import AnimateElement, { StaggerGroup, StaggerChild, ScaleReveal } from "@/components/AnimateElement";
 import ProductContentSections from "@/components/ProductContentSections";
 import FloatingNavPill from "@/components/FloatingNavPill";
 import { premiumEase } from "@/lib/motion";
 
-import heroVideo from "@/assets/hero-video.mp4";
+
 
 const featureIcons = [Waves, ShieldCheck, Magnet, BadgeCheck];
 
