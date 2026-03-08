@@ -39,12 +39,58 @@ import { premiumEase } from "@/lib/motion";
 
 const featureIcons = [Waves, ShieldCheck, Magnet, BadgeCheck];
 
-const faqItems = [
-  { q: "Will this case make my phone bulky?", a: "No! Our cases are designed with a slim profile that adds minimal bulk while providing maximum protection." },
-  { q: "Is it compatible with wireless charging?", a: "Yes, all our cases are fully compatible with Qi and Qi2 wireless charging. MagSafe cases have built-in magnets for perfect alignment." },
-  { q: "What if my case turns yellow?", a: "We offer a free replacement guarantee if your clear case turns yellow within the warranty period." },
-  { q: "How do I clean it?", a: "Wipe with a damp cloth and mild soap. For silicone surfaces, the material is washable. Avoid harsh chemicals." },
-];
+// ── Series-specific FAQs for accuracy ──
+const faqsByType: Record<string, { q: string; a: string }[]> = {
+  clearmag: [
+    { q: "Will this case make my phone bulky?", a: "Not at all. The ClearMag is just 1.2mm thin and weighs only 32g — you'll barely notice it's there while getting full MagSafe and 14.8ft drop protection." },
+    { q: "Is it compatible with MagSafe and wireless charging?", a: "Yes, with 38 precision-aligned N52 magnets delivering 38T of force for instant snap-on MagSafe charging and all Qi/Qi2 wireless chargers." },
+    { q: "Will the clear case turn yellow over time?", a: "Our anti-yellow nano oleophobic coating resists UV-induced yellowing. We also offer a free replacement if yellowing occurs within the warranty period." },
+    { q: "How do I clean the case?", a: "Wipe with a soft damp cloth and mild soap. The oleophobic coating repels oils and fingerprints, making cleaning effortless." },
+    { q: "Does the case have raised bezels?", a: "Yes, raised bezels on both the screen and camera module protect against scratches when placed face-down on surfaces." },
+  ],
+  "clearmag-edge": [
+    { q: "What's the difference between ClearMag and ClearMag Edge?", a: "ClearMag Edge features frosted matte side rails for enhanced grip and a more sophisticated look, while maintaining the crystal-clear anti-yellow back panel." },
+    { q: "Does the frosted finish affect grip?", a: "The matte-textured frosted edges significantly improve grip compared to glossy cases, reducing the chance of drops." },
+    { q: "Is it MagSafe compatible?", a: "Yes, with 38 N52 magnets providing 38T of magnetic force for perfect MagSafe alignment and wireless charging compatibility." },
+    { q: "How durable is the frosted finish?", a: "The frosted polycarbonate is scratch-resistant and maintains its texture over time. The dual-layer TPU + PC construction is tested to 14.8ft drops." },
+  ],
+  softmag: [
+    { q: "Is the silicone surface stain-resistant?", a: "Yes, SoftMag uses medical-grade liquid silicone rubber that resists stains, oils, and everyday wear. It's also fully washable." },
+    { q: "Will the color fade over time?", a: "No. We use fade-resistant pigments that maintain their vibrancy even after months of daily use and regular washing." },
+    { q: "Does it support MagSafe?", a: "Yes, SoftMag has integrated MagSafe-compatible magnets delivering 38T of force for snap-on charging and accessory attachment." },
+    { q: "How does the microfiber interior help?", a: "The soft microfiber lining prevents micro-scratches on your phone's back and adds a layer of cushioning for drop protection." },
+    { q: "How do I clean the silicone case?", a: "Simply wash with mild soap and water. The liquid silicone surface is non-porous, so stains wipe off easily." },
+  ],
+  "armor-edge": [
+    { q: "How does the sliding camera cover work?", a: "A precision-engineered slider mechanism covers and uncovers the camera lenses, protecting them from scratches, dust, and pocket debris when not in use." },
+    { q: "Can the ring stand hold my phone at any angle?", a: "Yes, the integrated metal ring stand rotates 360° and folds flat when not in use. It works in both portrait and landscape orientations." },
+    { q: "Is it MagSafe compatible despite the ring?", a: "Yes, the metal ring is MagSafe-compatible, allowing you to use MagSafe chargers and accessories alongside the kickstand functionality." },
+    { q: "How much drop protection does it offer?", a: "Armor Edge is military-grade tested at 16ft drops with reinforced corners and a dual-layer PC + TPU shock-absorbing construction." },
+  ],
+  edgeguard: [
+    { q: "Will the screen protector affect touch sensitivity?", a: "No. At 0.33mm thin with 99.9% transparency, EdgeGuard preserves full touch sensitivity and screen clarity." },
+    { q: "How do I install it without bubbles?", a: "Every EdgeGuard comes with an easy-align installation frame. Simply clip the frame to your phone, peel, and press — bubble-free application in under 60 seconds." },
+    { q: "Is it case-friendly?", a: "Yes, EdgeGuard is designed with slightly narrowed edges to work perfectly with all VCASE cases and most third-party cases." },
+    { q: "What does 9H hardness mean?", a: "9H is the maximum rating on the Mohs hardness scale for tempered glass. It means the protector resists scratches from keys, coins, and everyday objects." },
+    { q: "Does it have an anti-fingerprint coating?", a: "Yes, the oleophobic coating repels oils and fingerprints, keeping your screen clean with minimal smudging." },
+  ],
+  lensguard: [
+    { q: "Will LensGuard affect my photo quality?", a: "No. The sapphire-grade glass with anti-reflective coating ensures zero interference with camera performance — your photos remain crisp and flare-free." },
+    { q: "How is it installed?", a: "Each LensGuard is precision laser-cut to fit your exact camera module. Simply clean the lens, align the protector, and press gently for a secure bond." },
+    { q: "Is it compatible with cases?", a: "Yes, LensGuard's ultra-thin 0.3mm profile sits flush with the camera module and works with all VCASE cases." },
+    { q: "How durable is sapphire-grade glass?", a: "Sapphire-grade 9H hardness means it resists scratches from virtually all everyday materials, including keys and sand." },
+  ],
+};
+
+// ── SEO keyword maps per series ──
+const seoKeywords: Record<string, string[]> = {
+  clearmag: ["MagSafe clear case", "anti-yellow phone case", "iPhone clear case India", "best MagSafe case", "transparent phone cover", "drop protection case"],
+  "clearmag-edge": ["frosted MagSafe case", "frosted iPhone case", "grip phone case", "premium clear case India", "matte edge phone case"],
+  softmag: ["silicone MagSafe case", "liquid silicone phone case", "soft touch iPhone case", "colorful phone case India", "washable phone case"],
+  "armor-edge": ["rugged phone case", "camera slider case", "ring stand phone case", "military grade case India", "kickstand phone case"],
+  edgeguard: ["tempered glass screen protector", "9H screen protector India", "edge-to-edge screen guard", "anti-fingerprint screen protector", "bubble-free screen protector"],
+  lensguard: ["camera lens protector", "sapphire lens guard", "iPhone camera protector India", "anti-reflective lens protector", "camera glass protector"],
+};
 
 const SeriesProduct = () => {
   const { seriesSlug, deviceSlug } = useParams<{ seriesSlug: string; deviceSlug: string }>();
@@ -92,18 +138,55 @@ const SeriesProduct = () => {
     : undefined;
   const currentDeviceName = resolvedModelName || deviceGroup?.models[0]?.name || deviceSlug || "";
 
+  // Compute products early so SEO can reference currentProduct
+  const products = (series && deviceGroup) ? getSeriesProducts(seriesSlug!, deviceSlug!) : [];
+  const currentProduct = products[selectedModel] || products[0];
+  const isSoftmag = seriesSlug === "softmag";
+
+  const keywords = seoKeywords[seriesSlug as string] || [];
+  const faqItems = faqsByType[seriesSlug as string] || faqsByType.clearmag;
+
+  const priceNum = currentProduct ? parseInt(currentProduct.price.replace(/[^\d]/g, "")) : undefined;
+  const originalPriceNum = currentProduct ? parseInt(currentProduct.originalPrice.replace(/[^\d]/g, "")) : undefined;
+
   useSEO({
-    title: series && deviceGroup ? `${seriesName} for ${currentDeviceName} | VCASE` : "Product | VCASE",
-    description: series ? `Buy ${seriesName} ${series.type === "case" ? "case" : "protector"} for ${currentDeviceName}. ${series.description} Free shipping on prepaid orders.` : "Premium phone protection by VCASE.",
-    canonical: `https://vcase.in/${seriesSlug}/${deviceSlug}`,
+    title: series && deviceGroup ? `${seriesName} ${series.type === "case" ? "Case" : "Protector"} for ${currentDeviceName} — Buy Online | VCASE India` : "Premium Phone Accessories | VCASE India",
+    description: series ? `Buy ${seriesName} ${series.type === "case" ? "case" : series.type === "screen" ? "screen protector" : "camera lens protector"} for ${currentDeviceName}. ${series.tagline} ${series.features[0]}. ₹${priceNum?.toLocaleString("en-IN")} with free shipping. Shop now at VCASE India.` : "Premium phone cases and protection accessories. Free shipping on prepaid orders.",
+    canonical: `https://vcase.in/${seriesSlug}/${deviceSlug}${modelParam ? `?model=${modelParam}` : ""}`,
     type: "product",
-    jsonLd: series && deviceGroup ? {
+    jsonLd: series && deviceGroup && currentProduct ? {
       "@context": "https://schema.org",
       "@type": "Product",
-      name: `${seriesName} for ${currentDeviceName}`,
+      name: `VCASE ${seriesName} for ${currentDeviceName}`,
       description: series.description,
+      image: currentProduct.image,
       brand: { "@type": "Brand", name: "VCASE" },
-      offers: { "@type": "Offer", priceCurrency: "INR", availability: "https://schema.org/InStock" },
+      sku: currentProduct.id,
+      mpn: currentProduct.id,
+      material: series.material,
+      keywords: keywords.join(", "),
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: currentProduct.rating,
+        reviewCount: currentProduct.reviews,
+        bestRating: 5,
+      },
+      offers: {
+        "@type": "Offer",
+        url: `https://vcase.in/${seriesSlug}/${deviceSlug}${modelParam ? `?model=${modelParam}` : ""}`,
+        priceCurrency: "INR",
+        price: priceNum,
+        priceValidUntil: "2026-12-31",
+        availability: "https://schema.org/InStock",
+        seller: { "@type": "Organization", name: "VCASE" },
+      },
+      ...(originalPriceNum ? {
+        additionalProperty: [{
+          "@type": "PropertyValue",
+          name: "Original Price",
+          value: `₹${originalPriceNum.toLocaleString("en-IN")}`,
+        }],
+      } : {}),
     } : undefined,
   });
 
@@ -141,10 +224,6 @@ const SeriesProduct = () => {
       </div>
     );
   }
-
-  const products = getSeriesProducts(seriesSlug!, deviceSlug!);
-  const currentProduct = products[selectedModel] || products[0];
-  const isSoftmag = seriesSlug === "softmag";
 
   // Build gallery images array — use device/series-specific galleries
   const getGalleryImages = (): string[] => {
@@ -202,18 +281,17 @@ const SeriesProduct = () => {
     setCartOpen(true);
   };
 
-  const relatedProducts = allProducts
-    .filter((p) => p.device === currentProduct?.device && p.seriesSlug !== seriesSlug)
-    .slice(0, 4);
+  // Related products: same device different series + same series different devices
+  const sameDeviceOtherSeries = allProducts.filter((p) => p.device === currentProduct?.device && p.seriesSlug !== seriesSlug);
+  const sameSeriesOtherDevices = allProducts.filter((p) => p.seriesSlug === seriesSlug && p.device !== currentProduct?.device);
+  const relatedProducts = [...sameDeviceOtherSeries, ...sameSeriesOtherDevices]
+    .filter((p, i, arr) => arr.findIndex((x) => x.id === p.id) === i)
+    .slice(0, 8);
 
   const otherDeviceGroups = deviceSeries.filter((g) => g.slug !== deviceSlug);
-  const pageTitle = `${series.name} for ${currentDeviceName} | VCASE`;
-  const metaDescription = series.description;
 
   return (
     <div className="min-h-screen flex flex-col bg-background overflow-x-clip">
-      <title>{pageTitle}</title>
-      <meta name="description" content={metaDescription} />
 
       <AnnouncementBar />
       <Navbar onSearchOpen={() => setSearchOpen(true)} onCartOpen={() => setCartOpen(true)} />
@@ -645,21 +723,58 @@ const SeriesProduct = () => {
         </div>
       </section>
 
-      {/* ═══ Related Products ═══ */}
+      {/* ═══ You May Also Like — Horizontal Carousel ═══ */}
       {relatedProducts.length > 0 && (
-        <section className="section-padding py-12 sm:py-20 lg:py-24">
-          <AnimateElement type="fade-up">
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-foreground mb-8 tracking-tight">
-              You May Also Like
-            </h2>
-          </AnimateElement>
-          <StaggerGroup className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5" staggerDelay={0.1}>
+        <section className="py-12 sm:py-20 lg:py-24 overflow-hidden">
+          <div className="section-padding">
+            <AnimateElement type="fade-up">
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-foreground tracking-tight">
+                  You May Also Like
+                </h2>
+                <div className="hidden sm:flex gap-2">
+                  <button
+                    onClick={() => {
+                      const el = document.getElementById("related-carousel");
+                      if (el) el.scrollBy({ left: -280, behavior: "smooth" });
+                    }}
+                    className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
+                    aria-label="Scroll left"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      const el = document.getElementById("related-carousel");
+                      if (el) el.scrollBy({ left: 280, behavior: "smooth" });
+                    }}
+                    className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
+                    aria-label="Scroll right"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </AnimateElement>
+          </div>
+          <div
+            id="related-carousel"
+            className="flex gap-4 sm:gap-5 overflow-x-auto snap-x snap-mandatory pb-4 px-4 sm:px-6 lg:px-10 scrollbar-hide"
+            style={{ scrollbarWidth: "none" }}
+          >
             {relatedProducts.map((product) => (
-              <StaggerChild key={product.id}>
+              <motion.div
+                key={product.id}
+                className="flex-none w-[200px] sm:w-[240px] lg:w-[280px] snap-start"
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.4 }}
+              >
                 <ProductCard product={product} />
-              </StaggerChild>
+              </motion.div>
             ))}
-          </StaggerGroup>
+          </div>
         </section>
       )}
 
