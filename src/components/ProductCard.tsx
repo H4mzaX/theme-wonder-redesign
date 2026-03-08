@@ -22,10 +22,6 @@ const categorySpecs: Record<string, { icon: React.ElementType; label: string; va
     { icon: Ruler, label: "Fit", value: "Precision" },
   ],
 };
-    { icon: Ruler, label: "Thickness", value: "1.4mm" },
-    { icon: Weight, label: "Weight", value: "30g" },
-  ],
-};
 
 const defaultSpecs = [
   { icon: Layers, label: "Material", value: "TPU" },
