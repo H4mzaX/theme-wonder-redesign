@@ -419,41 +419,38 @@ const ProductContentSections = ({ product }: { product: Product }) => {
       {/* 2. Large outlined-text marquee (Concept Theme signature) */}
       <OutlinedMarquee items={content.scrollVideoTexts.map(t => t.replace('.', ''))} />
 
-      {/* 3. Concept Theme layout: Editorial text LEFT + Featured grid RIGHT */}
+      {/* 3. Concept Theme layout: Text LEFT + 2 stacked cards MIDDLE + 1 tall card RIGHT */}
       <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10 py-10 sm:py-16 lg:py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-[5fr_7fr] gap-8 lg:gap-12 xl:gap-16 items-start">
-          {/* Left: Editorial text */}
-          <div className="lg:sticky lg:top-[100px]">
+        <div className="grid grid-cols-1 lg:grid-cols-[4fr_5fr_4fr] gap-4 sm:gap-5 items-start">
+          {/* Left: Editorial text (sticky on desktop) */}
+          <div className="lg:sticky lg:top-[100px] lg:pr-4">
             <AnimateElement type="fade-up">
-              <h2 className="text-[1.75rem] sm:text-[2.5rem] lg:text-[3rem] xl:text-[3.5rem] font-black text-foreground leading-[1.05] tracking-tighter">
+              <h2 className="text-[1.6rem] sm:text-[2.2rem] lg:text-[2.6rem] xl:text-[3rem] font-black text-foreground leading-[1.08] tracking-tighter">
                 {content.editorialHeadline}
               </h2>
             </AnimateElement>
             <AnimateElement type="fade-up" delay={0.1}>
-              <p className="text-sm sm:text-[15px] text-muted-foreground mt-4 sm:mt-6 leading-[1.7] max-w-lg">
+              <p className="text-[13px] sm:text-[14px] text-muted-foreground mt-4 sm:mt-5 leading-[1.7]">
                 {content.editorialBody}
               </p>
             </AnimateElement>
           </div>
 
-          {/* Right: Featured image grid — Concept Theme style with rounded corners & centered text */}
-          <div className="grid grid-cols-2 gap-3 sm:gap-4">
-            {content.featuredCards.map((card, i) => (
-              <AnimateElement key={i} type="fade-up" delay={i * 0.08}>
-                <div className={`relative rounded-3xl overflow-hidden group ${
-                  i < 2 ? "aspect-square" : "aspect-[4/3]"
-                }`}>
+          {/* Middle: 2 stacked cards */}
+          <div className="flex flex-col gap-4 sm:gap-5">
+            {content.featuredCards.slice(0, 2).map((card, i) => (
+              <AnimateElement key={i} type="fade-up" delay={i * 0.1}>
+                <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden group aspect-[4/3]">
                   <img
                     src={card.image}
                     alt={card.label}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-foreground/40" />
-                  {/* Centered text overlay — Concept Theme style */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-end pb-5 sm:pb-7 px-4 text-center">
-                    <p className="text-[10px] sm:text-[11px] text-background/60 font-medium tracking-wide">{card.label}</p>
-                    <p className="text-sm sm:text-base lg:text-lg font-bold text-background tracking-tight leading-tight mt-0.5">
+                  {/* Bottom text — light style like reference */}
+                  <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5 text-center">
+                    <p className="text-[11px] sm:text-xs text-primary/70 font-medium">{card.label}</p>
+                    <p className="text-sm sm:text-lg font-bold text-foreground tracking-tight leading-tight mt-0.5">
                       {card.subtitle}
                     </p>
                   </div>
@@ -461,7 +458,48 @@ const ProductContentSections = ({ product }: { product: Product }) => {
               </AnimateElement>
             ))}
           </div>
+
+          {/* Right: 1 tall card spanning full height */}
+          {content.featuredCards[2] && (
+            <AnimateElement type="fade-up" delay={0.15}>
+              <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden group aspect-[3/5] sm:aspect-[3/5] lg:aspect-auto lg:h-full lg:min-h-[500px]">
+                <img
+                  src={content.featuredCards[2].image}
+                  alt={content.featuredCards[2].label}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                />
+                {/* Top-right text for tall card — like reference */}
+                <div className="absolute top-0 right-0 p-4 sm:p-6 text-right max-w-[80%]">
+                  <p className="text-[11px] sm:text-xs text-primary/70 font-medium">{content.featuredCards[2].label}</p>
+                  <p className="text-base sm:text-xl lg:text-2xl font-bold text-background tracking-tight leading-tight mt-0.5">
+                    {content.featuredCards[2].subtitle}
+                  </p>
+                </div>
+              </div>
+            </AnimateElement>
+          )}
         </div>
+
+        {/* Bottom wide card (4th card) — full width below the 3-col grid */}
+        {content.featuredCards[3] && (
+          <AnimateElement type="fade-up" delay={0.2}>
+            <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden group aspect-[21/9] mt-4 sm:mt-5">
+              <img
+                src={content.featuredCards[3].image}
+                alt={content.featuredCards[3].label}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+                <p className="text-[11px] sm:text-xs text-background/60 font-medium">{content.featuredCards[3].label}</p>
+                <p className="text-lg sm:text-2xl lg:text-3xl font-bold text-background tracking-tight leading-tight mt-1">
+                  {content.featuredCards[3].subtitle}
+                </p>
+              </div>
+            </div>
+          </AnimateElement>
+        )}
       </section>
 
       {/* 4. Small caps marquee */}
