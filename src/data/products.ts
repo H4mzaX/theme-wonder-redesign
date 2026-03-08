@@ -335,7 +335,10 @@ export const bestSellerTabs: Record<string, Product[]> = {
   "iPhone 17": allProducts.filter((p) => p.device.includes("iPhone 17")).slice(0, 4),
 };
 
-export const newArrivalProducts = allProducts.filter((p) => p.device.includes("17")).slice(0, 6);
+export const newArrivalProducts = [
+  ...allProducts.filter((p) => p.device === "iPhone 17 Pro" && ["clearmag", "armor-edge", "softmag"].includes(p.seriesSlug)),
+  ...allProducts.filter((p) => p.device === "iPhone 17" && ["clearmag", "clearmag-edge", "softmag"].includes(p.seriesSlug)),
+].slice(0, 8);
 
 export const featuredProduct = {
   name: "ClearMag",
