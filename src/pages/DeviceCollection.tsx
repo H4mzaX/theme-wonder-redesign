@@ -201,7 +201,7 @@ const DeviceCollection = () => {
                           </div>
                         </div>
                         <Link
-                          to={`/${slug}/${deviceSlug}`}
+                          to={`/${slug}/${deviceSlug}?model=${deviceGroup?.models[0]?.slug || ''}`}
                           className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-accent hover:underline"
                         >
                           View All <ArrowRight className="w-3.5 h-3.5" />

@@ -5,7 +5,20 @@ import {
   Minus, Plus, Package, Truck, Percent, Smartphone, Waves, ShieldCheck, BadgeCheck, Star, Heart, Share2
 } from "lucide-react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { seriesData, deviceSeries, getSeriesProducts, softmagColors, allProducts, type SeriesSlug } from "@/data/products";
+import { seriesData, deviceSeries, getSeriesProducts, softmagColors, allProducts, type SeriesSlug, iphone17ProGalleryImages, iphone17GalleryImages, iphone16MagsafeGalleryImages, siliconeGalleryImages } from "@/data/products";
+import softmagHero from "@/assets/softmag-hero.webp";
+import softmagFloating from "@/assets/softmag-floating.webp";
+import softmagCamera from "@/assets/softmag-camera.webp";
+import softmagCloseup from "@/assets/softmag-closeup.webp";
+import softmagLifestyle from "@/assets/softmag-lifestyle.webp";
+import armoredgeHeroImg from "@/assets/armoredge-hero.webp";
+import armoredgeCloseupImg from "@/assets/armoredge-closeup.webp";
+import armoredgeRing from "@/assets/armoredge-ring.webp";
+import armoredgeLifestyle from "@/assets/armoredge-lifestyle.webp";
+import edgeguardImg from "@/assets/edgeguard-screen-protector.jpg";
+import edgeguardHoverImg from "@/assets/edgeguard-screen-protector-hover.jpg";
+import lensguardImg from "@/assets/lensguard-camera-protector.jpg";
+import lensguardHoverImg from "@/assets/lensguard-camera-protector-hover.jpg";
 import { useSEO } from "@/hooks/useSEO";
 import { useCart } from "@/context/CartContext";
 import { toast } from "@/hooks/use-toast";
@@ -134,15 +147,43 @@ const SeriesProduct = () => {
   const currentProduct = products[selectedModel] || products[0];
   const isSoftmag = seriesSlug === "softmag";
 
-  // Build gallery images array — more images for a richer scroll
-  const galleryImages = currentProduct
-    ? [
-        currentProduct.image,
-        ...(currentProduct.hoverImage ? [currentProduct.hoverImage] : []),
-        currentProduct.image, // Repeat for scroll depth
-        ...(currentProduct.hoverImage ? [currentProduct.hoverImage] : []),
-      ]
-    : [];
+  // Build gallery images array — use device/series-specific galleries
+  const getGalleryImages = (): string[] => {
+    if (!currentProduct) return [];
+    const device = currentProduct.device;
+    const slug = currentProduct.seriesSlug;
+
+    // Device-specific ClearMag galleries
+    if (slug === "clearmag" || slug === "clearmag-edge") {
+      if (device === "iPhone 17 Pro" || device === "iPhone 17 Pro Max") return iphone17ProGalleryImages;
+      if (device === "iPhone 17" || device === "iPhone 17 Air") return iphone17GalleryImages;
+      if (device.includes("iPhone 16")) return iphone16MagsafeGalleryImages;
+    }
+    // SoftMag galleries
+    if (slug === "softmag") {
+      return [softmagHero, softmagFloating, softmagCamera, softmagCloseup, softmagLifestyle];
+    }
+    // Armor Edge galleries
+    if (slug === "armor-edge") {
+      return [armoredgeHeroImg, armoredgeCloseupImg, armoredgeRing, armoredgeLifestyle];
+    }
+    // EdgeGuard
+    if (slug === "edgeguard") {
+      return [edgeguardImg, edgeguardHoverImg, edgeguardImg, edgeguardHoverImg];
+    }
+    // LensGuard
+    if (slug === "lensguard") {
+      return [lensguardImg, lensguardHoverImg, lensguardImg, lensguardHoverImg];
+    }
+    // Fallback
+    return [
+      currentProduct.image,
+      ...(currentProduct.hoverImage ? [currentProduct.hoverImage] : []),
+      currentProduct.image,
+      ...(currentProduct.hoverImage ? [currentProduct.hoverImage] : []),
+    ];
+  };
+  const galleryImages = getGalleryImages();
 
   const handleAddToCart = () => {
     if (!currentProduct) return;
@@ -561,13 +602,13 @@ const SeriesProduct = () => {
               <div className="mt-6">
                 <p className="text-sm text-muted-foreground mb-3">Also available for:</p>
                 <div className="flex flex-wrap justify-center gap-2">
-                  {otherDeviceGroups.map((group) => (
-                    <Link
-                      key={group.slug}
-                      to={`/${seriesSlug}/${group.slug}`}
-                      className="text-sm font-medium text-accent hover:underline"
-                    >
-                      {group.name}
+                    {otherDeviceGroups.map((group) => (
+                      <Link
+                        key={group.slug}
+                        to={`/${seriesSlug}/${group.slug}?model=${group.models[0]?.slug}`}
+                        className="text-sm font-medium text-accent hover:underline"
+                      >
+                        {group.name}
                     </Link>
                   ))}
                 </div>
