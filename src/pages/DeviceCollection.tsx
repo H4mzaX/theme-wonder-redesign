@@ -51,6 +51,12 @@ const DeviceCollection = () => {
 
   const deviceGroup = deviceSeries.find((g) => g.slug === deviceSlug);
 
+  useSEO({
+    title: deviceGroup ? `${deviceGroup.name} Cases & Protection | VCASE` : "Device Collection | VCASE",
+    description: deviceGroup ? `Shop premium cases, screen protectors & camera lens guards for ${deviceGroup.name}. MagSafe, silicone & clear cases with military-grade drop protection.` : "Browse VCASE device collections.",
+    canonical: `https://vcase.in/devices/${deviceSlug}`,
+  });
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [deviceSlug]);
