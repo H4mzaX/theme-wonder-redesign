@@ -22,7 +22,7 @@ const ContactUs = () => {
   return (
     <div className="min-h-screen bg-announcement text-foreground">
       <AnnouncementBar />
-      <div className="bg-background rounded-t-[1.75rem] sm:rounded-t-[1.25rem] lg:rounded-t-[0.625rem] overflow-x-clip">
+      <div className="bg-background rounded-t-[2rem] sm:rounded-t-[1.5rem] lg:rounded-t-[0.625rem] overflow-x-clip">
       <Navbar onSearchOpen={() => setSearchOpen(true)} onCartOpen={() => setCartOpen(true)} />
       <SearchDrawer open={searchOpen} onClose={() => setSearchOpen(false)} />
       <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
