@@ -18,6 +18,7 @@ import MobileBottomNav from "@/components/MobileBottomNav";
 import VideoTextOverlay from "@/components/VideoTextOverlay";
 import AnimateElement, { StaggerGroup, StaggerChild, ScaleReveal } from "@/components/AnimateElement";
 import { premiumEase } from "@/lib/motion";
+import BrandName from "@/components/BrandName";
 
 import heroVideo from "@/assets/hero-video.mp4";
 
@@ -197,9 +198,7 @@ const SeriesProduct = () => {
               <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-2">
                 {series.category === "cases" ? "Cases" : "Protection"}
               </p>
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-foreground tracking-tight">
-                {series.name}
-              </h1>
+              <BrandName name={series.name} as="h1" className="text-2xl sm:text-3xl lg:text-4xl font-display text-foreground tracking-tight" />
               <p className="text-muted-foreground mt-2 text-sm sm:text-base">{series.tagline}</p>
             </AnimateElement>
 
@@ -340,7 +339,7 @@ const SeriesProduct = () => {
       <section className="section-padding py-10 sm:py-16 lg:py-20">
         <AnimateElement type="clip-up">
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-foreground text-center mb-10 sm:mb-14 tracking-tight">
-            Why {series.name}?
+            Why <BrandName name={series.name} />?
           </h2>
         </AnimateElement>
         <StaggerGroup className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-[1200px] mx-auto" staggerDelay={0.12}>

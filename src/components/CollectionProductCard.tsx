@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useCart } from "@/context/CartContext";
 import { toast } from "@/hooks/use-toast";
 import type { Product } from "@/data/products";
+import BrandName from "@/components/BrandName";
 
 /* Spec badges per category — horizontal row at bottom of card */
 const categorySpecs: Record<string, { icon: React.ElementType; label: string; value: string }[]> = {
@@ -142,9 +143,7 @@ const CollectionProductCard = ({ product, large = false }: CollectionProductCard
         </span>
 
         {/* Product name */}
-        <h3 className={`font-bold leading-tight line-clamp-1 text-foreground ${large ? "text-[16px] sm:text-[18px]" : "text-[14px] sm:text-[16px]"}`}>
-          {product.name}
-        </h3>
+        <BrandName name={product.name} as="h3" className={`leading-tight line-clamp-1 text-foreground ${large ? "text-[16px] sm:text-[18px]" : "text-[14px] sm:text-[16px]"}`} />
 
         {/* Price */}
         <span className={`font-semibold leading-none text-foreground mt-1 ${large ? "text-[16px] sm:text-[18px]" : "text-[14px] sm:text-[16px]"}`}>

@@ -7,6 +7,7 @@ import { drawerSpring, premiumEase } from "@/lib/motion";
 import { useCart } from "@/context/CartContext";
 import { seriesData, deviceSeries } from "@/data/products";
 import logoFull from "@/assets/logo-full.png";
+import BrandName from "@/components/BrandName";
 
 // ── Mega-menu data ──
 
@@ -196,7 +197,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                                 <div className="flex items-center gap-3">
                                   <img src={item.icon} alt={item.name} className="w-11 h-11 rounded-lg" />
                                   <div>
-                                    <span className="text-[15px] font-medium text-foreground">{item.name}</span>
+                                    <BrandName name={item.name} className="text-[15px] font-medium text-foreground" />
                                     <p className="text-[11px] text-muted-foreground">Coming Soon</p>
                                   </div>
                                 </div>
@@ -211,7 +212,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                                 <div className="flex items-center gap-3">
                                   <img src={item.icon} alt={item.name} className="w-11 h-11 rounded-lg" />
                                   <div>
-                                    <span className="text-[15px] font-medium text-foreground">{item.name}</span>
+                                    <BrandName name={item.name} className="text-[15px] font-medium text-foreground" />
                                     {item.tag && (
                                       <span className="ml-2 text-[9px] uppercase tracking-wider font-bold bg-accent/10 text-accent px-1.5 py-0.5 rounded">
                                         {item.tag}
@@ -280,7 +281,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                             <div className="flex items-center gap-3">
                               <img src={item.icon} alt={item.name} className="w-11 h-11 rounded-lg" />
                               <div>
-                                <span className="text-[15px] font-medium text-foreground">{item.name}</span>
+                                <BrandName name={item.name} className="text-[15px] font-medium text-foreground" />
                                 <p className="text-[11px] text-muted-foreground">{item.subtitle}</p>
                               </div>
                             </div>
@@ -469,7 +470,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                                     <div key={item.name} className="flex items-center gap-3 py-2 opacity-50">
                                       <img src={item.icon} alt={item.name} className="w-9 h-9 rounded-lg" />
                                       <div>
-                                        <span className="text-[15px] font-medium text-foreground">{item.name}</span>
+                                       <BrandName name={item.name} className="text-[15px] font-medium text-foreground" />
                                         <p className="text-[10px] text-muted-foreground">Coming Soon</p>
                                       </div>
                                     </div>
@@ -481,7 +482,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                                     >
                                       <div className="flex items-center gap-3">
                                         <img src={item.icon} alt={item.name} className="w-9 h-9 rounded-lg" />
-                                        <span className="text-[15px] font-medium text-foreground group-hover:text-accent transition-colors">{item.name}</span>
+                                        <BrandName name={item.name} className="text-[15px] font-medium text-foreground group-hover:text-accent transition-colors" />
                                         {item.tag && <span className="text-[8px] uppercase tracking-wider font-bold bg-accent/10 text-accent px-1.5 py-0.5 rounded">{item.tag}</span>}
                                       </div>
                                       <ChevronRight className="w-4 h-4 text-muted-foreground" />
@@ -493,7 +494,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                               <>
                                 <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold mt-1 mb-2">
                                   <button onClick={() => setMobileDrilldown(null)} className="flex items-center gap-1">
-                                    <ChevronLeft className="w-3 h-3" /> {casesMenuItems.find(i => i.slug === mobileDrilldown)?.name}
+                                    <ChevronLeft className="w-3 h-3" /> <BrandName name={casesMenuItems.find(i => i.slug === mobileDrilldown)?.name || ""} />
                                   </button>
                                 </p>
                                 {deviceSeries.map((group) => (
@@ -543,7 +544,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                                   <div className="flex items-center gap-3">
                                     <img src={item.icon} alt={item.name} className="w-9 h-9 rounded-lg" />
                                     <div className="text-left">
-                                      <span className="text-[15px] font-medium text-foreground group-hover:text-accent transition-colors">{item.name}</span>
+                                      <BrandName name={item.name} className="text-[15px] font-medium text-foreground group-hover:text-accent transition-colors" />
                                       <p className="text-[10px] text-muted-foreground">{item.subtitle}</p>
                                     </div>
                                   </div>
@@ -554,7 +555,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                               <>
                                 <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold mt-1 mb-2">
                                   <button onClick={() => setMobileDrilldown(null)} className="flex items-center gap-1">
-                                    <ChevronLeft className="w-3 h-3" /> {protectionMenuItems.find(i => i.slug === mobileDrilldown)?.name}
+                                    <ChevronLeft className="w-3 h-3" /> <BrandName name={protectionMenuItems.find(i => i.slug === mobileDrilldown)?.name || ""} />
                                   </button>
                                 </p>
                                 {deviceSeries.map((group) => (

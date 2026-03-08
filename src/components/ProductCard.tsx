@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useCart } from "@/context/CartContext";
 import { toast } from "@/hooks/use-toast";
 import type { Product } from "@/data/products";
+import BrandName from "@/components/BrandName";
 
 const categorySpecs: Record<string, { icon: React.ElementType; label: string; value: string }[]> = {
   Cases: [
@@ -87,9 +88,7 @@ const ProductCard = ({ product }: { product: Product; tag?: string }) => {
         <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.15em] text-muted-foreground font-medium">
           {product.device}
         </span>
-        <h3 className="font-bold text-[13px] sm:text-[15px] leading-tight line-clamp-1 text-foreground">
-          {product.name}
-        </h3>
+        <BrandName name={product.name} as="h3" className="text-[13px] sm:text-[15px] leading-tight line-clamp-1 text-foreground" />
         <span className="font-semibold text-[13px] sm:text-[15px] leading-none text-foreground mt-0.5">
           {product.price}
         </span>
