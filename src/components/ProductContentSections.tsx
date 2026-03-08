@@ -84,20 +84,20 @@ const seriesContentMap: Record<string, SeriesContent> = {
     editorialHeadline: "Engineered for Every Detail.",
     editorialBody: "Precision-aligned N52 magnets deliver 38T of magnetic force for instant snap-on MagSafe charging. The nano oleophobic coating resists UV-induced yellowing, keeping your case crystal clear for months.",
     featuredCards: [
-      { image: magsafeClearImg, label: "Transparent Protection", subtitle: "Anti-Yellow Nano Coating", textPosition: "bottom-center" },
-      { image: magsafeBlackImg, label: "Magnetic Precision", subtitle: "38 N52 MagSafe Magnets", textPosition: "top-left" },
-      { image: magsafeClearImg, label: "Ultra Slim", subtitle: "1.2mm Polycarbonate Shell", textPosition: "top-right" },
-      { image: magsafeBlackImg, label: "Military Grade", subtitle: "14.8ft Drop Protection", textPosition: "center" },
+      { image: iphone17proMagsafeClear, label: "Transparent Protection", subtitle: "Anti-Yellow Nano Coating", textPosition: "bottom-center" },
+      { image: iphone17proMagsafeAttach, label: "Magnetic Precision", subtitle: "38 N52 MagSafe Magnets", textPosition: "top-left" },
+      { image: iphone17proSlimDesign, label: "Ultra Slim", subtitle: "1.2mm Polycarbonate Shell", textPosition: "top-right" },
+      { image: iphone17proStrong, label: "Military Grade", subtitle: "14.8ft Drop Protection", textPosition: "center" },
     ],
     imageTextBlocks: [
       {
-        image: magsafeClearImg,
+        image: iphone17proProtection,
         headline: "Transparent Protection Perfected.",
         body: "Our anti-yellow nano coating technology ensures your case stays crystal clear, resisting UV-induced yellowing for months of pristine clarity. Show off your device's original design without compromise.",
         highlights: ["Anti-yellow nano coating", "UV-resistant polycarbonate", "Oleophobic surface"],
       },
       {
-        image: magsafeBlackImg,
+        image: iphone17proFingerprints,
         headline: "Magnetic Precision Alignment.",
         body: "38 precision-aligned N52 magnets deliver powerful magnetic force for instant snap-on MagSafe charging and accessory attachment. Perfect alignment, every single time.",
         highlights: ["38T magnetic force", "Instant snap-on", "Perfect alignment"],
