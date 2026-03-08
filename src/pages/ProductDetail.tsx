@@ -77,26 +77,26 @@ const offers = [
 ];
 
 const productFeatures: Record<string, string[]> = {
-  "MagSafe Cases": [
+  Cases: [
     "SGS tested for 14.8 feet Drop Protection",
     "Built-in MagSafe magnets for perfect alignment",
     "Soft Bumper Sides & Airbags at corners to enhance grip and shock absorption",
     "Nano Oleophobic Coating resists fingerprints and smudges",
     "See-through design reveals the phone logo while maintaining protection",
   ],
-  "Silicone Cases": [
-    "SGS tested for 10.4 feet Drop Protection",
-    "Liquid silicone rubber exterior with soft microfiber interior",
-    "Soft Bumper Sides & Airbags at corners to enhance grip and shock absorption",
-    "Washable surface that resists stains and discoloration",
-    "Striking Color Design that makes your case truly stand out",
+  "Screen Protection": [
+    "9H hardness tempered glass for maximum scratch resistance",
+    "Edge-to-edge full coverage design",
+    "Oleophobic anti-fingerprint coating",
+    "Easy-align installation frame included",
+    "Ultra-clear transparency preserves display quality",
   ],
-  "Leather Cases": [
-    "SGS tested for 6 feet Drop Protection",
-    "Genuine Italian full-grain leather exterior",
-    "Develops a beautiful natural patina over time",
-    "Soft microfiber lining protects your device from scratches",
-    "Slim profile that fits comfortably in your pocket",
+  "Camera Protection": [
+    "Sapphire-grade 9H hardness for lens protection",
+    "Anti-reflective coating for better photo quality",
+    "Precision cut for each camera module",
+    "Ultra-thin 0.3mm profile — no interference with photos",
+    "Easy bubble-free application",
   ],
 };
 
