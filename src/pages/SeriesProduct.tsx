@@ -138,39 +138,52 @@ const SeriesProduct = () => {
     : undefined;
   const currentDeviceName = resolvedModelName || deviceGroup?.models[0]?.name || deviceSlug || "";
 
+  const keywords = seoKeywords[seriesSlug as string] || [];
+  const faqItems = faqsByType[seriesSlug as string] || faqsByType.clearmag;
+
+  const priceNum = currentProduct ? parseInt(currentProduct.price.replace(/[^\d]/g, "")) : undefined;
+  const originalPriceNum = currentProduct ? parseInt(currentProduct.originalPrice.replace(/[^\d]/g, "")) : undefined;
+
   useSEO({
-    title: series && deviceGroup ? `${seriesName} for ${currentDeviceName} | VCASE` : "Product | VCASE",
-    description: series ? `Buy ${seriesName} ${series.type === "case" ? "case" : "protector"} for ${currentDeviceName}. ${series.description} Free shipping on prepaid orders.` : "Premium phone protection by VCASE.",
-    canonical: `https://vcase.in/${seriesSlug}/${deviceSlug}`,
+    title: series && deviceGroup ? `${seriesName} ${series.type === "case" ? "Case" : "Protector"} for ${currentDeviceName} — Buy Online | VCASE India` : "Premium Phone Accessories | VCASE India",
+    description: series ? `Buy ${seriesName} ${series.type === "case" ? "case" : series.type === "screen" ? "screen protector" : "camera lens protector"} for ${currentDeviceName}. ${series.tagline} ${series.features[0]}. ₹${priceNum?.toLocaleString("en-IN")} with free shipping. Shop now at VCASE India.` : "Premium phone cases and protection accessories. Free shipping on prepaid orders.",
+    canonical: `https://vcase.in/${seriesSlug}/${deviceSlug}${modelParam ? `?model=${modelParam}` : ""}`,
     type: "product",
-    jsonLd: series && deviceGroup ? {
+    jsonLd: series && deviceGroup && currentProduct ? {
       "@context": "https://schema.org",
       "@type": "Product",
-      name: `${seriesName} for ${currentDeviceName}`,
+      name: `VCASE ${seriesName} for ${currentDeviceName}`,
       description: series.description,
+      image: currentProduct.image,
       brand: { "@type": "Brand", name: "VCASE" },
-      offers: { "@type": "Offer", priceCurrency: "INR", availability: "https://schema.org/InStock" },
+      sku: currentProduct.id,
+      mpn: currentProduct.id,
+      material: series.material,
+      keywords: keywords.join(", "),
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: currentProduct.rating,
+        reviewCount: currentProduct.reviews,
+        bestRating: 5,
+      },
+      offers: {
+        "@type": "Offer",
+        url: `https://vcase.in/${seriesSlug}/${deviceSlug}${modelParam ? `?model=${modelParam}` : ""}`,
+        priceCurrency: "INR",
+        price: priceNum,
+        priceValidUntil: "2026-12-31",
+        availability: "https://schema.org/InStock",
+        seller: { "@type": "Organization", name: "VCASE" },
+      },
+      ...(originalPriceNum ? {
+        additionalProperty: [{
+          "@type": "PropertyValue",
+          name: "Original Price",
+          value: `₹${originalPriceNum.toLocaleString("en-IN")}`,
+        }],
+      } : {}),
     } : undefined,
   });
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [seriesSlug, deviceSlug]);
-
-  // Intersection observer for gallery scroll tracking
-  useEffect(() => {
-    const observers: IntersectionObserver[] = [];
-    imageRefs.current.forEach((ref, i) => {
-      if (!ref) return;
-      const observer = new IntersectionObserver(
-        ([entry]) => { if (entry.isIntersecting) setActiveGalleryImg(i); },
-        { threshold: 0.6 }
-      );
-      observer.observe(ref);
-      observers.push(observer);
-    });
-    return () => observers.forEach((o) => o.disconnect());
-  }, [seriesSlug, deviceSlug, selectedModel, selectedColor]);
 
   if (!series || !deviceGroup) {
     return (
