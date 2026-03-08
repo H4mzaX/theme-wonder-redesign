@@ -74,11 +74,11 @@ const ExploreProducts = () => {
                     className="group block rounded-2xl overflow-hidden bg-background shadow-sm hover:shadow-xl transition-shadow duration-500"
                   >
                     {/* Product image — standardized square */}
-                    <div className="aspect-square flex items-center justify-center bg-muted/15">
+                    <div className="aspect-square bg-muted/15 p-5 sm:p-7">
                       <img
                         src={series.icon}
                         alt={series.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700 ease-out"
                         loading="lazy"
                         decoding="async"
                       />
