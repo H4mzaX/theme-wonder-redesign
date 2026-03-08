@@ -18,7 +18,7 @@ import softmagFloating from "@/assets/softmag-floating.webp";
 import softmagCamera from "@/assets/softmag-camera.webp";
 import softmagVideo from "@/assets/softmag-showcase.mp4";
 
-// ClearMag product images
+// ClearMag / ClearMag Edge — iPhone 17 Pro images
 import iphone17proMagsafeClear from "@/assets/iphone17pro-magsafe-clear.jpg";
 import iphone17proMagsafeAttach from "@/assets/iphone17pro-magsafe-attach.jpg";
 import iphone17proSlimDesign from "@/assets/iphone17pro-slim-design.jpg";
@@ -26,10 +26,19 @@ import iphone17proProtection from "@/assets/iphone17pro-protection.jpg";
 import iphone17proStrong from "@/assets/iphone17pro-strong.jpg";
 import iphone17proFingerprints from "@/assets/iphone17pro-fingerprints.jpg";
 
-// ClearMag Edge product images
+// iPhone 17 images
+import iphone17MagsafeClear from "@/assets/iphone17-magsafe-clear.jpg";
+import iphone17MagsafeAttach from "@/assets/iphone17-magsafe-attach.jpg";
+import iphone17SlimDesign from "@/assets/iphone17-slim-design.jpg";
+import iphone17Protection from "@/assets/iphone17-protection.jpg";
+import iphone17Strong from "@/assets/iphone17-strong.jpg";
+import iphone17Fingerprints from "@/assets/iphone17-fingerprints.jpg";
+
+// iPhone 16 images
 import iphone16MagsafeClear from "@/assets/iphone16-magsafe-clear.png";
 import iphone16MagsafeFeatures from "@/assets/iphone16-magsafe-features.png";
 import iphone16MagsafeLifestyle from "@/assets/iphone16-magsafe-lifestyle.jpg";
+import iphone16MagsafeGrid from "@/assets/iphone16-magsafe-grid.png";
 import iphone16MagsafeDetails from "@/assets/iphone16-magsafe-details.jpg";
 
 // Protection product images
