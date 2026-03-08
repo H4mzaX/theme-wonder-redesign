@@ -326,7 +326,7 @@ const SeriesProduct = () => {
       </div>
 
       {/* ═══ MAIN PRODUCT SECTION — Concept theme layout ═══ */}
-      <section className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-10">
+      <section className="max-w-[1400px] mx-auto w-full px-0 sm:px-6 lg:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-6">
 
           {/* ── LEFT: Vertically stacked scroll gallery (Concept style) ── */}
@@ -334,7 +334,7 @@ const SeriesProduct = () => {
             {/* Mobile: instant-swap swipeable gallery with dots */}
             <div className="lg:hidden">
               <div
-                className="relative overflow-hidden rounded-2xl mx-1 bg-secondary/20"
+                 className="relative overflow-hidden rounded-lg sm:rounded-xl mx-0 bg-secondary/20"
                 onTouchStart={(e) => {
                   const touch = e.touches[0];
                   const el = e.currentTarget as any;
