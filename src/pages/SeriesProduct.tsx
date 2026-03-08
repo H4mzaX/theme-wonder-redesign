@@ -442,7 +442,7 @@ const SeriesProduct = () => {
           </div>
 
           {/* ── RIGHT: Sticky product info (Concept style) ── */}
-          <div ref={productInfoRef} className="lg:col-span-5 py-4 lg:py-0">
+          <div ref={productInfoRef} className="lg:col-span-5 py-2 lg:py-0 px-4 sm:px-0">
             <div className="lg:sticky lg:top-[80px] lg:pb-10">
               {/* Brand label */}
               <motion.p
