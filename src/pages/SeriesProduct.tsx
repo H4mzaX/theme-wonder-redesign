@@ -1,10 +1,8 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, type ComponentType } from "react";
 import { useParams, Link, useSearchParams } from "react-router-dom";
 import {
   Shield,
   Magnet,
-  Zap,
-  CheckCircle,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
@@ -15,6 +13,13 @@ import {
   Star,
   Lock,
   ShoppingBag,
+  Sparkles,
+  Fingerprint,
+  Layers,
+  Droplets,
+  Camera,
+  RotateCw,
+  Ruler,
 } from "lucide-react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import {
@@ -29,17 +34,6 @@ import {
   iphone16MagsafeGalleryImages,
   siliconeGalleryImages,
 } from "@/data/products";
-import {
-  BoltIcon,
-  CameraIcon,
-  CheckBadgeIcon,
-  CrystalIcon,
-  DropShieldIcon,
-  FingerprintIcon,
-  GlassIcon,
-  GripIcon,
-  MagnetIcon,
-} from "@/components/icons/HighlightIcons";
 import softmagHero from "@/assets/softmag-hero.webp";
 import softmagFloating from "@/assets/softmag-floating.webp";
 import softmagCamera from "@/assets/softmag-camera.webp";
@@ -69,21 +63,57 @@ import ProductContentSections from "@/components/ProductContentSections";
 import FloatingNavPill from "@/components/FloatingNavPill";
 import { premiumEase } from "@/lib/motion";
 
-const pickHighlightIcon = (slug: string, feature: string) => {
-  const f = feature.toLowerCase();
-
-  if (slug === "lensguard" || f.includes("camera") || f.includes("lens")) return CameraIcon;
-  if (slug === "edgeguard" || f.includes("screen") || f.includes("glass") || f.includes("9h")) return GlassIcon;
-
-  if (f.includes("magsafe") || f.includes("mag")) return MagnetIcon;
-  if (f.includes("drop") || f.includes("military") || f.includes("shock") || f.includes("impact")) return DropShieldIcon;
-  if (f.includes("anti-yellow") || f.includes("yellow") || f.includes("clar")) return CrystalIcon;
-  if (f.includes("finger") || f.includes("smudge") || f.includes("oleophobic")) return FingerprintIcon;
-  if (f.includes("grip") || f.includes("frost") || f.includes("silicone") || f.includes("texture")) return GripIcon;
-  if (f.includes("wireless") || f.includes("charging") || f.includes("power")) return BoltIcon;
-
-  return CheckBadgeIcon;
+type HighlightCard = {
+  label: string;
+  Icon: ComponentType<{ className?: string }>;
 };
+
+const seriesHighlightCards: Record<SeriesSlug, HighlightCard[]> = {
+  clearmag: [
+    { label: "MagSafe", Icon: Magnet },
+    { label: "Anti-Yellow", Icon: Sparkles },
+    { label: "Drop Rated", Icon: Shield },
+    { label: "Anti-Smudges", Icon: Fingerprint },
+  ],
+  "clearmag-edge": [
+    { label: "MagSafe", Icon: Magnet },
+    { label: "Frosted Grip", Icon: Layers },
+    { label: "Drop Rated", Icon: Shield },
+    { label: "Clear Back", Icon: Sparkles },
+  ],
+  softmag: [
+    { label: "Soft Touch", Icon: Droplets },
+    { label: "Microfiber", Icon: Layers },
+    { label: "MagSafe", Icon: Magnet },
+    { label: "Washable", Icon: Sparkles },
+  ],
+  "armor-edge": [
+    { label: "Camera Slide", Icon: Camera },
+    { label: "Ring Stand", Icon: RotateCw },
+    { label: "16ft Drop", Icon: Shield },
+    { label: "MagSafe", Icon: Magnet },
+  ],
+  edgeguard: [
+    { label: "9H Glass", Icon: Smartphone },
+    { label: "Anti-Fingerprint", Icon: Fingerprint },
+    { label: "Easy Install", Icon: Ruler },
+    { label: "Edge-to-Edge", Icon: Layers },
+  ],
+  lensguard: [
+    { label: "9H Hard", Icon: Shield },
+    { label: "AR Clear", Icon: Sparkles },
+    { label: "Precision Fit", Icon: Ruler },
+    { label: "Ultra Thin", Icon: Layers },
+  ],
+};
+
+const getHighlightCards = (slug: SeriesSlug): HighlightCard[] =>
+  seriesHighlightCards[slug] || [
+    { label: "Quality", Icon: Shield },
+    { label: "Fit", Icon: Ruler },
+    { label: "Protection", Icon: Shield },
+    { label: "MagSafe", Icon: Magnet },
+  ];
 
 // ── Series-specific FAQs for accuracy ──
 const faqsByType: Record<string, { q: string; a: string }[]> = {
@@ -528,7 +558,7 @@ const SeriesProduct = () => {
                   <div className="flex items-center gap-1.5">
                     <div className="flex gap-0.5">
                       {Array.from({ length: 5 }).map((_, i) => (
-                        <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                        <Star key={i} className="w-3.5 h-3.5 fill-primary text-primary" />
                       ))}
                     </div>
                     <span className="text-xs text-muted-foreground">{currentProduct.reviews} reviews</span>
@@ -544,7 +574,7 @@ const SeriesProduct = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.35, duration: 0.3 }}
                 >
-                  <span className="inline-block text-xs font-semibold bg-green-50 text-green-700 border border-green-200 px-3 py-1 rounded-full">
+                  <span className="inline-block text-xs font-semibold bg-primary/10 text-primary border border-primary/20 px-3 py-1 rounded-full">
                     {currentProduct.discount}
                   </span>
                 </motion.div>
@@ -684,8 +714,8 @@ const SeriesProduct = () => {
                 </div>
                 <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide -mx-1 px-1">
                   {[
-                    { label: "GET", bold: "FLAT 5%", suffix: "OFF", sub: "On purchase of single product", color: "text-green-600" },
-                    { label: "GET", bold: "FLAT 10%", suffix: "OFF", sub: "On purchase of 2+ products", color: "text-green-600" },
+                    { label: "GET", bold: "FLAT 5%", suffix: "OFF", sub: "On purchase of single product", color: "text-primary" },
+                    { label: "GET", bold: "FLAT 10%", suffix: "OFF", sub: "On purchase of 2+ products", color: "text-primary" },
                     { label: "GET", bold: "FREE", suffix: "SHIPPING", sub: "On all prepaid orders", color: "text-primary" },
                     { label: "EASY", bold: "7-DAY", suffix: "RETURN", sub: "Hassle-free return policy", color: "text-primary" },
                   ].map((offer, i) => (
@@ -722,26 +752,22 @@ const SeriesProduct = () => {
                 </div>
                 {/* Casefly-style 2×2 icon grid */}
                 <div className="grid grid-cols-2 gap-3" aria-label="Product highlights">
-                  {series.features.slice(0, 4).map((feature, i) => {
-                    const Icon = pickHighlightIcon(seriesSlug || "", feature);
-                    return (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, scale: 0.92 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.65 + i * 0.08, duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                        className="flex items-center gap-3 rounded-2xl border border-border/50 bg-background px-4 py-4"
-                      >
-                        {/* Circular icon container */}
-                        <span className="flex-shrink-0 w-14 h-14 rounded-full border border-border/60 bg-muted/30 flex items-center justify-center">
-                          <Icon className="w-6 h-6 text-foreground" />
-                        </span>
-                        <p className="text-sm font-semibold text-foreground leading-snug">
-                          {feature}
-                        </p>
-                      </motion.div>
-                    );
-                  })}
+                  {getHighlightCards(seriesSlug as SeriesSlug).map(({ label, Icon }, i) => (
+                    <motion.div
+                      key={label}
+                      initial={{ opacity: 0, scale: 0.92 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.65 + i * 0.08, duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                      className="flex items-center gap-3 rounded-2xl border border-border/50 bg-background px-4 py-4"
+                    >
+                      <span className="flex-shrink-0 w-14 h-14 rounded-full border border-border/60 bg-muted/30 flex items-center justify-center">
+                        <Icon className="w-6 h-6 text-foreground" />
+                      </span>
+                      <p className="text-[13px] font-semibold text-foreground leading-snug">
+                        {label}
+                      </p>
+                    </motion.div>
+                  ))}
                 </div>
               </motion.div>
             </div>
