@@ -63,21 +63,57 @@ import ProductContentSections from "@/components/ProductContentSections";
 import FloatingNavPill from "@/components/FloatingNavPill";
 import { premiumEase } from "@/lib/motion";
 
-const pickHighlightIcon = (slug: string, feature: string) => {
-  const f = feature.toLowerCase();
-
-  if (slug === "lensguard" || f.includes("camera") || f.includes("lens")) return CameraIcon;
-  if (slug === "edgeguard" || f.includes("screen") || f.includes("glass") || f.includes("9h")) return GlassIcon;
-
-  if (f.includes("magsafe") || f.includes("mag")) return MagnetIcon;
-  if (f.includes("drop") || f.includes("military") || f.includes("shock") || f.includes("impact")) return DropShieldIcon;
-  if (f.includes("anti-yellow") || f.includes("yellow") || f.includes("clar")) return CrystalIcon;
-  if (f.includes("finger") || f.includes("smudge") || f.includes("oleophobic")) return FingerprintIcon;
-  if (f.includes("grip") || f.includes("frost") || f.includes("silicone") || f.includes("texture")) return GripIcon;
-  if (f.includes("wireless") || f.includes("charging") || f.includes("power")) return BoltIcon;
-
-  return CheckBadgeIcon;
+type HighlightCard = {
+  label: string;
+  Icon: React.ComponentType<{ className?: string }>;
 };
+
+const seriesHighlightCards: Record<SeriesSlug, HighlightCard[]> = {
+  clearmag: [
+    { label: "MagSafe", Icon: Magnet },
+    { label: "Anti-Yellow", Icon: Sparkles },
+    { label: "Drop Rated", Icon: Shield },
+    { label: "Anti-Smudges", Icon: Fingerprint },
+  ],
+  "clearmag-edge": [
+    { label: "MagSafe", Icon: Magnet },
+    { label: "Frosted Grip", Icon: Layers },
+    { label: "Drop Rated", Icon: Shield },
+    { label: "Clear Back", Icon: Sparkles },
+  ],
+  softmag: [
+    { label: "Soft Touch", Icon: Droplets },
+    { label: "Microfiber", Icon: Layers },
+    { label: "MagSafe", Icon: Magnet },
+    { label: "Washable", Icon: Sparkles },
+  ],
+  "armor-edge": [
+    { label: "Camera Slide", Icon: Camera },
+    { label: "Ring Stand", Icon: RotateCw },
+    { label: "16ft Drop", Icon: Shield },
+    { label: "MagSafe", Icon: Magnet },
+  ],
+  edgeguard: [
+    { label: "9H Glass", Icon: Smartphone },
+    { label: "Anti-Fingerprint", Icon: Fingerprint },
+    { label: "Easy Install", Icon: Ruler },
+    { label: "Edge-to-Edge", Icon: Layers },
+  ],
+  lensguard: [
+    { label: "9H Hard", Icon: Shield },
+    { label: "AR Clear", Icon: Sparkles },
+    { label: "Precision Fit", Icon: Ruler },
+    { label: "Ultra Thin", Icon: Layers },
+  ],
+};
+
+const getHighlightCards = (slug: SeriesSlug): HighlightCard[] =>
+  seriesHighlightCards[slug] || [
+    { label: "Quality", Icon: Shield },
+    { label: "Fit", Icon: Ruler },
+    { label: "Protection", Icon: Shield },
+    { label: "MagSafe", Icon: Magnet },
+  ];
 
 // ── Series-specific FAQs for accuracy ──
 const faqsByType: Record<string, { q: string; a: string }[]> = {
