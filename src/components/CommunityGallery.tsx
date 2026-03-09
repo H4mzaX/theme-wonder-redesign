@@ -7,7 +7,7 @@ import lifestyleClear from "@/assets/silicone-lifestyle-clear.jpg";
 import lifestyleGreen from "@/assets/silicone-lifestyle-green.jpg";
 import lifestyleNavy from "@/assets/silicone-lifestyle-navy.jpg";
 import armoredgeLife from "@/assets/armoredge-lifestyle.webp";
-import softmagLife from "@/assets/softmagLife.webp";
+import softmagLife from "@/assets/softmag-lifestyle.webp";
 import lookbook from "@/assets/lookbook.jpg";
 
 const galleryImages = [
