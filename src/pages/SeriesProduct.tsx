@@ -12,7 +12,6 @@ import {
   Smartphone,
   Star,
   Lock,
-  ShoppingBag,
   Sparkles,
   Fingerprint,
   Layers,
@@ -602,26 +601,32 @@ const SeriesProduct = () => {
                 <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-3">
                   Model: <span className="text-foreground">{currentProduct?.device}</span>
                 </p>
-                <div className="flex flex-wrap gap-2">
-                  {deviceGroup.models.map((model, i) => {
+                <div className="flex flex-col border border-border/60 rounded-2xl overflow-hidden">
+                  {deviceGroup.models.map((model) => {
                     const prodIdx = products.findIndex((p) => p.device === model.name);
                     const hasProduct = prodIdx >= 0;
                     const isSelected = selectedModel === prodIdx;
+
                     return (
                       <motion.button
                         key={model.slug}
                         onClick={() => hasProduct && setSelectedModel(prodIdx)}
                         disabled={!hasProduct}
-                        className={`px-4 py-2.5 rounded-xl text-sm font-medium border transition-all duration-200 ${
+                        className={`w-full px-4 py-3 text-left border-b border-border/40 last:border-b-0 transition-colors duration-200 ${
                           isSelected
-                            ? "border-foreground bg-foreground text-background"
+                            ? "bg-foreground text-background"
                             : hasProduct
-                            ? "border-border hover:border-foreground/50"
-                            : "border-border/30 text-muted-foreground/40 cursor-not-allowed"
+                            ? "bg-background hover:bg-muted/40"
+                            : "bg-background text-muted-foreground/40 cursor-not-allowed"
                         }`}
-                        whileTap={hasProduct ? { scale: 0.95 } : undefined}
+                        whileTap={hasProduct ? { scale: 0.98 } : undefined}
                       >
-                        {model.name}
+                        <div className="flex items-center justify-between gap-3">
+                          <span className="text-sm font-medium">{model.name}</span>
+                          {!hasProduct && (
+                            <span className="text-[11px] font-semibold uppercase tracking-wider">Soon</span>
+                          )}
+                        </div>
                       </motion.button>
                     );
                   })}
@@ -659,27 +664,26 @@ const SeriesProduct = () => {
               {/* Divider */}
               <div className="h-px bg-border/60 my-6" />
 
-              {/* ── Add to Cart + Buy Now (full-width, no qty) ── */}
+              {/* ── Add to Cart + Buy Now (pill, equal width) ── */}
               <motion.div
-                className="space-y-2.5"
+                className="flex gap-3"
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.3 }}
               >
                 <motion.button
                   onClick={handleAddToCart}
-                  className="w-full bg-foreground text-background py-3.5 rounded-xl text-sm font-semibold uppercase tracking-wider hover:bg-foreground/90 transition-colors"
+                  className="flex-1 bg-foreground text-background py-3.5 rounded-full text-sm font-semibold uppercase tracking-wider hover:bg-foreground/90 transition-colors"
                   whileTap={{ scale: 0.97 }}
                 >
-                  Add to Cart — {currentProduct?.price}
+                  Add to Cart
                 </motion.button>
 
                 <motion.button
                   onClick={handleAddToCart}
-                  className="w-full border-2 border-foreground text-foreground py-3.5 rounded-xl text-sm font-semibold uppercase tracking-wider hover:bg-foreground hover:text-background transition-colors flex items-center justify-center gap-2"
+                  className="flex-1 border-2 border-foreground text-foreground py-3.5 rounded-full text-sm font-semibold uppercase tracking-wider hover:bg-foreground hover:text-background transition-colors"
                   whileTap={{ scale: 0.97 }}
                 >
-                  <ShoppingBag className="w-4 h-4" />
                   Buy Now
                 </motion.button>
               </motion.div>
@@ -905,20 +909,22 @@ const SeriesProduct = () => {
             <p className="text-[10px] text-muted-foreground line-clamp-1">{series.name} — {currentProduct?.device}</p>
             <p className="text-sm font-bold text-foreground">{currentProduct?.price}</p>
           </div>
-          <motion.button
-            onClick={handleAddToCart}
-            className="bg-foreground text-background px-4 py-2.5 rounded-xl text-[11px] font-semibold uppercase tracking-wider"
-            whileTap={{ scale: 0.95 }}
-          >
-            Add to Cart
-          </motion.button>
-          <motion.button
-            onClick={handleAddToCart}
-            className="border border-foreground text-foreground px-4 py-2.5 rounded-xl text-[11px] font-semibold uppercase tracking-wider"
-            whileTap={{ scale: 0.95 }}
-          >
-            Buy Now
-          </motion.button>
+          <div className="flex gap-2 w-[220px]">
+            <motion.button
+              onClick={handleAddToCart}
+              className="flex-1 bg-foreground text-background py-2.5 rounded-full text-[11px] font-semibold uppercase tracking-wider"
+              whileTap={{ scale: 0.95 }}
+            >
+              Add to Cart
+            </motion.button>
+            <motion.button
+              onClick={handleAddToCart}
+              className="flex-1 border border-foreground text-foreground py-2.5 rounded-full text-[11px] font-semibold uppercase tracking-wider"
+              whileTap={{ scale: 0.95 }}
+            >
+              Buy Now
+            </motion.button>
+          </div>
         </div>
       </div>
 
