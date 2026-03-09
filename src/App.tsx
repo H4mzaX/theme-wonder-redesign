@@ -17,6 +17,7 @@ import TermsAndConditions from "./pages/TermsAndConditions";
 import RefundPolicy from "./pages/RefundPolicy";
 import NotFound from "./pages/NotFound";
 import WhatsAppButton from "./components/WhatsAppButton";
+import { useCartSync } from "@/hooks/useCartSync";
 
 const queryClient = new QueryClient();
 
@@ -38,7 +39,7 @@ const pageVariants = {
 
 const AnimatedRoutes = () => {
   const location = useLocation();
-
+  useCartSync();
   return (
     <AnimatePresence mode="wait" initial={false}>
       <motion.div
