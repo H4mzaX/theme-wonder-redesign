@@ -39,7 +39,7 @@ const pageVariants = {
 
 const AnimatedRoutes = () => {
   const location = useLocation();
-
+  useCartSync();
   return (
     <AnimatePresence mode="wait" initial={false}>
       <motion.div
