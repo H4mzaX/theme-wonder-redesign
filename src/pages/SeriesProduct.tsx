@@ -714,8 +714,8 @@ const SeriesProduct = () => {
                 </div>
                 <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide -mx-1 px-1">
                   {[
-                    { label: "GET", bold: "FLAT 5%", suffix: "OFF", sub: "On purchase of single product", color: "text-green-600" },
-                    { label: "GET", bold: "FLAT 10%", suffix: "OFF", sub: "On purchase of 2+ products", color: "text-green-600" },
+                    { label: "GET", bold: "FLAT 5%", suffix: "OFF", sub: "On purchase of single product", color: "text-primary" },
+                    { label: "GET", bold: "FLAT 10%", suffix: "OFF", sub: "On purchase of 2+ products", color: "text-primary" },
                     { label: "GET", bold: "FREE", suffix: "SHIPPING", sub: "On all prepaid orders", color: "text-primary" },
                     { label: "EASY", bold: "7-DAY", suffix: "RETURN", sub: "Hassle-free return policy", color: "text-primary" },
                   ].map((offer, i) => (
