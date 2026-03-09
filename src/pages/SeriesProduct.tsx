@@ -65,7 +65,7 @@ import { premiumEase } from "@/lib/motion";
 
 type HighlightCard = {
   label: string;
-  Icon: React.ComponentType<{ className?: string }>;
+  Icon: ComponentType<{ className?: string }>;
 };
 
 const seriesHighlightCards: Record<SeriesSlug, HighlightCard[]> = {
@@ -558,7 +558,7 @@ const SeriesProduct = () => {
                   <div className="flex items-center gap-1.5">
                     <div className="flex gap-0.5">
                       {Array.from({ length: 5 }).map((_, i) => (
-                        <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                        <Star key={i} className="w-3.5 h-3.5 fill-primary text-primary" />
                       ))}
                     </div>
                     <span className="text-xs text-muted-foreground">{currentProduct.reviews} reviews</span>
@@ -574,7 +574,7 @@ const SeriesProduct = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.35, duration: 0.3 }}
                 >
-                  <span className="inline-block text-xs font-semibold bg-green-50 text-green-700 border border-green-200 px-3 py-1 rounded-full">
+                  <span className="inline-block text-xs font-semibold bg-primary/10 text-primary border border-primary/20 px-3 py-1 rounded-full">
                     {currentProduct.discount}
                   </span>
                 </motion.div>
