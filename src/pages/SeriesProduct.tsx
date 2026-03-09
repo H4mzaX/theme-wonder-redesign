@@ -720,28 +720,29 @@ const SeriesProduct = () => {
                   </p>
                   <div className="h-px flex-1 bg-gradient-to-r from-border/40 via-border/20 to-transparent ml-4" />
                 </div>
-                {/* Modern editorial list (Casegear/Casefly-inspired) */}
-                <ul className="space-y-2" aria-label="Product highlights">
-                  {series.features.map((feature, i) => {
+                {/* Casefly-style 2×2 icon grid */}
+                <div className="grid grid-cols-2 gap-3" aria-label="Product highlights">
+                  {series.features.slice(0, 4).map((feature, i) => {
                     const Icon = pickHighlightIcon(seriesSlug || "", feature);
                     return (
-                      <motion.li
+                      <motion.div
                         key={i}
-                        initial={{ opacity: 0, x: -14 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.7 + i * 0.07, duration: 0.35 }}
-                        className="group flex items-center gap-4 rounded-2xl border border-border/40 bg-background/60 px-5 py-4 backdrop-blur-sm hover:bg-muted/20 transition-colors"
+                        initial={{ opacity: 0, scale: 0.92 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.65 + i * 0.08, duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                        className="flex items-center gap-3 rounded-2xl border border-border/50 bg-background px-4 py-4"
                       >
-                        <span className="grid place-items-center w-10 h-10 rounded-xl border border-border/40 bg-muted/20 text-foreground flex-shrink-0">
-                          <Icon className="w-5 h-5" />
+                        {/* Circular icon container */}
+                        <span className="flex-shrink-0 w-14 h-14 rounded-full border border-border/60 bg-muted/30 flex items-center justify-center">
+                          <Icon className="w-6 h-6 text-foreground" />
                         </span>
-                        <p className="text-sm font-medium text-foreground leading-snug">
+                        <p className="text-sm font-semibold text-foreground leading-snug">
                           {feature}
                         </p>
-                      </motion.li>
+                      </motion.div>
                     );
                   })}
-                </ul>
+                </div>
               </motion.div>
             </div>
           </div>
