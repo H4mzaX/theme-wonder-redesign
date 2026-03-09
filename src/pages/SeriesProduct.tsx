@@ -1,11 +1,45 @@
 import { useState, useRef, useEffect } from "react";
 import { useParams, Link, useSearchParams } from "react-router-dom";
 import {
-  Shield, Magnet, Zap, CheckCircle, ChevronDown, ChevronLeft, ChevronRight,
-  Package, Truck, Percent, Smartphone, Waves, ShieldCheck, BadgeCheck, Star, Lock, ShoppingBag
+  Shield,
+  Magnet,
+  Zap,
+  CheckCircle,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Package,
+  Truck,
+  Percent,
+  Smartphone,
+  Star,
+  Lock,
+  ShoppingBag,
 } from "lucide-react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { seriesData, deviceSeries, getSeriesProducts, softmagColors, allProducts, type SeriesSlug, iphone17ProGalleryImages, iphone17GalleryImages, iphone16MagsafeGalleryImages, siliconeGalleryImages } from "@/data/products";
+import {
+  seriesData,
+  deviceSeries,
+  getSeriesProducts,
+  softmagColors,
+  allProducts,
+  type SeriesSlug,
+  iphone17ProGalleryImages,
+  iphone17GalleryImages,
+  iphone16MagsafeGalleryImages,
+  siliconeGalleryImages,
+} from "@/data/products";
+import {
+  BoltIcon,
+  CameraIcon,
+  CheckBadgeIcon,
+  CrystalIcon,
+  DropShieldIcon,
+  FingerprintIcon,
+  GlassIcon,
+  GripIcon,
+  MagnetIcon,
+} from "@/components/icons/HighlightIcons";
 import softmagHero from "@/assets/softmag-hero.webp";
 import softmagFloating from "@/assets/softmag-floating.webp";
 import softmagCamera from "@/assets/softmag-camera.webp";
@@ -35,9 +69,21 @@ import ProductContentSections from "@/components/ProductContentSections";
 import FloatingNavPill from "@/components/FloatingNavPill";
 import { premiumEase } from "@/lib/motion";
 
+const pickHighlightIcon = (slug: string, feature: string) => {
+  const f = feature.toLowerCase();
 
+  if (slug === "lensguard" || f.includes("camera") || f.includes("lens")) return CameraIcon;
+  if (slug === "edgeguard" || f.includes("screen") || f.includes("glass") || f.includes("9h")) return GlassIcon;
 
-const featureIcons = [Waves, ShieldCheck, Magnet, BadgeCheck];
+  if (f.includes("magsafe") || f.includes("mag")) return MagnetIcon;
+  if (f.includes("drop") || f.includes("military") || f.includes("shock") || f.includes("impact")) return DropShieldIcon;
+  if (f.includes("anti-yellow") || f.includes("yellow") || f.includes("clar")) return CrystalIcon;
+  if (f.includes("finger") || f.includes("smudge") || f.includes("oleophobic")) return FingerprintIcon;
+  if (f.includes("grip") || f.includes("frost") || f.includes("silicone") || f.includes("texture")) return GripIcon;
+  if (f.includes("wireless") || f.includes("charging") || f.includes("power")) return BoltIcon;
+
+  return CheckBadgeIcon;
+};
 
 // ── Series-specific FAQs for accuracy ──
 const faqsByType: Record<string, { q: string; a: string }[]> = {
@@ -674,40 +720,28 @@ const SeriesProduct = () => {
                   </p>
                   <div className="h-px flex-1 bg-gradient-to-r from-border/40 via-border/20 to-transparent ml-4" />
                 </div>
-                
-                {/* Premium asymmetric grid */}
-                <div className="space-y-3">
+                {/* Modern editorial list (Casegear/Casefly-inspired) */}
+                <ul className="space-y-2" aria-label="Product highlights">
                   {series.features.map((feature, i) => {
-                    const Icon = featureIcons[i % featureIcons.length];
+                    const Icon = pickHighlightIcon(seriesSlug || "", feature);
                     return (
-                      <motion.div
+                      <motion.li
                         key={i}
-                        initial={{ opacity: 0, x: -20 }}
+                        initial={{ opacity: 0, x: -14 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.7 + i * 0.08, duration: 0.4 }}
-                        className="group relative flex items-start gap-4 p-5 rounded-2xl border border-border/30 bg-gradient-to-br from-muted/20 via-background to-background hover:border-border/50 hover:shadow-lg hover:shadow-foreground/[0.02] transition-all duration-400"
+                        transition={{ delay: 0.7 + i * 0.07, duration: 0.35 }}
+                        className="group flex items-center gap-4 rounded-2xl border border-border/40 bg-background/60 px-5 py-4 backdrop-blur-sm hover:bg-muted/20 transition-colors"
                       >
-                        {/* Icon with animated background */}
-                        <div className="relative flex-shrink-0">
-                          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-foreground/[0.08] to-foreground/[0.03] flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-400">
-                            <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/15 to-accent/15 opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
-                            <Icon className="relative w-5 h-5 text-foreground" strokeWidth={1.6} />
-                          </div>
-                        </div>
-                        
-                        {/* Text content */}
-                        <div className="flex-1 pt-1">
-                          <h4 className="text-sm font-semibold text-foreground leading-tight group-hover:text-foreground/90 transition-colors">
-                            {feature}
-                          </h4>
-                        </div>
-
-                        {/* Subtle shimmer on hover */}
-                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-foreground/[0.01] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
-                      </motion.div>
+                        <span className="grid place-items-center w-10 h-10 rounded-xl border border-border/40 bg-muted/20 text-foreground flex-shrink-0">
+                          <Icon className="w-5 h-5" />
+                        </span>
+                        <p className="text-sm font-medium text-foreground leading-snug">
+                          {feature}
+                        </p>
+                      </motion.li>
                     );
                   })}
-                </div>
+                </ul>
               </motion.div>
             </div>
           </div>
