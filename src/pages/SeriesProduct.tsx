@@ -3,8 +3,6 @@ import { useParams, Link, useSearchParams } from "react-router-dom";
 import {
   Shield,
   Magnet,
-  Zap,
-  CheckCircle,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
@@ -15,6 +13,13 @@ import {
   Star,
   Lock,
   ShoppingBag,
+  Sparkles,
+  Fingerprint,
+  Layers,
+  Droplets,
+  Camera,
+  RotateCw,
+  Ruler,
 } from "lucide-react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import {
@@ -29,17 +34,6 @@ import {
   iphone16MagsafeGalleryImages,
   siliconeGalleryImages,
 } from "@/data/products";
-import {
-  BoltIcon,
-  CameraIcon,
-  CheckBadgeIcon,
-  CrystalIcon,
-  DropShieldIcon,
-  FingerprintIcon,
-  GlassIcon,
-  GripIcon,
-  MagnetIcon,
-} from "@/components/icons/HighlightIcons";
 import softmagHero from "@/assets/softmag-hero.webp";
 import softmagFloating from "@/assets/softmag-floating.webp";
 import softmagCamera from "@/assets/softmag-camera.webp";
