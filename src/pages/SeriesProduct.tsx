@@ -661,34 +661,49 @@ const SeriesProduct = () => {
                 </div>
               </motion.div>
 
-              {/* ── Product Highlights — Concept theme editorial cards ── */}
+              {/* ── Product Highlights — Premium redesign ── */}
               <motion.div
-                className="mt-8"
+                className="mt-10 relative"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.65, duration: 0.3 }}
               >
-                <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-4">
-                  Product Highlights
-                </p>
-                <div className="grid grid-cols-2 gap-2.5">
+                <div className="flex items-center justify-between mb-6">
+                  <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground font-bold">
+                    Product Highlights
+                  </p>
+                  <div className="h-px flex-1 bg-gradient-to-r from-border/40 via-border/20 to-transparent ml-4" />
+                </div>
+                
+                {/* Premium asymmetric grid */}
+                <div className="space-y-3">
                   {series.features.map((feature, i) => {
                     const Icon = featureIcons[i % featureIcons.length];
                     return (
                       <motion.div
                         key={i}
-                        className="relative p-4 rounded-2xl border border-border/20 bg-gradient-to-b from-muted/30 to-background group overflow-hidden"
-                        whileHover={{ y: -2 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.7 + i * 0.08, duration: 0.4 }}
+                        className="group relative flex items-start gap-4 p-5 rounded-2xl border border-border/30 bg-gradient-to-br from-muted/20 via-background to-background hover:border-border/50 hover:shadow-lg hover:shadow-foreground/[0.02] transition-all duration-400"
                       >
-                        {/* Subtle glow */}
-                        <div className="absolute -top-6 -right-6 w-16 h-16 rounded-full bg-foreground/[0.03] blur-xl group-hover:bg-foreground/[0.06] transition-colors duration-500" />
-                        <div className="relative z-10 flex flex-col gap-2.5">
-                          <div className="w-9 h-9 rounded-xl bg-foreground/[0.06] flex items-center justify-center">
-                            <Icon className="w-4 h-4 text-foreground" strokeWidth={1.5} />
+                        {/* Icon with animated background */}
+                        <div className="relative flex-shrink-0">
+                          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-foreground/[0.08] to-foreground/[0.03] flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-400">
+                            <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/15 to-accent/15 opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
+                            <Icon className="relative w-5 h-5 text-foreground" strokeWidth={1.6} />
                           </div>
-                          <span className="text-[12px] font-medium text-foreground leading-snug">{feature}</span>
                         </div>
+                        
+                        {/* Text content */}
+                        <div className="flex-1 pt-1">
+                          <h4 className="text-sm font-semibold text-foreground leading-tight group-hover:text-foreground/90 transition-colors">
+                            {feature}
+                          </h4>
+                        </div>
+
+                        {/* Subtle shimmer on hover */}
+                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-foreground/[0.01] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
                       </motion.div>
                     );
                   })}
