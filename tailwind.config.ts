@@ -16,6 +16,7 @@ export default {
       fontFamily: {
         display: ['"Poppins"', 'system-ui', 'sans-serif'],
         body: ['"Poppins"', 'system-ui', 'sans-serif'],
+        brand: ['"Bebas Neue"', 'Impact', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
