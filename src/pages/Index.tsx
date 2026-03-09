@@ -12,7 +12,6 @@ import MarqueeSection from "@/components/MarqueeSection";
 import FloatingSidebar from "@/components/FloatingSidebar";
 
 // Lazy-load below-fold sections for faster initial paint
-const WhyVCASE = lazy(() => import("@/components/WhyVCASE"));
 const NewArrivals = lazy(() => import("@/components/NewArrivals"));
 const ProductBanner = lazy(() => import("@/components/ProductBanner"));
 const CraftedSection = lazy(() => import("@/components/CraftedSection"));
@@ -70,8 +69,6 @@ const Index = () => {
         <HeroSlider />
         <MarqueeSection />
         <ExploreProducts />
-
-        <LazySection><WhyVCASE /></LazySection>
 
         <LazySection>
           <ProductBanner
