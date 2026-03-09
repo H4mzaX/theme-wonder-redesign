@@ -752,26 +752,22 @@ const SeriesProduct = () => {
                 </div>
                 {/* Casefly-style 2×2 icon grid */}
                 <div className="grid grid-cols-2 gap-3" aria-label="Product highlights">
-                  {series.features.slice(0, 4).map((feature, i) => {
-                    const Icon = pickHighlightIcon(seriesSlug || "", feature);
-                    return (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, scale: 0.92 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.65 + i * 0.08, duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                        className="flex items-center gap-3 rounded-2xl border border-border/50 bg-background px-4 py-4"
-                      >
-                        {/* Circular icon container */}
-                        <span className="flex-shrink-0 w-14 h-14 rounded-full border border-border/60 bg-muted/30 flex items-center justify-center">
-                          <Icon className="w-6 h-6 text-foreground" />
-                        </span>
-                        <p className="text-sm font-semibold text-foreground leading-snug">
-                          {feature}
-                        </p>
-                      </motion.div>
-                    );
-                  })}
+                  {getHighlightCards(seriesSlug as SeriesSlug).map(({ label, Icon }, i) => (
+                    <motion.div
+                      key={label}
+                      initial={{ opacity: 0, scale: 0.92 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.65 + i * 0.08, duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                      className="flex items-center gap-3 rounded-2xl border border-border/50 bg-background px-4 py-4"
+                    >
+                      <span className="flex-shrink-0 w-14 h-14 rounded-full border border-border/60 bg-muted/30 flex items-center justify-center">
+                        <Icon className="w-6 h-6 text-foreground" />
+                      </span>
+                      <p className="text-[13px] font-semibold text-foreground leading-snug">
+                        {label}
+                      </p>
+                    </motion.div>
+                  ))}
                 </div>
               </motion.div>
             </div>
