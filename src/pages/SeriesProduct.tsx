@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, type ComponentType } from "react";
 import { useParams, Link, useSearchParams } from "react-router-dom";
 import {
   Shield,
