@@ -20,8 +20,8 @@ const PromoBanner = lazy(() => import("@/components/PromoBanner"));
 const ExploreLineup = lazy(() => import("@/components/ExploreLineup"));
 const WatchAndShop = lazy(() => import("@/components/WatchAndShop"));
 const TestimonialStrip = lazy(() => import("@/components/TestimonialStrip"));
-const AboutRewardsCards = lazy(() => import("@/components/AboutRewardsCards"));
-const FeaturedIn = lazy(() => import("@/components/FeaturedIn"));
+const BrandManifesto = lazy(() => import("@/components/BrandManifesto"));
+const CommunityGallery = lazy(() => import("@/components/CommunityGallery"));
 const TrustBadges = lazy(() => import("@/components/TrustBadges"));
 const Footer = lazy(() => import("@/components/Footer"));
 
@@ -119,8 +119,8 @@ const Index = () => {
         </LazySection>
 
         <LazySection><TestimonialStrip /></LazySection>
-        <LazySection><AboutRewardsCards /></LazySection>
-        <LazySection><FeaturedIn /></LazySection>
+        <LazySection><BrandManifesto /></LazySection>
+        <LazySection><CommunityGallery /></LazySection>
         <LazySection><TrustBadges /></LazySection>
       </main>
       {/* Footer with floating rounded overlap */}
