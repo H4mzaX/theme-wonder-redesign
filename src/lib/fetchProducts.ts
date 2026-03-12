@@ -1,4 +1,5 @@
-import { shopifyConfig, SHOPIFY_GRAPHQL_URL } from '../config/shopify';
+import { shopifyConfig, SHOPIFY_GRAPHQL_URL } from '@/config/shopify';
+
 
 export async function fetchProducts() {
   const query = `
