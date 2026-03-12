@@ -263,9 +263,9 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                             >
                               <div className="relative rounded-2xl overflow-hidden bg-muted aspect-square mb-3.5">
                                 <img
-                                  src={item.icon}
+                                  src={item.image}
                                   alt={item.name}
-                                  className="w-16 h-16 object-contain absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-500 ease-out"
+                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                                 />
                               </div>
                               <BrandName name={item.name} className="text-[15px] font-semibold text-foreground group-hover:text-accent transition-colors duration-200" />
