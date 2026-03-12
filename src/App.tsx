@@ -18,6 +18,11 @@ import RefundPolicy from "./pages/RefundPolicy";
 import NotFound from "./pages/NotFound";
 import WhatsAppButton from "./components/WhatsAppButton";
 
+import ContactUs from "./pages/ContactUs"; 
+import Products from "./pages/Products";  // ← ADD THIS NEW LINE
+import TermsAndConditions from "./pages/TermsAndConditions";
+
+
 const queryClient = new QueryClient();
 
 const conceptEase: [number, number, number, number] = [0.25, 1, 0.5, 1];
@@ -51,6 +56,7 @@ const AnimatedRoutes = () => {
       >
         <Routes location={location}>
           <Route path="/" element={<Index />} />
+          <Route path="/products" element={<Products />} />  {/* ← ADD THIS NEW LINE */}
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/collections/:slug" element={<Collection />} />
           
