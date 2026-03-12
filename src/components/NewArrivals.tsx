@@ -16,16 +16,22 @@ const NewArrivals = () => {
   useEffect(() => {
     fetchFeaturedProducts(8)
       .then(data => {
-        // Transform Shopify data to match your ProductCard format
+        // Transform Shopify data to match ProductCard format
         const transformedProducts = data.map(({ node }: any) => ({
           id: node.id,
-          title: node.title,
-          handle: node.handle,
-          description: node.description,
-          price: parseFloat(node.priceRange.minVariantPrice.amount),
+          name: node.title,
+          subtitle: node.description?.substring(0, 50) || 'Premium Protection',
+          device: node.tags.find((tag: string) => tag.startsWith('device:'))?.replace('device:', '') || 'iPhone',
+          category: node.tags.find((tag: string) => tag.startsWith('category:'))?.replace('category:', '') || 'Cases',
+          price: `₹${parseFloat(node.priceRange.minVariantPrice.amount).toFixed(0)}`,
+          originalPrice: node.tags.find((tag: string) => tag.startsWith('original:'))?.replace('original:', '') || undefined,
           image: node.images.edges[0]?.node.url || '',
+          hoverImage: node.images.edges[1]?.node.url || node.images.edges[0]?.node.url,
+          rating: 4.8,
+          colors: node.tags.filter((tag: string) => tag.startsWith('color:')).map((tag: string) => tag.replace('color:', '')) || ['Default'],
           badge: node.tags.includes('new') ? 'New' : undefined,
-          availableForSale: node.availableForSale
+          availableForSale: node.availableForSale,
+          handle: node.handle
         }));
         setProducts(transformedProducts);
         setLoading(false);
@@ -76,6 +82,10 @@ const NewArrivals = () => {
         </div>
       </section>
     );
+  }
+
+  if (products.length === 0) {
+    return null;
   }
 
   return (
