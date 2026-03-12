@@ -13,15 +13,15 @@ import BrandName from "@/components/BrandName";
 // ── Mega-menu data ──
 
 const casesMenuItems = [
-  { name: "ClearMag", slug: "clearmag", icon: "/icons/clearmag.webp", tag: "Popular" },
-  { name: "ClearMag Edge", slug: "clearmag-edge", icon: "/icons/clearmag-edge.webp" },
-  { name: "SoftMag", slug: "softmag", icon: "/icons/softmag.webp", tag: "Bestseller" },
-  { name: "Armor Edge", slug: "armor-edge", icon: "/icons/armoredge.png", tag: "New" },
+  { name: "ClearMag", slug: "clearmag", icon: "/icons/clearmag.webp", image: "/mega/clearmag.webp", tag: "Popular" },
+  { name: "ClearMag Edge", slug: "clearmag-edge", icon: "/icons/clearmag-edge.webp", image: "/mega/clearmag-edge.webp" },
+  { name: "SoftMag", slug: "softmag", icon: "/icons/softmag.webp", image: "/mega/softmag.webp", tag: "Bestseller" },
+  { name: "Armor Edge", slug: "armor-edge", icon: "/icons/armoredge.png", image: "/mega/armoredge.webp", tag: "New" },
 ];
 
 const protectionMenuItems = [
-  { name: "EdgeGuard", slug: "edgeguard", icon: "/icons/edgeguard.webp", subtitle: "Screen Protection" },
-  { name: "LensGuard", slug: "lensguard", icon: "/icons/lensguard.webp", subtitle: "Camera Protection" },
+  { name: "EdgeGuard", slug: "edgeguard", icon: "/icons/edgeguard.webp", image: "/mega/edgeguard.webp", subtitle: "Screen Protection" },
+  { name: "LensGuard", slug: "lensguard", icon: "/icons/lensguard.webp", image: "/mega/lensguard.webp", subtitle: "Camera Protection" },
 ];
 
 const devicesMenuItems = deviceSeries.map((group) => ({
@@ -104,7 +104,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden lg:flex items-center gap-1 relative">
+          <div className="hidden lg:flex items-center gap-0.5 relative">
             {navItems.map((item, i) => {
               const isActive = activeMega === item;
               return (
@@ -115,8 +115,8 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                   onMouseLeave={handleMouseLeave}
                 >
                   <motion.button
-                    className={`relative z-10 text-[15px] font-medium flex items-center gap-1 px-5 py-2 transition-colors duration-200 ${
-                      isActive ? "text-foreground" : isTransparent ? "text-background/90 hover:text-background" : "text-muted-foreground hover:text-foreground"
+                    className={`relative z-10 text-sm font-semibold uppercase tracking-[0.06em] flex items-center gap-1 px-5 py-2.5 rounded-full transition-colors duration-200 ${
+                      isActive ? "text-background" : isTransparent ? "text-background/90 hover:text-background" : "text-foreground hover:text-foreground"
                     }`}
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -126,9 +126,8 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                   </motion.button>
                   {isActive && (
                     <motion.div
-                      className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 rounded-full ${isTransparent ? "bg-background" : "bg-foreground"}`}
-                      layoutId="navUnderline"
-                      style={{ width: "60%" }}
+                      className={`absolute inset-0 rounded-full ${isTransparent ? "bg-background/20" : "bg-foreground"}`}
+                      layoutId="navPill"
                       transition={{ type: "spring", stiffness: 350, damping: 30 }}
                     />
                   )}
@@ -139,8 +138,8 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
             {/* Sale link */}
             <Link
               to="/collections/all"
-              className={`text-[15px] font-medium px-5 py-2 transition-colors duration-200 ${
-                isTransparent ? "text-background/90 hover:text-background" : "text-muted-foreground hover:text-foreground"
+              className={`text-sm font-semibold uppercase tracking-[0.06em] px-5 py-2.5 transition-colors duration-200 ${
+                isTransparent ? "text-background/90 hover:text-background" : "text-foreground hover:text-accent"
               }`}
             >
               Sale
@@ -211,9 +210,9 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                           >
                             <div className="relative rounded-2xl overflow-hidden bg-muted aspect-[4/3] mb-3.5">
                               <img
-                                src={item.icon}
+                                src={item.image}
                                 alt={item.name}
-                                className="w-20 h-20 object-contain absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-500 ease-out"
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                               />
                               {item.tag && (
                                 <span className="absolute top-3 left-3 text-[10px] uppercase tracking-wider font-bold bg-foreground text-background px-2.5 py-1 rounded-full">
@@ -264,9 +263,9 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                             >
                               <div className="relative rounded-2xl overflow-hidden bg-muted aspect-square mb-3.5">
                                 <img
-                                  src={item.icon}
+                                  src={item.image}
                                   alt={item.name}
-                                  className="w-16 h-16 object-contain absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-500 ease-out"
+                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                                 />
                               </div>
                               <BrandName name={item.name} className="text-[15px] font-semibold text-foreground group-hover:text-accent transition-colors duration-200" />
