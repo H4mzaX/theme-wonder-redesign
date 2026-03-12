@@ -31,15 +31,20 @@ export async function fetchProducts() {
     }
   `;
 
-  const response = await fetch(SHOPIFY_GRAPHQL_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Shopify-Storefront-Access-Token': shopifyConfig.storefrontAccessToken
-    },
-    body: JSON.stringify({ query })
-  });
+  try {
+    const response = await fetch(SHOPIFY_GRAPHQL_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Storefront-Access-Token': shopifyConfig.storefrontAccessToken
+      },
+      body: JSON.stringify({ query })
+    });
 
-  const data = await response.json();
-  return data.data.products.edges;
+    const data = await response.json();
+    return data.data.products.edges;
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    throw error;
+  }
 }
