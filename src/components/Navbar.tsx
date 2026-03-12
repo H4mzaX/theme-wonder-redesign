@@ -104,7 +104,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden lg:flex items-center gap-1 relative">
+          <div className="hidden lg:flex items-center gap-0.5 relative">
             {navItems.map((item, i) => {
               const isActive = activeMega === item;
               return (
@@ -115,8 +115,8 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                   onMouseLeave={handleMouseLeave}
                 >
                   <motion.button
-                    className={`relative z-10 text-[15px] font-medium flex items-center gap-1 px-5 py-2 transition-colors duration-200 ${
-                      isActive ? "text-foreground" : isTransparent ? "text-background/90 hover:text-background" : "text-muted-foreground hover:text-foreground"
+                    className={`relative z-10 text-sm font-semibold uppercase tracking-[0.06em] flex items-center gap-1 px-5 py-2.5 rounded-full transition-colors duration-200 ${
+                      isActive ? "text-background" : isTransparent ? "text-background/90 hover:text-background" : "text-foreground hover:text-foreground"
                     }`}
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -126,9 +126,8 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                   </motion.button>
                   {isActive && (
                     <motion.div
-                      className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 rounded-full ${isTransparent ? "bg-background" : "bg-foreground"}`}
-                      layoutId="navUnderline"
-                      style={{ width: "60%" }}
+                      className={`absolute inset-0 rounded-full ${isTransparent ? "bg-background/20" : "bg-foreground"}`}
+                      layoutId="navPill"
                       transition={{ type: "spring", stiffness: 350, damping: 30 }}
                     />
                   )}
@@ -139,8 +138,8 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
             {/* Sale link */}
             <Link
               to="/collections/all"
-              className={`text-[15px] font-medium px-5 py-2 transition-colors duration-200 ${
-                isTransparent ? "text-background/90 hover:text-background" : "text-muted-foreground hover:text-foreground"
+              className={`text-sm font-semibold uppercase tracking-[0.06em] px-5 py-2.5 transition-colors duration-200 ${
+                isTransparent ? "text-background/90 hover:text-background" : "text-foreground hover:text-accent"
               }`}
             >
               Sale
