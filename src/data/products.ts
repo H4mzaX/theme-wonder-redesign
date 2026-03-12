@@ -325,12 +325,9 @@ export function getDeviceProducts(deviceGroupSlug: string): Product[] {
 
 // ── Helper: get canonical URL for a product ──
 export const getProductUrl = (product: Product): string {
-  const slug = product.handle || product.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  const slug = product.handle || product.id;
   return "/product/" + slug;
-
 }
-
-
 
   if (!group) return `/product/${product.id}`;
   const model = group.models.find((m) => m.name === product.device);
