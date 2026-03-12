@@ -1,14 +1,15 @@
-import { shopifyConfig, SHOPIFY_GRAPHQL_URL } from './shopify';
+import { shopifyConfig, SHOPIFY_GRAPHQL_URL } from '../config/shopify';
 
 export async function fetchProducts() {
   const query = `
     {
-      products(first: 10) {
+      products(first: 20) {
         edges {
           node {
             id
             title
             description
+            handle
             priceRange {
               minVariantPrice {
                 amount
@@ -19,9 +20,11 @@ export async function fetchProducts() {
               edges {
                 node {
                   url
+                  altText
                 }
               }
             }
+            availableForSale
           }
         }
       }
