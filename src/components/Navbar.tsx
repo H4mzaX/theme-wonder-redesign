@@ -13,15 +13,15 @@ import BrandName from "@/components/BrandName";
 // ── Mega-menu data ──
 
 const casesMenuItems = [
-  { name: "ClearMag", slug: "clearmag", icon: "/icons/clearmag.webp", tag: "Popular" },
-  { name: "ClearMag Edge", slug: "clearmag-edge", icon: "/icons/clearmag-edge.webp" },
-  { name: "SoftMag", slug: "softmag", icon: "/icons/softmag.webp", tag: "Bestseller" },
-  { name: "Armor Edge", slug: "armor-edge", icon: "/icons/armoredge.png", tag: "New" },
+  { name: "ClearMag", slug: "clearmag", icon: "/icons/clearmag.webp", image: "/mega/clearmag.webp", tag: "Popular" },
+  { name: "ClearMag Edge", slug: "clearmag-edge", icon: "/icons/clearmag-edge.webp", image: "/mega/clearmag-edge.webp" },
+  { name: "SoftMag", slug: "softmag", icon: "/icons/softmag.webp", image: "/mega/softmag.webp", tag: "Bestseller" },
+  { name: "Armor Edge", slug: "armor-edge", icon: "/icons/armoredge.png", image: "/mega/armoredge.webp", tag: "New" },
 ];
 
 const protectionMenuItems = [
-  { name: "EdgeGuard", slug: "edgeguard", icon: "/icons/edgeguard.webp", subtitle: "Screen Protection" },
-  { name: "LensGuard", slug: "lensguard", icon: "/icons/lensguard.webp", subtitle: "Camera Protection" },
+  { name: "EdgeGuard", slug: "edgeguard", icon: "/icons/edgeguard.webp", image: "/mega/edgeguard.webp", subtitle: "Screen Protection" },
+  { name: "LensGuard", slug: "lensguard", icon: "/icons/lensguard.webp", image: "/mega/lensguard.webp", subtitle: "Camera Protection" },
 ];
 
 const devicesMenuItems = deviceSeries.map((group) => ({
