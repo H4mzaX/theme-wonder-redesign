@@ -324,22 +324,24 @@ export function getDeviceProducts(deviceGroupSlug: string): Product[] {
 }
 
 // ── Helper: get canonical URL for a product ──
-export function getProductUrl(product: Product): string {
-  // Find which device group this product belongs to
-  const group = deviceSeries.find((g) =>
-    g.models.some((m) => m.name === product.device)
-  );
+export const getProductUrl = (product: Product): string {
+  // Use handle if available, otherwise fall back to a slug from the name
+  const slug = product.handle || product.name.toLowerCase().replace(/\s+/g, '-');
+  return `/product/${slug}`;
+}
+
   if (!group) return `/product/${product.id}`;
   const model = group.models.find((m) => m.name === product.device);
   return `/${product.seriesSlug}/${group.slug}${model ? `?model=${model.slug}` : ""}`;
 }
 
 // ── Helper: get canonical URL from product ID ──
-export function getProductUrlById(productId: string): string | null {
+export const getProductUrlById(productId: string): string | null {
   const product = allProducts.find((p) => p.id === productId);
   if (!product) return null;
   return getProductUrl(product);
 }
+
 
 // ── Grouped for homepage tabs ──
 export const exploreLineupTabs: Record<string, Product[]> = {
