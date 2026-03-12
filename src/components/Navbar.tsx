@@ -210,9 +210,9 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
                           >
                             <div className="relative rounded-2xl overflow-hidden bg-muted aspect-[4/3] mb-3.5">
                               <img
-                                src={item.icon}
+                                src={item.image}
                                 alt={item.name}
-                                className="w-20 h-20 object-contain absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-500 ease-out"
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                               />
                               {item.tag && (
                                 <span className="absolute top-3 left-3 text-[10px] uppercase tracking-wider font-bold bg-foreground text-background px-2.5 py-1 rounded-full">
