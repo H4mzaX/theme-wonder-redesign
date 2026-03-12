@@ -324,9 +324,11 @@ export function getDeviceProducts(deviceGroupSlug: string): Product[] {
 }
 
 // ── Helper: get canonical URL for a product ──
-export const getProductUrl = (product: Product): string {
-  const slug = product.handle || product.id;
-  return "/product/" + slug;
+export function getProductUrl(product: Product): string {
+  if (product.handle) {
+    return "/product/" + product.handle;
+  }
+  return "/product/" + product.id;
 }
 
   if (!group) return `/product/${product.id}`;
