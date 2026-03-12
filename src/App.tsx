@@ -19,7 +19,7 @@ import NotFound from "./pages/NotFound";
 import WhatsAppButton from "./components/WhatsAppButton";
 
 import ContactUs from "./pages/ContactUs"; 
-import Products from "./pages/Products";  // ← ADD THIS NEW LINE
+import Products from "@/pages/Products";  // ← ADD THIS NEW LINE
 import TermsAndConditions from "./pages/TermsAndConditions";
 
 
