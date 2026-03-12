@@ -330,6 +330,7 @@ export const getProductUrl = (product: Product): string {
 }
 
 
+
   if (!group) return `/product/${product.id}`;
   const model = group.models.find((m) => m.name === product.device);
   return `/${product.seriesSlug}/${group.slug}${model ? `?model=${model.slug}` : ""}`;
