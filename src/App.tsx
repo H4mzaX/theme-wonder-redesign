@@ -19,7 +19,7 @@ import NotFound from "./pages/NotFound";
 import WhatsAppButton from "./components/WhatsAppButton";
 
 import ContactUs from "./pages/ContactUs"; 
-import Products from "@/pages/Products";  // ← ADD THIS NEW LINE
+import Products from "./pages/Products";  // ← ADD THIS NEW LINE
 import TermsAndConditions from "./pages/TermsAndConditions";
 
 
@@ -55,25 +55,23 @@ const AnimatedRoutes = () => {
         style={{ willChange: "clip-path, opacity" }}
       >
         <Routes location={location}>
-  <Route path="/" element={<Index />} />
-  <Route path="/products" element={<Products />} />
-  <Route path="/product/:id" element={<ProductDetail />} />
-  <Route path="/collections/:slug" element={<Collection />} />
-  
-  {/* Device collection pages */}
-  <Route path="/devices/:deviceSlug" element={<DeviceCollection />} />
-  
-  <Route path="/contact" element={<ContactUs />} />
-  <Route path="/terms" element={<TermsAndConditions />} />
-  <Route path="/refund-policy" element={<RefundPolicy />} />
-  
-  {/* Series landing & product pages - MOVE THESE HERE */}
-  <Route path="/:seriesSlug" element={<SeriesLanding />} />
-  <Route path="/:seriesSlug/:deviceSlug" element={<SeriesProduct />} />
-  
-  <Route path="*" element={<NotFound />} />
-</Routes>
-
+          <Route path="/" element={<Index />} />
+          <Route path="/products" element={<Products />} />  {/* ← ADD THIS NEW LINE */}
+          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/collections/:slug" element={<Collection />} />
+          
+          {/* Series landing & product pages */}
+          <Route path="/:seriesSlug" element={<SeriesLanding />} />
+          <Route path="/:seriesSlug/:deviceSlug" element={<SeriesProduct />} />
+          
+          {/* Device collection pages */}
+          <Route path="/devices/:deviceSlug" element={<DeviceCollection />} />
+          
+          <Route path="/contact" element={<ContactUs />} />
+          <Route path="/terms" element={<TermsAndConditions />} />
+          <Route path="/refund-policy" element={<RefundPolicy />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </motion.div>
     </AnimatePresence>
   );

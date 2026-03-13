@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchProducts } from '@/lib/fetchProducts';
+import { fetchProducts } from '../lib/fetchProducts';
 import Navbar from '../components/Navbar';
 import AnnouncementBar from '../components/AnnouncementBar';
 
