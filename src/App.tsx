@@ -38,6 +38,7 @@ const pageVariants = {
 };
 
 const AnimatedRoutes = () => {
+  useCartSync();
   const location = useLocation();
 
   return (
