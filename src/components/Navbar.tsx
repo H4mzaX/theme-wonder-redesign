@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useScrollDirection } from "@/hooks/useScrollAnimations";
 import { drawerSpring, premiumEase } from "@/lib/motion";
-import { useCart } from "@/context/CartContext";
+import { useShopifyCartStore } from "@/stores/cartStore";
 import { seriesData, deviceSeries } from "@/data/products";
 import logoFull from "@/assets/logo-full.png";
 import BrandName from "@/components/BrandName";
