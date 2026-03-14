@@ -160,8 +160,12 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
   const [couponCode, setCouponCode] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState("");
   const { items, totalItems, subtotal, updateQuantity, removeFromCart, addToCart, recentlyViewed } = useCart();
+  const shopifyCart = useShopifyCartStore();
   const isMobile = useIsMobile();
   const countdown = useCountdown();
+
+  // Sync Shopify cart when drawer opens
+  useEffect(() => { if (open) shopifyCart.syncCart(); }, [open]);
 
   const shippingProgress = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
   const remaining = FREE_SHIPPING_THRESHOLD - subtotal;
