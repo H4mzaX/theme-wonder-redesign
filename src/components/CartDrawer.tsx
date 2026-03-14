@@ -1,8 +1,9 @@
-import { X, Minus, Plus, ArrowRight, ChevronLeft, ChevronRight, FileText, Package, Tag, Shield, Camera, Smartphone, Zap, Clock, Users, Flame, Timer, Sparkles, Eye } from "lucide-react";
+import { X, Minus, Plus, ArrowRight, ChevronLeft, ChevronRight, FileText, Package, Tag, Shield, Camera, Smartphone, Zap, Clock, Users, Flame, Timer, Sparkles, Eye, ExternalLink, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useMemo, useEffect } from "react";
 import { drawerSpring } from "@/lib/motion";
 import { useCart } from "@/context/CartContext";
+import { useShopifyCartStore } from "@/stores/cartStore";
 import { Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { bestSellerTabs, newArrivalProducts } from "@/data/products";
