@@ -773,18 +773,70 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
           </div>
         )}
 
+        {/* Shopify cart items */}
+        {shopifyCart.items.length > 0 && (
+          <div className="px-6 py-3 border-t border-border">
+            <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-2">Shopify Cart</p>
+            <div className="space-y-3">
+              {shopifyCart.items.map((item) => (
+                <div key={item.variantId} className="flex gap-3 items-center">
+                  <div className="w-12 h-12 rounded-lg bg-muted flex-shrink-0 overflow-hidden">
+                    {item.product.node.images?.edges?.[0]?.node && (
+                      <img src={item.product.node.images.edges[0].node.url} alt={item.product.node.title} className="w-full h-full object-cover" />
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold truncate">{item.product.node.title}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {item.price.currencyCode === "INR" ? "₹" : item.price.currencyCode + " "}{parseFloat(item.price.amount).toLocaleString("en-IN")} × {item.quantity}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-1 flex-shrink-0">
+                    <button onClick={() => shopifyCart.updateQuantity(item.variantId, item.quantity - 1)} className="w-6 h-6 rounded-full border border-border flex items-center justify-center hover:bg-muted"><Minus className="w-3 h-3" /></button>
+                    <span className="w-6 text-center text-xs font-semibold">{item.quantity}</span>
+                    <button onClick={() => shopifyCart.updateQuantity(item.variantId, item.quantity + 1)} className="w-6 h-6 rounded-full border border-border flex items-center justify-center hover:bg-muted"><Plus className="w-3 h-3" /></button>
+                  </div>
+                  <button onClick={() => shopifyCart.removeItem(item.variantId)} className="text-xs underline text-muted-foreground hover:text-foreground">Remove</button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Subtotal & checkout */}
         <div className="px-6 py-4">
           <div className="flex items-end justify-between mb-3">
             <p className="text-xs text-muted-foreground max-w-[55%]">Taxes included and shipping calculated at checkout.</p>
             <div className="text-right">
               <p className="text-sm text-muted-foreground">Subtotal</p>
-              <p className="text-xl font-display font-bold">₹{finalTotal.toLocaleString("en-IN")}</p>
+              <p className="text-xl font-display font-bold">
+                ₹{(finalTotal + shopifyCart.items.reduce((s, i) => s + parseFloat(i.price.amount) * i.quantity, 0)).toLocaleString("en-IN")}
+              </p>
             </div>
           </div>
-          <button disabled={items.length === 0} className="w-full bg-foreground text-background py-4 rounded-full font-medium text-base flex items-center justify-center gap-2 hover:bg-foreground/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-            Check out
-          </button>
+          {shopifyCart.items.length > 0 ? (
+            <button
+              onClick={() => {
+                const url = shopifyCart.getCheckoutUrl();
+                if (url) window.open(url, "_blank");
+              }}
+              disabled={shopifyCart.isLoading || shopifyCart.isSyncing}
+              className="w-full bg-foreground text-background py-4 rounded-full font-medium text-base flex items-center justify-center gap-2 hover:bg-foreground/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {shopifyCart.isLoading || shopifyCart.isSyncing ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                <>
+                  <ExternalLink className="w-4 h-4" />
+                  Checkout via Shopify
+                </>
+              )}
+            </button>
+          ) : (
+            <button disabled={items.length === 0} className="w-full bg-foreground text-background py-4 rounded-full font-medium text-base flex items-center justify-center gap-2 hover:bg-foreground/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+              Check out
+            </button>
+          )}
         </div>
       </div>
     </>

@@ -84,6 +84,7 @@ const Index = () => {
         </LazySection>
 
         <LazySection><NewArrivals /></LazySection>
+        <LazySection><ShopifyProductsSection /></LazySection>
 
         <LazySection><CraftedSection /></LazySection>
 
