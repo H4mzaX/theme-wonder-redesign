@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Home, LayoutGrid, User } from "lucide-react";
 import { MenuIcon, SearchIcon, CartIcon } from "@/components/icons/PremiumIcons";
 import { Link, useLocation } from "react-router-dom";
-import { useCart } from "@/context/CartContext";
+import { useShopifyCartStore } from "@/stores/cartStore";
 
 interface MobileBottomNavProps {
   onMenuOpen?: () => void;
@@ -21,7 +21,7 @@ const navItems = [
 
 const MobileBottomNav = ({ onMenuOpen, onSearchOpen, onCartOpen }: MobileBottomNavProps) => {
   const location = useLocation();
-  const { totalItems } = useCart();
+  const totalItems = useShopifyCartStore((s) => s.items.reduce((sum, i) => sum + i.quantity, 0));
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {

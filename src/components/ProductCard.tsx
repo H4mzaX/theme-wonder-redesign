@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Star, ShoppingCart, Shield, Zap, Droplets, Magnet, Ruler, Gauge, Weight, Layers } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useCart } from "@/context/CartContext";
+
 import { toast } from "@/hooks/use-toast";
 import { type Product, getProductUrl } from "@/data/products";
 import BrandName from "@/components/BrandName";
@@ -32,7 +32,6 @@ const defaultSpecs = [
 ];
 
 const ProductCard = ({ product }: { product: Product; tag?: string }) => {
-  const { addToCart } = useCart();
   const specs = categorySpecs[product.category] || defaultSpecs;
   const hasAlt = !!(product.hoverImage && product.hoverImage !== product.image);
   const images = hasAlt ? [product.image, product.hoverImage!] : [product.image];
@@ -41,16 +40,6 @@ const ProductCard = ({ product }: { product: Product; tag?: string }) => {
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    addToCart({
-      id: product.id,
-      name: product.name,
-      subtitle: product.subtitle,
-      price: product.price,
-      originalPrice: product.originalPrice,
-      image: product.image,
-      color: product.colors[0] || "Default",
-      device: product.device,
-    });
     toast({ title: "Added to cart", description: `${product.name} — ${product.subtitle}` });
   };
 

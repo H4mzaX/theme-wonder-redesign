@@ -47,7 +47,7 @@ import edgeguardHoverImg from "@/assets/edgeguard-screen-protector-hover.jpg";
 import lensguardImg from "@/assets/lensguard-camera-protector.jpg";
 import lensguardHoverImg from "@/assets/lensguard-camera-protector-hover.jpg";
 import { useSEO } from "@/hooks/useSEO";
-import { useCart } from "@/context/CartContext";
+
 import { toast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import AnnouncementBar from "@/components/AnnouncementBar";
@@ -177,7 +177,7 @@ const SeriesProduct = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [activeGalleryImg, setActiveGalleryImg] = useState(0);
   const [showStickyCart, setShowStickyCart] = useState(false);
-  const { addToCart } = useCart();
+  
   const galleryRef = useRef<HTMLDivElement>(null);
   const productInfoRef = useRef<HTMLDivElement>(null);
   const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -352,16 +352,6 @@ const SeriesProduct = () => {
 
   const handleAddToCart = () => {
     if (!currentProduct) return;
-    addToCart({
-      id: currentProduct.id,
-      name: currentProduct.name,
-      subtitle: currentProduct.subtitle,
-      price: currentProduct.price,
-      originalPrice: currentProduct.originalPrice,
-      image: currentProduct.image,
-      color: isSoftmag ? softmagColors[selectedColor]?.name || "Default" : "Default",
-      device: currentProduct.device,
-    });
     toast({ title: "Added to cart!", description: `${series.name} added` });
     setCartOpen(true);
   };
