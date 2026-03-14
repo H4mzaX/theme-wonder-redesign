@@ -8,6 +8,7 @@ import { CartProvider } from "@/context/CartContext";
 
 import Index from "./pages/Index";
 import ProductDetail from "./pages/ProductDetail";
+import ShopifyProductDetail from "./pages/ShopifyProductDetail";
 import Collection from "./pages/Collection";
 import SeriesProduct from "./pages/SeriesProduct";
 import DeviceCollection from "./pages/DeviceCollection";
@@ -54,6 +55,7 @@ const AnimatedRoutes = () => {
         <Routes location={location}>
           <Route path="/" element={<Index />} />
           <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/shop/:handle" element={<ShopifyProductDetail />} />
           <Route path="/collections/:slug" element={<Collection />} />
           
           {/* Series landing & product pages */}
