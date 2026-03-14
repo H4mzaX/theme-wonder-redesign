@@ -53,7 +53,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
   const [mobileSubmenu, setMobileSubmenu] = useState<string | null>(null);
   const [mobileDrilldown, setMobileDrilldown] = useState<string | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const { totalItems } = useCart();
+  const totalItems = useShopifyCartStore((s) => s.items.reduce((sum, i) => sum + i.quantity, 0));
 
   const isTransparent = transparent && !scrolled && !activeMega;
   const navItems: MegaKey[] = ["Cases", "Protection", "Devices", "Explore"];

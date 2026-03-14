@@ -21,7 +21,7 @@ const navItems = [
 
 const MobileBottomNav = ({ onMenuOpen, onSearchOpen, onCartOpen }: MobileBottomNavProps) => {
   const location = useLocation();
-  const { totalItems } = useCart();
+  const totalItems = useShopifyCartStore((s) => s.items.reduce((sum, i) => sum + i.quantity, 0));
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {

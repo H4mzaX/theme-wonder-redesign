@@ -32,7 +32,6 @@ const defaultSpecs = [
 ];
 
 const ProductCard = ({ product }: { product: Product; tag?: string }) => {
-  const { addToCart } = useCart();
   const specs = categorySpecs[product.category] || defaultSpecs;
   const hasAlt = !!(product.hoverImage && product.hoverImage !== product.image);
   const images = hasAlt ? [product.image, product.hoverImage!] : [product.image];
@@ -41,16 +40,6 @@ const ProductCard = ({ product }: { product: Product; tag?: string }) => {
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    addToCart({
-      id: product.id,
-      name: product.name,
-      subtitle: product.subtitle,
-      price: product.price,
-      originalPrice: product.originalPrice,
-      image: product.image,
-      color: product.colors[0] || "Default",
-      device: product.device,
-    });
     toast({ title: "Added to cart", description: `${product.name} — ${product.subtitle}` });
   };
 
