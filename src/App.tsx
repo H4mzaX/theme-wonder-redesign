@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 
-
 import Index from "./pages/Index";
 import ProductDetail from "./pages/ProductDetail";
 import ShopifyProductDetail from "./pages/ShopifyProductDetail";
@@ -25,17 +24,9 @@ const queryClient = new QueryClient();
 const conceptEase: [number, number, number, number] = [0.25, 1, 0.5, 1];
 
 const pageVariants = {
-  initial: {
-    opacity: 0,
-  },
-  animate: {
-    opacity: 1,
-    transition: { duration: 0.3, ease: conceptEase },
-  },
-  exit: {
-    opacity: 0,
-    transition: { duration: 0.15, ease: conceptEase },
-  },
+  initial: { opacity: 0 },
+  animate: { opacity: 1, transition: { duration: 0.3, ease: conceptEase } },
+  exit: { opacity: 0, transition: { duration: 0.15, ease: conceptEase } },
 };
 
 const AnimatedRoutes = () => {
@@ -57,17 +48,15 @@ const AnimatedRoutes = () => {
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/shop/:handle" element={<ShopifyProductDetail />} />
           <Route path="/collections/:slug" element={<Collection />} />
-          
-          {/* Series landing & product pages */}
-          <Route path="/:seriesSlug" element={<SeriesLanding />} />
-          <Route path="/:seriesSlug/:deviceSlug" element={<SeriesProduct />} />
-          
-          {/* Device collection pages */}
           <Route path="/devices/:deviceSlug" element={<DeviceCollection />} />
-          
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/terms" element={<TermsAndConditions />} />
           <Route path="/refund-policy" element={<RefundPolicy />} />
+          
+          {/* Catch-all series routes — must be last */}
+          <Route path="/:seriesSlug" element={<SeriesLanding />} />
+          <Route path="/:seriesSlug/:deviceSlug" element={<SeriesProduct />} />
+          
           <Route path="*" element={<NotFound />} />
         </Routes>
       </motion.div>
