@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Star, ShoppingCart, Shield, Zap, Droplets, Magnet, Ruler, Gauge, Weight, Layers } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useCart } from "@/context/CartContext";
+
 import { toast } from "@/hooks/use-toast";
 import { type Product, getProductUrl } from "@/data/products";
 import BrandName from "@/components/BrandName";
