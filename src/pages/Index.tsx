@@ -13,6 +13,7 @@ import FloatingSidebar from "@/components/FloatingSidebar";
 
 // Lazy-load below-fold sections for faster initial paint
 const NewArrivals = lazy(() => import("@/components/NewArrivals"));
+const ShopifyProductsSection = lazy(() => import("@/components/ShopifyProductsSection"));
 const ProductBanner = lazy(() => import("@/components/ProductBanner"));
 const CraftedSection = lazy(() => import("@/components/CraftedSection"));
 const PromoBanner = lazy(() => import("@/components/PromoBanner"));
