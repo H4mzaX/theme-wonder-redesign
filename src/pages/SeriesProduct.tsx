@@ -983,6 +983,7 @@ const SeriesProduct = () => {
           <div className="flex gap-2 w-[220px]">
             <motion.button
               onClick={handleAddToCart}
+              disabled={isCartLoading}
               className="flex-1 bg-foreground text-background py-2.5 rounded-full text-[11px] font-semibold uppercase tracking-wider"
               whileTap={{ scale: 0.95 }}
             >
