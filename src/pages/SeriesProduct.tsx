@@ -169,6 +169,25 @@ const seoKeywords: Record<string, string[]> = {
   lensguard: ["camera lens protector", "sapphire lens guard", "iPhone camera protector India", "anti-reflective lens protector", "camera glass protector"],
 };
 
+const SHOPIFY_SEARCH_QUERY = `
+  query SearchProducts($query: String!) {
+    products(first: 5, query: $query) {
+      edges {
+        node {
+          id title handle
+          variants(first: 10) {
+            edges { node { id title price { amount currencyCode } availableForSale selectedOptions { name value } } }
+          }
+          images(first: 5) { edges { node { url altText } } }
+          priceRange { minVariantPrice { amount currencyCode } }
+          options { name values }
+          description
+        }
+      }
+    }
+  }
+`;
+
 const SeriesProduct = () => {
   const { seriesSlug, deviceSlug } = useParams<{ seriesSlug: string; deviceSlug: string }>();
   const [searchParams] = useSearchParams();
@@ -179,6 +198,11 @@ const SeriesProduct = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [activeGalleryImg, setActiveGalleryImg] = useState(0);
   const [showStickyCart, setShowStickyCart] = useState(false);
+  const [shopifyProduct, setShopifyProduct] = useState<ShopifyProduct | null>(null);
+
+  const addItem = useShopifyCartStore((s) => s.addItem);
+  const isCartLoading = useShopifyCartStore((s) => s.isLoading);
+  const getCheckoutUrl = useShopifyCartStore((s) => s.getCheckoutUrl);
   
   const galleryRef = useRef<HTMLDivElement>(null);
   const productInfoRef = useRef<HTMLDivElement>(null);
