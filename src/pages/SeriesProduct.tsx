@@ -322,6 +322,27 @@ const SeriesProduct = () => {
     observer.observe(el);
     return () => observer.disconnect();
   }, [seriesSlug, deviceSlug, selectedModel]);
+
+  // Fetch matching Shopify product for cart integration
+  useEffect(() => {
+    if (!series || !currentProduct) return;
+    const query = `${series.name} ${currentProduct.device}`;
+    storefrontApiRequest(SHOPIFY_SEARCH_QUERY, { query })
+      .then((data) => {
+        const edges = data?.data?.products?.edges || [];
+        if (edges.length > 0) {
+          setShopifyProduct(edges[0]);
+        } else {
+          storefrontApiRequest(SHOPIFY_SEARCH_QUERY, { query: series.name })
+            .then((d2) => {
+              const e2 = d2?.data?.products?.edges || [];
+              if (e2.length > 0) setShopifyProduct(e2[0]);
+            });
+        }
+      })
+      .catch(console.error);
+  }, [series, currentProduct?.device]);
+
   if (!series || !deviceGroup) {
     return (
       <div className="min-h-screen flex flex-col">
