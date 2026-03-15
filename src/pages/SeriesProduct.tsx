@@ -742,6 +742,7 @@ const SeriesProduct = () => {
               >
                 <motion.button
                   onClick={handleAddToCart}
+                  disabled={isCartLoading}
                   className="flex-1 bg-foreground text-background py-3.5 rounded-full text-sm font-semibold uppercase tracking-wider hover:bg-foreground/90 transition-colors"
                   whileTap={{ scale: 0.97 }}
                 >
