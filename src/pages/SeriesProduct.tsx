@@ -988,7 +988,8 @@ const SeriesProduct = () => {
               Add to Cart
             </motion.button>
             <motion.button
-              onClick={handleAddToCart}
+              onClick={handleBuyNow}
+              disabled={isCartLoading}
               className="flex-1 border border-foreground text-foreground py-2.5 rounded-full text-[11px] font-semibold uppercase tracking-wider"
               whileTap={{ scale: 0.95 }}
             >
