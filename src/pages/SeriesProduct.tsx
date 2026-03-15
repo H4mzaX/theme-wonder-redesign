@@ -48,7 +48,9 @@ import lensguardImg from "@/assets/lensguard-camera-protector.jpg";
 import lensguardHoverImg from "@/assets/lensguard-camera-protector-hover.jpg";
 import { useSEO } from "@/hooks/useSEO";
 
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
+import { useShopifyCartStore } from "@/stores/cartStore";
+import { storefrontApiRequest, type ShopifyProduct } from "@/lib/shopify";
 import Navbar from "@/components/Navbar";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Footer from "@/components/Footer";
@@ -167,6 +169,25 @@ const seoKeywords: Record<string, string[]> = {
   lensguard: ["camera lens protector", "sapphire lens guard", "iPhone camera protector India", "anti-reflective lens protector", "camera glass protector"],
 };
 
+const SHOPIFY_SEARCH_QUERY = `
+  query SearchProducts($query: String!) {
+    products(first: 5, query: $query) {
+      edges {
+        node {
+          id title handle
+          variants(first: 10) {
+            edges { node { id title price { amount currencyCode } availableForSale selectedOptions { name value } } }
+          }
+          images(first: 5) { edges { node { url altText } } }
+          priceRange { minVariantPrice { amount currencyCode } }
+          options { name values }
+          description
+        }
+      }
+    }
+  }
+`;
+
 const SeriesProduct = () => {
   const { seriesSlug, deviceSlug } = useParams<{ seriesSlug: string; deviceSlug: string }>();
   const [searchParams] = useSearchParams();
@@ -177,6 +198,11 @@ const SeriesProduct = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [activeGalleryImg, setActiveGalleryImg] = useState(0);
   const [showStickyCart, setShowStickyCart] = useState(false);
+  const [shopifyProduct, setShopifyProduct] = useState<ShopifyProduct | null>(null);
+
+  const addItem = useShopifyCartStore((s) => s.addItem);
+  const isCartLoading = useShopifyCartStore((s) => s.isLoading);
+  const getCheckoutUrl = useShopifyCartStore((s) => s.getCheckoutUrl);
   
   const galleryRef = useRef<HTMLDivElement>(null);
   const productInfoRef = useRef<HTMLDivElement>(null);
@@ -296,6 +322,27 @@ const SeriesProduct = () => {
     observer.observe(el);
     return () => observer.disconnect();
   }, [seriesSlug, deviceSlug, selectedModel]);
+
+  // Fetch matching Shopify product for cart integration
+  useEffect(() => {
+    if (!series || !currentProduct) return;
+    const query = `${series.name} ${currentProduct.device}`;
+    storefrontApiRequest(SHOPIFY_SEARCH_QUERY, { query })
+      .then((data) => {
+        const edges = data?.data?.products?.edges || [];
+        if (edges.length > 0) {
+          setShopifyProduct(edges[0]);
+        } else {
+          storefrontApiRequest(SHOPIFY_SEARCH_QUERY, { query: series.name })
+            .then((d2) => {
+              const e2 = d2?.data?.products?.edges || [];
+              if (e2.length > 0) setShopifyProduct(e2[0]);
+            });
+        }
+      })
+      .catch(console.error);
+  }, [series, currentProduct?.device]);
+
   if (!series || !deviceGroup) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -350,10 +397,42 @@ const SeriesProduct = () => {
   };
   const galleryImages = getGalleryImages();
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!currentProduct) return;
-    toast({ title: "Added to cart!", description: `${series.name} added` });
+    if (shopifyProduct) {
+      const variant = shopifyProduct.node.variants.edges[0]?.node;
+      if (!variant) return;
+      await addItem({
+        product: shopifyProduct,
+        variantId: variant.id,
+        variantTitle: variant.title,
+        price: variant.price,
+        quantity: 1,
+        selectedOptions: variant.selectedOptions || [],
+      });
+      toast.success("Added to cart", { description: currentProduct.device + " — " + series.name, position: "top-center" });
+    } else {
+      toast.error("Product not available for checkout yet");
+    }
     setCartOpen(true);
+  };
+
+  const handleBuyNow = async () => {
+    if (!currentProduct || !shopifyProduct) return;
+    const variant = shopifyProduct.node.variants.edges[0]?.node;
+    if (!variant) return;
+    await addItem({
+      product: shopifyProduct,
+      variantId: variant.id,
+      variantTitle: variant.title,
+      price: variant.price,
+      quantity: 1,
+      selectedOptions: variant.selectedOptions || [],
+    });
+    const checkoutUrl = getCheckoutUrl();
+    if (checkoutUrl) {
+      window.open(checkoutUrl, "_blank");
+    }
   };
 
   // Related products: same device different series + same series different devices
@@ -663,6 +742,7 @@ const SeriesProduct = () => {
               >
                 <motion.button
                   onClick={handleAddToCart}
+                  disabled={isCartLoading}
                   className="flex-1 bg-foreground text-background py-3.5 rounded-full text-sm font-semibold uppercase tracking-wider hover:bg-foreground/90 transition-colors"
                   whileTap={{ scale: 0.97 }}
                 >
@@ -670,7 +750,8 @@ const SeriesProduct = () => {
                 </motion.button>
 
                 <motion.button
-                  onClick={handleAddToCart}
+                  onClick={handleBuyNow}
+                  disabled={isCartLoading}
                   className="flex-1 border-2 border-foreground text-foreground py-3.5 rounded-full text-sm font-semibold uppercase tracking-wider hover:bg-foreground hover:text-background transition-colors"
                   whileTap={{ scale: 0.97 }}
                 >
@@ -902,13 +983,15 @@ const SeriesProduct = () => {
           <div className="flex gap-2 w-[220px]">
             <motion.button
               onClick={handleAddToCart}
+              disabled={isCartLoading}
               className="flex-1 bg-foreground text-background py-2.5 rounded-full text-[11px] font-semibold uppercase tracking-wider"
               whileTap={{ scale: 0.95 }}
             >
               Add to Cart
             </motion.button>
             <motion.button
-              onClick={handleAddToCart}
+              onClick={handleBuyNow}
+              disabled={isCartLoading}
               className="flex-1 border border-foreground text-foreground py-2.5 rounded-full text-[11px] font-semibold uppercase tracking-wider"
               whileTap={{ scale: 0.95 }}
             >

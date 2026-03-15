@@ -1,10 +1,12 @@
-import { useState } from "react";
-import { Star, ShoppingCart, Shield, Zap, Droplets, Magnet, Ruler, Gauge, Weight, Layers } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Star, ShoppingCart, Shield, Zap, Droplets, Magnet, Ruler, Gauge, Weight, Layers, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { type Product, getProductUrl } from "@/data/products";
+import { useShopifyCartStore } from "@/stores/cartStore";
+import { storefrontApiRequest, type ShopifyProduct } from "@/lib/shopify";
 import BrandName from "@/components/BrandName";
 
 const categorySpecs: Record<string, { icon: React.ElementType; label: string; value: string }[]> = {
@@ -37,10 +39,50 @@ const ProductCard = ({ product }: { product: Product; tag?: string }) => {
   const images = hasAlt ? [product.image, product.hoverImage!] : [product.image];
   const [activeImg, setActiveImg] = useState(0);
 
-  const handleAddToCart = (e: React.MouseEvent) => {
+  const addItem = useShopifyCartStore((s) => s.addItem);
+  const isCartLoading = useShopifyCartStore((s) => s.isLoading);
+  const [shopifyProduct, setShopifyProduct] = useState<ShopifyProduct | null>(null);
+
+  // Search for matching Shopify product
+  useEffect(() => {
+    const query = `${product.name} ${product.device}`;
+    storefrontApiRequest(`
+      query SearchProducts($query: String!) {
+        products(first: 1, query: $query) {
+          edges { node { id title handle description
+            variants(first: 5) { edges { node { id title price { amount currencyCode } availableForSale selectedOptions { name value } } } }
+            images(first: 2) { edges { node { url altText } } }
+            priceRange { minVariantPrice { amount currencyCode } }
+            options { name values }
+          } }
+        }
+      }
+    `, { query })
+      .then((data) => {
+        const edges = data?.data?.products?.edges || [];
+        if (edges.length > 0) setShopifyProduct(edges[0]);
+      })
+      .catch(() => {});
+  }, [product.name, product.device]);
+
+  const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    toast({ title: "Added to cart", description: `${product.name} — ${product.subtitle}` });
+    if (shopifyProduct) {
+      const variant = shopifyProduct.node.variants.edges[0]?.node;
+      if (!variant) return;
+      await addItem({
+        product: shopifyProduct,
+        variantId: variant.id,
+        variantTitle: variant.title,
+        price: variant.price,
+        quantity: 1,
+        selectedOptions: variant.selectedOptions || [],
+      });
+      toast.success("Added to cart", { description: `${product.name} — ${product.subtitle}`, position: "top-center" });
+    } else {
+      toast.error("Product not available yet");
+    }
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -114,11 +156,16 @@ const ProductCard = ({ product }: { product: Product; tag?: string }) => {
         {/* Cart button */}
         <motion.button
           onClick={handleAddToCart}
-          className="absolute bottom-2.5 right-2.5 z-20 w-9 h-9 rounded-full bg-background/90 backdrop-blur-sm text-foreground flex items-center justify-center shadow-md border border-border/40"
+          disabled={isCartLoading}
+          className="absolute bottom-2.5 right-2.5 z-20 w-9 h-9 rounded-full bg-background/90 backdrop-blur-sm text-foreground flex items-center justify-center shadow-md border border-border/40 disabled:opacity-50"
           whileTap={{ scale: 0.9 }}
           transition={{ type: "spring", stiffness: 400, damping: 20 }}
         >
-          <ShoppingCart className="w-4 h-4" strokeWidth={2} />
+          {isCartLoading ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <ShoppingCart className="w-4 h-4" strokeWidth={2} />
+          )}
         </motion.button>
       </div>
 
