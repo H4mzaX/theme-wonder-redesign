@@ -1,16 +1,16 @@
 import { useRef, useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { ScrollReveal } from "@/hooks/useScrollAnimations";
-import { newArrivalProducts } from "@/data/products";
-import ProductCard from "@/components/ProductCard";
+import { useShopifyProducts } from "@/hooks/useShopifyProducts";
+import ShopifyProductCard from "@/components/ShopifyProductCard";
 
 const NewArrivals = () => {
+  const { products, loading } = useShopifyProducts(10);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
-  const totalCards = newArrivalProducts.length;
-  const segments = Math.ceil(totalCards / 2);
+  const segments = Math.ceil(products.length / 2);
 
   const updateScroll = () => {
     const el = scrollRef.current;
@@ -30,13 +30,25 @@ const NewArrivals = () => {
     updateScroll();
     el.addEventListener("scroll", updateScroll, { passive: true });
     return () => el.removeEventListener("scroll", updateScroll);
-  }, [segments]);
+  }, [products, segments]);
 
   const scroll = (dir: "left" | "right") => {
     const el = scrollRef.current;
     if (!el) return;
     el.scrollBy({ left: dir === "left" ? -el.clientWidth * 0.7 : el.clientWidth * 0.7, behavior: "smooth" });
   };
+
+  if (loading) {
+    return (
+      <section className="py-5 sm:py-6 lg:py-8">
+        <div className="flex items-center justify-center py-16">
+          <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+        </div>
+      </section>
+    );
+  }
+
+  if (products.length === 0) return null;
 
   return (
     <section className="py-5 sm:py-6 lg:py-8">
@@ -53,9 +65,9 @@ const NewArrivals = () => {
             className="flex gap-3 sm:gap-4 overflow-x-auto snap-x snap-mandatory"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
-            {newArrivalProducts.map((product) => (
-              <div key={product.id} className="flex-none w-[calc(50vw-22px)] sm:w-[calc(50vw-28px)] md:w-[260px] lg:w-[280px] snap-start">
-                <ProductCard product={product} />
+            {products.map((product) => (
+              <div key={product.node.id} className="flex-none w-[calc(50vw-22px)] sm:w-[calc(50vw-28px)] md:w-[260px] lg:w-[280px] snap-start">
+                <ShopifyProductCard product={product} />
               </div>
             ))}
           </div>

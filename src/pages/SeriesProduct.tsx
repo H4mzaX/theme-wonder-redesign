@@ -48,7 +48,9 @@ import lensguardImg from "@/assets/lensguard-camera-protector.jpg";
 import lensguardHoverImg from "@/assets/lensguard-camera-protector-hover.jpg";
 import { useSEO } from "@/hooks/useSEO";
 
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
+import { useShopifyCartStore } from "@/stores/cartStore";
+import { storefrontApiRequest, type ShopifyProduct } from "@/lib/shopify";
 import Navbar from "@/components/Navbar";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Footer from "@/components/Footer";
