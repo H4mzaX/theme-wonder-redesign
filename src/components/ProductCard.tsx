@@ -156,11 +156,16 @@ const ProductCard = ({ product }: { product: Product; tag?: string }) => {
         {/* Cart button */}
         <motion.button
           onClick={handleAddToCart}
-          className="absolute bottom-2.5 right-2.5 z-20 w-9 h-9 rounded-full bg-background/90 backdrop-blur-sm text-foreground flex items-center justify-center shadow-md border border-border/40"
+          disabled={isCartLoading}
+          className="absolute bottom-2.5 right-2.5 z-20 w-9 h-9 rounded-full bg-background/90 backdrop-blur-sm text-foreground flex items-center justify-center shadow-md border border-border/40 disabled:opacity-50"
           whileTap={{ scale: 0.9 }}
           transition={{ type: "spring", stiffness: 400, damping: 20 }}
         >
-          <ShoppingCart className="w-4 h-4" strokeWidth={2} />
+          {isCartLoading ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <ShoppingCart className="w-4 h-4" strokeWidth={2} />
+          )}
         </motion.button>
       </div>
 
