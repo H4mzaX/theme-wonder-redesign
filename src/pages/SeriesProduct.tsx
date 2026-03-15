@@ -376,10 +376,63 @@ const SeriesProduct = () => {
   };
   const galleryImages = getGalleryImages();
 
-  const handleAddToCart = () => {
+  // Fetch matching Shopify product for cart integration
+  useEffect(() => {
+    if (!series || !currentProduct) return;
+    const query = `${series.name} ${currentProduct.device}`;
+    storefrontApiRequest(SHOPIFY_SEARCH_QUERY, { query })
+      .then((data) => {
+        const edges = data?.data?.products?.edges || [];
+        if (edges.length > 0) {
+          setShopifyProduct(edges[0]);
+        } else {
+          // Fallback: try just series name
+          storefrontApiRequest(SHOPIFY_SEARCH_QUERY, { query: series.name })
+            .then((d2) => {
+              const e2 = d2?.data?.products?.edges || [];
+              if (e2.length > 0) setShopifyProduct(e2[0]);
+            });
+        }
+      })
+      .catch(console.error);
+  }, [series, currentProduct?.device]);
+
+  const handleAddToCart = async () => {
     if (!currentProduct) return;
-    toast({ title: "Added to cart!", description: `${series.name} added` });
+    if (shopifyProduct) {
+      const variant = shopifyProduct.node.variants.edges[0]?.node;
+      if (!variant) return;
+      await addItem({
+        product: shopifyProduct,
+        variantId: variant.id,
+        variantTitle: variant.title,
+        price: variant.price,
+        quantity: 1,
+        selectedOptions: variant.selectedOptions || [],
+      });
+      toast.success("Added to cart", { description: currentProduct.device + " — " + series.name, position: "top-center" });
+    } else {
+      toast.error("Product not available for checkout yet");
+    }
     setCartOpen(true);
+  };
+
+  const handleBuyNow = async () => {
+    if (!currentProduct || !shopifyProduct) return;
+    const variant = shopifyProduct.node.variants.edges[0]?.node;
+    if (!variant) return;
+    await addItem({
+      product: shopifyProduct,
+      variantId: variant.id,
+      variantTitle: variant.title,
+      price: variant.price,
+      quantity: 1,
+      selectedOptions: variant.selectedOptions || [],
+    });
+    const checkoutUrl = getCheckoutUrl();
+    if (checkoutUrl) {
+      window.open(checkoutUrl, "_blank");
+    }
   };
 
   // Related products: same device different series + same series different devices
