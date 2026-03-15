@@ -39,10 +39,50 @@ const ProductCard = ({ product }: { product: Product; tag?: string }) => {
   const images = hasAlt ? [product.image, product.hoverImage!] : [product.image];
   const [activeImg, setActiveImg] = useState(0);
 
-  const handleAddToCart = (e: React.MouseEvent) => {
+  const addItem = useShopifyCartStore((s) => s.addItem);
+  const isCartLoading = useShopifyCartStore((s) => s.isLoading);
+  const [shopifyProduct, setShopifyProduct] = useState<ShopifyProduct | null>(null);
+
+  // Search for matching Shopify product
+  useEffect(() => {
+    const query = `${product.name} ${product.device}`;
+    storefrontApiRequest(`
+      query SearchProducts($query: String!) {
+        products(first: 1, query: $query) {
+          edges { node { id title handle description
+            variants(first: 5) { edges { node { id title price { amount currencyCode } availableForSale selectedOptions { name value } } } }
+            images(first: 2) { edges { node { url altText } } }
+            priceRange { minVariantPrice { amount currencyCode } }
+            options { name values }
+          } }
+        }
+      }
+    `, { query })
+      .then((data) => {
+        const edges = data?.data?.products?.edges || [];
+        if (edges.length > 0) setShopifyProduct(edges[0]);
+      })
+      .catch(() => {});
+  }, [product.name, product.device]);
+
+  const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    toast({ title: "Added to cart", description: `${product.name} — ${product.subtitle}` });
+    if (shopifyProduct) {
+      const variant = shopifyProduct.node.variants.edges[0]?.node;
+      if (!variant) return;
+      await addItem({
+        product: shopifyProduct,
+        variantId: variant.id,
+        variantTitle: variant.title,
+        price: variant.price,
+        quantity: 1,
+        selectedOptions: variant.selectedOptions || [],
+      });
+      toast.success("Added to cart", { description: `${product.name} — ${product.subtitle}`, position: "top-center" });
+    } else {
+      toast.error("Product not available yet");
+    }
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
