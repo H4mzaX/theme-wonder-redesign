@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { type Product, getProductUrl } from "@/data/products";
 import { useShopifyCartStore } from "@/stores/cartStore";
 import { storefrontApiRequest, type ShopifyProduct } from "@/lib/shopify";
+import { buildShopifySearchQuery } from "@/lib/shopifyProductMap";
 import BrandName from "@/components/BrandName";
 
 const categorySpecs: Record<string, { icon: React.ElementType; label: string; value: string }[]> = {
