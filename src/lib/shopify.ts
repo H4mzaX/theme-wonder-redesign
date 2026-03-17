@@ -198,6 +198,7 @@ export interface ShopifyCartItem {
   variantId: string;
   variantTitle: string;
   price: { amount: string; currencyCode: string };
+  compareAtPrice?: { amount: string; currencyCode: string } | null;
   quantity: number;
   selectedOptions: Array<{ name: string; value: string }>;
 }
