@@ -51,6 +51,7 @@ import { useSEO } from "@/hooks/useSEO";
 import { toast } from "sonner";
 import { useShopifyCartStore } from "@/stores/cartStore";
 import { storefrontApiRequest, type ShopifyProduct } from "@/lib/shopify";
+import { buildShopifySearchQuery, buildFallbackQuery } from "@/lib/shopifyProductMap";
 import Navbar from "@/components/Navbar";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Footer from "@/components/Footer";
