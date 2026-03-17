@@ -410,6 +410,7 @@ const SeriesProduct = () => {
         variantId: variant.id,
         variantTitle: variant.title,
         price: variant.price,
+        compareAtPrice: (variant as any).compareAtPrice || null,
         quantity: 1,
         selectedOptions: variant.selectedOptions || [],
       });
