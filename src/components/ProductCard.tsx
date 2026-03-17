@@ -51,7 +51,7 @@ const ProductCard = ({ product }: { product: Product; tag?: string }) => {
       query SearchProducts($query: String!) {
         products(first: 1, query: $query) {
           edges { node { id title handle description
-            variants(first: 5) { edges { node { id title price { amount currencyCode } availableForSale selectedOptions { name value } } } }
+            variants(first: 5) { edges { node { id title price { amount currencyCode } compareAtPrice { amount currencyCode } availableForSale selectedOptions { name value } } } }
             images(first: 2) { edges { node { url altText } } }
             priceRange { minVariantPrice { amount currencyCode } }
             options { name values }
