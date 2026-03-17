@@ -51,6 +51,7 @@ import { useSEO } from "@/hooks/useSEO";
 import { toast } from "sonner";
 import { useShopifyCartStore } from "@/stores/cartStore";
 import { storefrontApiRequest, type ShopifyProduct } from "@/lib/shopify";
+import { buildShopifySearchQuery, buildFallbackQuery } from "@/lib/shopifyProductMap";
 import Navbar from "@/components/Navbar";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Footer from "@/components/Footer";
@@ -325,15 +326,17 @@ const SeriesProduct = () => {
 
   // Fetch matching Shopify product for cart integration
   useEffect(() => {
-    if (!series || !currentProduct) return;
-    const query = `${series.name} ${currentProduct.device}`;
+    if (!series || !currentProduct || !seriesSlug) return;
+    const query = buildShopifySearchQuery(seriesSlug, currentProduct.device);
     storefrontApiRequest(SHOPIFY_SEARCH_QUERY, { query })
       .then((data) => {
         const edges = data?.data?.products?.edges || [];
         if (edges.length > 0) {
           setShopifyProduct(edges[0]);
         } else {
-          storefrontApiRequest(SHOPIFY_SEARCH_QUERY, { query: series.name })
+          // Fallback: search by product type only
+          const fallback = buildFallbackQuery(seriesSlug);
+          storefrontApiRequest(SHOPIFY_SEARCH_QUERY, { query: `${currentProduct.device} ${fallback}` })
             .then((d2) => {
               const e2 = d2?.data?.products?.edges || [];
               if (e2.length > 0) setShopifyProduct(e2[0]);
@@ -341,7 +344,7 @@ const SeriesProduct = () => {
         }
       })
       .catch(console.error);
-  }, [series, currentProduct?.device]);
+  }, [series, seriesSlug, currentProduct?.device]);
 
   if (!series || !deviceGroup) {
     return (

@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { type Product, getProductUrl } from "@/data/products";
 import { useShopifyCartStore } from "@/stores/cartStore";
 import { storefrontApiRequest, type ShopifyProduct } from "@/lib/shopify";
+import { buildShopifySearchQuery } from "@/lib/shopifyProductMap";
 import BrandName from "@/components/BrandName";
 
 const categorySpecs: Record<string, { icon: React.ElementType; label: string; value: string }[]> = {
@@ -43,9 +44,9 @@ const ProductCard = ({ product }: { product: Product; tag?: string }) => {
   const isCartLoading = useShopifyCartStore((s) => s.isLoading);
   const [shopifyProduct, setShopifyProduct] = useState<ShopifyProduct | null>(null);
 
-  // Search for matching Shopify product
+  // Search for matching Shopify product using proper title mapping
   useEffect(() => {
-    const query = `${product.name} ${product.device}`;
+    const query = buildShopifySearchQuery(product.seriesSlug, product.device);
     storefrontApiRequest(`
       query SearchProducts($query: String!) {
         products(first: 1, query: $query) {
@@ -63,7 +64,7 @@ const ProductCard = ({ product }: { product: Product; tag?: string }) => {
         if (edges.length > 0) setShopifyProduct(edges[0]);
       })
       .catch(() => {});
-  }, [product.name, product.device]);
+  }, [product.seriesSlug, product.device]);
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
