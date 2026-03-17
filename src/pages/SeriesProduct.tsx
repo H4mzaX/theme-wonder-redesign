@@ -177,7 +177,7 @@ const SHOPIFY_SEARCH_QUERY = `
         node {
           id title handle
           variants(first: 10) {
-            edges { node { id title price { amount currencyCode } availableForSale selectedOptions { name value } } }
+            edges { node { id title price { amount currencyCode } compareAtPrice { amount currencyCode } availableForSale selectedOptions { name value } } }
           }
           images(first: 5) { edges { node { url altText } } }
           priceRange { minVariantPrice { amount currencyCode } }
