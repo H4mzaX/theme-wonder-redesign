@@ -10,7 +10,7 @@ const SEARCH_QUERY = `
   query SearchProducts($query: String!) {
     products(first: 1, query: $query) {
       edges { node { id title handle
-        variants(first: 5) { edges { node { id title price { amount currencyCode } availableForSale selectedOptions { name value } } } }
+        variants(first: 5) { edges { node { id title price { amount currencyCode } compareAtPrice { amount currencyCode } availableForSale selectedOptions { name value } } } }
         images(first: 2) { edges { node { url altText } } }
         priceRange { minVariantPrice { amount currencyCode } }
         options { name values }
