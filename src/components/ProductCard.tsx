@@ -44,9 +44,9 @@ const ProductCard = ({ product }: { product: Product; tag?: string }) => {
   const isCartLoading = useShopifyCartStore((s) => s.isLoading);
   const [shopifyProduct, setShopifyProduct] = useState<ShopifyProduct | null>(null);
 
-  // Search for matching Shopify product
+  // Search for matching Shopify product using proper title mapping
   useEffect(() => {
-    const query = `${product.name} ${product.device}`;
+    const query = buildShopifySearchQuery(product.seriesSlug, product.device);
     storefrontApiRequest(`
       query SearchProducts($query: String!) {
         products(first: 1, query: $query) {
@@ -64,7 +64,7 @@ const ProductCard = ({ product }: { product: Product; tag?: string }) => {
         if (edges.length > 0) setShopifyProduct(edges[0]);
       })
       .catch(() => {});
-  }, [product.name, product.device]);
+  }, [product.seriesSlug, product.device]);
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
