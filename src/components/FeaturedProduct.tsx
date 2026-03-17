@@ -1,8 +1,61 @@
-import { Star } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Star, Loader2 } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/hooks/useScrollAnimations";
 import { featuredProduct } from "@/data/products";
+import { useShopifyCartStore } from "@/stores/cartStore";
+import { storefrontApiRequest, type ShopifyProduct } from "@/lib/shopify";
+import { toast } from "sonner";
+
+const SEARCH_QUERY = `
+  query SearchProducts($query: String!) {
+    products(first: 1, query: $query) {
+      edges { node { id title handle
+        variants(first: 5) { edges { node { id title price { amount currencyCode } compareAtPrice { amount currencyCode } availableForSale selectedOptions { name value } } } }
+        images(first: 2) { edges { node { url altText } } }
+        priceRange { minVariantPrice { amount currencyCode } }
+        options { name values }
+      } }
+    }
+  }
+`;
 
 const FeaturedProduct = () => {
+  const addItem = useShopifyCartStore((s) => s.addItem);
+  const isCartLoading = useShopifyCartStore((s) => s.isLoading);
+  const [shopifyProduct, setShopifyProduct] = useState<ShopifyProduct | null>(null);
+
+  useEffect(() => {
+    storefrontApiRequest(SEARCH_QUERY, { query: "iPhone 17 Pro Clear MagSafe Case" })
+      .then((data) => {
+        const edges = data?.data?.products?.edges || [];
+        if (edges.length > 0) setShopifyProduct(edges[0]);
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleAddToCart = async () => {
+    if (!shopifyProduct) {
+      toast.error("Product not available yet");
+      return;
+    }
+    const variant = shopifyProduct.node.variants.edges[0]?.node;
+    if (!variant) return;
+    await addItem({
+      product: shopifyProduct,
+      variantId: variant.id,
+      variantTitle: variant.title,
+      price: variant.price,
+      compareAtPrice: (variant as any).compareAtPrice || null,
+      quantity: 1,
+      selectedOptions: variant.selectedOptions || [],
+    });
+    toast.success("Added to cart", { description: "ClearMag — iPhone 17 Pro", position: "top-center" });
+  };
+
+  const displayPrice = shopifyProduct
+    ? `₹${parseFloat(shopifyProduct.node.priceRange.minVariantPrice.amount).toLocaleString("en-IN")}`
+    : featuredProduct.price;
+
   return (
     <section className="bg-muted">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-14 lg:py-20">
@@ -27,7 +80,7 @@ const FeaturedProduct = () => {
                 <p className="text-xs text-muted-foreground tracking-widest uppercase mb-1">VCASE</p>
                 <h3 className="text-2xl font-bold">{featuredProduct.name}</h3>
                 <p className="text-xs text-muted-foreground">{featuredProduct.subtitle}</p>
-                <p className="text-2xl font-bold mt-2">{featuredProduct.price}</p>
+                <p className="text-2xl font-bold mt-2">{displayPrice}</p>
                 <div className="flex items-center gap-1 mt-2">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
@@ -60,8 +113,16 @@ const FeaturedProduct = () => {
                 </div>
               </div>
 
-              <button className="w-full bg-foreground text-background py-3.5 rounded-lg font-medium text-sm tracking-wide hover:bg-foreground/90 transition-colors">
-                Add to cart — {featuredProduct.price}
+              <button
+                onClick={handleAddToCart}
+                disabled={isCartLoading}
+                className="w-full bg-foreground text-background py-3.5 rounded-lg font-medium text-sm tracking-wide hover:bg-foreground/90 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                {isCartLoading ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  `Add to cart — ${displayPrice}`
+                )}
               </button>
 
               <div className="flex gap-6 text-xs text-muted-foreground">
