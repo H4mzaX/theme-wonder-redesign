@@ -126,8 +126,8 @@ const ShopifyProductDetail = () => {
   const variants = p?.variants.edges || [];
   const selectedVariant = variants[selectedVariantIdx]?.node;
   const price = selectedVariant ? parseFloat(selectedVariant.price.amount) : 0;
-  const compareAtPrice = selectedVariant?.compareAtPrice
-    ? parseFloat(selectedVariant.compareAtPrice.amount)
+  const compareAtPrice = (selectedVariant as any)?.compareAtPrice
+    ? parseFloat((selectedVariant as any).compareAtPrice.amount)
     : 0;
   const currency = selectedVariant?.price.currencyCode || "INR";
   const currencySymbol = currency === "INR" ? "₹" : currency + " ";
