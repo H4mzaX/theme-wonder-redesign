@@ -650,7 +650,7 @@ const ShopifyProductDetail = () => {
         <Footer />
       </div>
       <MobileBottomNav />
-      <FloatingNavPill />
+      <FloatingNavPill sections={[]} />
     </div>
   );
 };
