@@ -171,7 +171,7 @@ const ShopifyProductDetail = () => {
       variantId: selectedVariant.id,
       variantTitle: selectedVariant.title,
       price: selectedVariant.price,
-      compareAtPrice: selectedVariant.compareAtPrice || null,
+      compareAtPrice: (selectedVariant as any).compareAtPrice || null,
       quantity: 1,
       selectedOptions: selectedVariant.selectedOptions || [],
     });
