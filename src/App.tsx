@@ -43,21 +43,21 @@ const AnimatedRoutes = () => {
         exit="exit"
         style={{ willChange: "clip-path, opacity" }}
       >
-        <Routes location={location}>
-          <Route path="/" element={<Index />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
-          <Route path="/shop/:handle" element={<ShopifyProductDetail />} />
-          <Route path="/collections/:slug" element={<Collection />} />
-          <Route path="/devices/:deviceSlug" element={<DeviceCollection />} />
-          <Route path="/contact" element={<ContactUs />} />
-          <Route path="/terms" element={<TermsAndConditions />} />
-          <Route path="/refund-policy" element={<RefundPolicy />} />
-          
-          {/* Catch-all series routes — must be last */}
-          <Route path="/:seriesSlug" element={<SeriesLanding />} />
-          <Route path="/:seriesSlug/:deviceSlug" element={<SeriesProduct />} />
-          
-          <Route path="*" element={<NotFound />} />
+        <Route path="/" element={<Index />} />
+<Route path="/product/:id" element={<ProductDetail />} />
+<Route path="/collections/:slug" element={<Collection />} />
+
+{/* Specific named routes BEFORE wildcards */}
+<Route path="/devices/:deviceSlug" element={<DeviceCollection />} />
+<Route path="/contact" element={<ContactUs />} />
+<Route path="/terms" element={<TermsAndConditions />} />
+<Route path="/refund-policy" element={<RefundPolicy />} />
+
+{/* Wildcards LAST */}
+<Route path="/:seriesSlug" element={<SeriesLanding />} />
+<Route path="/:seriesSlug/:deviceSlug" element={<SeriesProduct />} />
+
+<Route path="*" element={<NotFound />} />
         </Routes>
       </motion.div>
     </AnimatePresence>
