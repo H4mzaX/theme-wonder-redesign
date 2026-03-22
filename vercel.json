@@ -4,9 +4,5 @@
       "source": "/((?!checkout|cart|account|orders|payments|cdn|api).*)",
       "destination": "/index.html"
     }
-  ],
-  "env": {
-    "VITE_SHOPIFY_DOMAIN": "@shopify_domain",
-    "VITE_SHOPIFY_STOREFRONT_TOKEN": "@shopify_storefront_token"
-  }
+  ]
 }
