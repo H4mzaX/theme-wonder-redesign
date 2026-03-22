@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useScrollDirection } from "@/hooks/useScrollAnimations";
 import { drawerSpring, premiumEase } from "@/lib/motion";
-import { useShopifyCartStore } from "@/stores/cartStore";
+import { useCart } from "@/context/CartContext";
 import { seriesData, deviceSeries } from "@/data/products";
 import logoFull from "@/assets/logo-full.png";
 import BrandName from "@/components/BrandName";
@@ -53,8 +53,7 @@ const Navbar = ({ onSearchOpen, onCartOpen, transparent = false }: NavbarProps) 
   const [mobileSubmenu, setMobileSubmenu] = useState<string | null>(null);
   const [mobileDrilldown, setMobileDrilldown] = useState<string | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const totalItems = useShopifyCartStore((s) => s.items.reduce((sum, i) => sum + i.quantity, 0));
-
+  const { totalItems } = useCart();
   const isTransparent = transparent && !scrolled && !activeMega;
   const navItems: MegaKey[] = ["Cases", "Protection", "Devices", "Explore"];
 
