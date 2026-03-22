@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { Home, SlidersHorizontal, ChevronDown, X, ArrowRight, Headphones, Smartphone, Shield, Cable } from "lucide-react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { allProducts, type Product } from "@/data/products";
+import { useCollectionProducts } from "@/hooks/useShopifyProducts";
 import { premiumEase } from "@/lib/motion";
 import { useSEO } from "@/hooks/useSEO";
 import Navbar from "@/components/Navbar";
@@ -128,6 +129,7 @@ const sortOptions: { value: SortOption; label: string }[] = [
 
 const Collection = () => {
   const { slug } = useParams<{ slug: string }>();
+  const { products: shopifyProducts, loading: shopifyLoading } = useCollectionProducts(slug || "all");
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

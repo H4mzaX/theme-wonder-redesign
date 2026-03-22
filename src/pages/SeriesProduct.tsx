@@ -47,11 +47,9 @@ import edgeguardHoverImg from "@/assets/edgeguard-screen-protector-hover.jpg";
 import lensguardImg from "@/assets/lensguard-camera-protector.jpg";
 import lensguardHoverImg from "@/assets/lensguard-camera-protector-hover.jpg";
 import { useSEO } from "@/hooks/useSEO";
-
-import { toast } from "sonner";
-import { useShopifyCartStore } from "@/stores/cartStore";
-import { storefrontApiRequest, type ShopifyProduct } from "@/lib/shopify";
-import { buildShopifySearchQuery, buildFallbackQuery } from "@/lib/shopifyProductMap";
+import { useSeriesProducts, getVariantId } from "@/hooks/useShopifyProducts";
+import { useCart } from "@/context/CartContext";
+import { toast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Footer from "@/components/Footer";
@@ -170,25 +168,6 @@ const seoKeywords: Record<string, string[]> = {
   lensguard: ["camera lens protector", "sapphire lens guard", "iPhone camera protector India", "anti-reflective lens protector", "camera glass protector"],
 };
 
-const SHOPIFY_SEARCH_QUERY = `
-  query SearchProducts($query: String!) {
-    products(first: 5, query: $query) {
-      edges {
-        node {
-          id title handle
-          variants(first: 10) {
-            edges { node { id title price { amount currencyCode } compareAtPrice { amount currencyCode } availableForSale selectedOptions { name value } } }
-          }
-          images(first: 5) { edges { node { url altText } } }
-          priceRange { minVariantPrice { amount currencyCode } }
-          options { name values }
-          description
-        }
-      }
-    }
-  }
-`;
-
 const SeriesProduct = () => {
   const { seriesSlug, deviceSlug } = useParams<{ seriesSlug: string; deviceSlug: string }>();
   const [searchParams] = useSearchParams();
@@ -199,12 +178,7 @@ const SeriesProduct = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [activeGalleryImg, setActiveGalleryImg] = useState(0);
   const [showStickyCart, setShowStickyCart] = useState(false);
-  const [shopifyProduct, setShopifyProduct] = useState<ShopifyProduct | null>(null);
-
-  const addItem = useShopifyCartStore((s) => s.addItem);
-  const isCartLoading = useShopifyCartStore((s) => s.isLoading);
-  const getCheckoutUrl = useShopifyCartStore((s) => s.getCheckoutUrl);
-  
+  const { addToCart } = useCart();
   const galleryRef = useRef<HTMLDivElement>(null);
   const productInfoRef = useRef<HTMLDivElement>(null);
   const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -241,8 +215,10 @@ const SeriesProduct = () => {
     : undefined;
   const currentDeviceName = resolvedModelName || deviceGroup?.models[0]?.name || deviceSlug || "";
 
-  // Compute products early so SEO can reference currentProduct
-  const products = (series && deviceGroup) ? getSeriesProducts(seriesSlug!, deviceSlug!) : [];
+  // Fetch products from Shopify (falls back gracefully while loading)
+  const { products: shopifyProducts, loading: productsLoading } = useSeriesProducts(seriesSlug || "", deviceSlug || "");
+  // Merge: use Shopify data when available, otherwise empty
+  const products = shopifyProducts.length > 0 ? shopifyProducts : (series && deviceGroup) ? getSeriesProducts(seriesSlug!, deviceSlug!) : [];
   const currentProduct = products[selectedModel] || products[0];
   const isSoftmag = seriesSlug === "softmag";
 
@@ -323,29 +299,6 @@ const SeriesProduct = () => {
     observer.observe(el);
     return () => observer.disconnect();
   }, [seriesSlug, deviceSlug, selectedModel]);
-
-  // Fetch matching Shopify product for cart integration
-  useEffect(() => {
-    if (!series || !currentProduct || !seriesSlug) return;
-    const query = buildShopifySearchQuery(seriesSlug, currentProduct.device);
-    storefrontApiRequest(SHOPIFY_SEARCH_QUERY, { query })
-      .then((data) => {
-        const edges = data?.data?.products?.edges || [];
-        if (edges.length > 0) {
-          setShopifyProduct(edges[0]);
-        } else {
-          // Fallback: search by product type only
-          const fallback = buildFallbackQuery(seriesSlug);
-          storefrontApiRequest(SHOPIFY_SEARCH_QUERY, { query: `${currentProduct.device} ${fallback}` })
-            .then((d2) => {
-              const e2 = d2?.data?.products?.edges || [];
-              if (e2.length > 0) setShopifyProduct(e2[0]);
-            });
-        }
-      })
-      .catch(console.error);
-  }, [series, seriesSlug, currentProduct?.device]);
-
   if (!series || !deviceGroup) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -400,44 +353,25 @@ const SeriesProduct = () => {
   };
   const galleryImages = getGalleryImages();
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = () => {
     if (!currentProduct) return;
-    if (shopifyProduct) {
-      const variant = shopifyProduct.node.variants.edges[0]?.node;
-      if (!variant) return;
-      await addItem({
-        product: shopifyProduct,
-        variantId: variant.id,
-        variantTitle: variant.title,
-        price: variant.price,
-        compareAtPrice: (variant as any).compareAtPrice || null,
-        quantity: 1,
-        selectedOptions: variant.selectedOptions || [],
-      });
-      toast.success("Added to cart", { description: currentProduct.device + " — " + series.name, position: "top-center" });
-    } else {
-      toast.error("Product not available for checkout yet");
-    }
-    setCartOpen(true);
-  };
-
-  const handleBuyNow = async () => {
-    if (!currentProduct || !shopifyProduct) return;
-    const variant = shopifyProduct.node.variants.edges[0]?.node;
-    if (!variant) return;
-    await addItem({
-      product: shopifyProduct,
-      variantId: variant.id,
-      variantTitle: variant.title,
-      price: variant.price,
-      compareAtPrice: (variant as any).compareAtPrice || null,
-      quantity: 1,
-      selectedOptions: variant.selectedOptions || [],
+    const color = isSoftmag ? softmagColors[selectedColor]?.name || "Default" : "Default";
+    const variantId = (currentProduct as any).variantsByColor
+      ? getVariantId(currentProduct as any, color)
+      : undefined;
+    addToCart({
+      id: currentProduct.id,
+      name: currentProduct.name,
+      subtitle: currentProduct.subtitle,
+      price: currentProduct.price,
+      originalPrice: currentProduct.originalPrice,
+      image: currentProduct.image,
+      color,
+      device: currentProduct.device,
+      variantId,
     });
-    const checkoutUrl = getCheckoutUrl();
-    if (checkoutUrl) {
-      window.open(checkoutUrl, "_blank");
-    }
+    toast({ title: "Added to cart!", description: `${series.name} added` });
+    setCartOpen(true);
   };
 
   // Related products: same device different series + same series different devices
@@ -747,7 +681,6 @@ const SeriesProduct = () => {
               >
                 <motion.button
                   onClick={handleAddToCart}
-                  disabled={isCartLoading}
                   className="flex-1 bg-foreground text-background py-3.5 rounded-full text-sm font-semibold uppercase tracking-wider hover:bg-foreground/90 transition-colors"
                   whileTap={{ scale: 0.97 }}
                 >
@@ -755,8 +688,7 @@ const SeriesProduct = () => {
                 </motion.button>
 
                 <motion.button
-                  onClick={handleBuyNow}
-                  disabled={isCartLoading}
+                  onClick={handleAddToCart}
                   className="flex-1 border-2 border-foreground text-foreground py-3.5 rounded-full text-sm font-semibold uppercase tracking-wider hover:bg-foreground hover:text-background transition-colors"
                   whileTap={{ scale: 0.97 }}
                 >
@@ -988,15 +920,13 @@ const SeriesProduct = () => {
           <div className="flex gap-2 w-[220px]">
             <motion.button
               onClick={handleAddToCart}
-              disabled={isCartLoading}
               className="flex-1 bg-foreground text-background py-2.5 rounded-full text-[11px] font-semibold uppercase tracking-wider"
               whileTap={{ scale: 0.95 }}
             >
               Add to Cart
             </motion.button>
             <motion.button
-              onClick={handleBuyNow}
-              disabled={isCartLoading}
+              onClick={handleAddToCart}
               className="flex-1 border border-foreground text-foreground py-2.5 rounded-full text-[11px] font-semibold uppercase tracking-wider"
               whileTap={{ scale: 0.95 }}
             >
