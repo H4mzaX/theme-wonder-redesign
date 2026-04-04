@@ -78,7 +78,7 @@ const offers = [
 
 const ShopifyProductDetail = () => {
   const { handle } = useParams<{ handle: string }>();
-  const [product, setProduct] = useState<ShopifyProduct | null>(null);
+  const [product, setProduct] = useState<{ node: any } | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedVariantIdx, setSelectedVariantIdx] = useState(0);
   const [activeGalleryImg, setActiveGalleryImg] = useState(0);
