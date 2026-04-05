@@ -779,7 +779,7 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
           </div>
           <button
             disabled={items.length === 0 || cartLoading || !checkoutUrl}
-            onClick={() => { if (checkoutUrl) window.location.href = checkoutUrl; }}
+            onClick={() => { if (checkoutUrl) window.open(checkoutUrl, '_blank'); }}
             className="w-full bg-foreground text-background py-4 rounded-full font-medium text-base flex items-center justify-center gap-2 hover:bg-foreground/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {cartLoading ? "Syncing..." : "Check out"}
