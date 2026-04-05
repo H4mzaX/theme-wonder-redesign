@@ -639,31 +639,29 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
       </div>
 
       {/* Footer */}
-      <div className="border-t border-border">
+      <div className="border-t border-border shrink-0 bg-background">
         {/* Action tabs */}
-        <div className="flex items-center justify-around py-3 border-b border-border">
+        <div className="grid grid-cols-3 gap-2 px-4 py-2 border-b border-border">
           <button
             onClick={() => setExpandedAction(expandedAction === "note" ? null : "note")}
-            className={`flex items-center gap-1.5 text-xs font-medium transition-colors ${expandedAction === "note" ? "text-accent" : "text-foreground"}`}
+            className={`flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-xs font-medium transition-colors ${expandedAction === "note" ? "text-accent bg-accent/10" : "text-foreground hover:bg-muted"}`}
           >
             <FileText className="w-3.5 h-3.5" />
             Note
           </button>
-          <div className="w-px h-4 bg-border" />
           <button
             onClick={() => setExpandedAction(expandedAction === "shipping" ? null : "shipping")}
-            className={`flex items-center gap-1.5 text-xs font-medium transition-colors ${expandedAction === "shipping" ? "text-accent" : "text-foreground"}`}
+            className={`flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-xs font-medium transition-colors ${expandedAction === "shipping" ? "text-accent bg-accent/10" : "text-foreground hover:bg-muted"}`}
           >
             <Package className="w-3.5 h-3.5" />
             Shipping
           </button>
-          <div className="w-px h-4 bg-border" />
           <button
             onClick={() => setExpandedAction(expandedAction === "coupon" ? null : "coupon")}
-            className={`flex items-center gap-1.5 text-xs font-medium transition-colors ${appliedCoupon ? "text-green-600" : expandedAction === "coupon" ? "text-accent" : "text-foreground"}`}
+            className={`flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-xs font-medium transition-colors ${appliedCoupon ? "text-green-600 bg-green-500/5" : expandedAction === "coupon" ? "text-accent bg-accent/10" : "text-foreground hover:bg-muted"}`}
           >
             <Tag className="w-3.5 h-3.5" />
-            {appliedCoupon ? `"${appliedCoupon}"` : "Apply Coupon"}
+            <span className="truncate">{appliedCoupon ? `"${appliedCoupon}"` : "Coupon"}</span>
           </button>
         </div>
 
@@ -677,7 +675,7 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
               transition={{ duration: 0.2 }}
               className="overflow-hidden border-b border-border"
             >
-              <div className="px-6 py-3">
+              <div className="px-4 py-2.5">
                 {expandedAction === "note" && (
                   <div className="flex gap-2">
                     <input
@@ -701,7 +699,7 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
                       type="text"
                       value={shippingNote}
                       onChange={(e) => setShippingNote(e.target.value)}
-                      placeholder="Shipping instructions (e.g. leave at door)..."
+                      placeholder="Shipping instructions..."
                       className="flex-1 text-sm bg-muted rounded-lg px-3 py-2 outline-none placeholder:text-muted-foreground border border-border focus:border-foreground transition-colors"
                     />
                     <button
@@ -743,14 +741,14 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
 
         {/* Applied coupon badge */}
         {appliedCoupon && expandedAction !== "coupon" && (
-          <div className="flex items-center justify-between px-6 py-2 border-b border-border bg-green-500/5">
-            <div className="flex items-center gap-2">
-              <Tag className="w-3.5 h-3.5 text-green-600" />
-              <span className="text-xs font-semibold text-green-600">Coupon "{appliedCoupon}" applied</span>
+          <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-green-500/5">
+            <div className="flex items-center gap-2 min-w-0">
+              <Tag className="w-3.5 h-3.5 text-green-600 flex-shrink-0" />
+              <span className="text-xs font-semibold text-green-600 truncate">Coupon "{appliedCoupon}" applied</span>
             </div>
             <button
               onClick={() => setAppliedCoupon("")}
-              className="text-[10px] font-medium text-destructive underline underline-offset-2"
+              className="text-[10px] font-medium text-destructive underline underline-offset-2 flex-shrink-0"
             >
               Remove
             </button>
@@ -759,7 +757,7 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
 
         {/* Total Savings */}
         {discount > 0 && (
-          <div className="flex items-center justify-between px-6 py-2.5 border-b border-border">
+          <div className="flex items-center justify-between px-4 py-2.5 border-b border-border">
             <div className="flex items-center gap-2">
               <Sparkles className="w-3.5 h-3.5 text-green-600" />
               <span className="text-sm font-medium">Total Savings</span>
@@ -769,18 +767,18 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
         )}
 
         {/* Subtotal & checkout */}
-        <div className="px-6 py-4">
-          <div className="flex items-end justify-between mb-3">
-            <p className="text-xs text-muted-foreground max-w-[55%]">Taxes included and shipping calculated at checkout.</p>
-            <div className="text-right">
-              <p className="text-sm text-muted-foreground">Subtotal</p>
-              <p className="text-xl font-display font-bold">₹{finalTotal.toLocaleString("en-IN")}</p>
+        <div className="px-4 pt-3 pb-4">
+          <div className="flex items-end justify-between gap-3 mb-2.5">
+            <p className="text-[11px] leading-snug text-muted-foreground max-w-[52%]">Taxes included and shipping calculated at checkout.</p>
+            <div className="text-right flex-shrink-0">
+              <p className="text-xs text-muted-foreground">Subtotal</p>
+              <p className="text-lg font-display font-bold">₹{finalTotal.toLocaleString("en-IN")}</p>
             </div>
           </div>
           <button
             disabled={items.length === 0 || cartLoading || !checkoutUrl}
             onClick={() => { if (checkoutUrl) window.open(checkoutUrl, '_blank'); }}
-            className="w-full bg-foreground text-background py-4 rounded-full font-medium text-base flex items-center justify-center gap-2 hover:bg-foreground/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-foreground text-background py-3.5 rounded-full font-medium text-[15px] flex items-center justify-center gap-2 hover:bg-foreground/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {cartLoading ? "Syncing..." : "Check out"}
           </button>
@@ -796,17 +794,17 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
           <motion.div key="cart-mobile" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[60]">
             <motion.div className="absolute inset-0 bg-foreground/40" onClick={onClose} />
             <motion.div
-              className="fixed inset-x-0 bottom-0 bg-background rounded-t-2xl h-[min(85dvh,720px)] flex flex-col will-change-transform"
+              className="fixed inset-x-0 bottom-0 bg-background rounded-t-2xl h-[min(92dvh,760px)] flex flex-col will-change-transform"
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={drawerSpring}
             >
               {/* Drag handle + close */}
-              <div className="flex justify-center pt-3 pb-1">
+              <div className="flex justify-center pt-2.5 pb-0.5">
                 <div className="w-10 h-1 rounded-full bg-muted-foreground/30" />
               </div>
-              <div className="flex justify-center py-2">
+              <div className="flex justify-center py-1.5">
                 <button onClick={onClose} className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-muted transition-colors">
                   <X className="w-5 h-5" />
                 </button>
