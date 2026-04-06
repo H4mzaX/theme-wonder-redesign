@@ -304,6 +304,7 @@ function normalizeCart(raw: any): ShopifyCart {
 function formatCheckoutUrl(checkoutUrl: string): string {
   try {
     const url = new URL(checkoutUrl);
+    url.host = SHOPIFY_DOMAIN;
     url.searchParams.set("channel", "online_store");
     return url.toString();
   } catch {

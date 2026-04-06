@@ -1,6 +1,6 @@
-import { X, Minus, Plus, ArrowRight, ChevronLeft, ChevronRight, FileText, Package, Tag, Shield, Camera, Smartphone, Zap, Clock, Users, Flame, Timer, Sparkles, Eye } from "lucide-react";
+import { X, Minus, Plus, ArrowRight, ChevronLeft, ChevronRight, ChevronDown, FileText, Package, Tag, Shield, Camera, Smartphone, Zap, Clock, Users, Flame, Timer, Sparkles, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { drawerSpring } from "@/lib/motion";
 import { useCart } from "@/context/CartContext";
 import { Link } from "react-router-dom";
@@ -17,6 +17,8 @@ interface CartDrawerProps {
 }
 
 const FREE_SHIPPING_THRESHOLD = 1000;
+
+const parsePriceValue = (value?: string) => parseInt((value || "").replace(/[₹,]/g, ""), 10) || 0;
 
 // Top picks for empty cart — real products with working links
 const topPicks = [
@@ -158,15 +160,26 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
   const [shippingNote, setShippingNote] = useState("");
   const [couponCode, setCouponCode] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState("");
+  const [bundleExpanded, setBundleExpanded] = useState(true);
+  const [flashExpanded, setFlashExpanded] = useState(true);
   const { items, totalItems, subtotal, updateQuantity, removeFromCart, addToCart, recentlyViewed, checkoutUrl, cartLoading } = useCart();
   const isMobile = useIsMobile();
   const countdown = useCountdown();
+  const bundleSectionRef = useRef<HTMLDivElement | null>(null);
+  const flashSectionRef = useRef<HTMLDivElement | null>(null);
 
   const shippingProgress = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
-  const remaining = FREE_SHIPPING_THRESHOLD - subtotal;
-
-  const discount = subtotal > 0 ? Math.round(subtotal * 0.1) : 0;
-  const finalTotal = subtotal - discount;
+  const remaining = Math.max(FREE_SHIPPING_THRESHOLD - subtotal, 0);
+  const productSavings = useMemo(
+    () => items.reduce((sum, item) => {
+      const numericPrice = parsePriceValue(item.price);
+      const numericOriginal = item.originalPrice ? parsePriceValue(item.originalPrice) : numericPrice;
+      return sum + Math.max(numericOriginal - numericPrice, 0) * item.quantity;
+    }, 0),
+    [items],
+  );
+  const finalTotal = subtotal;
+  const compareAtTotal = subtotal + productSavings;
 
   // Smart bundle: detect device from cart items and suggest matching accessories
   // Filter by both ID and name to catch items added from different sources
@@ -188,6 +201,8 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
     const cartNames = new Set(items.map((i) => i.name.toLowerCase()));
     return flashDealItems.filter((a) => !cartIds.has(a.id) && !cartNames.has(a.name.toLowerCase()));
   }, [items]);
+  const hasBundleOffer = bundleItems.length > 0;
+  const hasFlashOffer = countdown.isActive && availableFlashDeals.length > 0 && items.length > 0;
 
   // Reset bundleIndex when items change
   useEffect(() => {
@@ -206,6 +221,17 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
     });
   };
 
+  const revealOfferSection = (section: "bundle" | "flash") => {
+    if (section === "bundle") {
+      setBundleExpanded(true);
+      requestAnimationFrame(() => bundleSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
+      return;
+    }
+
+    setFlashExpanded(true);
+    requestAnimationFrame(() => flashSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
+  };
+
   const bundleSavings = bundleItems.reduce((sum, b) => {
     const orig = parseInt(b.originalPrice.replace(/[₹,]/g, "")) || 0;
     return sum + (orig - b.numericPrice);
@@ -214,18 +240,18 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
   const cartContent = (
     <>
       {/* Tabs */}
-      <div className="flex items-center gap-6 px-6 py-5 border-b border-border">
-        <button onClick={() => setActiveTab("cart")} className={`text-2xl font-display font-bold relative ${activeTab === "cart" ? "text-foreground" : "text-muted-foreground/40"}`}>
+      <div className={`sticky top-0 z-10 flex items-center border-b border-border bg-background ${isMobile ? "gap-4 px-4 py-4" : "gap-6 px-6 py-5"}`}>
+        <button onClick={() => setActiveTab("cart")} className={`relative font-display font-bold ${isMobile ? "text-xl" : "text-2xl"} ${activeTab === "cart" ? "text-foreground" : "text-muted-foreground/40"}`}>
           Cart
           {totalItems > 0 && <sup className="text-xs font-body ml-0.5">{totalItems}</sup>}
         </button>
-        <button onClick={() => setActiveTab("recent")} className={`text-2xl font-display font-bold italic ${activeTab === "recent" ? "text-foreground" : "text-muted-foreground/40"}`}>
+        <button onClick={() => setActiveTab("recent")} className={`font-display font-bold italic ${isMobile ? "text-xl" : "text-2xl"} ${activeTab === "recent" ? "text-foreground" : "text-muted-foreground/40"}`}>
           Recently viewed
         </button>
       </div>
 
       {/* Scrollable content */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto pb-2">
         {activeTab === "cart" ? (
           items.length === 0 ? (
             <div className="px-6 mt-6">
@@ -276,10 +302,10 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
               </div>
             </div>
           ) : (
-            <div className="px-6">
+            <div className={isMobile ? "px-4" : "px-6"}>
               {/* Free shipping progress */}
-              <div className="py-4">
-                <p className="text-sm mb-2">
+              <div className={isMobile ? "py-3" : "py-4"}>
+                <p className={`${isMobile ? "text-[13px]" : "text-sm"} mb-2`}>
                   {remaining > 0 ? (
                     <>Spend <span className="font-bold">₹{remaining.toLocaleString("en-IN")}</span> more to reach free shipping!</>
                   ) : (
@@ -294,51 +320,73 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
                     transition={{ duration: 0.5, ease: "easeOut" }}
                   />
                 </div>
+                {(hasBundleOffer || hasFlashOffer) && (
+                  <div className="flex gap-2 overflow-x-auto pt-3">
+                    {hasBundleOffer && (
+                      <button
+                        onClick={() => revealOfferSection("bundle")}
+                        className="inline-flex flex-shrink-0 items-center gap-1.5 rounded-full border border-border bg-muted px-3 py-2 text-xs font-semibold transition-colors hover:bg-muted/80"
+                      >
+                        <Zap className="h-3.5 w-3.5 text-accent" />
+                        Bundle deals · Save ₹{bundleSavings.toLocaleString("en-IN")}
+                      </button>
+                    )}
+                    {hasFlashOffer && (
+                      <button
+                        onClick={() => revealOfferSection("flash")}
+                        className="inline-flex flex-shrink-0 items-center gap-1.5 rounded-full border border-border bg-muted px-3 py-2 text-xs font-semibold transition-colors hover:bg-muted/80"
+                      >
+                        <Timer className="h-3.5 w-3.5 text-destructive" />
+                        Flash offer · {String(countdown.hours).padStart(2, "0")}:{String(countdown.minutes).padStart(2, "0")}:{String(countdown.seconds).padStart(2, "0")}
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Cart items with MRP display */}
-              <div className="space-y-4 py-2">
+              <div className={`py-2 ${isMobile ? "space-y-3.5" : "space-y-4"}`}>
                 {items.map((item) => {
-                  const numericPrice = parseInt(item.price.replace(/[₹,]/g, "")) || 0;
-                  const numericOriginal = item.originalPrice ? parseInt(item.originalPrice.replace(/[₹,]/g, "")) || 0 : 0;
+                  const numericPrice = parsePriceValue(item.price);
+                  const numericOriginal = item.originalPrice ? parsePriceValue(item.originalPrice) : 0;
                   const discountPct = numericOriginal > 0 ? Math.round(((numericOriginal - numericPrice) / numericOriginal) * 100) : 0;
 
                   return (
-                    <div key={`${item.id}-${item.color}`} className="flex gap-4">
-                      <Link to={`/product/${item.id}`} onClick={onClose} className="w-24 h-24 rounded-lg bg-muted flex-shrink-0 overflow-hidden">
+                    <div key={`${item.id}-${item.color}`} className={`flex ${isMobile ? "gap-3" : "gap-4"}`}>
+                      <Link to={`/product/${item.id}`} onClick={onClose} className={`${isMobile ? "w-20 h-20" : "w-24 h-24"} rounded-lg bg-muted flex-shrink-0 overflow-hidden`}>
                         <img src={item.image} alt={item.name} className="w-full h-full object-contain p-2" />
                       </Link>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between">
-                          <div>
-                            <h4 className="text-base font-bold">{item.name}</h4>
-                            <p className="text-sm text-muted-foreground">{item.color}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-base font-bold">{item.price}</span>
+                          <div className="min-w-0 pr-3">
+                            <h4 className={`${isMobile ? "text-[15px]" : "text-base"} font-bold leading-tight`}>{item.name}</h4>
+                            <p className={`${isMobile ? "text-[13px]" : "text-sm"} text-muted-foreground`}>{item.color}</p>
+                            <div className={`mt-1 flex flex-wrap items-center ${isMobile ? "gap-1.5" : "gap-2"}`}>
+                              <span className={`${isMobile ? "text-[15px]" : "text-base"} font-bold`}>{item.price}</span>
                               {numericOriginal > numericPrice && (
                                 <>
-                                  <span className="text-xs text-muted-foreground line-through">MRP ₹{numericOriginal.toLocaleString("en-IN")}</span>
-                                  <span className="text-[10px] font-bold text-green-600 bg-green-500/10 px-1.5 py-0.5 rounded">
+                                  <span className={`${isMobile ? "text-[11px]" : "text-xs"} text-muted-foreground line-through`}>MRP {item.originalPrice}</span>
+                                  <span className="rounded-md bg-success/10 px-1.5 py-0.5 text-[10px] font-bold text-success">
                                     {discountPct}% OFF
                                   </span>
                                 </>
                               )}
                             </div>
                           </div>
-                          <div className="w-12 h-10 border border-border rounded-lg flex items-center justify-center text-sm font-semibold">
+                          <div className={`${isMobile ? "h-10 w-11 text-[15px]" : "h-10 w-12 text-sm"} border border-border rounded-lg flex items-center justify-center font-semibold`}>
                             {item.quantity}
                           </div>
                         </div>
-                        <div className="flex items-center justify-between mt-2">
+                        <div className="mt-2 flex items-center justify-between gap-3">
                           <div className="flex items-center gap-2">
-                            <button onClick={() => updateQuantity(item.id, item.color, item.quantity - 1)} className="w-7 h-7 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors">
+                            <button onClick={() => updateQuantity(item.id, item.color, item.quantity - 1)} className={`${isMobile ? "h-8 w-8" : "h-7 w-7"} rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors`}>
                               <Minus className="w-3 h-3" />
                             </button>
-                            <button onClick={() => updateQuantity(item.id, item.color, item.quantity + 1)} className="w-7 h-7 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors">
+                            <button onClick={() => updateQuantity(item.id, item.color, item.quantity + 1)} className={`${isMobile ? "h-8 w-8" : "h-7 w-7"} rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors`}>
                               <Plus className="w-3 h-3" />
                             </button>
                           </div>
-                          <button onClick={() => removeFromCart(item.id, item.color)} className="text-sm font-medium underline underline-offset-2 text-foreground hover:text-accent transition-colors">
+                          <button onClick={() => removeFromCart(item.id, item.color)} className={`${isMobile ? "text-[13px]" : "text-sm"} font-medium underline underline-offset-2 text-foreground hover:text-accent transition-colors`}>
                             Remove
                           </button>
                         </div>
@@ -348,253 +396,243 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
                 })}
               </div>
 
-              {/* Bundle Deal — Flash Section */}
-              {bundleItems.length > 0 && (
-                <div className="py-5 border-t border-border mt-4">
-                  {/* Flash header with animated shimmer */}
-                  <div className="relative bg-foreground text-background rounded-xl p-4 mb-4 overflow-hidden">
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-background/10 to-transparent"
-                      animate={{ x: ["-100%", "200%"] }}
-                      transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
-                    />
-                    <div className="relative flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <motion.div
-                          animate={{ scale: [1, 1.2, 1] }}
-                          transition={{ duration: 1.5, repeat: Infinity }}
-                        >
-                          <Zap className="w-5 h-5 text-yellow-400 fill-yellow-400" />
-                        </motion.div>
-                        <div>
-                          <h4 className="text-base font-display font-bold">Bundle Deal</h4>
-                          <p className="text-[11px] text-background/60">Only with your case purchase</p>
-                        </div>
+              {/* Bundle Deal */}
+              {hasBundleOffer && (
+                <div ref={bundleSectionRef} className="mt-3 border-t border-border py-4">
+                  <button
+                    onClick={() => setBundleExpanded((prev) => !prev)}
+                    className="w-full rounded-2xl bg-foreground px-3.5 py-3 text-left text-background"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-background/10">
+                        <Zap className="h-4 w-4 text-accent" />
                       </div>
-                      <div className="text-right">
-                        <span className="text-lg font-display font-bold text-yellow-400">
-                          Save ₹{bundleSavings.toLocaleString("en-IN")}
-                        </span>
-                      </div>
-                    </div>
-                    {/* Social proof + urgency */}
-                    <div className="relative flex items-center gap-4 mt-3 pt-3 border-t border-background/10">
-                      <div className="flex items-center gap-1.5 text-[11px] text-background/70">
-                        <Users className="w-3 h-3" />
-                        <span><strong className="text-background">23 people</strong> added this today</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-[11px] text-background/70">
-                        <Clock className="w-3 h-3" />
-                        <span>Limited time</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Navigation dots */}
-                  <div className="flex items-center gap-2 mb-3">
-                    <button
-                      onClick={() => setBundleIndex(Math.max(0, bundleIndex - 1))}
-                      className={`w-7 h-7 rounded-full border border-border flex items-center justify-center transition-colors ${bundleIndex === 0 ? "text-muted-foreground/30" : "hover:bg-muted"}`}
-                      disabled={bundleIndex === 0}
-                    >
-                      <ChevronLeft className="w-3 h-3" />
-                    </button>
-                    <div className="flex-1 flex gap-1 justify-center">
-                      {bundleItems.map((_, idx) => (
-                        <button key={idx} onClick={() => setBundleIndex(idx)} className={`w-2 h-2 rounded-full transition-all ${idx === bundleIndex ? "bg-foreground w-4" : "bg-muted-foreground/30"}`} />
-                      ))}
-                    </div>
-                    <button
-                      onClick={() => setBundleIndex(Math.min(bundleItems.length - 1, bundleIndex + 1))}
-                      className={`w-7 h-7 rounded-full border border-border flex items-center justify-center transition-colors ${bundleIndex >= bundleItems.length - 1 ? "text-muted-foreground/30" : "hover:bg-muted"}`}
-                      disabled={bundleIndex >= bundleItems.length - 1}
-                    >
-                      <ChevronRight className="w-3 h-3" />
-                    </button>
-                  </div>
-
-                  {/* Bundle card */}
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={bundleIndex}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      transition={{ duration: 0.2 }}
-                      className="relative rounded-xl border border-border overflow-hidden"
-                    >
-                      <div className="flex gap-3 items-center p-3">
-                        <div className="w-20 h-20 rounded-lg bg-muted flex-shrink-0 overflow-hidden flex items-center justify-center relative">
-                          {(() => {
-                            const Icon = bundleItems[bundleIndex].icon;
-                            return <Icon className="w-8 h-8 text-muted-foreground" />;
-                          })()}
-                          {(() => {
-                            const orig = parseInt(bundleItems[bundleIndex].originalPrice.replace(/[₹,]/g, "")) || 0;
-                            const curr = bundleItems[bundleIndex].numericPrice;
-                            const pct = Math.round(((orig - curr) / orig) * 100);
-                            return (
-                              <motion.span
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                                className="absolute top-0.5 left-0.5 text-[9px] font-bold bg-destructive text-destructive-foreground px-1.5 py-0.5 rounded"
-                              >
-                                -{pct}%
-                              </motion.span>
-                            );
-                          })()}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h5 className="text-sm font-bold leading-tight">{bundleItems[bundleIndex].name}</h5>
-                          <p className="text-xs text-muted-foreground mt-0.5">{bundleItems[bundleIndex].subtitle}</p>
-                          <div className="flex items-center gap-2 mt-1.5">
-                            <span className="text-base font-bold">{bundleItems[bundleIndex].price}</span>
-                            <span className="text-xs text-muted-foreground line-through">{bundleItems[bundleIndex].originalPrice}</span>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-start justify-between gap-3">
+                          <div>
+                            <h4 className="text-sm font-display font-bold">Bundle Deal</h4>
+                            <p className="text-[11px] text-background/70">Add matching accessories with your case</p>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-base font-display font-bold text-accent">Save ₹{bundleSavings.toLocaleString("en-IN")}</p>
+                            <p className="text-[10px] text-background/60">{bundleItems.length} offer{bundleItems.length > 1 ? "s" : ""}</p>
                           </div>
                         </div>
-                        <motion.button
-                          whileTap={{ scale: 0.9 }}
-                          onClick={() => handleAddBundle(bundleItems[bundleIndex])}
-                          className="w-10 h-10 rounded-full bg-foreground text-background flex items-center justify-center hover:bg-foreground/90 transition-colors flex-shrink-0"
-                        >
-                          <Plus className="w-4 h-4" />
-                        </motion.button>
+                        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-background/70">
+                          <span className="inline-flex items-center gap-1.5"><Users className="w-3 h-3" /><strong className="text-background">23 people</strong> added today</span>
+                          <span className="inline-flex items-center gap-1.5"><Clock className="w-3 h-3" />Limited time</span>
+                        </div>
                       </div>
-                      <div className="bg-accent/10 px-3 py-1.5 flex items-center gap-1.5">
-                        <Flame className="w-3 h-3 text-accent" />
-                        <span className="text-[10px] font-semibold text-accent uppercase tracking-wide">Bundle exclusive — not sold separately at this price</span>
-                      </div>
-                    </motion.div>
-                  </AnimatePresence>
+                      <ChevronDown className={`h-4 w-4 flex-shrink-0 transition-transform ${bundleExpanded ? "rotate-180" : ""}`} />
+                    </div>
+                  </button>
 
-                  {/* Add all CTA */}
-                  {bundleItems.length > 1 && (
-                    <motion.button
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => bundleItems.forEach((b) => handleAddBundle(b))}
-                      className="relative w-full mt-3 py-3 bg-foreground text-background rounded-xl text-sm font-bold overflow-hidden"
-                    >
+                  <AnimatePresence initial={false}>
+                    {bundleExpanded && (
                       <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-transparent via-background/10 to-transparent"
-                        animate={{ x: ["-100%", "200%"] }}
-                        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                      />
-                      <span className="relative flex items-center justify-center gap-2">
-                        <Zap className="w-4 h-4" />
-                        Add all {bundleItems.length} for ₹{bundleItems.reduce((s, b) => s + b.numericPrice, 0).toLocaleString("en-IN")}
-                        <span className="text-xs font-normal opacity-70 ml-1 line-through">
-                          ₹{bundleItems.reduce((s, b) => s + (parseInt(b.originalPrice.replace(/[₹,]/g, "")) || 0), 0).toLocaleString("en-IN")}
-                        </span>
-                      </span>
-                    </motion.button>
-                  )}
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="pt-3">
+                          {bundleItems.length > 1 && (
+                            <div className="mb-3 flex items-center gap-2">
+                              <button
+                                onClick={() => setBundleIndex(Math.max(0, bundleIndex - 1))}
+                                className={`h-7 w-7 rounded-full border border-border flex items-center justify-center transition-colors ${bundleIndex === 0 ? "text-muted-foreground/30" : "hover:bg-muted"}`}
+                                disabled={bundleIndex === 0}
+                              >
+                                <ChevronLeft className="w-3 h-3" />
+                              </button>
+                              <div className="flex flex-1 justify-center gap-1">
+                                {bundleItems.map((_, idx) => (
+                                  <button key={idx} onClick={() => setBundleIndex(idx)} className={`h-2 w-2 rounded-full transition-all ${idx === bundleIndex ? "bg-foreground w-4" : "bg-muted-foreground/30"}`} />
+                                ))}
+                              </div>
+                              <button
+                                onClick={() => setBundleIndex(Math.min(bundleItems.length - 1, bundleIndex + 1))}
+                                className={`h-7 w-7 rounded-full border border-border flex items-center justify-center transition-colors ${bundleIndex >= bundleItems.length - 1 ? "text-muted-foreground/30" : "hover:bg-muted"}`}
+                                disabled={bundleIndex >= bundleItems.length - 1}
+                              >
+                                <ChevronRight className="w-3 h-3" />
+                              </button>
+                            </div>
+                          )}
+
+                          <AnimatePresence mode="wait">
+                            <motion.div
+                              key={bundleIndex}
+                              initial={{ opacity: 0, x: 20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              exit={{ opacity: 0, x: -20 }}
+                              transition={{ duration: 0.2 }}
+                              className="overflow-hidden rounded-xl border border-border"
+                            >
+                              <div className="flex items-center gap-3 p-3">
+                                <div className="relative flex h-16 w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg bg-muted">
+                                  {(() => {
+                                    const Icon = bundleItems[bundleIndex].icon;
+                                    return <Icon className="w-7 h-7 text-muted-foreground" />;
+                                  })()}
+                                  {(() => {
+                                    const orig = parsePriceValue(bundleItems[bundleIndex].originalPrice);
+                                    const curr = bundleItems[bundleIndex].numericPrice;
+                                    const pct = Math.round(((orig - curr) / orig) * 100);
+                                    return (
+                                      <motion.span
+                                        initial={{ scale: 0 }}
+                                        animate={{ scale: 1 }}
+                                        className="absolute left-1 top-1 rounded bg-destructive px-1.5 py-0.5 text-[9px] font-bold text-destructive-foreground"
+                                      >
+                                        -{pct}%
+                                      </motion.span>
+                                    );
+                                  })()}
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                  <h5 className="text-sm font-bold leading-tight">{bundleItems[bundleIndex].name}</h5>
+                                  <p className="mt-0.5 text-[11px] text-muted-foreground">{bundleItems[bundleIndex].subtitle}</p>
+                                  <div className="mt-1.5 flex flex-wrap items-center gap-2">
+                                    <span className="text-base font-bold">{bundleItems[bundleIndex].price}</span>
+                                    <span className="text-xs text-muted-foreground line-through">{bundleItems[bundleIndex].originalPrice}</span>
+                                  </div>
+                                </div>
+                                <motion.button
+                                  whileTap={{ scale: 0.9 }}
+                                  onClick={() => handleAddBundle(bundleItems[bundleIndex])}
+                                  className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-foreground text-background transition-colors hover:bg-foreground/90"
+                                >
+                                  <Plus className="w-4 h-4" />
+                                </motion.button>
+                              </div>
+                              <div className="flex items-center gap-1.5 bg-accent/10 px-3 py-1.5">
+                                <Flame className="w-3 h-3 text-accent" />
+                                <span className="text-[10px] font-semibold uppercase tracking-wide text-accent">Bundle exclusive — not sold separately at this price</span>
+                              </div>
+                            </motion.div>
+                          </AnimatePresence>
+
+                          {bundleItems.length > 1 && (
+                            <motion.button
+                              whileTap={{ scale: 0.98 }}
+                              onClick={() => bundleItems.forEach((b) => handleAddBundle(b))}
+                              className="relative mt-3 w-full overflow-hidden rounded-xl bg-foreground py-3 text-sm font-bold text-background"
+                            >
+                              <motion.div
+                                className="absolute inset-0 bg-gradient-to-r from-transparent via-background/10 to-transparent"
+                                animate={{ x: ["-100%", "200%"] }}
+                                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                              />
+                              <span className="relative flex items-center justify-center gap-2">
+                                <Zap className="w-4 h-4" />
+                                Add all {bundleItems.length} for ₹{bundleItems.reduce((sum, item) => sum + item.numericPrice, 0).toLocaleString("en-IN")}
+                                <span className="ml-1 text-xs font-normal opacity-70 line-through">
+                                  ₹{bundleItems.reduce((sum, item) => sum + parsePriceValue(item.originalPrice), 0).toLocaleString("en-IN")}
+                                </span>
+                              </span>
+                            </motion.button>
+                          )}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               )}
 
               {/* 24hr Flash Deal with Countdown Timer */}
-              {countdown.isActive && availableFlashDeals.length > 0 && items.length > 0 && (
-                <div className="py-5 border-t border-border">
-                  {/* Timer header */}
-                  <div className="relative rounded-xl overflow-hidden mb-4" style={{ background: "linear-gradient(135deg, hsl(0 72% 50%), hsl(25 95% 53%))" }}>
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-                      animate={{ x: ["-100%", "200%"] }}
-                      transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                    />
-                    <div className="relative p-4">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-2">
-                          <motion.div
-                            animate={{ rotate: [0, 15, -15, 0] }}
-                            transition={{ duration: 1.5, repeat: Infinity }}
-                          >
-                            <Timer className="w-5 h-5 text-white" />
-                          </motion.div>
+              {hasFlashOffer && (
+                <div ref={flashSectionRef} className="border-t border-border py-4">
+                  <button
+                    onClick={() => setFlashExpanded((prev) => !prev)}
+                    className="w-full rounded-2xl border border-destructive/20 bg-destructive/5 px-3.5 py-3 text-left"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-destructive text-destructive-foreground">
+                        <Timer className="h-4 w-4" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-start justify-between gap-3">
                           <div>
-                            <h4 className="text-base font-display font-bold text-white">Flash Sale</h4>
-                            <p className="text-[11px] text-white/70">Ends soon — don't miss out!</p>
+                            <h4 className="text-sm font-display font-bold">Flash Sale</h4>
+                            <p className="text-[11px] text-muted-foreground">Live accessory offers ending soon</p>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-sm font-display font-bold">{String(countdown.hours).padStart(2, "0")}:{String(countdown.minutes).padStart(2, "0")}:{String(countdown.seconds).padStart(2, "0")}</p>
+                            <p className="text-[10px] text-muted-foreground">{availableFlashDeals.length} deal{availableFlashDeals.length > 1 ? "s" : ""}</p>
                           </div>
                         </div>
-                        <div className="flex items-center gap-1">
-                          {[
-                            { val: String(countdown.hours).padStart(2, "0"), label: "HRS" },
-                            { val: String(countdown.minutes).padStart(2, "0"), label: "MIN" },
-                            { val: String(countdown.seconds).padStart(2, "0"), label: "SEC" },
-                          ].map((t, i) => (
-                            <div key={t.label} className="flex items-center gap-1">
-                              <div className="bg-black/30 backdrop-blur-sm rounded-md px-2 py-1 text-center min-w-[36px]">
-                                <motion.span
-                                  key={t.val}
-                                  initial={{ y: -8, opacity: 0 }}
-                                  animate={{ y: 0, opacity: 1 }}
-                                  className="text-sm font-mono font-bold text-white block"
-                                >
-                                  {t.val}
-                                </motion.span>
-                                <span className="text-[7px] text-white/60 font-semibold">{t.label}</span>
-                              </div>
-                              {i < 2 && <span className="text-white/50 font-bold text-xs">:</span>}
-                            </div>
-                          ))}
+                        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
+                          <span className="inline-flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-success" /><strong className="text-foreground">47 people</strong> viewing now</span>
+                          <span className="inline-flex items-center gap-1.5"><Clock className="w-3 h-3" />Ends today</span>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2 pt-2 border-t border-white/15">
-                        <motion.div
-                          animate={{ scale: [1, 1.15, 1] }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                          className="w-2 h-2 rounded-full bg-green-400"
-                        />
-                        <span className="text-[11px] text-white/80"><strong className="text-white">47 people</strong> viewing this deal</span>
-                      </div>
+                      <ChevronDown className={`h-4 w-4 flex-shrink-0 transition-transform ${flashExpanded ? "rotate-180" : ""}`} />
                     </div>
-                  </div>
+                  </button>
 
-                  {/* Flash deal items */}
-                  <div className="space-y-3">
-                    {availableFlashDeals.map((deal) => {
-                      const orig = parseInt(deal.originalPrice.replace(/[₹,]/g, "")) || 0;
-                      const pct = Math.round(((orig - deal.numericPrice) / orig) * 100);
-                      return (
-                        <motion.div
-                          key={deal.id}
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="relative rounded-xl border border-destructive/30 overflow-hidden bg-destructive/5"
-                        >
-                          <div className="flex gap-3 items-center p-3">
-                            <div className="w-16 h-16 rounded-lg bg-muted flex-shrink-0 flex items-center justify-center relative">
-                              {(() => { const Icon = deal.icon; return <Icon className="w-7 h-7 text-muted-foreground" />; })()}
-                              <motion.span
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                                className="absolute -top-1 -left-1 text-[9px] font-bold bg-destructive text-destructive-foreground px-1.5 py-0.5 rounded"
+                  <AnimatePresence initial={false}>
+                    {flashExpanded && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="space-y-2.5 pt-3">
+                          {availableFlashDeals.map((deal) => {
+                            const orig = parsePriceValue(deal.originalPrice);
+                            const pct = Math.round(((orig - deal.numericPrice) / orig) * 100);
+
+                            return (
+                              <motion.div
+                                key={deal.id}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="relative overflow-hidden rounded-xl border border-destructive/30 bg-destructive/5"
                               >
-                                -{pct}%
-                              </motion.span>
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <h5 className="text-sm font-bold leading-tight">{deal.name}</h5>
-                              <p className="text-[11px] text-muted-foreground mt-0.5">{deal.subtitle}</p>
-                              <div className="flex items-center gap-2 mt-1">
-                                <span className="text-base font-bold">{deal.price}</span>
-                                <span className="text-xs text-muted-foreground line-through">{deal.originalPrice}</span>
-                                <span className="text-[9px] font-bold text-green-600 bg-green-500/10 px-1.5 py-0.5 rounded">
-                                  SAVE ₹{(orig - deal.numericPrice).toLocaleString("en-IN")}
-                                </span>
-                              </div>
-                            </div>
-                            <motion.button
-                              whileTap={{ scale: 0.9 }}
-                              onClick={() => handleAddBundle(deal)}
-                              className="w-10 h-10 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center hover:bg-destructive/90 transition-colors flex-shrink-0"
-                            >
-                              <Plus className="w-4 h-4" />
-                            </motion.button>
-                          </div>
-                        </motion.div>
-                      );
-                    })}
-                  </div>
+                                <div className="flex items-center gap-3 p-3">
+                                  <div className="relative flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-lg bg-muted">
+                                    {(() => {
+                                      const Icon = deal.icon;
+                                      return <Icon className="w-7 h-7 text-muted-foreground" />;
+                                    })()}
+                                    <motion.span
+                                      initial={{ scale: 0 }}
+                                      animate={{ scale: 1 }}
+                                      className="absolute left-1 top-1 rounded bg-destructive px-1.5 py-0.5 text-[9px] font-bold text-destructive-foreground"
+                                    >
+                                      -{pct}%
+                                    </motion.span>
+                                  </div>
+                                  <div className="min-w-0 flex-1">
+                                    <h5 className="text-sm font-bold leading-tight">{deal.name}</h5>
+                                    <p className="mt-0.5 text-[11px] text-muted-foreground">{deal.subtitle}</p>
+                                    <div className="mt-1 flex flex-wrap items-center gap-2">
+                                      <span className="text-base font-bold">{deal.price}</span>
+                                      <span className="text-xs text-muted-foreground line-through">{deal.originalPrice}</span>
+                                      <span className="rounded-md bg-success/10 px-1.5 py-0.5 text-[9px] font-bold text-success">
+                                        SAVE ₹{(orig - deal.numericPrice).toLocaleString("en-IN")}
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <motion.button
+                                    whileTap={{ scale: 0.9 }}
+                                    onClick={() => handleAddBundle(deal)}
+                                    className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-destructive text-destructive-foreground transition-colors hover:bg-destructive/90"
+                                  >
+                                    <Plus className="w-4 h-4" />
+                                  </motion.button>
+                                </div>
+                              </motion.div>
+                            );
+                          })}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               )}
             </div>
@@ -639,29 +677,29 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
       </div>
 
       {/* Footer */}
-      <div className="border-t border-border shrink-0 bg-background">
+        <div className="shrink-0 border-t border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90">
         {/* Action tabs */}
-        <div className="grid grid-cols-3 gap-2 px-4 py-2 border-b border-border">
+          <div className={`grid grid-cols-3 border-b border-border ${isMobile ? "gap-1.5 px-3 py-2" : "gap-2 px-4 py-2"}`}>
           <button
             onClick={() => setExpandedAction(expandedAction === "note" ? null : "note")}
-            className={`flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-xs font-medium transition-colors ${expandedAction === "note" ? "text-accent bg-accent/10" : "text-foreground hover:bg-muted"}`}
+              className={`flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 font-medium transition-colors ${isMobile ? "text-[11px]" : "text-xs"} ${expandedAction === "note" ? "bg-accent/10 text-accent" : "text-foreground hover:bg-muted"}`}
           >
             <FileText className="w-3.5 h-3.5" />
             Note
           </button>
           <button
             onClick={() => setExpandedAction(expandedAction === "shipping" ? null : "shipping")}
-            className={`flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-xs font-medium transition-colors ${expandedAction === "shipping" ? "text-accent bg-accent/10" : "text-foreground hover:bg-muted"}`}
+              className={`flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 font-medium transition-colors ${isMobile ? "text-[11px]" : "text-xs"} ${expandedAction === "shipping" ? "bg-accent/10 text-accent" : "text-foreground hover:bg-muted"}`}
           >
             <Package className="w-3.5 h-3.5" />
             Shipping
           </button>
           <button
             onClick={() => setExpandedAction(expandedAction === "coupon" ? null : "coupon")}
-            className={`flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-xs font-medium transition-colors ${appliedCoupon ? "text-green-600 bg-green-500/5" : expandedAction === "coupon" ? "text-accent bg-accent/10" : "text-foreground hover:bg-muted"}`}
+              className={`flex min-w-0 items-center justify-center gap-1.5 rounded-lg px-2 py-2 font-medium transition-colors ${isMobile ? "text-[11px]" : "text-xs"} ${appliedCoupon ? "bg-accent/10 text-accent" : expandedAction === "coupon" ? "bg-accent/10 text-accent" : "text-foreground hover:bg-muted"}`}
           >
             <Tag className="w-3.5 h-3.5" />
-            <span className="truncate">{appliedCoupon ? `"${appliedCoupon}"` : "Coupon"}</span>
+              <span className="truncate">{appliedCoupon ? "Saved" : "Coupon"}</span>
           </button>
         </div>
 
@@ -675,7 +713,7 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
               transition={{ duration: 0.2 }}
               className="overflow-hidden border-b border-border"
             >
-              <div className="px-4 py-2.5">
+              <div className={isMobile ? "px-3 py-2.5" : "px-4 py-2.5"}>
                 {expandedAction === "note" && (
                   <div className="flex gap-2">
                     <input
@@ -716,7 +754,7 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
                       type="text"
                       value={couponCode}
                       onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-                      placeholder="Enter coupon code"
+                      placeholder="Enter code for checkout"
                       className="flex-1 text-sm bg-muted rounded-lg px-3 py-2 outline-none placeholder:text-muted-foreground border border-border focus:border-foreground transition-colors font-mono tracking-wider uppercase"
                     />
                     <button
@@ -730,7 +768,7 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
                       disabled={!couponCode.trim()}
                       className="text-xs font-semibold bg-foreground text-background px-3 py-2 rounded-lg hover:bg-foreground/90 transition-colors disabled:opacity-40"
                     >
-                      Apply
+                      Save
                     </button>
                   </div>
                 )}
@@ -741,10 +779,10 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
 
         {/* Applied coupon badge */}
         {appliedCoupon && expandedAction !== "coupon" && (
-          <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-green-500/5">
+          <div className="flex items-center justify-between border-b border-border bg-accent/5 px-4 py-2">
             <div className="flex items-center gap-2 min-w-0">
-              <Tag className="w-3.5 h-3.5 text-green-600 flex-shrink-0" />
-              <span className="text-xs font-semibold text-green-600 truncate">Coupon "{appliedCoupon}" applied</span>
+              <Tag className="w-3.5 h-3.5 flex-shrink-0 text-accent" />
+              <span className="text-xs font-semibold text-accent truncate">Coupon "{appliedCoupon}" saved for checkout</span>
             </div>
             <button
               onClick={() => setAppliedCoupon("")}
@@ -756,29 +794,41 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
         )}
 
         {/* Total Savings */}
-        {discount > 0 && (
+        {productSavings > 0 && (
           <div className="flex items-center justify-between px-4 py-2.5 border-b border-border">
             <div className="flex items-center gap-2">
-              <Sparkles className="w-3.5 h-3.5 text-green-600" />
-              <span className="text-sm font-medium">Total Savings</span>
+              <Sparkles className="w-3.5 h-3.5 text-success" />
+              <span className="text-sm font-medium">Product Savings</span>
             </div>
-            <span className="text-sm font-bold text-green-600">-₹{discount.toLocaleString("en-IN")}</span>
+            <span className="text-sm font-bold text-success">-₹{productSavings.toLocaleString("en-IN")}</span>
           </div>
         )}
 
         {/* Subtotal & checkout */}
-        <div className="px-4 pt-3 pb-4">
-          <div className="flex items-end justify-between gap-3 mb-2.5">
-            <p className="text-[11px] leading-snug text-muted-foreground max-w-[52%]">Taxes included and shipping calculated at checkout.</p>
+        <div className={isMobile ? "px-3 pt-2.5 pb-[calc(env(safe-area-inset-bottom)+0.9rem)]" : "px-4 pt-3 pb-4"}>
+          <div className="mb-3 flex items-end justify-between gap-3">
+            <div className="min-w-0 max-w-[58%]">
+              <p className="text-[11px] leading-snug text-muted-foreground">Taxes included. Shipping and coupons are finalized on Shopify checkout.</p>
+              {appliedCoupon && (
+                <p className="mt-1 text-[11px] leading-snug text-accent">Coupon "{appliedCoupon}" will be verified at checkout.</p>
+              )}
+            </div>
             <div className="text-right flex-shrink-0">
               <p className="text-xs text-muted-foreground">Subtotal</p>
               <p className="text-lg font-display font-bold">₹{finalTotal.toLocaleString("en-IN")}</p>
+              {productSavings > 0 && (
+                <p className="text-[11px] text-muted-foreground line-through">MRP ₹{compareAtTotal.toLocaleString("en-IN")}</p>
+              )}
             </div>
           </div>
           <button
             disabled={items.length === 0 || cartLoading || !checkoutUrl}
-            onClick={() => { if (checkoutUrl) window.open(checkoutUrl, '_blank'); }}
-            className="w-full bg-foreground text-background py-3.5 rounded-full font-medium text-[15px] flex items-center justify-center gap-2 hover:bg-foreground/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={() => {
+              if (!checkoutUrl) return;
+              const checkoutWindow = window.open(checkoutUrl, "_blank", "noopener,noreferrer");
+              if (checkoutWindow) checkoutWindow.opener = null;
+            }}
+            className="flex w-full items-center justify-center gap-2 rounded-full bg-foreground py-3 text-[15px] font-medium text-background transition-colors hover:bg-foreground/90 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {cartLoading ? "Syncing..." : "Check out"}
           </button>
