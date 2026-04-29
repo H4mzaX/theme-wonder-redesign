@@ -14,7 +14,87 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      orders: {
+        Row: {
+          advance_amount: number
+          cashfree_order_id: string | null
+          cashfree_payment_id: string | null
+          cod_amount: number
+          coupon_code: string | null
+          created_at: string
+          customer_email: string
+          customer_name: string
+          customer_phone: string
+          discount: number
+          id: string
+          line_items: Json
+          notes: string | null
+          order_number: string
+          payment_method: string
+          payment_status: string
+          shipping_address: Json
+          shipping_fee: number
+          shopify_order_id: string | null
+          shopify_order_name: string | null
+          status: string
+          subtotal: number
+          total: number
+          updated_at: string
+        }
+        Insert: {
+          advance_amount?: number
+          cashfree_order_id?: string | null
+          cashfree_payment_id?: string | null
+          cod_amount?: number
+          coupon_code?: string | null
+          created_at?: string
+          customer_email: string
+          customer_name: string
+          customer_phone: string
+          discount?: number
+          id?: string
+          line_items: Json
+          notes?: string | null
+          order_number: string
+          payment_method: string
+          payment_status?: string
+          shipping_address: Json
+          shipping_fee?: number
+          shopify_order_id?: string | null
+          shopify_order_name?: string | null
+          status?: string
+          subtotal: number
+          total: number
+          updated_at?: string
+        }
+        Update: {
+          advance_amount?: number
+          cashfree_order_id?: string | null
+          cashfree_payment_id?: string | null
+          cod_amount?: number
+          coupon_code?: string | null
+          created_at?: string
+          customer_email?: string
+          customer_name?: string
+          customer_phone?: string
+          discount?: number
+          id?: string
+          line_items?: Json
+          notes?: string | null
+          order_number?: string
+          payment_method?: string
+          payment_status?: string
+          shipping_address?: Json
+          shipping_fee?: number
+          shopify_order_id?: string | null
+          shopify_order_name?: string | null
+          status?: string
+          subtotal?: number
+          total?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
