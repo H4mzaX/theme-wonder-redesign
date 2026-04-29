@@ -44,16 +44,10 @@ const OrderConfirmation = () => {
     const tick = async () => {
       attempts++;
       try {
-        // First, ask backend to verify with Cashfree (also pushes to Shopify if paid)
+        // Ask backend to verify with Cashfree (also pushes to Shopify if paid)
         await supabase.functions.invoke("verify-cashfree-payment", {
           body: { order_number: orderNumber },
         });
-        const { data } = await supabase.functions.invoke("get-order-status", {
-          body: null,
-          method: "GET",
-        } as any);
-
-        // The above invoke shape doesn't include query params; call via fetch
       } catch {/* ignore */}
 
       try {
