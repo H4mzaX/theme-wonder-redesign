@@ -1,1 +1,13 @@
 project_id = "kklupbanprflbikwzlzw"
+
+[functions.create-cashfree-order]
+verify_jwt = false
+
+[functions.verify-cashfree-payment]
+verify_jwt = false
+
+[functions.cashfree-webhook]
+verify_jwt = false
+
+[functions.get-order-status]
+verify_jwt = false

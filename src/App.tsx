@@ -15,6 +15,8 @@ import SeriesLanding from "./pages/SeriesLanding";
 import ContactUs from "./pages/ContactUs";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import RefundPolicy from "./pages/RefundPolicy";
+import Checkout from "./pages/Checkout";
+import OrderConfirmation from "./pages/OrderConfirmation";
 import NotFound from "./pages/NotFound";
 import WhatsAppButton from "./components/WhatsAppButton";
 import { useCartSync } from "@/hooks/useCartSync";
@@ -52,6 +54,8 @@ const AnimatedRoutes = () => {
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/terms" element={<TermsAndConditions />} />
           <Route path="/refund-policy" element={<RefundPolicy />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/order-confirmation" element={<OrderConfirmation />} />
 
           {/* Wildcards LAST */}
           <Route path="/:seriesSlug" element={<SeriesLanding />} />
