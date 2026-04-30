@@ -187,6 +187,11 @@ Deno.serve(async (req) => {
         order_number,
         cf_order_id: cfData.cf_order_id,
         payment_session_id: cfData.payment_session_id,
+        // FIX: Return the environment so the frontend can initialize the
+        // Cashfree SDK in the correct mode (sandbox vs production).
+        // Mismatch between SDK mode and credentials causes the
+        // "payment_session_id is not present or is invalid" error.
+        cf_environment: isSandbox ? "SANDBOX" : "PRODUCTION",
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
