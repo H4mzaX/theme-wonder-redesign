@@ -119,9 +119,14 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
   try {
-    const APP_ID = Deno.env.get("CASHFREE_APP_ID");
-    const SECRET = Deno.env.get("CASHFREE_SECRET_KEY");
+    const APP_ID = Deno.env.get("CASHFREE_APP_ID")?.trim();
+    const SECRET = Deno.env.get("CASHFREE_SECRET_KEY")?.trim();
     if (!APP_ID || !SECRET) throw new Error("Cashfree credentials not configured");
+
+    const isSandbox = /^(TEST|SANDBOX)/i.test(APP_ID);
+    const CF_BASE = isSandbox
+      ? "https://sandbox.cashfree.com/pg/orders"
+      : "https://api.cashfree.com/pg/orders";
 
     const parsed = Body.safeParse(await req.json());
     if (!parsed.success) {
@@ -134,7 +139,7 @@ Deno.serve(async (req) => {
 
     // Fetch payment status from Cashfree
     const cfRes = await fetch(
-      `https://sandbox.cashfree.com/pg/orders/${order_number}`,
+      `${CF_BASE}/${order_number}`,
       {
         headers: {
           "x-api-version": "2023-08-01",

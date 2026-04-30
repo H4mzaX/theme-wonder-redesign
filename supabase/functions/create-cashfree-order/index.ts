@@ -55,6 +55,22 @@ function generateOrderNumber() {
   return `VC${ts}${rnd}`;
 }
 
+function getReturnOrigin(req: Request) {
+  const origin = req.headers.get("origin");
+  if (origin && /^https?:\/\//i.test(origin)) return origin;
+
+  const referer = req.headers.get("referer");
+  if (referer) {
+    try {
+      return new URL(referer).origin;
+    } catch {
+      // Ignore malformed referer and use the configured fallback below.
+    }
+  }
+
+  return Deno.env.get("SITE_URL")?.trim() || "https://theme-replicate-wonder.lovable.app";
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
@@ -93,6 +109,7 @@ Deno.serve(async (req) => {
     );
 
     const order_number = generateOrderNumber();
+    const returnOrigin = getReturnOrigin(req);
 
     // Cashfree always charges the "advance_amount" online.
     // For prepaid, advance_amount === total. For partial_cod, advance_amount === 20% of total.
@@ -121,7 +138,7 @@ Deno.serve(async (req) => {
           customer_phone: body.customer.phone,
         },
         order_meta: {
-          return_url: `${req.headers.get("origin") ?? ""}/order-confirmation?order_id={order_id}`,
+          return_url: `${returnOrigin}/order-confirmation?order_id={order_id}`,
           notify_url: `${Deno.env.get("SUPABASE_URL")}/functions/v1/cashfree-webhook`,
         },
         order_note:
