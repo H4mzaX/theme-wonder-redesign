@@ -14,9 +14,7 @@ export async function shopifyFetch(query, variables = {}) {
   return res.json();
 }
 
-//////////////////////////////////////////////////
 // 🛒 CREATE CART
-//////////////////////////////////////////////////
 export async function createCart() {
   const data = await shopifyFetch(`
     mutation {
@@ -32,9 +30,7 @@ export async function createCart() {
   return data.data.cartCreate.cart;
 }
 
-//////////////////////////////////////////////////
 // 🛒 FETCH CART
-//////////////////////////////////////////////////
 export async function fetchCart(cartId) {
   const data = await shopifyFetch(
     `
@@ -67,9 +63,7 @@ export async function fetchCart(cartId) {
   return data.data.cart;
 }
 
-//////////////////////////////////////////////////
-// ➕ ADD ITEM
-//////////////////////////////////////////////////
+// ➕ ADD TO CART
 export async function addToCart(cartId, variantId, quantity = 1) {
   const data = await shopifyFetch(
     `
@@ -91,9 +85,7 @@ export async function addToCart(cartId, variantId, quantity = 1) {
   return data.data.cartLinesAdd.cart;
 }
 
-//////////////////////////////////////////////////
-// ✏️ UPDATE ITEM
-//////////////////////////////////////////////////
+// ✏️ UPDATE
 export async function updateCartLine(cartId, lineId, quantity) {
   return shopifyFetch(
     `
@@ -112,9 +104,7 @@ export async function updateCartLine(cartId, lineId, quantity) {
   );
 }
 
-//////////////////////////////////////////////////
-// ❌ REMOVE ITEM
-//////////////////////////////////////////////////
+// ❌ REMOVE
 export async function removeCartLine(cartId, lineId) {
   return shopifyFetch(
     `
