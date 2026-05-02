@@ -3,8 +3,8 @@
 //  Shopify Storefront API client — 2025-07
 // ─────────────────────────────────────────────────────────────
 
-const SHOPIFY_DOMAIN = "ijbzye-jq.myshopify.com";
-const SHOPIFY_TOKEN  = "d9d30450e3054be0de63388bdc6920db";
+const SHOPIFY_DOMAIN = "t8we0d-bu.myshopify.com";
+const SHOPIFY_TOKEN  = "236e32328501519d6eaf250169af86be";
 const SHOPIFY_API_VERSION = "2025-07";
 
 const STOREFRONT_API = `https://${SHOPIFY_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
