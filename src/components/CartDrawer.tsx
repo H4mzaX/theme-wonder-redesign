@@ -821,17 +821,19 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
               )}
             </div>
           </div>
-          <Link
-            to="/checkout"
-            onClick={(e) => {
-              if (items.length === 0) { e.preventDefault(); return; }
+          <button
+            type="button"
+            onClick={() => {
+              if (items.length === 0 || cartLoading) return;
+              if (!checkoutUrl) return;
+              window.open(checkoutUrl, "_blank", "noopener,noreferrer");
               onClose();
             }}
-            aria-disabled={items.length === 0}
-            className={`flex w-full items-center justify-center gap-2 rounded-full bg-foreground py-3 text-[15px] font-medium text-background transition-colors hover:bg-foreground/90 ${items.length === 0 ? "pointer-events-none opacity-50" : ""}`}
+            disabled={items.length === 0 || cartLoading || !checkoutUrl}
+            className={`flex w-full items-center justify-center gap-2 rounded-full bg-foreground py-3 text-[15px] font-medium text-background transition-colors hover:bg-foreground/90 ${items.length === 0 || !checkoutUrl ? "opacity-50 cursor-not-allowed" : ""}`}
           >
-            Check out
-          </Link>
+            {cartLoading ? "Syncing…" : "Check out"}
+          </button>
         </div>
       </div>
     </>
