@@ -3,7 +3,7 @@
 //  Shopify Storefront API client — 2025-07
 // ─────────────────────────────────────────────────────────────
 
-const SHOPIFY_DOMAIN = "t8we0d-bu.myshopify.com";
+const SHOPIFY_DOMAIN = "shop.vcase.in";
 const SHOPIFY_TOKEN  = "236e32328501519d6eaf250169af86be";
 const SHOPIFY_API_VERSION = "2025-07";
 
@@ -251,21 +251,18 @@ const CART_FIELDS = `
 `;
 
 export async function createCart(): Promise<ShopifyCart> {
-  // Reuse existing cart if available
   const existingCartId = localStorage.getItem("shopify_cart_id");
   if (existingCartId) {
     const existing = await fetchCart(existingCartId);
     if (existing) return existing;
   }
-
   const data = await shopifyFetch<any>(
     `mutation CartCreate { cartCreate { cart { ${CART_FIELDS} } } }`
   );
   const cart = normalizeCart(data.cartCreate.cart);
-  localStorage.setItem("shopify_cart_id", cart.id); // ← persist it
+  localStorage.setItem("shopify_cart_id", cart.id);
   return cart;
 }
-
 
 export async function addToShopifyCart(cartId: string, variantId: string, quantity: number): Promise<ShopifyCart> {
   const data = await shopifyFetch<any>(`
@@ -273,7 +270,9 @@ export async function addToShopifyCart(cartId: string, variantId: string, quanti
       cartLinesAdd(cartId: $cartId, lines: $lines) { cart { ${CART_FIELDS} } }
     }
   `, { cartId, lines: [{ merchandiseId: variantId, quantity }] });
-  return normalizeCart(data.cartLinesAdd.cart);
+  const cart = normalizeCart(data.cartLinesAdd.cart);
+  localStorage.setItem("shopify_cart_id", cart.id);
+  return cart;
 }
 
 export async function updateCartLine(cartId: string, lineId: string, quantity: number): Promise<ShopifyCart> {
@@ -303,20 +302,10 @@ export async function fetchCart(cartId: string): Promise<ShopifyCart | null> {
 }
 
 function normalizeCart(raw: any): ShopifyCart {
-  try {
-    const url = new URL(raw.checkoutUrl);
-    return {
-      id: raw.id,
-      checkoutUrl: url.toString(),
-      lines: raw.lines.edges.map((e: any) => e.node),
-      cost: raw.cost,
-    };
-  } catch {
-    return {
-      id: raw.id,
-      checkoutUrl: raw.checkoutUrl,
-      lines: raw.lines.edges.map((e: any) => e.node),
-      cost: raw.cost,
-    };
-  }
+  return {
+    id: raw.id,
+    checkoutUrl: raw.checkoutUrl,
+    lines: raw.lines.edges.map((e: any) => e.node),
+    cost: raw.cost,
+  };
 }
