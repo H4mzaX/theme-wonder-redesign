@@ -197,7 +197,7 @@ const ShopifyProductDetail = () => {
     // getCheckoutUrl now reads from shopifyCartRef — always latest
     const checkoutUrl = getCheckoutUrl();
     if (checkoutUrl) {
-      window.open(checkoutUrl, "_blank");
+      window.location.href(checkoutUrl, "_blank");
     } else {
       // Fallback: open cart drawer so user can checkout manually
       setCartOpen(true);

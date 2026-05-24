@@ -251,9 +251,9 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
     try {
       const checkoutURL = new URL(url);
       if (appliedCoupon) checkoutURL.searchParams.set("discount", appliedCoupon);
-      window.open(checkoutURL.toString(), "_blank", "noopener,noreferrer");
+      window.location.href(checkoutURL.toString(), "_blank", "noopener,noreferrer");
     } catch {
-      window.open(url, "_blank", "noopener,noreferrer");
+      window.location.href(url, "_blank", "noopener,noreferrer");
     }
     onClose();
   };
