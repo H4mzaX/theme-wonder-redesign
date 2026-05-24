@@ -159,7 +159,7 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
   const [appliedCoupon, setAppliedCoupon] = useState("");
   const [bundleExpanded, setBundleExpanded] = useState(true);
   const [flashExpanded, setFlashExpanded] = useState(true);
-  const { items, totalItems, subtotal, updateQuantity, removeFromCart, addToCart, recentlyViewed, checkoutUrl, cartLoading } = useCart();
+  const { items, totalItems, subtotal, updateQuantity, removeFromCart, addToCart, recentlyViewed, cartLoading, cartInitializing, getLatestCheckoutUrl } = useCart();
   const isMobile = useIsMobile();
   const countdown = useCountdown();
   const bundleSectionRef = useRef<HTMLDivElement | null>(null);
@@ -202,9 +202,6 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
     if (bundleIndex >= bundleItems.length) setBundleIndex(Math.max(0, bundleItems.length - 1));
   }, [bundleItems.length, bundleIndex]);
 
-  // Bug 3 fix: bundle/flash items have no variantId so they won't sync to Shopify —
-  // that's acceptable since these are upsell display items without real Shopify variants.
-  // They add to local cart only. No change needed here unless real variantIds are added.
   const handleAddBundle = (bundle: BundleItem) => {
     addToCart({
       id: bundle.id,
@@ -214,7 +211,6 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
       originalPrice: bundle.originalPrice,
       image: bundle.image,
       color: "Default",
-      // No variantId — these are local-only upsell items
     });
   };
 
@@ -233,13 +229,27 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
     return sum + (orig - b.numericPrice);
   }, 0);
 
-  // Bug 2 fix: don't gate on checkoutUrl — use fallback URL if null
-  const handleCheckout = () => {
+  // Always read from ref — avoids stale checkoutUrl state when cart just bootstrapped
+  const handleCheckout = async () => {
     if (items.length === 0 || cartLoading) return;
-    const url = checkoutUrl || `https://shop.vcase.in`;
+
+    // If cart is still initializing, wait up to 5s for it to finish
+    if (cartInitializing) {
+      let waited = 0;
+      await new Promise<void>((resolve) => {
+        const interval = setInterval(() => {
+          waited += 100;
+          if (getLatestCheckoutUrl() || waited >= 5000) {
+            clearInterval(interval);
+            resolve();
+          }
+        }, 100);
+      });
+    }
+
+    const url = getLatestCheckoutUrl() || "https://shop.vcase.in";
     try {
       const checkoutURL = new URL(url);
-      // Bug 5 fix: append coupon discount param
       if (appliedCoupon) checkoutURL.searchParams.set("discount", appliedCoupon);
       window.open(checkoutURL.toString(), "_blank", "noopener,noreferrer");
     } catch {
@@ -247,6 +257,8 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
     }
     onClose();
   };
+
+  const isCheckoutDisabled = items.length === 0 || cartLoading;
 
   const cartContent = (
     <>
@@ -820,10 +832,10 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
           <button
             type="button"
             onClick={handleCheckout}
-            disabled={items.length === 0 || cartLoading}
-            className={`flex w-full items-center justify-center gap-2 rounded-full bg-foreground py-3 text-[15px] font-medium text-background transition-colors hover:bg-foreground/90 ${items.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+            disabled={isCheckoutDisabled}
+            className={`flex w-full items-center justify-center gap-2 rounded-full bg-foreground py-3 text-[15px] font-medium text-background transition-colors hover:bg-foreground/90 ${isCheckoutDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
           >
-            {cartLoading ? "Syncing…" : "Check out"}
+            {cartLoading || cartInitializing ? "Syncing…" : "Check out"}
           </button>
         </div>
       </div>

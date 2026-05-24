@@ -60,6 +60,7 @@ interface CartContextType {
   addRecentlyViewed: (item: Omit<RecentlyViewedItem, "viewedAt">) => void;
   checkoutUrl: string | null;
   cartLoading: boolean;
+  cartInitializing: boolean;
   // Returns the latest checkoutUrl synchronously from shopifyCart ref
   getLatestCheckoutUrl: () => string | null;
 }
@@ -89,6 +90,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   );
   const [shopifyCart, setShopifyCart] = useState<ShopifyCart | null>(null);
   const [cartLoading, setCartLoading] = useState(false);
+  // True while the initial cart bootstrap/fetch is in-flight
+  const [cartInitializing, setCartInitializing] = useState(true);
 
   // Ref so async callbacks always see latest cart + items
   const itemsRef = useRef(items);
@@ -114,7 +117,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
           if (cart) {
             setShopifyCart(cart);
             // Bug 4 fix: re-sync local items to Shopify if cart has no lines
-            // (handles stale cart after expiry)
             if (cart.lines.length === 0) {
               const localItems = loadFromStorage(CART_STORAGE_KEY, [], z.array(CartItemSchema));
               if (localItems.length > 0) {
@@ -125,9 +127,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
             bootstrapNewCart();
           }
         })
-        .catch(bootstrapNewCart);
+        .catch(bootstrapNewCart)
+        .finally(() => setCartInitializing(false));
     } else {
-      bootstrapNewCart();
+      bootstrapNewCart().finally(() => setCartInitializing(false));
     }
   }, []);
 
@@ -140,7 +143,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       }
       if (cart) {
         setShopifyCart(cart);
-        // Back-fill shopifyLineIds
         setItems((prev) =>
           prev.map((item) => {
             const line = cart!.lines.find((l) => l.merchandise.id === item.variantId);
@@ -171,7 +173,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     return cart;
   }
 
-  // ── addToCart — returns the updated ShopifyCart so callers can get checkoutUrl ──
+  // ── addToCart ──────────────────────────────────────────────
   const addToCart = useCallback(async (item: Omit<CartItem, "quantity">) => {
     // 1. Optimistic local update
     setItems((prev) => {
@@ -271,7 +273,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const checkoutUrl = shopifyCart?.checkoutUrl || null;
 
-  // Bug 1 fix: sync getter via ref so Buy Now gets latest URL immediately after addToCart
+  // Always read from ref so callers get the latest URL even inside stale closures
   const getLatestCheckoutUrl = useCallback(() => {
     return shopifyCartRef.current?.checkoutUrl || null;
   }, []);
@@ -290,6 +292,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         addRecentlyViewed,
         checkoutUrl,
         cartLoading,
+        cartInitializing,
         getLatestCheckoutUrl,
       }}
     >
