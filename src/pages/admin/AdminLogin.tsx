@@ -85,25 +85,25 @@ const AdminLogin = () => {
         });
         if (error) throw error;
 
-        // First-admin bootstrap: insert the admin role for this user.
-        // Allowed because no admin exists yet; we use a SECURITY DEFINER
-        // RPC-free approach by relying on a one-time bootstrap:
-        // Insert directly via service role would be ideal, but for the
-        // public client we attempt to insert — if blocked by RLS the
-        // user will be told what to do.
+        // First-admin bootstrap: server-side function refuses to run once any admin exists.
         if (data.user) {
-          const { error: roleErr } = await supabase
-            .from("user_roles")
-            .insert({ user_id: data.user.id, role: "admin" });
+          // Need an active session before calling the RPC. With auto-confirm
+          // enabled this is usually immediate; otherwise sign the user in.
+          if (!data.session) {
+            const { error: siErr } = await supabase.auth.signInWithPassword({ email, password });
+            if (siErr) throw siErr;
+          }
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const { error: roleErr } = await (supabase.rpc as any)("bootstrap_first_admin");
           if (roleErr) {
             toast({
-              title: "Almost done",
-              description: "Account created, but admin role could not be assigned automatically. Contact support.",
+              title: "Could not assign admin role",
+              description: roleErr.message,
               variant: "destructive",
             });
             return;
           }
-          toast({ title: "Welcome", description: "Admin account created. Redirecting…" });
+          toast({ title: "Welcome", description: "Admin account created." });
           navigate("/admin", { replace: true });
         }
       } else {
