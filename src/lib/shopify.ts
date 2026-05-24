@@ -256,7 +256,7 @@ const CART_FIELDS = `
 `;
 
 export async function createCart(): Promise<ShopifyCart> {
-  const existingCartId = localStorage.getItem("shopify_cart_id");
+  const existingCartId = localStorage.getItem("vcase-shopify-cart-id");
   if (existingCartId) {
     const existing = await fetchCart(existingCartId);
     if (existing) return existing;
@@ -265,7 +265,7 @@ export async function createCart(): Promise<ShopifyCart> {
     `mutation CartCreate { cartCreate { cart { ${CART_FIELDS} } } }`
   );
   const cart = normalizeCart(data.cartCreate.cart);
-  localStorage.setItem("shopify_cart_id", cart.id);
+  localStorage.setItem("vcase-shopify-cart-id", cart.id);
   return cart;
 }
 
@@ -276,7 +276,7 @@ export async function addToShopifyCart(cartId: string, variantId: string, quanti
     }
   `, { cartId, lines: [{ merchandiseId: variantId, quantity }] });
   const cart = normalizeCart(data.cartLinesAdd.cart);
-  localStorage.setItem("shopify_cart_id", cart.id);
+  localStorage.setItem("vcase-shopify-cart-id", cart.id);
   return cart;
 }
 
