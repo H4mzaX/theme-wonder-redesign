@@ -1,7 +1,6 @@
 // ─────────────────────────────────────────────────────────────
 //  src/stores/cartStore.ts
 //  Compatibility bridge — useShopifyCartStore wraps useCart()
-//  so all components using either interface share one cart
 // ─────────────────────────────────────────────────────────────
 
 import { useCart } from "@/context/CartContext";
@@ -21,12 +20,6 @@ interface ShopifyCartStoreState {
   getCheckoutUrl: () => string | null;
 }
 
-/**
- * Bridge hook — lets components written for Zustand-style selectors
- * read/write the same CartContext used by CartDrawer.
- *
- * Usage:  const addItem = useShopifyCartStore(s => s.addItem);
- */
 export function useShopifyCartStore<T>(selector: (state: ShopifyCartStoreState) => T): T {
   const cart = useCart();
 
@@ -46,7 +39,7 @@ export function useShopifyCartStore<T>(selector: (state: ShopifyCartStoreState) 
       const handle = productNode?.handle || item.variantId;
       const color = item.selectedOptions?.find((o) => o.name.toLowerCase() === "color")?.value || "Default";
 
-      cart.addToCart({
+      await cart.addToCart({
         id: handle,
         name,
         subtitle: item.variantTitle || "",
@@ -58,7 +51,8 @@ export function useShopifyCartStore<T>(selector: (state: ShopifyCartStoreState) 
       });
     },
 
-    getCheckoutUrl: () => cart.checkoutUrl,
+    // Bug 1 fix: use ref-based getter so Buy Now gets latest URL after addToCart completes
+    getCheckoutUrl: () => cart.getLatestCheckoutUrl(),
   };
 
   return selector(state);

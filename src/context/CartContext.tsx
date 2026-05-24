@@ -1,15 +1,5 @@
 // ─────────────────────────────────────────────────────────────
-//  src/context/CartContext.tsx  (UPDATED — Shopify-synced)
-//
-//  ✅ Keeps the EXACT same interface as before:
-//     addToCart, removeFromCart, updateQuantity, clearCart,
-//     totalItems, subtotal, items, recentlyViewed
-//
-//  ✅ All existing components (CartDrawer, ProductPages etc.)
-//     work with ZERO changes
-//
-//  NEW: Every mutation is mirrored to Shopify Cart API so
-//       clicking "Check out" goes to real Shopify checkout
+//  src/context/CartContext.tsx
 // ─────────────────────────────────────────────────────────────
 
 import {
@@ -31,7 +21,6 @@ import {
   type ShopifyCart,
 } from "@/lib/shopify";
 
-// ── Zod schemas (unchanged) ───────────────────────────────────
 const CartItemSchema = z.object({
   id: z.string().max(200),
   name: z.string().max(500),
@@ -42,9 +31,7 @@ const CartItemSchema = z.object({
   color: z.string().max(100),
   quantity: z.number().int().min(1).max(999),
   device: z.string().max(200).optional(),
-  // NEW: store variant ID for Shopify sync
   variantId: z.string().max(200).optional(),
-  // NEW: store Shopify cart line ID for updates/removes
   shopifyLineId: z.string().max(200).optional(),
 });
 
@@ -61,10 +48,9 @@ const RecentlyViewedItemSchema = z.object({
 export type CartItem = z.infer<typeof CartItemSchema>;
 export type RecentlyViewedItem = z.infer<typeof RecentlyViewedItemSchema>;
 
-// ── Context interface (unchanged + checkoutUrl) ───────────────
 interface CartContextType {
   items: CartItem[];
-  addToCart: (item: Omit<CartItem, "quantity">) => void;
+  addToCart: (item: Omit<CartItem, "quantity">) => Promise<void>;
   removeFromCart: (id: string, color: string) => void;
   updateQuantity: (id: string, color: string, qty: number) => void;
   clearCart: () => void;
@@ -72,9 +58,10 @@ interface CartContextType {
   subtotal: number;
   recentlyViewed: RecentlyViewedItem[];
   addRecentlyViewed: (item: Omit<RecentlyViewedItem, "viewedAt">) => void;
-  // NEW — used by checkout button
   checkoutUrl: string | null;
   cartLoading: boolean;
+  // Returns the latest checkoutUrl synchronously from shopifyCart ref
+  getLatestCheckoutUrl: () => string | null;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -93,9 +80,6 @@ function loadFromStorage<T>(key: string, fallback: T, schema: z.ZodType<T>): T {
   }
 }
 
-// ─────────────────────────────────────────────────────────────
-//  CartProvider
-// ─────────────────────────────────────────────────────────────
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [items, setItems] = useState<CartItem[]>(() =>
     loadFromStorage(CART_STORAGE_KEY, [], z.array(CartItemSchema))
@@ -106,9 +90,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [shopifyCart, setShopifyCart] = useState<ShopifyCart | null>(null);
   const [cartLoading, setCartLoading] = useState(false);
 
-  // Ref so async callbacks always see latest items
+  // Ref so async callbacks always see latest cart + items
   const itemsRef = useRef(items);
+  const shopifyCartRef = useRef(shopifyCart);
   useEffect(() => { itemsRef.current = items; }, [items]);
+  useEffect(() => { shopifyCartRef.current = shopifyCart; }, [shopifyCart]);
 
   // ── Persist local cart ──────────────────────────────────────
   useEffect(() => {
@@ -125,14 +111,47 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     if (savedCartId) {
       fetchCart(savedCartId)
         .then((cart) => {
-          if (cart) setShopifyCart(cart);
-          else bootstrapNewCart();
+          if (cart) {
+            setShopifyCart(cart);
+            // Bug 4 fix: re-sync local items to Shopify if cart has no lines
+            // (handles stale cart after expiry)
+            if (cart.lines.length === 0) {
+              const localItems = loadFromStorage(CART_STORAGE_KEY, [], z.array(CartItemSchema));
+              if (localItems.length > 0) {
+                resyncItemsToCart(cart.id, localItems);
+              }
+            }
+          } else {
+            bootstrapNewCart();
+          }
         })
         .catch(bootstrapNewCart);
     } else {
       bootstrapNewCart();
     }
   }, []);
+
+  async function resyncItemsToCart(cartId: string, localItems: CartItem[]) {
+    try {
+      let cart: ShopifyCart | null = null;
+      for (const item of localItems) {
+        if (!item.variantId) continue;
+        cart = await addToShopifyCart(cartId, item.variantId, item.quantity);
+      }
+      if (cart) {
+        setShopifyCart(cart);
+        // Back-fill shopifyLineIds
+        setItems((prev) =>
+          prev.map((item) => {
+            const line = cart!.lines.find((l) => l.merchandise.id === item.variantId);
+            return line ? { ...item, shopifyLineId: line.id } : item;
+          })
+        );
+      }
+    } catch (e) {
+      console.warn("resyncItemsToCart failed", e);
+    }
+  }
 
   async function bootstrapNewCart() {
     try {
@@ -144,18 +163,17 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-  // ── Get or create Shopify cart ─────────────────────────────
   async function ensureCart(): Promise<ShopifyCart> {
-    if (shopifyCart) return shopifyCart;
+    if (shopifyCartRef.current) return shopifyCartRef.current;
     const cart = await createCart();
     localStorage.setItem(SHOPIFY_CART_ID_KEY, cart.id);
     setShopifyCart(cart);
     return cart;
   }
 
-  // ── addToCart ──────────────────────────────────────────────
+  // ── addToCart — returns the updated ShopifyCart so callers can get checkoutUrl ──
   const addToCart = useCallback(async (item: Omit<CartItem, "quantity">) => {
-    // 1. Optimistic local update (instant UI feedback)
+    // 1. Optimistic local update
     setItems((prev) => {
       const existing = prev.find((i) => i.id === item.id && i.color === item.color);
       if (existing) {
@@ -168,7 +186,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       return [...prev, { ...item, quantity: 1 }];
     });
 
-    // 2. Sync to Shopify (if we have a variantId)
+    // 2. Sync to Shopify
     if (!item.variantId) return;
     try {
       setCartLoading(true);
@@ -176,7 +194,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       const updatedCart = await addToShopifyCart(cart.id, item.variantId, 1);
       setShopifyCart(updatedCart);
 
-      // Back-fill shopifyLineId onto the local item
+      // Back-fill shopifyLineId
       const newLine = updatedCart.lines.find(
         (l) => l.merchandise.id === item.variantId
       );
@@ -194,54 +212,41 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setCartLoading(false);
     }
-  }, [shopifyCart]);
+  }, []);
 
-  // ── removeFromCart ─────────────────────────────────────────
   const removeFromCart = useCallback(async (id: string, color: string) => {
     const item = itemsRef.current.find((i) => i.id === id && i.color === color);
-
-    // 1. Local remove
     setItems((prev) => prev.filter((i) => !(i.id === id && i.color === color)));
-
-    // 2. Shopify remove
-    if (item?.shopifyLineId && shopifyCart) {
+    if (item?.shopifyLineId && shopifyCartRef.current) {
       try {
-        const updatedCart = await removeCartLine(shopifyCart.id, [item.shopifyLineId]);
+        const updatedCart = await removeCartLine(shopifyCartRef.current.id, [item.shopifyLineId]);
         setShopifyCart(updatedCart);
       } catch (e) {
         console.warn("Shopify removeCartLine failed", e);
       }
     }
-  }, [shopifyCart]);
+  }, []);
 
-  // ── updateQuantity ─────────────────────────────────────────
   const updateQuantity = useCallback(async (id: string, color: string, qty: number) => {
     if (qty <= 0) return removeFromCart(id, color);
-
     const item = itemsRef.current.find((i) => i.id === id && i.color === color);
-
-    // 1. Local update
     setItems((prev) =>
       prev.map((i) =>
         i.id === id && i.color === color ? { ...i, quantity: qty } : i
       )
     );
-
-    // 2. Shopify update
-    if (item?.shopifyLineId && shopifyCart) {
+    if (item?.shopifyLineId && shopifyCartRef.current) {
       try {
-        const updatedCart = await updateCartLine(shopifyCart.id, item.shopifyLineId, qty);
+        const updatedCart = await updateCartLine(shopifyCartRef.current.id, item.shopifyLineId, qty);
         setShopifyCart(updatedCart);
       } catch (e) {
         console.warn("Shopify updateCartLine failed", e);
       }
     }
-  }, [shopifyCart, removeFromCart]);
+  }, [removeFromCart]);
 
-  // ── clearCart ──────────────────────────────────────────────
   const clearCart = useCallback(async () => {
     setItems([]);
-    // Create a fresh Shopify cart
     try {
       const cart = await createCart();
       localStorage.setItem(SHOPIFY_CART_ID_KEY, cart.id);
@@ -251,7 +256,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  // ── recentlyViewed ─────────────────────────────────────────
   const addRecentlyViewed = useCallback((item: Omit<RecentlyViewedItem, "viewedAt">) => {
     setRecentlyViewed((prev) => {
       const filtered = prev.filter((r) => r.id !== item.id);
@@ -259,7 +263,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     });
   }, []);
 
-  // ── Derived values ─────────────────────────────────────────
   const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
   const subtotal = items.reduce((sum, i) => {
     const price = parseInt(i.price.replace(/[₹,]/g, "")) || 0;
@@ -267,6 +270,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   }, 0);
 
   const checkoutUrl = shopifyCart?.checkoutUrl || null;
+
+  // Bug 1 fix: sync getter via ref so Buy Now gets latest URL immediately after addToCart
+  const getLatestCheckoutUrl = useCallback(() => {
+    return shopifyCartRef.current?.checkoutUrl || null;
+  }, []);
 
   return (
     <CartContext.Provider
@@ -282,6 +290,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         addRecentlyViewed,
         checkoutUrl,
         cartLoading,
+        getLatestCheckoutUrl,
       }}
     >
       {children}

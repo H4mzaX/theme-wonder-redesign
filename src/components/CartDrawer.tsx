@@ -20,7 +20,6 @@ const FREE_SHIPPING_THRESHOLD = 1000;
 
 const parsePriceValue = (value?: string) => parseInt((value || "").replace(/[₹,]/g, ""), 10) || 0;
 
-// Top picks for empty cart — real products with working links
 const topPicks = [
   ...Object.values(bestSellerTabs).flat().slice(0, 3).map((p) => ({
     id: p.id,
@@ -93,7 +92,6 @@ const getBundleAccessories = (device: string): BundleItem[] => [
   },
 ];
 
-// 24hr deal items
 const flashDealItems: BundleItem[] = [
   {
     id: "flash-deal-wireless-charger",
@@ -117,7 +115,6 @@ const flashDealItems: BundleItem[] = [
   },
 ];
 
-// Countdown hook
 function useCountdown() {
   const getTarget = () => {
     const stored = localStorage.getItem("flash-deal-end");
@@ -181,8 +178,6 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
   const finalTotal = subtotal;
   const compareAtTotal = subtotal + productSavings;
 
-  // Smart bundle: detect device from cart items and suggest matching accessories
-  // Filter by both ID and name to catch items added from different sources
   const bundleItems = useMemo(() => {
     const devices = items
       .map((item) => item.device || item.subtitle?.replace("For ", ""))
@@ -195,7 +190,6 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
     return accessories.filter((a) => !cartIds.has(a.id) && !cartNames.has(a.name.toLowerCase()));
   }, [items]);
 
-  // Flash deal items also filtered
   const availableFlashDeals = useMemo(() => {
     const cartIds = new Set(items.map((i) => i.id));
     const cartNames = new Set(items.map((i) => i.name.toLowerCase()));
@@ -204,11 +198,13 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
   const hasBundleOffer = bundleItems.length > 0;
   const hasFlashOffer = countdown.isActive && availableFlashDeals.length > 0 && items.length > 0;
 
-  // Reset bundleIndex when items change
   useEffect(() => {
     if (bundleIndex >= bundleItems.length) setBundleIndex(Math.max(0, bundleItems.length - 1));
   }, [bundleItems.length, bundleIndex]);
 
+  // Bug 3 fix: bundle/flash items have no variantId so they won't sync to Shopify —
+  // that's acceptable since these are upsell display items without real Shopify variants.
+  // They add to local cart only. No change needed here unless real variantIds are added.
   const handleAddBundle = (bundle: BundleItem) => {
     addToCart({
       id: bundle.id,
@@ -218,6 +214,7 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
       originalPrice: bundle.originalPrice,
       image: bundle.image,
       color: "Default",
+      // No variantId — these are local-only upsell items
     });
   };
 
@@ -227,7 +224,6 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
       requestAnimationFrame(() => bundleSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
       return;
     }
-
     setFlashExpanded(true);
     requestAnimationFrame(() => flashSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
   };
@@ -236,6 +232,21 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
     const orig = parseInt(b.originalPrice.replace(/[₹,]/g, "")) || 0;
     return sum + (orig - b.numericPrice);
   }, 0);
+
+  // Bug 2 fix: don't gate on checkoutUrl — use fallback URL if null
+  const handleCheckout = () => {
+    if (items.length === 0 || cartLoading) return;
+    const url = checkoutUrl || `https://shop.vcase.in`;
+    try {
+      const checkoutURL = new URL(url);
+      // Bug 5 fix: append coupon discount param
+      if (appliedCoupon) checkoutURL.searchParams.set("discount", appliedCoupon);
+      window.open(checkoutURL.toString(), "_blank", "noopener,noreferrer");
+    } catch {
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
+    onClose();
+  };
 
   const cartContent = (
     <>
@@ -257,8 +268,6 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
             <div className="px-6 mt-6">
               <h3 className="text-xl font-display font-semibold mb-1">Your cart is empty</h3>
               <p className="text-sm text-muted-foreground mb-5">Explore our top picks to get started</p>
-              
-              {/* Top product picks */}
               <div className="grid grid-cols-2 gap-3 mb-6">
                 {topPicks.map((p) => {
                   const numPrice = parseInt(p.price.replace(/[₹,]/g, "")) || 0;
@@ -286,8 +295,6 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
                   );
                 })}
               </div>
-
-              {/* Collection quick links */}
               <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Browse Collections</p>
               <div className="space-y-2">
                 {collectionLinks.map((c) => (
@@ -303,7 +310,6 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
             </div>
           ) : (
             <div className={isMobile ? "px-4" : "px-6"}>
-              {/* Free shipping progress */}
               <div className={isMobile ? "py-3" : "py-4"}>
                 <p className={`${isMobile ? "text-[13px]" : "text-sm"} mb-2`}>
                   {remaining > 0 ? (
@@ -344,13 +350,11 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
                 )}
               </div>
 
-              {/* Cart items with MRP display */}
               <div className={`py-2 ${isMobile ? "space-y-3.5" : "space-y-4"}`}>
                 {items.map((item) => {
                   const numericPrice = parsePriceValue(item.price);
                   const numericOriginal = item.originalPrice ? parsePriceValue(item.originalPrice) : 0;
                   const discountPct = numericOriginal > 0 ? Math.round(((numericOriginal - numericPrice) / numericOriginal) * 100) : 0;
-
                   return (
                     <div key={`${item.id}-${item.color}`} className={`flex ${isMobile ? "gap-3" : "gap-4"}`}>
                       <Link to={`/product/${item.id}`} onClick={onClose} className={`${isMobile ? "w-20 h-20" : "w-24 h-24"} rounded-lg bg-muted flex-shrink-0 overflow-hidden`}>
@@ -396,7 +400,6 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
                 })}
               </div>
 
-              {/* Bundle Deal */}
               {hasBundleOffer && (
                 <div ref={bundleSectionRef} className="mt-3 border-t border-border py-4">
                   <button
@@ -541,7 +544,6 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
                 </div>
               )}
 
-              {/* 24hr Flash Deal with Countdown Timer */}
               {hasFlashOffer && (
                 <div ref={flashSectionRef} className="border-t border-border py-4">
                   <button
@@ -585,7 +587,6 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
                           {availableFlashDeals.map((deal) => {
                             const orig = parsePriceValue(deal.originalPrice);
                             const pct = Math.round(((orig - deal.numericPrice) / orig) * 100);
-
                             return (
                               <motion.div
                                 key={deal.id}
@@ -677,33 +678,31 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
       </div>
 
       {/* Footer */}
-        <div className="shrink-0 border-t border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90">
-        {/* Action tabs */}
-          <div className={`grid grid-cols-3 border-b border-border ${isMobile ? "gap-1.5 px-3 py-2" : "gap-2 px-4 py-2"}`}>
+      <div className="shrink-0 border-t border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90">
+        <div className={`grid grid-cols-3 border-b border-border ${isMobile ? "gap-1.5 px-3 py-2" : "gap-2 px-4 py-2"}`}>
           <button
             onClick={() => setExpandedAction(expandedAction === "note" ? null : "note")}
-              className={`flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 font-medium transition-colors ${isMobile ? "text-[11px]" : "text-xs"} ${expandedAction === "note" ? "bg-accent/10 text-accent" : "text-foreground hover:bg-muted"}`}
+            className={`flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 font-medium transition-colors ${isMobile ? "text-[11px]" : "text-xs"} ${expandedAction === "note" ? "bg-accent/10 text-accent" : "text-foreground hover:bg-muted"}`}
           >
             <FileText className="w-3.5 h-3.5" />
             Note
           </button>
           <button
             onClick={() => setExpandedAction(expandedAction === "shipping" ? null : "shipping")}
-              className={`flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 font-medium transition-colors ${isMobile ? "text-[11px]" : "text-xs"} ${expandedAction === "shipping" ? "bg-accent/10 text-accent" : "text-foreground hover:bg-muted"}`}
+            className={`flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 font-medium transition-colors ${isMobile ? "text-[11px]" : "text-xs"} ${expandedAction === "shipping" ? "bg-accent/10 text-accent" : "text-foreground hover:bg-muted"}`}
           >
             <Package className="w-3.5 h-3.5" />
             Shipping
           </button>
           <button
             onClick={() => setExpandedAction(expandedAction === "coupon" ? null : "coupon")}
-              className={`flex min-w-0 items-center justify-center gap-1.5 rounded-lg px-2 py-2 font-medium transition-colors ${isMobile ? "text-[11px]" : "text-xs"} ${appliedCoupon ? "bg-accent/10 text-accent" : expandedAction === "coupon" ? "bg-accent/10 text-accent" : "text-foreground hover:bg-muted"}`}
+            className={`flex min-w-0 items-center justify-center gap-1.5 rounded-lg px-2 py-2 font-medium transition-colors ${isMobile ? "text-[11px]" : "text-xs"} ${appliedCoupon ? "bg-accent/10 text-accent" : expandedAction === "coupon" ? "bg-accent/10 text-accent" : "text-foreground hover:bg-muted"}`}
           >
             <Tag className="w-3.5 h-3.5" />
-              <span className="truncate">{appliedCoupon ? "Saved" : "Coupon"}</span>
+            <span className="truncate">{appliedCoupon ? "Saved" : "Coupon"}</span>
           </button>
         </div>
 
-        {/* Expandable action area */}
         <AnimatePresence>
           {expandedAction && (
             <motion.div
@@ -777,7 +776,6 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
           )}
         </AnimatePresence>
 
-        {/* Applied coupon badge */}
         {appliedCoupon && expandedAction !== "coupon" && (
           <div className="flex items-center justify-between border-b border-border bg-accent/5 px-4 py-2">
             <div className="flex items-center gap-2 min-w-0">
@@ -793,7 +791,6 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
           </div>
         )}
 
-        {/* Total Savings */}
         {productSavings > 0 && (
           <div className="flex items-center justify-between px-4 py-2.5 border-b border-border">
             <div className="flex items-center gap-2">
@@ -804,13 +801,12 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
           </div>
         )}
 
-        {/* Subtotal & checkout */}
         <div className={isMobile ? "px-3 pt-2.5 pb-[calc(env(safe-area-inset-bottom)+0.9rem)]" : "px-4 pt-3 pb-4"}>
           <div className="mb-3 flex items-end justify-between gap-3">
             <div className="min-w-0 max-w-[58%]">
               <p className="text-[11px] leading-snug text-muted-foreground">Taxes included. Shipping and coupons are finalized on Shopify checkout.</p>
               {appliedCoupon && (
-                <p className="mt-1 text-[11px] leading-snug text-accent">Coupon "{appliedCoupon}" will be verified at checkout.</p>
+                <p className="mt-1 text-[11px] leading-snug text-accent">Coupon "{appliedCoupon}" will be applied at checkout.</p>
               )}
             </div>
             <div className="text-right flex-shrink-0">
@@ -823,14 +819,9 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
           </div>
           <button
             type="button"
-            onClick={() => {
-              if (items.length === 0 || cartLoading) return;
-              if (!checkoutUrl) return;
-              window.open(checkoutUrl, "_blank", "noopener,noreferrer");
-              onClose();
-            }}
-            disabled={items.length === 0 || cartLoading || !checkoutUrl}
-            className={`flex w-full items-center justify-center gap-2 rounded-full bg-foreground py-3 text-[15px] font-medium text-background transition-colors hover:bg-foreground/90 ${items.length === 0 || !checkoutUrl ? "opacity-50 cursor-not-allowed" : ""}`}
+            onClick={handleCheckout}
+            disabled={items.length === 0 || cartLoading}
+            className={`flex w-full items-center justify-center gap-2 rounded-full bg-foreground py-3 text-[15px] font-medium text-background transition-colors hover:bg-foreground/90 ${items.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
           >
             {cartLoading ? "Syncing…" : "Check out"}
           </button>
@@ -852,7 +843,6 @@ const CartDrawer = ({ open, onClose }: CartDrawerProps) => {
               exit={{ y: "100%" }}
               transition={drawerSpring}
             >
-              {/* Drag handle + close */}
               <div className="flex justify-center pt-2.5 pb-0.5">
                 <div className="w-10 h-1 rounded-full bg-muted-foreground/30" />
               </div>

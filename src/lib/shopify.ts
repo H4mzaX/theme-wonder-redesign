@@ -64,7 +64,6 @@ export interface ShopifyProduct {
   seriesSlug: string;
   variantId: string;
   variantsByColor: Record<string, string>;
-  // Keep node for components that expect ShopifyProduct with node shape
   node?: any;
 }
 
@@ -86,7 +85,6 @@ export interface ShopifyCart {
   cost: { totalAmount: { amount: string; currencyCode: string } };
 }
 
-// ── Shared cart item type for Zustand store ────────────────────
 export interface ShopifyCartItem {
   product: any;
   variantId: string;
