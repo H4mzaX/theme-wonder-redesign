@@ -295,21 +295,8 @@ export async function fetchCart(cartId: string): Promise<ShopifyCart | null> {
 function normalizeCart(raw: any): ShopifyCart {
   return {
     id: raw.id,
-    checkoutUrl: formatCheckoutUrl(raw.checkoutUrl),
+    checkoutUrl: raw.checkoutUrl,
     lines: raw.lines.edges.map((e: any) => e.node),
     cost: raw.cost,
   };
-}
-
-function formatCheckoutUrl(checkoutUrl: string): string {
-  try {
-    const url = new URL(checkoutUrl);
-    // Only append the channel param — do NOT rewrite the host.
-    // Shopify checkout tokens are bound to the host Shopify returned;
-    // forcing a different host invalidates the URL and redirects to the storefront homepage.
-    url.searchParams.set("channel", "online_store");
-    return url.toString();
-  } catch {
-    return checkoutUrl;
-  }
 }
