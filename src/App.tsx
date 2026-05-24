@@ -18,6 +18,9 @@ import RefundPolicy from "./pages/RefundPolicy";
 import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import NotFound from "./pages/NotFound";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import { AdminGuard } from "./components/admin/AdminGuard";
 import WhatsAppButton from "./components/WhatsAppButton";
 import { useCartSync } from "@/hooks/useCartSync";
 
@@ -56,6 +59,11 @@ const AnimatedRoutes = () => {
           <Route path="/refund-policy" element={<RefundPolicy />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order-confirmation" element={<OrderConfirmation />} />
+
+          {/* Admin routes (private, noindex) */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminGuard><AdminDashboard /></AdminGuard>} />
+
 
           {/* Wildcards LAST */}
           <Route path="/:seriesSlug" element={<SeriesLanding />} />
