@@ -251,9 +251,21 @@ const CART_FIELDS = `
 `;
 
 export async function createCart(): Promise<ShopifyCart> {
-  const data = await shopifyFetch<any>(`mutation CartCreate { cartCreate { cart { ${CART_FIELDS} } } }`);
-  return normalizeCart(data.cartCreate.cart);
+  // Reuse existing cart if available
+  const existingCartId = localStorage.getItem("shopify_cart_id");
+  if (existingCartId) {
+    const existing = await fetchCart(existingCartId);
+    if (existing) return existing;
+  }
+
+  const data = await shopifyFetch<any>(
+    `mutation CartCreate { cartCreate { cart { ${CART_FIELDS} } } }`
+  );
+  const cart = normalizeCart(data.cartCreate.cart);
+  localStorage.setItem("shopify_cart_id", cart.id); // ← persist it
+  return cart;
 }
+
 
 export async function addToShopifyCart(cartId: string, variantId: string, quantity: number): Promise<ShopifyCart> {
   const data = await shopifyFetch<any>(`
