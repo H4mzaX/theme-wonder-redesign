@@ -293,7 +293,6 @@ export async function fetchCart(cartId: string): Promise<ShopifyCart | null> {
 function normalizeCart(raw: any): ShopifyCart {
   try {
     const url = new URL(raw.checkoutUrl);
-    url.hostname = "shop.vcase.in";
     return {
       id: raw.id,
       checkoutUrl: url.toString(),
