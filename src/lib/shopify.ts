@@ -304,7 +304,9 @@ function normalizeCart(raw: any): ShopifyCart {
 function formatCheckoutUrl(checkoutUrl: string): string {
   try {
     const url = new URL(checkoutUrl);
-    url.host = SHOPIFY_DOMAIN;
+    // Only append the channel param — do NOT rewrite the host.
+    // Shopify checkout tokens are bound to the host Shopify returned;
+    // forcing a different host invalidates the URL and redirects to the storefront homepage.
     url.searchParams.set("channel", "online_store");
     return url.toString();
   } catch {
