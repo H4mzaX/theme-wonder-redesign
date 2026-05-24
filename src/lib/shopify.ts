@@ -293,10 +293,21 @@ export async function fetchCart(cartId: string): Promise<ShopifyCart | null> {
 }
 
 function normalizeCart(raw: any): ShopifyCart {
-  return {
-    id: raw.id,
-    checkoutUrl: raw.checkoutUrl,
-    lines: raw.lines.edges.map((e: any) => e.node),
-    cost: raw.cost,
-  };
+  try {
+    const url = new URL(raw.checkoutUrl);
+    url.hostname = "shop.vcase.in";
+    return {
+      id: raw.id,
+      checkoutUrl: url.toString(),
+      lines: raw.lines.edges.map((e: any) => e.node),
+      cost: raw.cost,
+    };
+  } catch {
+    return {
+      id: raw.id,
+      checkoutUrl: raw.checkoutUrl,
+      lines: raw.lines.edges.map((e: any) => e.node),
+      cost: raw.cost,
+    };
+  }
 }
