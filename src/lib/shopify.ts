@@ -3,8 +3,13 @@
 //  Shopify Storefront API client — 2025-07
 // ─────────────────────────────────────────────────────────────
 
-const SHOPIFY_DOMAIN = "shop.vcase.in";
-const SHOPIFY_TOKEN  = "236e32328501519d6eaf250169af86be";
+// Storefront API must use .myshopify.com domain
+const SHOPIFY_DOMAIN = "t8we0d-bu.myshopify.com";  // ← revert this back
+
+// But checkout URL should use your custom domain
+const SHOPIFY_CUSTOM_DOMAIN = "shop.vcase.in";
+
+const SHOPIFY_TOKEN  = "50acefd46d2bb8e4a2ccd3d6d851b106";
 const SHOPIFY_API_VERSION = "2025-07";
 
 const STOREFRONT_API = `https://${SHOPIFY_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
@@ -304,8 +309,9 @@ export async function fetchCart(cartId: string): Promise<ShopifyCart | null> {
 function normalizeCart(raw: any): ShopifyCart {
   return {
     id: raw.id,
-    checkoutUrl: raw.checkoutUrl,
+    checkoutUrl: raw.checkoutUrl.replace("t8we0d-bu.myshopify.com", "shop.vcase.in"),
     lines: raw.lines.edges.map((e: any) => e.node),
     cost: raw.cost,
   };
 }
+
