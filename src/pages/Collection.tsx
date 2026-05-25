@@ -455,7 +455,7 @@ const Collection = () => {
               </p>
 
               {/* First batch of products */}
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
                 {firstHalf.map((product) => (
                   <div key={product.id}>
                     <CollectionProductCard product={product} />
@@ -492,7 +492,7 @@ const Collection = () => {
 
               {/* Second batch of products */}
               {secondHalf.length > 0 && (
-                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
                   {secondHalf.map((product) => (
                     <div key={product.id}>
                       <CollectionProductCard product={product} />
