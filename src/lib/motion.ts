@@ -8,6 +8,7 @@ export const smoothEase: [number, number, number, number] = [0.7, 0, 0.3, 1];
 export const navEase: [number, number, number, number] = [0.6, 0, 0.4, 1];
 /** Concept theme's signature ease — snappy yet smooth */
 export const conceptEase: [number, number, number, number] = [0.25, 1, 0.5, 1];
+export const premiumEase = conceptEase;
 
 /* ── Springs — tightened for snappier feel ── */
 export const smoothSpring: Transition = {
