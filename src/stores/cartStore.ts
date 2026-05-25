@@ -47,6 +47,7 @@ export function useShopifyCartStore<T>(selector: (state: ShopifyCartStoreState) 
         originalPrice: origPrice,
         image,
         color,
+        device: (productNode as any)?.device || undefined,
         variantId: item.variantId,
       });
     },
