@@ -12,6 +12,10 @@ const seriesSearchTerms: Record<string, string> = {
   lensguard: "Camera Protector",
 };
 
+export function seriesSearchTermFor(seriesSlug: string): string | undefined {
+  return seriesSearchTerms[seriesSlug];
+}
+
 /**
  * Builds a Shopify search query that matches actual product titles.
  * E.g. ("clearmag", "iPhone 17 Pro") → "iPhone 17 Pro Clear MagSafe Case"
