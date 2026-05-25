@@ -356,9 +356,20 @@ const SeriesProduct = () => {
   const handleAddToCart = () => {
     if (!currentProduct) return;
     const color = isSoftmag ? softmagColors[selectedColor]?.name || "Default" : "Default";
-    const variantId = (currentProduct as any).variantsByColor
-      ? getVariantId(currentProduct as any, color)
-      : undefined;
+    const shopifyProduct = currentProduct as any;
+
+    // 1. Try model-based variant (most precise — avoids iPhone 16 vs 16 Pro mix-up)
+    let variantId: string | undefined;
+    if (shopifyProduct.variantsByModel && currentProduct.device) {
+      variantId = shopifyProduct.variantsByModel[currentProduct.device.toLowerCase()];
+    }
+    // 2. Fall back to color-based variant
+    if (!variantId && shopifyProduct.variantsByColor) {
+      variantId = shopifyProduct.variantsByColor[color] || shopifyProduct.variantId;
+    }
+    // 3. Last resort: raw variantId (let CartContext resolver handle it with device hint)
+    if (!variantId) variantId = shopifyProduct.variantId || undefined;
+
     addToCart({
       id: currentProduct.id,
       name: currentProduct.name,

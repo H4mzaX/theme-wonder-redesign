@@ -69,6 +69,7 @@ export interface ShopifyProduct {
   seriesSlug: string;
   variantId: string;
   variantsByColor: Record<string, string>;
+  variantsByModel: Record<string, string>; // model name (lowercase) → variantId
   node?: any;
 }
 
@@ -165,6 +166,7 @@ function mapProduct(node: any): ShopifyProduct {
   const compareAt = node.compareAtPriceRange?.minVariantPrice?.amount;
 
   const variantsByColor: Record<string, string> = {};
+  const variantsByModel: Record<string, string> = {};
   const colors: string[] = [];
   for (const v of variants) {
     const colorOpt = v.selectedOptions.find((o: any) => o.name.toLowerCase() === "color");
@@ -172,6 +174,13 @@ function mapProduct(node: any): ShopifyProduct {
     if (!variantsByColor[colorName]) {
       variantsByColor[colorName] = v.id;
       colors.push(colorName);
+    }
+    // Map model/device option to variantId for precise selection
+    const modelOpt = v.selectedOptions.find((o: any) =>
+      ["model", "device", "title"].includes(o.name.toLowerCase())
+    );
+    if (modelOpt?.value) {
+      variantsByModel[modelOpt.value.toLowerCase()] = v.id;
     }
   }
 
@@ -200,6 +209,7 @@ function mapProduct(node: any): ShopifyProduct {
     seriesSlug,
     variantId: variants[0]?.id || "",
     variantsByColor,
+    variantsByModel,
   };
 }
 

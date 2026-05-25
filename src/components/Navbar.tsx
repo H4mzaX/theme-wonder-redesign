@@ -16,7 +16,7 @@ const casesMenuItems = [
   { name: "ClearMag", slug: "clearmag", icon: "/icons/clearmag.webp", image: "/mega/clearmag.webp", tag: "Popular" },
   { name: "ClearMag Edge", slug: "clearmag-edge", icon: "/icons/clearmag-edge.webp", image: "/mega/clearmag-edge.webp" },
   { name: "SoftMag", slug: "softmag", icon: "/icons/softmag.webp", image: "/mega/softmag.webp", tag: "Bestseller" },
-  { name: "Armor Edge", slug: "armor-edge", icon: "/icons/armoredge.png", image: "/mega/armoredge.webp", tag: "New" },
+  { name: "Armor Edge", slug: "armor-edge", icon: "/icons/armoredge.png", image: "/mega/armoredge.png", tag: "New" },
 ];
 
 const protectionMenuItems = [

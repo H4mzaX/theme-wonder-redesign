@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import { Truck, RotateCcw, ShieldCheck, Headphones } from "lucide-react";
+import { StaggerGroup, StaggerChild } from "@/components/AnimateElement";
 
 const badges = [
   { icon: Truck, title: "Free Shipping", desc: "On all prepaid orders" },
@@ -69,9 +70,9 @@ const TrustBadges = () => {
     <section className="border-y border-border">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-5 sm:py-6 lg:py-8">
         {/* Desktop: grid */}
-        <div className="hidden lg:grid grid-cols-4 gap-8">
+        <StaggerGroup className="hidden lg:grid grid-cols-4 gap-8" staggerDelay={0.07}>
           {badges.map((badge) => (
-            <div key={badge.title} className="flex items-center gap-3">
+            <StaggerChild key={badge.title} className="flex items-center gap-3">
               <div className="w-11 h-11 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
                 <badge.icon className="w-5 h-5 text-foreground" strokeWidth={1.8} />
               </div>
@@ -79,9 +80,9 @@ const TrustBadges = () => {
                 <h3 className="font-semibold text-sm text-foreground">{badge.title}</h3>
                 <p className="text-xs text-muted-foreground">{badge.desc}</p>
               </div>
-            </div>
+            </StaggerChild>
           ))}
-        </div>
+        </StaggerGroup>
 
         {/* Mobile/Tablet: scrollable carousel */}
         <div className="lg:hidden">
