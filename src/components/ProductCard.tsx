@@ -71,20 +71,33 @@ const ProductCard = ({ product }: { product: Product; tag?: string }) => {
     e.stopPropagation();
     if (shopifyProduct) {
       const variant = shopifyProduct.node.variants.edges[0]?.node;
-      if (!variant) return;
-      await addItem({
-        product: shopifyProduct,
-        variantId: variant.id,
-        variantTitle: variant.title,
-        price: variant.price,
-        compareAtPrice: (variant as any).compareAtPrice || null,
-        quantity: 1,
-        selectedOptions: variant.selectedOptions || [],
-      });
-      toast.success("Added to cart", { description: `${product.name} — ${product.subtitle}`, position: "top-center" });
-    } else {
-      toast.error("Product not available yet");
+      if (variant) {
+        await addItem({
+          product: shopifyProduct,
+          variantId: variant.id,
+          variantTitle: variant.title,
+          price: variant.price,
+          compareAtPrice: (variant as any).compareAtPrice || null,
+          quantity: 1,
+          selectedOptions: variant.selectedOptions || [],
+        });
+        toast.success("Added to cart", { description: `${product.name} — ${product.subtitle}`, position: "top-center" });
+        return;
+      }
     }
+    // Fallback: add as mock product — CartContext will resolve a Shopify variant by search.
+    await addItem({
+      product: { node: { title: `${product.device} ${product.name}`, handle: product.id, images: { edges: [{ node: { url: product.image } }] } } } as any,
+      variantId: "",
+      variantTitle: product.subtitle,
+      price: { amount: String(parseInt(product.price.replace(/[^\d]/g, "")) || 0), currencyCode: "INR" },
+      compareAtPrice: product.originalPrice
+        ? { amount: String(parseInt(product.originalPrice.replace(/[^\d]/g, "")) || 0), currencyCode: "INR" }
+        : null,
+      quantity: 1,
+      selectedOptions: [],
+    });
+    toast.success("Added to cart", { description: `${product.name} — ${product.subtitle}`, position: "top-center" });
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
