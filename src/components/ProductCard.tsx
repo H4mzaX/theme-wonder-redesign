@@ -2,15 +2,14 @@ import { useState, useEffect } from "react";
 import { Star, ShoppingCart, Shield, Zap, Droplets, Magnet, Ruler, Gauge, Weight, Layers, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-
-const MotionLink = motion(Link);
-
 import { toast } from "sonner";
 import { type Product, getProductUrl } from "@/data/products";
 import { useShopifyCartStore } from "@/stores/cartStore";
 import { storefrontApiRequest, type ShopifyProduct } from "@/lib/shopify";
 import { buildShopifySearchQuery } from "@/lib/shopifyProductMap";
 import BrandName from "@/components/BrandName";
+
+const MotionLink = motion(Link);
 
 const categorySpecs: Record<string, { icon: React.ElementType; label: string; value: string }[]> = {
   Cases: [
@@ -217,7 +216,7 @@ const ProductCard = ({ product }: { product: Product; tag?: string }) => {
           </div>
         ))}
       </div>
-    </Link>
+    </MotionLink>
   );
 };
 
