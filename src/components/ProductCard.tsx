@@ -87,7 +87,7 @@ const ProductCard = ({ product }: { product: Product; tag?: string }) => {
     }
     // Fallback: add as mock product — CartContext will resolve a Shopify variant by search.
     await addItem({
-      product: { node: { title: `${product.device} ${product.name}`, handle: product.id, images: { edges: [{ node: { url: product.image } }] } } } as any,
+      product: { node: { title: `${product.device} ${product.name}`, handle: product.id, device: product.device, images: { edges: [{ node: { url: product.image } }] } } } as any,
       variantId: "",
       variantTitle: product.subtitle,
       price: { amount: String(parseInt(product.price.replace(/[^\d]/g, "")) || 0), currencyCode: "INR" },
