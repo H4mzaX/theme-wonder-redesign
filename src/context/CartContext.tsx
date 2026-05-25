@@ -20,6 +20,8 @@ import {
   fetchCart,
   type ShopifyCart,
 } from "@/lib/shopify";
+import { resolveShopifyVariantId } from "@/lib/shopifyVariantResolver";
+import { seriesSearchTermFor } from "@/lib/shopifyProductMap";
 
 const CartItemSchema = z.object({
   id: z.string().max(200),
@@ -188,17 +190,47 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       return [...prev, { ...item, quantity: 1 }];
     });
 
-    // 2. Sync to Shopify
-    if (!item.variantId) return;
+    // 2. Resolve a Shopify variantId if one wasn't supplied (mock products).
+    let variantId = item.variantId;
+    if (!variantId) {
+      const segs = item.id.split("-");
+      const candidates = [
+        segs.slice(-2).join("-"), // e.g. clearmag-edge, armor-edge
+        segs.slice(-1).join("-"), // e.g. clearmag, softmag
+      ];
+      let seriesTerm: string | undefined;
+      for (const c of candidates) {
+        const t = seriesSearchTermFor(c);
+        if (t) { seriesTerm = t; break; }
+      }
+      variantId = (await resolveShopifyVariantId({
+        device: item.device,
+        seriesTerm,
+        name: item.name,
+        color: item.color !== "Default" ? item.color : undefined,
+      })) || undefined;
+
+      if (variantId) {
+        setItems((prev) =>
+          prev.map((i) =>
+            i.id === item.id && i.color === item.color ? { ...i, variantId } : i
+          )
+        );
+      }
+    }
+
+    if (!variantId) return;
+
+    // 3. Sync to Shopify
     try {
       setCartLoading(true);
       const cart = await ensureCart();
-      const updatedCart = await addToShopifyCart(cart.id, item.variantId, 1);
+      const updatedCart = await addToShopifyCart(cart.id, variantId, 1);
       setShopifyCart(updatedCart);
 
       // Back-fill shopifyLineId
       const newLine = updatedCart.lines.find(
-        (l) => l.merchandise.id === item.variantId
+        (l) => l.merchandise.id === variantId
       );
       if (newLine) {
         setItems((prev) =>
