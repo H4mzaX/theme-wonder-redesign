@@ -190,17 +190,44 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       return [...prev, { ...item, quantity: 1 }];
     });
 
-    // 2. Sync to Shopify
-    if (!item.variantId) return;
+    // 2. Resolve a Shopify variantId if one wasn't supplied (mock products).
+    let variantId = item.variantId;
+    if (!variantId) {
+      // Mock product ids look like "iphone-17-pro-clearmag"; the suffix is the series slug.
+      const seriesSlug = item.id.split("-").slice(-1)[0] && item.id.includes("-")
+        ? item.id.split("-").slice(-2).join("-") // try last 2 segments first (e.g. clearmag-edge, armor-edge)
+        : undefined;
+      const seriesTerm =
+        (seriesSlug && seriesSearchTermFor(seriesSlug)) ||
+        seriesSearchTermFor(item.id.split("-").pop() || "");
+      variantId = (await resolveShopifyVariantId({
+        device: item.device,
+        seriesTerm,
+        name: item.name,
+        color: item.color !== "Default" ? item.color : undefined,
+      })) || undefined;
+
+      if (variantId) {
+        setItems((prev) =>
+          prev.map((i) =>
+            i.id === item.id && i.color === item.color ? { ...i, variantId } : i
+          )
+        );
+      }
+    }
+
+    if (!variantId) return;
+
+    // 3. Sync to Shopify
     try {
       setCartLoading(true);
       const cart = await ensureCart();
-      const updatedCart = await addToShopifyCart(cart.id, item.variantId, 1);
+      const updatedCart = await addToShopifyCart(cart.id, variantId, 1);
       setShopifyCart(updatedCart);
 
       // Back-fill shopifyLineId
       const newLine = updatedCart.lines.find(
-        (l) => l.merchandise.id === item.variantId
+        (l) => l.merchandise.id === variantId
       );
       if (newLine) {
         setItems((prev) =>
