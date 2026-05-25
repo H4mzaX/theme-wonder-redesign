@@ -20,6 +20,8 @@ import {
   fetchCart,
   type ShopifyCart,
 } from "@/lib/shopify";
+import { resolveShopifyVariantId } from "@/lib/shopifyVariantResolver";
+import { seriesSearchTermFor } from "@/lib/shopifyProductMap";
 
 const CartItemSchema = z.object({
   id: z.string().max(200),
