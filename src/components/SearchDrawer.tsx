@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { allProducts, Product } from "@/data/products";
 import { useNavigate } from "react-router-dom";
-import { drawerSpring, premiumEase } from "@/lib/motion";
+import { drawerSpring, primaryEase } from "@/lib/motion";
 
 interface SearchDrawerProps {
   open: boolean;
@@ -59,7 +59,7 @@ const SearchDrawer = ({ open, onClose }: SearchDrawerProps) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.22, ease: premiumEase }}
+          transition={{ duration: 0.22, ease: primaryEase }}
         >
           <p className="text-xs uppercase tracking-widest text-muted-foreground mb-4 pb-2 border-b border-border">
             {results.length} Result{results.length > 1 ? "s" : ""}
@@ -71,7 +71,7 @@ const SearchDrawer = ({ open, onClose }: SearchDrawerProps) => {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.22, delay: i * 0.03, ease: premiumEase }}
+                transition={{ duration: 0.22, delay: i * 0.03, ease: primaryEase }}
                 onClick={() => handleProductClick(product)}
                 className="w-full flex items-center gap-4 p-3 rounded-xl hover:bg-muted/60 transition-colors text-left group"
               >
@@ -112,7 +112,7 @@ const SearchDrawer = ({ open, onClose }: SearchDrawerProps) => {
   );
 
   const renderDefault = () => (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.08, duration: 0.24, ease: premiumEase }}>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.08, duration: 0.24, ease: primaryEase }}>
       <div className="mb-8">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-4 pb-2 border-b border-border">
           Popular categories
@@ -147,7 +147,7 @@ const SearchDrawer = ({ open, onClose }: SearchDrawerProps) => {
       className="relative mb-6"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.1, duration: 0.3, ease: premiumEase }}
+      transition={{ delay: 0.1, duration: 0.3, ease: primaryEase }}
     >
       <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground/50" />
       <input
