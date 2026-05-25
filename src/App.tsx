@@ -4,7 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { CartProvider } from "@/context/CartContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Index from "./pages/Index";
 import ProductDetail from "./pages/ProductDetail";
 import ShopifyProductDetail from "./pages/ShopifyProductDetail";
@@ -36,14 +36,16 @@ const pageVariants = {
 const AnimatedRoutes = () => {
   useCartSync();
   const location = useLocation();
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <AnimatePresence mode="wait" initial={false}>
       <motion.div
         key={location.pathname}
         variants={pageVariants}
-        initial="initial"
+        initial={shouldReduceMotion ? false : "initial"}
         animate="animate"
-        exit="exit"
+        exit={shouldReduceMotion ? undefined : "exit"}
         style={{ willChange: "clip-path, opacity" }}
       >
         <Routes location={location}>

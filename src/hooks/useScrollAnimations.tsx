@@ -21,13 +21,13 @@ export const ScrollReveal = forwardRef<HTMLDivElement, ScrollRevealProps>(({
   duration = 1.5,
 }, _forwardedRef) => {
   const ref = useRef<HTMLDivElement | null>(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const isInView = useInView(ref, { once: true, margin: "-120px" });
 
   const directionMap = {
-    up: { y: "2rem", x: 0 },
-    down: { y: "-2rem", x: 0 },
-    left: { y: 0, x: "-2rem" },
-    right: { y: 0, x: "2rem" },
+    up: { y: "1.5rem", x: 0 },
+    down: { y: "-1.5rem", x: 0 },
+    left: { y: 0, x: "-1.5rem" },
+    right: { y: 0, x: "1.5rem" },
     none: { y: 0, x: 0 },
   };
 
@@ -57,10 +57,10 @@ interface StaggerContainerProps {
 export const StaggerContainer = forwardRef<HTMLDivElement, StaggerContainerProps>(({
   children,
   className = "",
-  staggerDelay = 0.1,
+  staggerDelay = 0.175,
 }, _forwardedRef) => {
   const ref = useRef<HTMLDivElement | null>(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const isInView = useInView(ref, { once: true, margin: "-120px" });
 
   return (
     <motion.div
@@ -94,7 +94,7 @@ export const StaggerItem = forwardRef<HTMLDivElement, StaggerItemProps>(({ child
       visible: {
         opacity: 1,
         y: 0,
-        transition: { duration: 0.6, ease: [0.075, 0.82, 0.165, 1] },
+        transition: { duration: 1.5, ease: expoOut },
       },
     }}
   >

@@ -3,6 +3,8 @@ import { Star, ShoppingCart, Shield, Zap, Droplets, Magnet, Ruler, Gauge, Weight
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
+const MotionLink = motion(Link);
+
 import { toast } from "sonner";
 import { type Product, getProductUrl } from "@/data/products";
 import { useShopifyCartStore } from "@/stores/cartStore";
@@ -108,9 +110,13 @@ const ProductCard = ({ product }: { product: Product; tag?: string }) => {
   };
 
   return (
-    <Link
+    <MotionLink
       to={getProductUrl(product)}
       className="group flex flex-col bg-background rounded-xl overflow-hidden border border-border/60 h-full"
+      whileHover={{ y: -6 }}
+      whileTap={{ scale: 0.99 }}
+      transition={{ type: "spring", stiffness: 360, damping: 24 }}
+      style={{ willChange: "transform" }}
     >
       {/* Image area with hover zones */}
       <div

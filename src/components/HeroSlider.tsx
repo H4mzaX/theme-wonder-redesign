@@ -98,8 +98,8 @@ const HeroSlider = () => {
                 className="absolute inset-0 w-full h-full object-cover object-center will-change-[opacity,transform]"
                 style={{
                   opacity: i === current ? 1 : 0,
-                  transform: i === current ? 'scale(1)' : 'scale(1.04)',
-                  transition: 'opacity 400ms cubic-bezier(0.25, 1, 0.5, 1), transform 4.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                  transform: i === current ? 'scale(1)' : 'scale(1.3)',
+                  transition: 'opacity 400ms cubic-bezier(0.25, 1, 0.5, 1), transform 1300ms cubic-bezier(0.16, 1, 0.3, 1)',
                 }}
               />
             ))}

@@ -13,48 +13,50 @@ import { useRef, type ReactNode } from "react";
  */
 
 const expoOut: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const primaryEase: [number, number, number, number] = [0.3, 1, 0.3, 1];
+const smoothEase: [number, number, number, number] = [0.7, 0, 0.3, 1];
 const conceptEase: [number, number, number, number] = [0.25, 1, 0.5, 1];
 
 const variants = {
   fade: {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 0.6, ease: conceptEase } },
+    visible: { opacity: 1, transition: { duration: 0.5, ease: primaryEase } },
   },
   "fade-up": {
     hidden: { opacity: 0, y: 24 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: conceptEase } },
+    visible: { opacity: 1, y: 0, transition: { duration: 1.5, ease: expoOut } },
   },
   "fade-down": {
     hidden: { opacity: 0, y: -16 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: conceptEase } },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: smoothEase } },
   },
   "fade-left": {
     hidden: { opacity: 0, x: -24 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: conceptEase } },
+    visible: { opacity: 1, x: 0, transition: { duration: 1.5, ease: expoOut } },
   },
   "fade-right": {
     hidden: { opacity: 0, x: 24 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: conceptEase } },
+    visible: { opacity: 1, x: 0, transition: { duration: 1.5, ease: expoOut } },
   },
   "reveal-up": {
     hidden: { opacity: 0, y: 40 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: expoOut } },
+    visible: { opacity: 1, y: 0, transition: { duration: 1.5, ease: expoOut } },
   },
   "zoom-out": {
-    hidden: { scale: 1.12, opacity: 0 },
-    visible: { scale: 1, opacity: 1, transition: { duration: 0.7, ease: conceptEase } },
+    hidden: { scale: 1.3, opacity: 0 },
+    visible: { scale: 1, opacity: 1, transition: { duration: 1.3, ease: expoOut } },
   },
   "zoom-in": {
     hidden: { scale: 0.92, opacity: 0 },
-    visible: { scale: 1, opacity: 1, transition: { duration: 0.6, ease: conceptEase } },
+    visible: { scale: 1, opacity: 1, transition: { duration: 0.7, ease: conceptEase } },
   },
   "clip-up": {
     hidden: { opacity: 0, clipPath: "inset(100% 0 0 0)" },
-    visible: { opacity: 1, clipPath: "inset(0% 0 0 0)", transition: { duration: 0.6, ease: expoOut } },
+    visible: { opacity: 1, clipPath: "inset(0% 0 0 0)", transition: { duration: 0.7, ease: expoOut } },
   },
   "clip-left": {
     hidden: { opacity: 0, clipPath: "inset(0 100% 0 0)" },
-    visible: { opacity: 1, clipPath: "inset(0 0% 0 0)", transition: { duration: 0.6, ease: expoOut } },
+    visible: { opacity: 1, clipPath: "inset(0 0% 0 0)", transition: { duration: 0.7, ease: expoOut } },
   },
   "blur-in": {
     hidden: { opacity: 0, filter: "blur(8px)" },
@@ -145,7 +147,7 @@ export const StaggerChild = ({
       visible: {
         opacity: 1,
         y: 0,
-        transition: { duration: 0.5, ease: conceptEase },
+        transition: { duration: 1.5, ease: expoOut },
       },
     }}
   >

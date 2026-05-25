@@ -3,37 +3,38 @@ import type { Transition, Variants } from "framer-motion";
 /* ── Easing — Concept Theme Signature ── */
 /** Expo-out: fast start, feather-soft landing — the premium feel */
 export const expoOut: [number, number, number, number] = [0.16, 1, 0.3, 1];
-export const premiumEase: [number, number, number, number] = [0.22, 1, 0.36, 1];
+export const primaryEase: [number, number, number, number] = [0.3, 1, 0.3, 1];
 export const smoothEase: [number, number, number, number] = [0.7, 0, 0.3, 1];
-/** Concept theme's primary curve — snappy yet smooth */
+export const navEase: [number, number, number, number] = [0.6, 0, 0.4, 1];
+/** Concept theme's signature ease — snappy yet smooth */
 export const conceptEase: [number, number, number, number] = [0.25, 1, 0.5, 1];
 
 /* ── Springs — tightened for snappier feel ── */
 export const smoothSpring: Transition = {
   type: "spring",
-  stiffness: 280,
-  damping: 30,
-  mass: 0.7,
+  stiffness: 300,
+  damping: 24,
+  mass: 0.75,
 };
 
 export const drawerSpring: Transition = {
   type: "spring",
   stiffness: 320,
-  damping: 32,
+  damping: 30,
   mass: 0.7,
 };
 
 export const snappySpring: Transition = {
   type: "spring",
-  stiffness: 500,
-  damping: 28,
-  mass: 0.5,
+  stiffness: 420,
+  damping: 22,
+  mass: 0.45,
 };
 
 /** Magnetic interactions — elastic but not bouncy */
 export const magnetSpring: Transition = {
   type: "spring",
-  stiffness: 180,
+  stiffness: 200,
   damping: 18,
   mass: 0.08,
 };
@@ -41,8 +42,8 @@ export const magnetSpring: Transition = {
 /* ── Micro-interactions — tighter timings ── */
 export const tapScale = { scale: 0.97 };
 export const cardHover = {
-  y: -4,
-  transition: { type: "spring", stiffness: 400, damping: 22 } as Transition,
+  y: -5,
+  transition: { type: "spring", stiffness: 360, damping: 22 } as Transition,
 };
 export const buttonTap = { scale: 0.97 };
 export const buttonHover = { scale: 1.02 };
@@ -51,7 +52,7 @@ export const buttonHover = { scale: 1.02 };
 export const staggerContainer: Variants = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.06 },
+    transition: { staggerChildren: 0.175 },
   },
 };
 
@@ -60,7 +61,7 @@ export const staggerFadeUp: Variants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.45, ease: conceptEase },
+    transition: { duration: 1.5, ease: expoOut },
   },
 };
 
