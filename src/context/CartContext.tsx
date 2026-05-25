@@ -193,13 +193,16 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     // 2. Resolve a Shopify variantId if one wasn't supplied (mock products).
     let variantId = item.variantId;
     if (!variantId) {
-      // Mock product ids look like "iphone-17-pro-clearmag"; the suffix is the series slug.
-      const seriesSlug = item.id.split("-").slice(-1)[0] && item.id.includes("-")
-        ? item.id.split("-").slice(-2).join("-") // try last 2 segments first (e.g. clearmag-edge, armor-edge)
-        : undefined;
-      const seriesTerm =
-        (seriesSlug && seriesSearchTermFor(seriesSlug)) ||
-        seriesSearchTermFor(item.id.split("-").pop() || "");
+      const segs = item.id.split("-");
+      const candidates = [
+        segs.slice(-2).join("-"), // e.g. clearmag-edge, armor-edge
+        segs.slice(-1).join("-"), // e.g. clearmag, softmag
+      ];
+      let seriesTerm: string | undefined;
+      for (const c of candidates) {
+        const t = seriesSearchTermFor(c);
+        if (t) { seriesTerm = t; break; }
+      }
       variantId = (await resolveShopifyVariantId({
         device: item.device,
         seriesTerm,
