@@ -28,7 +28,7 @@ import MobileBottomNav from "@/components/MobileBottomNav";
 import FloatingNavPill from "@/components/FloatingNavPill";
 import BrandName from "@/components/BrandName";
 import AnimateElement from "@/components/AnimateElement";
-import { premiumEase } from "@/lib/motion";
+import { primaryEase } from "@/lib/motion";
 
 const PRODUCT_BY_HANDLE_QUERY = `
   query GetProductByHandle($handle: String!) {
@@ -341,7 +341,7 @@ const ShopifyProductDetail = () => {
                     }`}
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.1 + i * 0.08, ease: premiumEase }}
+                    transition={{ duration: 0.5, delay: 0.1 + i * 0.08, ease: primaryEase }}
                   >
                     <img
                       src={img.node.url}
